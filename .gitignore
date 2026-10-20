@@ -4,8 +4,7 @@
 .dart_tool/
 .packages
 build/
-# If you're building an application, you may want to check-in your pubspec.lock
-pubspec.lock
+# pubspec.lock is committed: this workspace builds apps, so versions must be reproducible.
 
 # Directory created by dartdoc
 # If you don't generate documentation locally you can remove this line.
@@ -27,3 +26,21 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# Flutter / IDE
+.flutter-plugins-dependencies
+*.iml
+.idea/
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+.DS_Store
+coverage/
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/android/.gradle/
+**/android/local.properties
+**/android/app/.cxx/

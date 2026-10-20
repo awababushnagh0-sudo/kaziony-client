@@ -1,0 +1,25 @@
+# Shared by every package and app (each one includes this file).
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-raw-types: true
+  errors:
+    depend_on_referenced_packages: error
+  exclude:
+    - "**/*.g.dart"
+    - "**/generated/**"
+    - build/**
+
+linter:
+  rules:
+    - always_declare_return_types
+    - avoid_dynamic_calls
+    - prefer_final_locals
+    - prefer_single_quotes
+    - require_trailing_commas
+    - unawaited_futures
+    - directives_ordering
+    - prefer_const_constructors
+    - sort_constructors_first

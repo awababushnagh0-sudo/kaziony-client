@@ -1,0 +1,31 @@
+{
+  // Terminal → Run Task...
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Check everything (analyze, tests, import rules)",
+      "type": "shell",
+      "command": "tool/check_all.sh",
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "Check import rules",
+      "type": "shell",
+      "command": "tool/check_imports.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "Generate API client (backend on localhost:3000)",
+      "type": "shell",
+      "command": "tool/generate_api.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "Generate translations",
+      "type": "shell",
+      "command": "for d in packages/stellar apps/business; do (cd $d && flutter gen-l10n); done",
+      "problemMatcher": []
+    }
+  ]
+}

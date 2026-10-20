@@ -1,0 +1,16 @@
+# Generates the API client from openapi/openapi.json.
+# Run from the repo root: tool/generate_api.sh
+swagger_parser:
+  schema_path: openapi/openapi.json
+  output_directory: lib/src/generated
+  name: offers
+  language: dart
+  json_serializer: json_serializable
+  root_client: true
+  root_client_name: OffersApi
+  put_clients_in_folder: true
+  enums_to_json: true
+  unknown_enum_value: true
+  mark_files_as_generated: true
+  original_http_response: false
+  replacement_rules: []

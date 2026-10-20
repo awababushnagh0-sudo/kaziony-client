@@ -1,0 +1,16 @@
+name: offers_client
+description: Workspace for the offers apps and shared packages.
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+
+workspace:
+  - packages/kernel
+  - packages/dev_menu
+  - packages/stellar
+  - packages/offers_api
+  - apps/business
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
