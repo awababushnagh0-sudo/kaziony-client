@@ -5,6 +5,8 @@ class ScaffoldSpec {
   const ScaffoldSpec({
     required this.body,
     this.title,
+    this.parent,
+    this.status,
     this.actions = const [],
     this.padded = true,
     this.scrollable = false,
@@ -16,6 +18,13 @@ class ScaffoldSpec {
 
   final Widget body;
   final String? title;
+
+  /// The page above this one, shown before [title] as a breadcrumb
+  /// ("Stores / Sweet Coast"). It replaces the back arrow.
+  final ScaffoldParent? parent;
+
+  /// A badge after [title], such as the record's status.
+  final Widget? status;
   final List<Widget> actions;
 
   /// Standard page padding around [body].
@@ -33,6 +42,15 @@ class ScaffoldSpec {
 
   /// Centers the content vertically too (login pages).
   final bool centered;
+}
+
+/// The breadcrumb link before a page's title.
+@immutable
+class ScaffoldParent {
+  const ScaffoldParent({required this.label, required this.onTap});
+
+  final String label;
+  final VoidCallback onTap;
 }
 
 abstract interface class ScaffoldRenderer {

@@ -8,6 +8,7 @@ import '../components/list_page/s_list_page_material.dart';
 import '../components/list_tile/s_list_tile_material.dart';
 import '../components/menu/s_menu_material.dart';
 import '../components/pill/s_pill_material.dart';
+import '../components/record_page/s_record_page_material.dart';
 import '../components/scaffold/s_scaffold_material.dart';
 import '../components/shell/s_shell_material.dart';
 import '../components/snack/s_snack_material.dart';
@@ -31,6 +32,7 @@ const materialKit = StellarKit(
   snack: MaterialSnackRenderer(),
   table: MaterialTableRenderer(),
   listPage: MaterialListPageRenderer(),
+  recordPage: MaterialRecordPageRenderer(),
   badge: MaterialBadgeRenderer(),
   pill: MaterialPillRenderer(),
   dialog: MaterialDialogRenderer(),

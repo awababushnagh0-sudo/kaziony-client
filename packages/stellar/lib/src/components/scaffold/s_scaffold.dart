@@ -4,10 +4,13 @@ import '../../foundation/s_kit.dart';
 import 's_scaffold_renderer.dart';
 
 /// A page: app bar, body and an optional action pinned to the bottom.
+/// Record pages put their list in [parent] and their status in [status].
 class SScaffold extends StatelessWidget {
   const SScaffold({
     required this.body,
     this.title,
+    this.parent,
+    this.status,
     this.actions = const [],
     this.padded = true,
     this.scrollable = false,
@@ -20,6 +23,8 @@ class SScaffold extends StatelessWidget {
 
   final Widget body;
   final String? title;
+  final ScaffoldParent? parent;
+  final Widget? status;
   final List<Widget> actions;
   final bool padded;
   final bool scrollable;
@@ -34,6 +39,8 @@ class SScaffold extends StatelessWidget {
     ScaffoldSpec(
       body: body,
       title: title,
+      parent: parent,
+      status: status,
       actions: actions,
       padded: padded,
       scrollable: scrollable,

@@ -84,9 +84,29 @@ class SearchFieldSpec {
   final String initialValue;
 }
 
-/// Draws every kind of input: text fields, dropdowns and search boxes.
+/// A saved value shown the way a field shows it, but not editable.
+@immutable
+class ReadFieldSpec {
+  const ReadFieldSpec({
+    required this.label,
+    required this.value,
+    this.ltr = false,
+  });
+
+  final String label;
+
+  /// Null or empty shows a dash.
+  final String? value;
+
+  /// Phones, emails and links read left to right, even in Arabic.
+  final bool ltr;
+}
+
+/// Draws every kind of input: text fields, dropdowns, search boxes and
+/// read-only values.
 abstract interface class InputRenderer {
   Widget text(BuildContext context, TextInputSpec spec);
   Widget select<T>(BuildContext context, SelectInputSpec<T> spec);
   Widget search(BuildContext context, SearchFieldSpec spec);
+  Widget read(BuildContext context, ReadFieldSpec spec);
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../foundation/s_kit.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
@@ -47,12 +48,15 @@ class MaterialScaffoldRenderer implements ScaffoldRenderer {
     }
 
     // Inside a narrow dashboard shell, top-level pages open the side menu.
+    // A breadcrumb is the way back, so pages with one get no back arrow.
     final openMenu = ShellScope.maybeOf(context)?.openMenu;
     final canPop = ModalRoute.of(context)?.impliesAppBarDismissal ?? false;
+    final hasParent = spec.parent != null;
     return Scaffold(
       appBar: spec.showAppBar
           ? AppBar(
-              leading: openMenu != null && !canPop
+              automaticallyImplyLeading: !hasParent,
+              leading: openMenu != null && (hasParent || !canPop)
                   ? IconButton(
                       tooltip: MaterialLocalizations.of(context)
                           .openAppDrawerTooltip,
@@ -60,7 +64,7 @@ class MaterialScaffoldRenderer implements ScaffoldRenderer {
                       onPressed: openMenu,
                     )
                   : null,
-              title: spec.title == null ? null : Text(spec.title!),
+              title: _title(context, spec),
               actions: [...spec.actions, const Gap(Space.sm)],
             )
           : null,
@@ -80,4 +84,36 @@ class MaterialScaffoldRenderer implements ScaffoldRenderer {
             ),
     );
   }
+}
+
+/// "Stores / Sweet Coast [Active]", as in ERPNext: the parent is a quiet
+/// link, the title stays on one line and gives way to the status.
+Widget? _title(BuildContext context, ScaffoldSpec spec) {
+  final title = spec.title;
+  final parent = spec.parent;
+  if (title == null) return null;
+  if (parent == null && spec.status == null) return Text(title);
+  final c = context.colors;
+  return Row(
+    children: [
+      if (parent != null) ...[
+        MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: parent.onTap,
+            child: Semantics(
+              link: true,
+              child: Text(parent.label, style: TextStyle(color: c.textSubtle)),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Space.sm),
+          child: Text('/', style: TextStyle(color: c.textSubtle)),
+        ),
+      ],
+      Flexible(child: Text(title, overflow: TextOverflow.ellipsis)),
+      if (spec.status case final status?) ...[const Gap(Space.md), status],
+    ],
+  );
 }

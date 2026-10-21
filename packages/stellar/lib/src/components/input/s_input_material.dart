@@ -45,6 +45,36 @@ class MaterialInputRenderer implements InputRenderer {
   @override
   Widget search(BuildContext context, SearchFieldSpec spec) =>
       _SearchField(spec: spec);
+
+  @override
+  Widget read(BuildContext context, ReadFieldSpec spec) {
+    final c = context.colors;
+    final value = spec.value;
+    final empty = value == null || value.isEmpty;
+    final theme = Theme.of(context);
+    final rtlPage = Directionality.of(context) == TextDirection.rtl;
+    // The same gray box and padding as an editable field, so a page can
+    // switch between showing and editing without anything moving.
+    return _labelled(
+      context,
+      label: spec.label,
+      child: Container(
+        padding: theme.inputDecorationTheme.contentPadding,
+        decoration: BoxDecoration(
+          color: c.fieldFill,
+          borderRadius: BorderRadius.circular(Radii.md),
+        ),
+        child: SelectableText(
+          empty ? '—' : value,
+          textDirection: spec.ltr && !empty ? TextDirection.ltr : null,
+          textAlign: spec.ltr && rtlPage ? TextAlign.right : TextAlign.start,
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: empty ? c.textSubtle : null,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 /// A label above a form control, with a red asterisk when [required], as

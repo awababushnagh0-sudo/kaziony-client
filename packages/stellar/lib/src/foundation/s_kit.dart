@@ -10,6 +10,7 @@ import '../components/list_page/s_list_page_renderer.dart';
 import '../components/list_tile/s_list_tile_renderer.dart';
 import '../components/menu/s_menu_renderer.dart';
 import '../components/pill/s_pill_renderer.dart';
+import '../components/record_page/s_record_page_renderer.dart';
 import '../components/scaffold/s_scaffold_renderer.dart';
 import '../components/shell/s_shell_renderer.dart';
 import '../components/snack/s_snack_renderer.dart';
@@ -35,6 +36,7 @@ class StellarKit {
     required this.snack,
     required this.table,
     required this.listPage,
+    required this.recordPage,
     required this.badge,
     required this.pill,
     required this.dialog,
@@ -53,6 +55,7 @@ class StellarKit {
   final SnackRenderer snack;
   final TableRenderer table;
   final ListPageRenderer listPage;
+  final RecordPageRenderer recordPage;
   final BadgeRenderer badge;
   final PillRenderer pill;
   final DialogRenderer dialog;
