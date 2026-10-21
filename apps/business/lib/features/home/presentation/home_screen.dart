@@ -86,7 +86,10 @@ class _StoreView extends StatelessWidget {
                 SListTile(
                   icon: SIcons.location,
                   title: branch.name,
-                  subtitle: [branch.area, branch.city].nonNulls.join('، '),
+                  subtitle: [
+                    branch.area,
+                    if (branch.city case final city?) _cityName(s, city),
+                  ].nonNulls.join('، '),
                   trailing: branch.isActive
                       ? null
                       : SText.caption(s.branchClosed, color: SColor.danger),
@@ -100,3 +103,7 @@ class _StoreView extends StatelessWidget {
     );
   }
 }
+
+String _cityName(BusinessLocalizations s, City city) => switch (city) {
+  City.tripoli => s.cityTripoli,
+};

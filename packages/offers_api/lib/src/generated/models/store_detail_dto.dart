@@ -19,6 +19,7 @@ class StoreDetailDto {
     required this.logoUrl,
     required this.coverUrl,
     required this.phone,
+    required this.email,
     required this.facebookUrl,
     required this.instagramUrl,
     required this.isActive,
@@ -36,6 +37,7 @@ class StoreDetailDto {
   final String? logoUrl;
   final String? coverUrl;
   final String? phone;
+  final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
   final bool isActive;

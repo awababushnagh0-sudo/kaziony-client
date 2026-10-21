@@ -11,7 +11,9 @@ class Branch {
 
   final String id;
   final String name;
-  final String city;
+
+  /// Null for a city added after this version of the app.
+  final City? city;
   final String? area;
   final bool isActive;
 }

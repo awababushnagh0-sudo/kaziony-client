@@ -205,6 +205,7 @@ class _StoreRecord extends StatelessWidget {
                   value: phone == null ? null : formatLibyanPhone(phone),
                   ltr: true,
                 ),
+                SReadField(label: s.storeEmail, value: store.email, ltr: true),
                 SReadField(
                   label: s.storeFacebook,
                   value: store.facebookUrl,

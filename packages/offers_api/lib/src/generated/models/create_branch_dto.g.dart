@@ -8,8 +8,8 @@ part of 'create_branch_dto.dart';
 
 CreateBranchDto _$CreateBranchDtoFromJson(Map<String, dynamic> json) =>
     CreateBranchDto(
+      city: City.fromJson(json['city'] as String),
       name: json['name'] as String,
-      city: json['city'] as String,
       latitude: json['latitude'] as num,
       longitude: json['longitude'] as num,
       area: json['area'] as String?,
@@ -20,8 +20,8 @@ CreateBranchDto _$CreateBranchDtoFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$CreateBranchDtoToJson(CreateBranchDto instance) =>
     <String, dynamic>{
-      'name': instance.name,
       'city': instance.city,
+      'name': instance.name,
       'area': ?instance.area,
       'address': ?instance.address,
       'latitude': instance.latitude,

@@ -237,6 +237,9 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get storePhone => 'هاتف المتجر';
 
   @override
+  String get storeEmail => 'بريد المتجر';
+
+  @override
   String get storeDescription => 'الوصف';
 
   @override
@@ -313,7 +316,7 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get branchCity => 'المدينة';
 
   @override
-  String get defaultCity => 'طرابلس';
+  String get cityTripoli => 'طرابلس';
 
   @override
   String get branchArea => 'المنطقة';
@@ -330,10 +333,19 @@ class AdminLocalizationsAr extends AdminLocalizations {
 
   @override
   String get invalidLocation =>
-      'تعذّرت قراءة الموقع. الصق رابط خرائط Google كاملاً أو الإحداثيات.';
+      'تعذّرت قراءة موقع من هذا الرابط. الصق رابط خرائط Google أو الإحداثيات.';
 
   @override
   String get locationOutsideLibya => 'هذا الموقع خارج ليبيا.';
+
+  @override
+  String locationFound(String latitude, String longitude) {
+    return 'الموقع: $latitude، $longitude';
+  }
+
+  @override
+  String get locationUnchecked =>
+      'تعذّر التحقق من الرابط. تحقق من اتصالك وحاول مجددًا.';
 
   @override
   String get ownerName => 'اسم صاحب المتجر';

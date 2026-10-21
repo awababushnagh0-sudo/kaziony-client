@@ -84,6 +84,9 @@ class BusinessLocalizationsEn extends BusinessLocalizations {
   String get branchClosed => 'Closed';
 
   @override
+  String get cityTripoli => 'Tripoli';
+
+  @override
   String get ownerRole => 'Owner';
 
   @override

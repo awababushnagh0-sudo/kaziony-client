@@ -4,15 +4,17 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
+import 'city.dart';
+
 part 'branch_dto.g.dart';
 
 @JsonSerializable()
 class BranchDto {
   const BranchDto({
+    required this.city,
     required this.openingHours,
     required this.id,
     required this.name,
-    required this.city,
     required this.area,
     required this.address,
     required this.latitude,
@@ -23,10 +25,10 @@ class BranchDto {
   
   factory BranchDto.fromJson(Map<String, Object?> json) => _$BranchDtoFromJson(json);
   
+  final City city;
   final dynamic openingHours;
   final String id;
   final String name;
-  final String city;
   final String? area;
   final String? address;
   final num latitude;

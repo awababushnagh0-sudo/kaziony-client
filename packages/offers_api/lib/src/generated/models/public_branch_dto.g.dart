@@ -8,10 +8,10 @@ part of 'public_branch_dto.dart';
 
 PublicBranchDto _$PublicBranchDtoFromJson(Map<String, dynamic> json) =>
     PublicBranchDto(
+      city: City.fromJson(json['city'] as String),
       openingHours: json['openingHours'],
       id: json['id'] as String,
       name: json['name'] as String,
-      city: json['city'] as String,
       area: json['area'] as String?,
       address: json['address'] as String?,
       latitude: json['latitude'] as num,
@@ -22,10 +22,10 @@ PublicBranchDto _$PublicBranchDtoFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$PublicBranchDtoToJson(PublicBranchDto instance) =>
     <String, dynamic>{
+      'city': instance.city,
       'openingHours': ?instance.openingHours,
       'id': instance.id,
       'name': instance.name,
-      'city': instance.city,
       'area': ?instance.area,
       'address': ?instance.address,
       'latitude': instance.latitude,

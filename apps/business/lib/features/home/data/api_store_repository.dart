@@ -1,5 +1,6 @@
 import 'package:kernel/kernel.dart';
-import 'package:offers_api/business.dart';
+import 'package:offers_api/business.dart' hide City;
+import 'package:offers_api/business.dart' as api show City;
 
 import '../domain/store.dart';
 
@@ -27,7 +28,10 @@ Store _toStore(StoreDetailDto dto) => Store(
       Branch(
         id: branch.id,
         name: branch.name,
-        city: branch.city,
+        city: switch (branch.city) {
+          api.City.tripoli => City.tripoli,
+          api.City.$unknown => null,
+        },
         area: branch.area,
         isActive: branch.isActive,
       ),

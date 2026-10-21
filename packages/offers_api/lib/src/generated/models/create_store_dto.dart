@@ -18,6 +18,7 @@ class CreateStoreDto {
     required this.owner,
     this.description,
     this.phone,
+    this.email,
     this.facebookUrl,
     this.instagramUrl,
   });
@@ -28,6 +29,9 @@ class CreateStoreDto {
   final String name;
   final String? description;
   final String? phone;
+
+  /// For customers to get in touch.
+  final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
   final List<CreateBranchDto> branches;

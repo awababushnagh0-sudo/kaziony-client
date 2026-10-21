@@ -13,6 +13,7 @@ class UpdateStoreDto {
     this.name,
     this.description,
     this.phone,
+    this.email,
     this.facebookUrl,
     this.instagramUrl,
     this.isActive,
@@ -24,6 +25,9 @@ class UpdateStoreDto {
   final String? name;
   final String? description;
   final String? phone;
+
+  /// For customers to get in touch.
+  final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
 

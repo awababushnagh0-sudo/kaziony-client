@@ -245,6 +245,12 @@ abstract class BusinessLocalizations {
   /// **'Closed'**
   String get branchClosed;
 
+  /// No description provided for @cityTripoli.
+  ///
+  /// In en, this message translates to:
+  /// **'Tripoli'**
+  String get cityTripoli;
+
   /// No description provided for @ownerRole.
   ///
   /// In en, this message translates to:

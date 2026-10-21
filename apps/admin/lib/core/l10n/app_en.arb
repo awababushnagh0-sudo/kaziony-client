@@ -113,6 +113,7 @@
   "storeCategory": "Category",
   "storeCategoryHint": "Choose",
   "storePhone": "Store phone",
+  "storeEmail": "Store email",
   "storeDescription": "Description",
   "tabDetails": "Details",
   "tabContact": "Contact",
@@ -150,13 +151,25 @@
   "branchName": "Branch name",
   "branchNameHint": "e.g. Hay Al Andalus",
   "branchCity": "City",
-  "defaultCity": "Tripoli",
+  "cityTripoli": "Tripoli",
   "branchArea": "Area",
   "branchAddress": "Address",
   "branchLocation": "Location",
   "branchLocationHelp": "Paste a Google Maps link, or coordinates like 32.8872, 13.1913",
-  "invalidLocation": "Couldn't read a location. Paste a full Google Maps link or the coordinates.",
+  "invalidLocation": "Couldn't read a location from this link. Paste a Google Maps link or the coordinates.",
   "locationOutsideLibya": "This location is outside Libya.",
+  "locationFound": "Location found: {latitude}, {longitude}",
+  "@locationFound": {
+    "placeholders": {
+      "latitude": {
+        "type": "String"
+      },
+      "longitude": {
+        "type": "String"
+      }
+    }
+  },
+  "locationUnchecked": "Couldn't check the link. Check your connection and try again.",
   "ownerName": "Owner name",
   "ownerPhone": "Owner phone",
   "ownerPhoneHelp": "The owner logs in to the store app with this number.",

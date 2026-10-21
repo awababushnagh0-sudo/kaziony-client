@@ -1,4 +1,5 @@
 import 'package:admin/core/l10n/generated/admin_localizations.dart';
+import 'package:admin/features/stores/domain/location.dart';
 import 'package:admin/features/stores/domain/store.dart';
 import 'package:admin/features/stores/presentation/stores_screen.dart';
 import 'package:flutter/material.dart' show DropdownButton;
@@ -38,13 +39,20 @@ void setWindow(WidgetTester tester) {
 enum Field {
   name,
   phone,
+  email,
   branchName,
-  city,
   area,
   address,
   location,
   owner,
   ownerPhone,
+}
+
+/// Types a location and waits for the backend to read it.
+Future<void> typeLocation(WidgetTester tester, String text) async {
+  await type(tester, Field.location, text);
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
 }
 
 Future<void> type(WidgetTester tester, Field field, String text) =>
@@ -136,27 +144,34 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Sweets').last);
     await tester.pumpAndSettle();
+    await type(tester, Field.email, 'hello@sahel.ly');
     await type(tester, Field.branchName, 'حي الأندلس');
-    await type(tester, Field.location, 'not a place');
+    stores.locationResult = const Err(
+      ValidationFailure([], code: LocationCodes.unreadable),
+    );
+    await typeLocation(tester, 'not a place');
     await type(tester, Field.owner, 'Ahmed');
     await type(tester, Field.ownerPhone, '091 234 5678');
     await tester.tap(find.text('Create store'));
     await tester.pumpAndSettle();
-    expect(find.textContaining("Couldn't read a location"), findsOneWidget);
+    expect(
+      find.textContaining("Couldn't read a location from this link"),
+      findsOneWidget,
+    );
     expect(stores.created, isEmpty);
 
-    await type(
-      tester,
-      Field.location,
-      'https://www.google.com/maps?q=32.8872,13.1913',
-    );
+    stores.locationResult = const Ok((latitude: 32.8872, longitude: 13.1913));
+    await typeLocation(tester, 'https://maps.app.goo.gl/AbC123');
+    expect(stores.resolvedLinks.last, 'https://maps.app.goo.gl/AbC123');
+    expect(find.text('Location found: 32.88720, 13.19130'), findsOneWidget);
     await tester.tap(find.text('Create store'));
     await tester.pumpAndSettle();
 
     final store = stores.created.single;
     expect(store.name, 'حلويات الساحل');
     expect(store.categoryId, sampleCategory.id);
-    expect(store.branch.city, 'Tripoli');
+    expect(store.email, 'hello@sahel.ly');
+    expect(store.branch.city, City.tripoli);
     expect(store.branch.latitude, 32.8872);
     expect(store.ownerPhone, '+218912345678');
 
@@ -188,7 +203,7 @@ void main() {
     await tester.tap(find.text('Sweets').last);
     await tester.pumpAndSettle();
     await type(tester, Field.branchName, 'Center');
-    await type(tester, Field.location, '32.8872, 13.1913');
+    await typeLocation(tester, '32.8872, 13.1913');
     await type(tester, Field.owner, 'Sara');
     await type(tester, Field.ownerPhone, '0921234567');
     await tester.tap(find.text('Create store'));
@@ -200,5 +215,34 @@ void main() {
     );
     // The dialog stays open with what was typed.
     expect(find.text('New store'), findsOneWidget);
+  });
+
+  testWidgets('says why a location can\'t be used, and checks again', (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..locationResult = const Err(
+        ValidationFailure([], code: LocationCodes.outsideLibya),
+      );
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Add store'));
+    await tester.pumpAndSettle();
+
+    await typeLocation(tester, '48.85, 2.35');
+    expect(find.text('This location is outside Libya.'), findsOneWidget);
+
+    // No connection: submitting reads the link again.
+    stores.locationResult = const Err(NoConnectionFailure());
+    await typeLocation(tester, '32.8872, 13.1913');
+    expect(find.textContaining("Couldn't check the link"), findsOneWidget);
+
+    stores.locationResult = const Ok((latitude: 32.8872, longitude: 13.1913));
+    await tester.tap(find.text('Create store'));
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+    expect(stores.resolvedLinks, hasLength(3));
+    expect(find.text('Location found: 32.88720, 13.19130'), findsOneWidget);
   });
 }

@@ -506,6 +506,12 @@ abstract class AdminLocalizations {
   /// **'Store phone'**
   String get storePhone;
 
+  /// No description provided for @storeEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Store email'**
+  String get storeEmail;
+
   /// No description provided for @storeDescription.
   ///
   /// In en, this message translates to:
@@ -644,11 +650,11 @@ abstract class AdminLocalizations {
   /// **'City'**
   String get branchCity;
 
-  /// No description provided for @defaultCity.
+  /// No description provided for @cityTripoli.
   ///
   /// In en, this message translates to:
   /// **'Tripoli'**
-  String get defaultCity;
+  String get cityTripoli;
 
   /// No description provided for @branchArea.
   ///
@@ -677,7 +683,7 @@ abstract class AdminLocalizations {
   /// No description provided for @invalidLocation.
   ///
   /// In en, this message translates to:
-  /// **'Couldn\'t read a location. Paste a full Google Maps link or the coordinates.'**
+  /// **'Couldn\'t read a location from this link. Paste a Google Maps link or the coordinates.'**
   String get invalidLocation;
 
   /// No description provided for @locationOutsideLibya.
@@ -685,6 +691,18 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'This location is outside Libya.'**
   String get locationOutsideLibya;
+
+  /// No description provided for @locationFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Location found: {latitude}, {longitude}'**
+  String locationFound(String latitude, String longitude);
+
+  /// No description provided for @locationUnchecked.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t check the link. Check your connection and try again.'**
+  String get locationUnchecked;
 
   /// No description provided for @ownerName.
   ///

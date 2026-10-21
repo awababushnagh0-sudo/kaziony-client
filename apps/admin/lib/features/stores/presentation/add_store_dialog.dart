@@ -23,6 +23,8 @@ class AddStoreDialog extends AppView {
       if (created != null && context.mounted) Navigator.pop(context, created);
     }
 
+    final point = state.location;
+
     final error = switch (state) {
       AddStoreState(problem: AddStoreProblem.phoneTakenByCustomer) =>
         s.phoneTakenByCustomer,
@@ -74,6 +76,11 @@ class AddStoreDialog extends AppView {
                     hint: '0912345678',
                     kind: TextInputKind.phone,
                   ),
+                  STextInput(
+                    controlName: 'email',
+                    label: s.storeEmail,
+                    kind: TextInputKind.email,
+                  ),
                 ],
               ),
             ),
@@ -90,10 +97,14 @@ class AddStoreDialog extends AppView {
                         hint: s.branchNameHint,
                         required: true,
                       ),
-                      STextInput(
+                      SSelectInput<City>(
                         controlName: 'city',
                         label: s.branchCity,
                         required: true,
+                        options: [
+                          for (final city in City.values)
+                            SelectOption(city, _cityName(s, city)),
+                        ],
                       ),
                       STextInput(controlName: 'area', label: s.branchArea),
                       STextInput(
@@ -107,13 +118,19 @@ class AddStoreDialog extends AppView {
                     controlName: 'location',
                     label: s.branchLocation,
                     hint: 'https://maps.google.com/...',
-                    helper: s.branchLocationHelp,
+                    helper: point == null
+                        ? s.branchLocationHelp
+                        : s.locationFound(
+                            point.latitude.toStringAsFixed(5),
+                            point.longitude.toStringAsFixed(5),
+                          ),
                     kind: TextInputKind.url,
                     required: true,
                     validationMessages: {
                       LocationErrors.unreadable: (_) => s.invalidLocation,
                       LocationErrors.outsideLibya: (_) =>
                           s.locationOutsideLibya,
+                      LocationErrors.unchecked: (_) => s.locationUnchecked,
                     },
                   ),
                 ],
@@ -152,3 +169,7 @@ class AddStoreDialog extends AppView {
     );
   }
 }
+
+String _cityName(AdminLocalizations s, City city) => switch (city) {
+  City.tripoli => s.cityTripoli,
+};

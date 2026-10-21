@@ -235,6 +235,9 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get storePhone => 'Store phone';
 
   @override
+  String get storeEmail => 'Store email';
+
+  @override
   String get storeDescription => 'Description';
 
   @override
@@ -311,7 +314,7 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get branchCity => 'City';
 
   @override
-  String get defaultCity => 'Tripoli';
+  String get cityTripoli => 'Tripoli';
 
   @override
   String get branchArea => 'Area';
@@ -328,10 +331,19 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get invalidLocation =>
-      'Couldn\'t read a location. Paste a full Google Maps link or the coordinates.';
+      'Couldn\'t read a location from this link. Paste a Google Maps link or the coordinates.';
 
   @override
   String get locationOutsideLibya => 'This location is outside Libya.';
+
+  @override
+  String locationFound(String latitude, String longitude) {
+    return 'Location found: $latitude, $longitude';
+  }
+
+  @override
+  String get locationUnchecked =>
+      'Couldn\'t check the link. Check your connection and try again.';
 
   @override
   String get ownerName => 'Owner name';

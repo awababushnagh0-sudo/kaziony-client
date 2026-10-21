@@ -1,6 +1,8 @@
 import 'package:kernel/kernel.dart';
-import 'package:offers_api/admin.dart';
+import 'package:offers_api/admin.dart' hide City;
+import 'package:offers_api/admin.dart' as api show City;
 
+import '../domain/location.dart';
 import '../domain/store.dart';
 
 class ApiStoreRepository implements StoreRepository {
@@ -9,6 +11,7 @@ class ApiStoreRepository implements StoreRepository {
   final Api _api;
   late final _stores = _api.client(AdminStoresClient.new);
   late final _categories = _api.client(AdminCategoriesClient.new);
+  late final _locations = _api.client(AdminLocationsClient.new);
 
   @override
   Future<Result<StorePage>> list(StoreQuery query) async {
@@ -86,11 +89,14 @@ class ApiStoreRepository implements StoreRepository {
           name: store.name,
           categoryId: store.categoryId,
           phone: store.phone,
+          email: store.email,
           description: store.description,
           branches: [
             CreateBranchDto(
               name: branch.name,
-              city: branch.city,
+              city: switch (branch.city) {
+                City.tripoli => api.City.tripoli,
+              },
               area: branch.area,
               address: branch.address,
               latitude: branch.latitude,
@@ -110,6 +116,19 @@ class ApiStoreRepository implements StoreRepository {
       ),
     );
   }
+
+  @override
+  Future<Result<LatLng>> resolveLocation(String link) async {
+    final result = await _api.guard(
+      () => _locations.resolve(body: ResolveLocationDto(link: link)),
+    );
+    return result.map(
+      (dto) => (
+        latitude: dto.latitude.toDouble(),
+        longitude: dto.longitude.toDouble(),
+      ),
+    );
+  }
 }
 
 Category _toCategory(CategoryDto dto) =>
@@ -126,6 +145,7 @@ StoreDetails _toDetails(StoreDetailDto dto) => StoreDetails(
   description: dto.description,
   logoUrl: dto.logoUrl,
   phone: dto.phone,
+  email: dto.email,
   facebookUrl: dto.facebookUrl,
   instagramUrl: dto.instagramUrl,
 );

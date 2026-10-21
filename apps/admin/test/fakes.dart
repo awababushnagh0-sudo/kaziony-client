@@ -1,5 +1,6 @@
 import 'package:admin/features/auth/domain/auth_repository.dart';
 import 'package:admin/features/dashboard/domain/dashboard_stats.dart';
+import 'package:admin/features/stores/domain/location.dart';
 import 'package:admin/features/stores/domain/store.dart';
 import 'package:kernel/kernel.dart';
 
@@ -85,6 +86,7 @@ StoreDetails sampleDetails(String id, {bool active = true}) => StoreDetails(
   teamCount: 3,
   description: 'Fresh sweets every morning.',
   phone: '+218912345678',
+  email: 'hello@sweetcoast.ly',
   instagramUrl: 'https://instagram.com/sweetcoast',
 );
 
@@ -96,6 +98,11 @@ class FakeStoreRepository implements StoreRepository {
   final activeChanges = <(String, bool)>[];
   final deleted = <String>[];
   Result<void> deleteResult = const Ok(null);
+  final resolvedLinks = <String>[];
+  Result<LatLng> locationResult = const Ok((
+    latitude: 32.8872,
+    longitude: 13.1913,
+  ));
   final created = <NewStore>[];
   Result<CreatedStore>? createResult;
 
@@ -129,6 +136,12 @@ class FakeStoreRepository implements StoreRepository {
   Future<Result<void>> delete(String id) async {
     deleted.add(id);
     return deleteResult;
+  }
+
+  @override
+  Future<Result<LatLng>> resolveLocation(String link) async {
+    resolvedLinks.add(link);
+    return locationResult;
   }
 
   @override

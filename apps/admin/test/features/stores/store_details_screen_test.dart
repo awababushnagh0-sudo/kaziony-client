@@ -87,6 +87,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('https://instagram.com/sweetcoast'), findsOneWidget);
+    expect(find.text('hello@sweetcoast.ly'), findsOneWidget);
     expect(find.text('Fresh sweets every morning.'), findsNothing);
   });
 

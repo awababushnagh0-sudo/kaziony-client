@@ -1,6 +1,7 @@
 import 'package:kernel/kernel.dart';
 
 import '../../../core/list/list_query.dart';
+import 'location.dart';
 
 /// A row in the stores list.
 class StoreSummary {
@@ -54,6 +55,7 @@ class StoreDetails {
     this.description,
     this.logoUrl,
     this.phone,
+    this.email,
     this.facebookUrl,
     this.instagramUrl,
   });
@@ -72,6 +74,7 @@ class StoreDetails {
 
   /// Normalized (+2189XXXXXXXX).
   final String? phone;
+  final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
 }
@@ -85,6 +88,7 @@ class NewStore {
     required this.ownerName,
     required this.ownerPhone,
     this.phone,
+    this.email,
     this.description,
   });
 
@@ -93,6 +97,7 @@ class NewStore {
 
   /// Normalized (+2189XXXXXXXX).
   final String? phone;
+  final String? email;
   final String? description;
   final NewBranch branch;
   final String ownerName;
@@ -112,7 +117,7 @@ class NewBranch {
   });
 
   final String name;
-  final String city;
+  final City city;
   final String? area;
   final String? address;
   final double latitude;
@@ -149,6 +154,11 @@ abstract interface class StoreRepository {
   Future<Result<void>> delete(String id);
   Future<Result<List<Category>>> categories();
   Future<Result<CreatedStore>> create(NewStore store);
+
+  /// The point in a Google Maps link (short links included) or coordinates.
+  /// Fails with a ValidationFailure whose code is one of [LocationCodes]
+  /// when there's no usable point in it.
+  Future<Result<LatLng>> resolveLocation(String link);
 }
 
 /// Wired to the real implementation in `app/dependencies.dart`.

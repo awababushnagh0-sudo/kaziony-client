@@ -15,6 +15,7 @@ import 'clients/admin_stores_client.dart';
 import 'clients/offers_client.dart';
 import 'clients/business_offers_client.dart';
 import 'clients/admin_offers_client.dart';
+import 'clients/admin_locations_client.dart';
 import 'clients/admin_users_client.dart';
 import 'clients/business_products_client.dart';
 import 'clients/claims_client.dart';
@@ -47,6 +48,7 @@ class OffersApi {
   OffersClient? _offers;
   BusinessOffersClient? _businessOffers;
   AdminOffersClient? _adminOffers;
+  AdminLocationsClient? _adminLocations;
   AdminUsersClient? _adminUsers;
   BusinessProductsClient? _businessProducts;
   ClaimsClient? _claims;
@@ -74,6 +76,8 @@ class OffersApi {
   BusinessOffersClient get businessOffers => _businessOffers ??= BusinessOffersClient(_dio, baseUrl: _baseUrl);
 
   AdminOffersClient get adminOffers => _adminOffers ??= AdminOffersClient(_dio, baseUrl: _baseUrl);
+
+  AdminLocationsClient get adminLocations => _adminLocations ??= AdminLocationsClient(_dio, baseUrl: _baseUrl);
 
   AdminUsersClient get adminUsers => _adminUsers ??= AdminUsersClient(_dio, baseUrl: _baseUrl);
 
