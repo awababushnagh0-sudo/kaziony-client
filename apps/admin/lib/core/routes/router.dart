@@ -35,12 +35,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.splash,
         builder: (_, _) =>
-            const AppScaffold(showAppBar: false, body: AppLoadingView()),
+            const SScaffold(showAppBar: false, body: SLoadingView()),
       ),
       GoRoute(
         path: Routes.update,
         builder: (_, _) =>
-            const AppScaffold(showAppBar: false, body: AppUpdateRequiredView()),
+            const SScaffold(showAppBar: false, body: SUpdateRequiredView()),
       ),
       page(Routes.login, (_) => const LoginScreen()),
       page(Routes.changePassword, (_) => const ChangePasswordScreen()),

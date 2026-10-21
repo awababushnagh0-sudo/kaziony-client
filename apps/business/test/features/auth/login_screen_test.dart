@@ -14,7 +14,7 @@ Widget harness(FakeAuthRepository auth, {Locale locale = const Locale('ar')}) =>
         ...testOverrides(),
         authRepositoryProvider.overrideWithValue(auth),
       ],
-      child: StellarApp(
+      child: SApp(
         routerConfig: GoRouter(
           routes: [GoRoute(path: '/', builder: (_, _) => const LoginScreen())],
         ),

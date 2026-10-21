@@ -15,17 +15,17 @@ class DashboardScreen extends AppView {
     final stats = ref.watch(dashboardViewModel);
     final viewModel = ref.read(dashboardViewModel.notifier);
 
-    return AppScaffold(
+    return SScaffold(
       title: s.navHome,
       actions: [
-        AppIconButton(
-          icon: AppIcon.refresh,
+        SButton.icon(
+          icon: SIcons.refresh,
           tooltip: s.refresh,
           onPressed: viewModel.reload,
         ),
       ],
       padded: false,
-      body: AppAsyncView(
+      body: SAsyncView(
         value: stats,
         onRetry: viewModel.reload,
         builder: (context, stats) => _StatsGrid(stats: stats),
@@ -48,19 +48,19 @@ class _StatsGrid extends StatelessWidget {
         label: s.statsStores,
         value: stats.stores,
         detail: s.statsStoresDetail(stats.activeStores),
-        icon: AppIcon.store,
+        icon: SIcons.store,
       ),
       _StatCard(
         label: s.statsLiveOffers,
         value: stats.liveOffers,
         detail: s.statsLiveOffersDetail(stats.totalOffers),
-        icon: AppIcon.offers,
+        icon: SIcons.offers,
       ),
       _StatCard(
         label: s.statsCustomers,
         value: stats.customers,
         detail: s.statsCustomersDetail(stats.newCustomersLast7Days),
-        icon: AppIcon.users,
+        icon: SIcons.users,
       ),
       _StatCard(
         label: s.statsClaims,
@@ -68,7 +68,7 @@ class _StatsGrid extends StatelessWidget {
         detail: rate == null
             ? s.statsClaimsNoneFinished
             : s.statsClaimsDetail((rate * 100).round()),
-        icon: AppIcon.check,
+        icon: SIcons.check,
       ),
     ];
 
@@ -108,23 +108,23 @@ class _StatCard extends StatelessWidget {
   final String label;
   final int value;
   final String detail;
-  final AppIcon icon;
+  final SIcons icon;
 
   @override
-  Widget build(BuildContext context) => AppCard(
+  Widget build(BuildContext context) => SCard(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            Expanded(child: AppText(label, tone: TextTone.muted)),
-            AppIconView(icon, tone: TextTone.muted),
+            Expanded(child: SText(label, color: SColor.textMuted)),
+            SIcon(icon, color: SColor.textMuted),
           ],
         ),
         const Gap(Space.sm),
-        AppText.display('$value'),
+        SText.display('$value'),
         const Gap(Space.xs),
-        AppText.caption(detail, maxLines: 1),
+        SText.caption(detail, maxLines: 1),
       ],
     ),
   );

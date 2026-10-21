@@ -30,12 +30,12 @@ class LoginScreen extends AppView {
     return AuthPage(
       title: s.loginTitle,
       subtitle: s.loginSubtitle,
-      child: AppForm(
+      child: SForm(
         form: viewModel.form,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            AppTextInput(
+            STextInput(
               controlName: 'email',
               label: s.emailLabel,
               hint: 'name@example.com',
@@ -43,7 +43,7 @@ class LoginScreen extends AppView {
               autofillHints: const ['email'],
             ),
             const Gap(Space.lg),
-            AppTextInput(
+            STextInput(
               controlName: 'password',
               label: s.passwordLabel,
               kind: TextInputKind.password,
@@ -53,10 +53,10 @@ class LoginScreen extends AppView {
             ),
             if (error != null) ...[
               const Gap(Space.lg),
-              AppText(error, tone: TextTone.danger),
+              SText(error, color: SColor.danger),
             ],
             const Gap(Space.xl),
-            AppButton(
+            SButton(
               label: s.loginButton,
               onPressed: viewModel.submit,
               loading: state.submitting,

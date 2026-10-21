@@ -8,7 +8,7 @@ class BusinessApp extends AppView {
   const BusinessApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => StellarApp(
+  Widget build(BuildContext context, WidgetRef ref) => SApp(
     routerConfig: ref.watch(routerProvider),
     locale: ref.watch(localeProvider),
     onGenerateTitle: (context) => BusinessLocalizations.of(context).appTitle,

@@ -18,25 +18,25 @@ class StoresScreen extends AppView {
     final s = AdminLocalizations.of(context);
 
     Future<void> addStore() async {
-      final created = await showAppDialog<CreatedStore>(
+      final created = await SDialog.show<CreatedStore>(
         context,
         (_) => const AddStoreDialog(),
         dismissible: false,
       );
       if (created == null || !context.mounted) return;
       ref.invalidate(storePageProvider);
-      await showAppDialog<void>(
+      await SDialog.show<void>(
         context,
         (_) => StoreCreatedDialog(store: created),
         dismissible: false,
       );
     }
 
-    return AppScaffold(
+    return SScaffold(
       title: s.storesTitle,
       padded: false,
       actions: [
-        AppButton(label: s.addStore, icon: AppIcon.add, onPressed: addStore),
+        SButton(label: s.addStore, icon: SIcons.add, onPressed: addStore),
       ],
       body: PagedTable<StoreSummary, StoreStatus>(
         query: storeQueryProvider,
@@ -48,10 +48,10 @@ class StoresScreen extends AppView {
         ],
         totalLabel: s.storesTotal,
         columns: _columns(context),
-        empty: AppEmptyView(
+        empty: SEmptyView(
           title: s.storesEmpty,
           message: s.storesEmptyMessage,
-          icon: AppIcon.store,
+          icon: SIcons.store,
           actionLabel: s.addStore,
           onAction: addStore,
         ),
@@ -66,32 +66,32 @@ class StoresScreen extends AppView {
       TableColumn(
         label: s.columnName,
         flex: 3,
-        cell: (store) => AppCellText(store.name, strong: true),
+        cell: (store) => SCellText(store.name, strong: true),
       ),
       TableColumn(
         label: s.columnCategory,
         minWidth: 520,
-        cell: (store) => AppCellText(store.category.name(locale)),
+        cell: (store) => SCellText(store.category.name(locale)),
       ),
       TableColumn(
         label: s.columnBranches,
         flex: 1,
         minWidth: 760,
-        cell: (store) => AppCellText('${store.branchCount}'),
+        cell: (store) => SCellText('${store.branchCount}'),
       ),
       TableColumn(
         label: s.columnStatus,
         cell: (store) => Align(
           alignment: AlignmentDirectional.centerStart,
           child: store.isActive
-              ? AppBadge(s.storeActive, tone: BadgeTone.success)
-              : AppBadge(s.storeDisabled),
+              ? SBadge(s.storeActive, tone: BadgeTone.success)
+              : SBadge(s.storeDisabled),
         ),
       ),
       TableColumn(
         label: s.columnAdded,
         minWidth: 640,
-        cell: (store) => AppCellText(
+        cell: (store) => SCellText(
           formatDate(store.createdAt, languageCode: locale.languageCode),
         ),
       ),

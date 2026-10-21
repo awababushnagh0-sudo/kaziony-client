@@ -31,7 +31,7 @@ offers-client/
 - **Riverpod is wrapped thinly, without code generation.** `kernel` provides base classes
   (`ViewModel`, `AsyncViewModel`, `AppView`, ...) and re-exports only what apps need.
 - **Widgets have abstract contracts.** Each `stellar` component has a renderer interface
-  (e.g. `ButtonRenderer`), a Material implementation, and a public widget (`AppButton`)
+  (e.g. `ButtonRenderer`), a Material implementation, and a public widget (`SButton`)
   that asks the active `StellarKit` to render it. Swapping a kit restyles every app.
 - **Services have abstract interfaces** (HTTP, secure storage, image picking, QR scanning,
   ...) with one implementation each, so tests can use fakes.
@@ -79,7 +79,7 @@ buttons that can't submit twice, and friendly error messages.
       navigation, locale (Arabic default), version check, error reporter, phone/price utils
 - [x] `stellar`: tokens + theme, component contracts, `StellarKit` + Material kit, button,
       text input, form, scaffold, text, card, list tile, loading/error/empty views, snack,
-      `StellarApp`, Arabic/English strings
+      `SApp`, Arabic/English strings
 - [x] `apps/business`: router with auth + update redirects, DI composition root, login
       (phone + password, only store accounts), forced change of the temporary password,
       home with the store and branches, language switch, logout

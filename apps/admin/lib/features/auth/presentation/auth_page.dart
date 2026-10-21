@@ -21,7 +21,7 @@ class AuthPage extends StatelessWidget {
   final List<Widget> footer;
 
   @override
-  Widget build(BuildContext context) => AppScaffold(
+  Widget build(BuildContext context) => SScaffold(
     showAppBar: false,
     maxWidth: 400,
     // A fixed distance from the top rather than centered, so an error
@@ -35,9 +35,9 @@ class AuthPage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          AppText.title(title, align: TextAlign.center),
+          SText.title(title, align: TextAlign.center),
           const Gap(Space.xs),
-          AppText(subtitle, tone: TextTone.muted, align: TextAlign.center),
+          SText(subtitle, color: SColor.textMuted, align: TextAlign.center),
           const Gap(Space.xl),
           child,
           if (footer.isNotEmpty) ...[

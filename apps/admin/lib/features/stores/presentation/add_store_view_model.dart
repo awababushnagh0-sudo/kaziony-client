@@ -31,7 +31,7 @@ class AddStoreViewModel extends ViewModel<AddStoreState> {
         validators: [Validators.required, Validators.maxLength(100)],
       ),
       'categoryId': FormControl<String>(validators: [Validators.required]),
-      'phone': FormControl<String>(validators: [AppValidators.libyanPhone]),
+      'phone': FormControl<String>(validators: [SValidators.libyanPhone]),
       'branchName': FormControl<String>(
         validators: [Validators.required, Validators.maxLength(100)],
       ),
@@ -49,7 +49,7 @@ class AddStoreViewModel extends ViewModel<AddStoreState> {
         validators: [Validators.required, Validators.maxLength(100)],
       ),
       'ownerPhone': FormControl<String>(
-        validators: [Validators.required, AppValidators.libyanPhone],
+        validators: [Validators.required, SValidators.libyanPhone],
       ),
     });
     ref.onDispose(form.dispose);

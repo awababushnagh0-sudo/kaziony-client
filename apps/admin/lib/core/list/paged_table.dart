@@ -49,23 +49,23 @@ class PagedTable<T, F> extends AppView {
 
     final Widget? placeholder = switch (result) {
       _ when rows != null && rows.items.isNotEmpty => null,
-      AsyncError(:final error) when rows == null => AppErrorView(
+      AsyncError(:final error) when rows == null => SErrorView(
         failure: error is AppFailure ? error : UnknownFailure(error),
         onRetry: () => ref.invalidate(page),
       ),
-      _ when rows == null => const AppLoadingView(),
-      _ when current.hasFilters => AppEmptyView(
+      _ when rows == null => const SLoadingView(),
+      _ when current.hasFilters => SEmptyView(
         title: s.listNoResults,
         message: s.listNoResultsMessage,
-        icon: AppIcon.noResults,
+        icon: SIcons.noResults,
       ),
       _ => empty,
     };
 
-    return AppListPage(
+    return SListPage(
       loading: result.isLoading && rows != null,
-      filters: AppFilterBar(
-        search: AppSearchField(
+      filters: SFilterBar(
+        search: SSearchField(
           hint: searchHint,
           initialValue: current.search,
           onChanged: controller.setSearch,
@@ -73,7 +73,7 @@ class PagedTable<T, F> extends AppView {
         filters: [
           if (filters.isNotEmpty)
             for (final (filter, label) in [(null, s.filterAll), ...filters])
-              AppPill(
+              SPill(
                 label: label,
                 selected: current.filter == filter,
                 onTap: () => controller.setFilter(filter),
@@ -83,7 +83,7 @@ class PagedTable<T, F> extends AppView {
       placeholder: placeholder,
       table: placeholder != null || rows == null
           ? null
-          : AppTable<T>(
+          : STable<T>(
               rows: rows.items,
               totalLabel: totalLabel(rows.total),
               columns: columns,
@@ -91,7 +91,7 @@ class PagedTable<T, F> extends AppView {
             ),
       pager: rows == null
           ? null
-          : AppPager(
+          : SPager(
               pageLabel: s.pageOf(
                 current.page,
                 rows.pageCount(current.pageSize),

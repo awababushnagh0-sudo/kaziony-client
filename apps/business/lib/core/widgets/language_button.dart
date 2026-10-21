@@ -10,7 +10,7 @@ class LanguageButton extends AppView {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final current = ref.watch(localeProvider);
-    return AppButton.text(
+    return SButton.text(
       label: BusinessLocalizations.of(context).switchLanguage,
       onPressed: () => ref
           .read(localeProvider.notifier)

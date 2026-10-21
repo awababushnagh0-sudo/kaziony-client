@@ -24,7 +24,7 @@ class LoginViewModel extends ViewModel<LoginState> {
   LoginState build() {
     form = FormGroup({
       'email': FormControl<String>(
-        validators: [Validators.required, AppValidators.email],
+        validators: [Validators.required, SValidators.email],
       ),
       'password': FormControl<String>(validators: [Validators.required]),
     });

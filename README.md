@@ -94,7 +94,7 @@ Dev and staging builds show a draggable bug button. It opens a menu with:
 - **Logs:** `debugPrint` output and reported errors with stack traces
 - **Server:** switch backend (presets or a custom URL, with a connection test)
 
-It lives in `packages/dev_menu`, is added by `StellarApp`, and is compiled out of production
+It lives in `packages/dev_menu`, is added by `SApp`, and is compiled out of production
 builds (`kDevTools` is a compile-time constant).
 
 ## Checks

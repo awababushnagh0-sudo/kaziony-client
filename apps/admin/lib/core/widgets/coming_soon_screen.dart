@@ -12,12 +12,9 @@ class ComingSoonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = AdminLocalizations.of(context);
-    return AppScaffold(
+    return SScaffold(
       title: title,
-      body: AppEmptyView(
-        title: s.comingSoonTitle,
-        message: s.comingSoonMessage,
-      ),
+      body: SEmptyView(title: s.comingSoonTitle, message: s.comingSoonMessage),
     );
   }
 }

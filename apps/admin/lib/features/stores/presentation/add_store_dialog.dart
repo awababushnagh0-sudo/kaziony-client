@@ -30,33 +30,33 @@ class AddStoreDialog extends AppView {
       _ => null,
     };
 
-    return AppDialog(
+    return SDialog(
       title: s.addStoreTitle,
       width: 640,
       primaryLabel: s.createStore,
       onPrimary: submit,
       busy: state.submitting,
-      body: AppForm(
+      body: SForm(
         form: viewModel.form,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            AppFormSection(
+            SFormSection(
               title: s.sectionStore,
-              child: AppFieldGrid(
+              child: SFieldGrid(
                 children: [
-                  AppTextInput(
+                  STextInput(
                     controlName: 'name',
                     label: s.storeName,
                     required: true,
                     autofocus: true,
                   ),
                   switch (categories) {
-                    AsyncError() => AppText(
+                    AsyncError() => SText(
                       s.categoriesFailed,
-                      tone: TextTone.danger,
+                      color: SColor.danger,
                     ),
-                    _ => AppSelectInput<String>(
+                    _ => SSelectInput<String>(
                       controlName: 'categoryId',
                       label: s.storeCategory,
                       hint: s.storeCategoryHint,
@@ -68,7 +68,7 @@ class AddStoreDialog extends AppView {
                       ],
                     ),
                   },
-                  AppTextInput(
+                  STextInput(
                     controlName: 'phone',
                     label: s.storePhone,
                     hint: '0912345678',
@@ -77,33 +77,33 @@ class AddStoreDialog extends AppView {
                 ],
               ),
             ),
-            AppFormSection(
+            SFormSection(
               title: s.sectionBranch,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  AppFieldGrid(
+                  SFieldGrid(
                     children: [
-                      AppTextInput(
+                      STextInput(
                         controlName: 'branchName',
                         label: s.branchName,
                         hint: s.branchNameHint,
                         required: true,
                       ),
-                      AppTextInput(
+                      STextInput(
                         controlName: 'city',
                         label: s.branchCity,
                         required: true,
                       ),
-                      AppTextInput(controlName: 'area', label: s.branchArea),
-                      AppTextInput(
+                      STextInput(controlName: 'area', label: s.branchArea),
+                      STextInput(
                         controlName: 'address',
                         label: s.branchAddress,
                       ),
                     ],
                   ),
                   const Gap(Space.lg),
-                  AppTextInput(
+                  STextInput(
                     controlName: 'location',
                     label: s.branchLocation,
                     hint: 'https://maps.google.com/...',
@@ -119,17 +119,17 @@ class AddStoreDialog extends AppView {
                 ],
               ),
             ),
-            AppFormSection(
+            SFormSection(
               title: s.sectionOwner,
               divider: false,
-              child: AppFieldGrid(
+              child: SFieldGrid(
                 children: [
-                  AppTextInput(
+                  STextInput(
                     controlName: 'ownerName',
                     label: s.ownerName,
                     required: true,
                   ),
-                  AppTextInput(
+                  STextInput(
                     controlName: 'ownerPhone',
                     label: s.ownerPhone,
                     hint: '0912345678',
@@ -144,7 +144,7 @@ class AddStoreDialog extends AppView {
             ),
             if (error != null) ...[
               const Gap(Space.lg),
-              AppText(error, tone: TextTone.danger),
+              SText(error, color: SColor.danger),
             ],
           ],
         ),

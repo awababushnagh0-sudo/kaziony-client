@@ -27,20 +27,20 @@ class LoginScreen extends AppView {
       _ => null,
     };
 
-    return AppScaffold(
+    return SScaffold(
       actions: const [LanguageButton()],
       scrollable: true,
-      body: AppForm(
+      body: SForm(
         form: viewModel.form,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Gap(Space.xl),
-            AppText.display(s.loginTitle),
+            SText.display(s.loginTitle),
             const Gap(Space.sm),
-            AppText(s.loginSubtitle, tone: TextTone.muted),
+            SText(s.loginSubtitle, color: SColor.textMuted),
             const Gap(Space.xxl),
-            AppTextInput(
+            STextInput(
               controlName: 'phone',
               label: s.phoneLabel,
               hint: '0912345678',
@@ -48,7 +48,7 @@ class LoginScreen extends AppView {
               autofillHints: const ['telephoneNumber'],
             ),
             const Gap(Space.lg),
-            AppTextInput(
+            STextInput(
               controlName: 'password',
               label: s.passwordLabel,
               kind: TextInputKind.password,
@@ -58,10 +58,10 @@ class LoginScreen extends AppView {
             ),
             if (error != null) ...[
               const Gap(Space.lg),
-              AppText(error, tone: TextTone.danger),
+              SText(error, color: SColor.danger),
             ],
             const Gap(Space.xl),
-            AppButton(
+            SButton(
               label: s.loginButton,
               onPressed: viewModel.submit,
               loading: state.submitting,

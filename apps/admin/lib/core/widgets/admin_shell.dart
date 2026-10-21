@@ -21,34 +21,34 @@ class AdminShell extends AppView {
       _ => null,
     };
 
-    NavItemSpec item(String route, String label, AppIcon icon) => NavItemSpec(
+    NavItemSpec item(String route, String label, SIcons icon) => NavItemSpec(
       label: label,
       icon: icon,
       selected: location == route || location.startsWith('$route/'),
       onTap: () => context.go(route),
     );
 
-    return AppShell(
+    return SShell(
       title: s.appTitle,
       subtitle: s.appSubtitle,
       items: [
-        item(Routes.home, s.navHome, AppIcon.home),
-        item(Routes.stores, s.navStores, AppIcon.store),
-        item(Routes.users, s.navUsers, AppIcon.users),
-        item(Routes.offers, s.navOffers, AppIcon.offers),
-        item(Routes.categories, s.navCategories, AppIcon.category),
+        item(Routes.home, s.navHome, SIcons.home),
+        item(Routes.stores, s.navStores, SIcons.store),
+        item(Routes.users, s.navUsers, SIcons.users),
+        item(Routes.offers, s.navOffers, SIcons.offers),
+        item(Routes.categories, s.navCategories, SIcons.category),
       ],
       userName: user?.name ?? user?.email,
       userDetail: user?.name == null ? null : user?.email,
       userActions: [
         ShellMenuAction(
           label: s.switchLanguage,
-          icon: AppIcon.language,
+          icon: SIcons.language,
           onTap: () => toggleLanguage(ref),
         ),
         ShellMenuAction(
           label: s.logout,
-          icon: AppIcon.logout,
+          icon: SIcons.logout,
           destructive: true,
           onTap: () => ref.read(authRepositoryProvider).logout(),
         ),

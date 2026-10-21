@@ -17,7 +17,7 @@ class ChangePasswordScreen extends AppView {
     Future<void> submit() async {
       final changed = await viewModel.submit();
       if (changed && context.mounted) {
-        AppSnack.success(context, s.passwordChanged);
+        SSnack.success(context, s.passwordChanged);
       }
     }
 
@@ -27,33 +27,33 @@ class ChangePasswordScreen extends AppView {
         ? null
         : failureMessage(context, state.failure!);
 
-    return AppScaffold(
-      actions: [AppButton.text(label: s.logout, onPressed: viewModel.logout)],
+    return SScaffold(
+      actions: [SButton.text(label: s.logout, onPressed: viewModel.logout)],
       scrollable: true,
-      body: AppForm(
+      body: SForm(
         form: viewModel.form,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Gap(Space.lg),
-            AppText.display(s.changePasswordTitle),
+            SText.display(s.changePasswordTitle),
             const Gap(Space.sm),
-            AppText(s.changePasswordSubtitle, tone: TextTone.muted),
+            SText(s.changePasswordSubtitle, color: SColor.textMuted),
             const Gap(Space.xxl),
-            AppTextInput(
+            STextInput(
               controlName: 'current',
               label: s.currentPasswordLabel,
               kind: TextInputKind.password,
             ),
             const Gap(Space.lg),
-            AppTextInput(
+            STextInput(
               controlName: 'password',
               label: s.newPasswordLabel,
               kind: TextInputKind.password,
               autofillHints: const ['newPassword'],
             ),
             const Gap(Space.lg),
-            AppTextInput(
+            STextInput(
               controlName: 'confirm',
               label: s.confirmPasswordLabel,
               kind: TextInputKind.password,
@@ -63,10 +63,10 @@ class ChangePasswordScreen extends AppView {
             ),
             if (error != null) ...[
               const Gap(Space.lg),
-              AppText(error, tone: TextTone.danger),
+              SText(error, color: SColor.danger),
             ],
             const Gap(Space.xl),
-            AppButton(
+            SButton(
               label: s.savePasswordButton,
               onPressed: submit,
               loading: state.submitting,

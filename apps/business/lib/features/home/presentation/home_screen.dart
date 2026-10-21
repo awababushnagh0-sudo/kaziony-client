@@ -15,24 +15,24 @@ class HomeScreen extends AppView {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = BusinessLocalizations.of(context);
     final home = ref.watch(homeViewModel);
-    final logout = AppButton.text(
+    final logout = SButton.text(
       label: s.logout,
-      icon: AppIcon.logout,
+      icon: SIcons.logout,
       onPressed: () => ref.read(authRepositoryProvider).logout(),
     );
 
-    return AppScaffold(
+    return SScaffold(
       title: home.value?.store.name ?? s.appTitle,
       actions: [const LanguageButton(), logout],
       padded: false,
-      body: AppAsyncView(
+      body: SAsyncView(
         value: home,
         onRetry: ref.read(homeViewModel.notifier).reload,
         builder: (context, data) => data == null
-            ? AppEmptyView(
+            ? SEmptyView(
                 title: s.noStoreTitle,
                 message: s.noStoreMessage,
-                icon: AppIcon.store,
+                icon: SIcons.store,
               )
             : _StoreView(data: data),
       ),
@@ -52,50 +52,50 @@ class _StoreView extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(Space.xl),
       children: [
-        AppCard(
+        SCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppText.title(store.name),
+              SText.title(store.name),
               const Gap(Space.xs),
-              AppText(
+              SText(
                 data.membership.isOwner ? s.ownerRole : s.staffRole,
-                tone: TextTone.muted,
+                color: SColor.textMuted,
               ),
               const Gap(Space.md),
-              AppText(
+              SText(
                 store.isActive ? s.storeActive : s.storeDisabled,
-                tone: store.isActive ? TextTone.success : TextTone.danger,
-                bold: true,
+                color: store.isActive ? SColor.success : SColor.danger,
+                weight: SFontWeight.bold,
               ),
               if (store.description != null) ...[
                 const Gap(Space.md),
-                AppText(store.description!),
+                SText(store.description!),
               ],
             ],
           ),
         ),
         const Gap(Space.xl),
-        AppText.title(s.branchesTitle),
+        SText.title(s.branchesTitle),
         const Gap(Space.sm),
-        AppCard(
+        SCard(
           padded: false,
           child: Column(
             children: [
               for (final branch in store.branches)
-                AppListTile(
-                  icon: AppIcon.location,
+                SListTile(
+                  icon: SIcons.location,
                   title: branch.name,
                   subtitle: [branch.area, branch.city].nonNulls.join('، '),
                   trailing: branch.isActive
                       ? null
-                      : AppText.caption(s.branchClosed, tone: TextTone.danger),
+                      : SText.caption(s.branchClosed, color: SColor.danger),
                 ),
             ],
           ),
         ),
         const Gap(Space.xxl),
-        AppText(s.comingNext, tone: TextTone.muted, align: TextAlign.center),
+        SText(s.comingNext, color: SColor.textMuted, align: TextAlign.center),
       ],
     );
   }

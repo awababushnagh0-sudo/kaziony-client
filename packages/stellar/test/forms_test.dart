@@ -3,7 +3,7 @@ import 'package:stellar/stellar.dart';
 
 void main() {
   Map<String, dynamic>? email(String? value) =>
-      AppValidators.email.validate(FormControl<String>(value: value));
+      SValidators.email.validate(FormControl<String>(value: value));
 
   test('email accepts addresses with spaces around them', () {
     expect(email('admin@offers.local'), isNull);

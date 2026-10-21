@@ -15,7 +15,7 @@ Widget harness(FakeStoreRepository stores) => AppScope(
     storeRepositoryProvider.overrideWithValue(stores),
     localeProvider.overrideWith(EnglishLocale.new),
   ],
-  child: StellarApp(
+  child: SApp(
     routerConfig: GoRouter(
       routes: [GoRoute(path: '/', builder: (_, _) => const StoresScreen())],
     ),
@@ -51,7 +51,7 @@ Future<void> type(WidgetTester tester, Field field, String text) =>
     tester.enterText(
       find
           .descendant(
-            of: find.byType(AppDialog),
+            of: find.byType(SDialog),
             matching: find.byType(EditableText),
           )
           .at(field.index),

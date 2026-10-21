@@ -8,7 +8,7 @@ class AdminApp extends AppView {
   const AdminApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => StellarApp(
+  Widget build(BuildContext context, WidgetRef ref) => SApp(
     routerConfig: ref.watch(routerProvider),
     locale: ref.watch(localeProvider),
     density: StellarDensity.compact,

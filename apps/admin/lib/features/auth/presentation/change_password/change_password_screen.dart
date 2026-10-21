@@ -18,7 +18,7 @@ class ChangePasswordScreen extends AppView {
     Future<void> submit() async {
       final changed = await viewModel.submit();
       if (changed && context.mounted) {
-        AppSnack.success(context, s.passwordChanged);
+        SSnack.success(context, s.passwordChanged);
       }
     }
 
@@ -31,26 +31,26 @@ class ChangePasswordScreen extends AppView {
     return AuthPage(
       title: s.changePasswordTitle,
       subtitle: s.changePasswordSubtitle,
-      footer: [AppButton.text(label: s.logout, onPressed: viewModel.logout)],
-      child: AppForm(
+      footer: [SButton.text(label: s.logout, onPressed: viewModel.logout)],
+      child: SForm(
         form: viewModel.form,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            AppTextInput(
+            STextInput(
               controlName: 'current',
               label: s.currentPasswordLabel,
               kind: TextInputKind.password,
             ),
             const Gap(Space.lg),
-            AppTextInput(
+            STextInput(
               controlName: 'password',
               label: s.newPasswordLabel,
               kind: TextInputKind.password,
               autofillHints: const ['newPassword'],
             ),
             const Gap(Space.lg),
-            AppTextInput(
+            STextInput(
               controlName: 'confirm',
               label: s.confirmPasswordLabel,
               kind: TextInputKind.password,
@@ -60,10 +60,10 @@ class ChangePasswordScreen extends AppView {
             ),
             if (error != null) ...[
               const Gap(Space.lg),
-              AppText(error, tone: TextTone.danger),
+              SText(error, color: SColor.danger),
             ],
             const Gap(Space.xl),
-            AppButton(
+            SButton(
               label: s.savePasswordButton,
               onPressed: submit,
               loading: state.submitting,

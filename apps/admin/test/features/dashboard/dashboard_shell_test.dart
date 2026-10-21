@@ -17,7 +17,7 @@ Widget harness(FakeDashboardRepository stats) => AppScope(
     authRepositoryProvider.overrideWithValue(FakeAuthRepository()),
     dashboardRepositoryProvider.overrideWithValue(stats),
   ],
-  child: StellarApp(
+  child: SApp(
     routerConfig: GoRouter(
       initialLocation: '/home',
       routes: [

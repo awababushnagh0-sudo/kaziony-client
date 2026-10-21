@@ -15,7 +15,7 @@ class StoreCreatedDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = AdminLocalizations.of(context);
     final password = store.temporaryPassword;
-    return AppDialog(
+    return SDialog(
       title: s.storeCreatedTitle,
       width: 440,
       showCancel: false,
@@ -24,24 +24,21 @@ class StoreCreatedDialog extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          AppText(
+          SText(
             password == null
                 ? s.ownerLinkedMessage(store.storeName)
                 : s.storeCreatedMessage(store.storeName),
           ),
           const Gap(Space.xl),
-          AppCopyField(
-            label: s.loginPhone,
-            value: _localPhone(store.ownerPhone),
-          ),
+          SCopyField(label: s.loginPhone, value: _localPhone(store.ownerPhone)),
           if (password != null) ...[
             const Gap(Space.lg),
-            AppCopyField(label: s.temporaryPassword, value: password),
+            SCopyField(label: s.temporaryPassword, value: password),
             const Gap(Space.md),
-            AppText(
+            SText(
               s.passwordShownOnce,
               variant: TextVariant.caption,
-              tone: TextTone.danger,
+              color: SColor.danger,
             ),
           ],
         ],
