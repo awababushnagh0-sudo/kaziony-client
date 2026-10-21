@@ -39,6 +39,7 @@ export 'src/result/failure.dart';
 export 'src/result/result.dart';
 export 'src/state/state.dart';
 export 'src/storage/storage.dart';
+export 'src/utils/city.dart';
 export 'src/utils/dates.dart';
 export 'src/utils/money.dart';
 export 'src/utils/phone.dart';
