@@ -5,7 +5,8 @@ import '../icon/s_icon.dart';
 import 's_button_renderer.dart';
 
 /// A button with a label ([SButton], [SButton.secondary],
-/// [SButton.text]) or just an icon ([SButton.icon]).
+/// [SButton.text]), one that opens a menu ([SButton.menu]) or just an icon
+/// ([SButton.icon]).
 class SButton extends StatelessWidget {
   const SButton({
     required this.label,
@@ -15,7 +16,8 @@ class SButton extends StatelessWidget {
     this.expand = false,
     this.icon,
     super.key,
-  }) : _iconOnly = false;
+  }) : _iconOnly = false,
+       _iconAtEnd = false;
 
   const SButton.secondary({
     required this.label,
@@ -25,7 +27,8 @@ class SButton extends StatelessWidget {
     this.icon,
     super.key,
   }) : variant = ButtonVariant.secondary,
-       _iconOnly = false;
+       _iconOnly = false,
+       _iconAtEnd = false;
 
   const SButton.text({
     required this.label,
@@ -35,7 +38,18 @@ class SButton extends StatelessWidget {
   }) : variant = ButtonVariant.text,
        loading = false,
        expand = false,
-       _iconOnly = false;
+       _iconOnly = false,
+       _iconAtEnd = false;
+
+  /// Opens a menu, as ERPNext's "Actions": a primary button with
+  /// up-and-down chevrons after the label. Use it as an SMenuButton's builder.
+  const SButton.menu({required this.label, required this.onPressed, super.key})
+    : variant = ButtonVariant.primary,
+      icon = SIcons.chevronUpDown,
+      loading = false,
+      expand = false,
+      _iconOnly = false,
+      _iconAtEnd = true;
 
   /// Just an icon (toolbars). [tooltip] is required so the button always
   /// has a name for screen readers.
@@ -48,7 +62,8 @@ class SButton extends StatelessWidget {
        variant = ButtonVariant.text,
        loading = false,
        expand = false,
-       _iconOnly = true;
+       _iconOnly = true,
+       _iconAtEnd = false;
 
   /// The text on the button; the tooltip of an icon button.
   final String label;
@@ -58,6 +73,7 @@ class SButton extends StatelessWidget {
   final bool expand;
   final SIcons? icon;
   final bool _iconOnly;
+  final bool _iconAtEnd;
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +93,7 @@ class SButton extends StatelessWidget {
         loading: loading,
         expand: expand,
         icon: icon,
+        iconAtEnd: _iconAtEnd,
       ),
     );
   }

@@ -13,6 +13,7 @@ class ButtonSpec {
     this.loading = false,
     this.expand = false,
     this.icon,
+    this.iconAtEnd = false,
   });
 
   final String label;
@@ -27,6 +28,9 @@ class ButtonSpec {
   /// Fill the available width.
   final bool expand;
   final SIcons? icon;
+
+  /// The icon after the label, smaller (a menu button's chevron).
+  final bool iconAtEnd;
 }
 
 @immutable

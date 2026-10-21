@@ -34,10 +34,14 @@ enum SIcons {
   logout,
   disable,
   enable,
+  delete,
   // Lists and navigation.
   chevron,
   chevronBack,
   chevronDown,
+
+  /// A menu or select button: ERPNext's up-and-down chevrons.
+  chevronUpDown,
   sortable,
   ascending,
   descending,

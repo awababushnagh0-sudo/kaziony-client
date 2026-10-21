@@ -94,7 +94,7 @@ widget is named after its file:
 
 ```
 packages/stellar/lib/src/components/button/
-  s_button.dart             SButton (+ SButton.secondary, .text, .icon)
+  s_button.dart             SButton (+ SButton.secondary, .text, .menu, .icon)
   s_button_renderer.dart    ButtonSpec + ButtonRenderer (the interface)
   s_button_material.dart    MaterialButtonRenderer (not exported)
 ```

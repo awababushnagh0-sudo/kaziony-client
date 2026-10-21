@@ -27,7 +27,13 @@ class MaterialButtonRenderer implements ButtonRenderer {
         : Text(spec.label);
     final icon = spec.icon == null || spec.loading
         ? null
-        : Icon(materialIcon(spec.icon!), size: SIconSize.md.pixels);
+        : Icon(
+            materialIcon(spec.icon!),
+            size: (spec.iconAtEnd ? SIconSize.xs : SIconSize.md).pixels,
+          );
+    final iconAlignment = spec.iconAtEnd
+        ? IconAlignment.end
+        : IconAlignment.start;
     // While loading the button keeps its look but ignores taps.
     final onPressed = spec.loading ? () {} : spec.onPressed;
 
@@ -35,7 +41,12 @@ class MaterialButtonRenderer implements ButtonRenderer {
       ButtonVariant.primary =>
         icon == null
             ? FilledButton(onPressed: onPressed, child: child)
-            : FilledButton.icon(onPressed: onPressed, icon: icon, label: child),
+            : FilledButton.icon(
+                onPressed: onPressed,
+                icon: icon,
+                iconAlignment: iconAlignment,
+                label: child,
+              ),
       ButtonVariant.danger => FilledButton(
         style: FilledButton.styleFrom(
           backgroundColor: colors.danger,
@@ -50,12 +61,18 @@ class MaterialButtonRenderer implements ButtonRenderer {
             : OutlinedButton.icon(
                 onPressed: onPressed,
                 icon: icon,
+                iconAlignment: iconAlignment,
                 label: child,
               ),
       ButtonVariant.text =>
         icon == null
             ? TextButton(onPressed: onPressed, child: child)
-            : TextButton.icon(onPressed: onPressed, icon: icon, label: child),
+            : TextButton.icon(
+                onPressed: onPressed,
+                icon: icon,
+                iconAlignment: iconAlignment,
+                label: child,
+              ),
     };
     final Widget guarded = AbsorbPointer(
       absorbing: spec.loading,

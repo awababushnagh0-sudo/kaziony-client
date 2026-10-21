@@ -146,6 +146,11 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // circle-play
+  SIcons.delete => const IconData(
+    0xe18e,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // trash-2
   SIcons.chevron => const IconData(
     0xe06f,
     fontFamily: _f,
@@ -163,6 +168,11 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // chevron-down
+  SIcons.chevronUpDown => const IconData(
+    0xe211,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // chevrons-up-down
   SIcons.sortable => const IconData(
     0xe211,
     fontFamily: _f,
