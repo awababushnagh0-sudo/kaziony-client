@@ -4,6 +4,24 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Admin · dev (Chrome, local backend)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "apps/admin",
+      "program": "lib/main.dart",
+      "deviceId": "chrome",
+      "args": ["--dart-define-from-file=config/dev.json", "--web-port=8080"]
+    },
+    {
+      "name": "Admin · staging (Chrome)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "apps/admin",
+      "program": "lib/main.dart",
+      "deviceId": "chrome",
+      "args": ["--dart-define-from-file=config/staging.json", "--web-port=8080"]
+    },
+    {
       "name": "Business · dev (local backend)",
       "type": "dart",
       "request": "launch",

@@ -1,0 +1,153 @@
+{
+  "@@locale": "en",
+  "appTitle": "Offers Admin",
+  "switchLanguage": "العربية",
+  "loginTitle": "Sign in",
+  "loginSubtitle": "Welcome back. Sign in to manage stores and offers.",
+  "emailLabel": "Email",
+  "passwordLabel": "Password",
+  "loginButton": "Continue",
+  "wrongCredentials": "Wrong email or password.",
+  "accountDisabled": "This account is disabled.",
+  "sessionExpired": "Your session ended. Please sign in again.",
+  "notAdminAccount": "This dashboard is for admin accounts only.",
+  "changePasswordTitle": "Choose a new password",
+  "changePasswordSubtitle": "You're using a temporary password. Choose your own to continue.",
+  "currentPasswordLabel": "Temporary password",
+  "newPasswordLabel": "New password",
+  "confirmPasswordLabel": "Repeat the new password",
+  "savePasswordButton": "Save and continue",
+  "wrongCurrentPassword": "The temporary password is wrong.",
+  "passwordChanged": "Password changed.",
+  "logout": "Log out",
+  "navHome": "Home",
+  "navStores": "Stores",
+  "navUsers": "Users",
+  "navOffers": "Offers",
+  "navCategories": "Categories",
+  "comingSoonTitle": "Coming soon",
+  "comingSoonMessage": "This page is part of the next steps.",
+  "statsStores": "Stores",
+  "statsStoresDetail": "{active} active",
+  "@statsStoresDetail": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      }
+    }
+  },
+  "statsLiveOffers": "Live offers",
+  "statsLiveOffersDetail": "{total} posted in total",
+  "@statsLiveOffersDetail": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "statsCustomers": "Customers",
+  "statsCustomersDetail": "{count} new in the last 7 days",
+  "@statsCustomersDetail": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsClaims": "Claims, last 7 days",
+  "statsClaimsDetail": "{percent}% of finished claims were picked up",
+  "@statsClaimsDetail": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "statsClaimsNoneFinished": "No finished claims yet",
+  "refresh": "Refresh",
+  "appSubtitle": "Admin dashboard",
+  "storesTitle": "Stores",
+  "storesTotal": "{count, plural, =1{1 store} other{{count} stores}}",
+  "@storesTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "storesSearch": "Search by name",
+  "filterAll": "All",
+  "filterActive": "Active",
+  "filterDisabled": "Disabled",
+  "columnName": "Name",
+  "columnCategory": "Category",
+  "columnBranches": "Branches",
+  "columnStatus": "Status",
+  "columnAdded": "Added",
+  "storeActive": "Active",
+  "storeDisabled": "Disabled",
+  "storesEmpty": "No stores yet",
+  "storesEmptyMessage": "Add the first store and give its owner their login.",
+  "listNoResults": "No matches",
+  "listNoResultsMessage": "Try another search or clear the filters.",
+  "pageOf": "Page {page} of {pages}",
+  "@pageOf": {
+    "placeholders": {
+      "page": {
+        "type": "int"
+      },
+      "pages": {
+        "type": "int"
+      }
+    }
+  },
+  "previousPage": "Previous page",
+  "nextPage": "Next page",
+  "addStore": "Add store",
+  "addStoreTitle": "New store",
+  "createStore": "Create store",
+  "sectionStore": "Store",
+  "sectionBranch": "First branch",
+  "sectionOwner": "Owner account",
+  "storeName": "Store name",
+  "storeCategory": "Category",
+  "storeCategoryHint": "Choose",
+  "storePhone": "Store phone",
+  "storeDescription": "Description",
+  "branchName": "Branch name",
+  "branchNameHint": "e.g. Hay Al Andalus",
+  "branchCity": "City",
+  "defaultCity": "Tripoli",
+  "branchArea": "Area",
+  "branchAddress": "Address",
+  "branchLocation": "Location",
+  "branchLocationHelp": "Paste a Google Maps link, or coordinates like 32.8872, 13.1913",
+  "invalidLocation": "Couldn't read a location. Paste a full Google Maps link or the coordinates.",
+  "locationOutsideLibya": "This location is outside Libya.",
+  "ownerName": "Owner name",
+  "ownerPhone": "Owner phone",
+  "ownerPhoneHelp": "The owner logs in to the store app with this number.",
+  "phoneTakenByCustomer": "This number belongs to a customer account. Use another number for the store owner.",
+  "categoriesFailed": "Couldn't load the categories.",
+  "storeCreatedTitle": "Store created",
+  "storeCreatedMessage": "Give these details to the owner of {store}. They will choose their own password when they first log in.",
+  "@storeCreatedMessage": {
+    "placeholders": {
+      "store": {
+        "type": "String"
+      }
+    }
+  },
+  "loginPhone": "Login phone",
+  "temporaryPassword": "Temporary password",
+  "passwordShownOnce": "The password is shown only now. Copy it before closing.",
+  "ownerLinkedMessage": "This number already had a store account, so it was added as the owner of {store}. They log in with their current password.",
+  "@ownerLinkedMessage": {
+    "placeholders": {
+      "store": {
+        "type": "String"
+      }
+    }
+  },
+  "done": "Done"
+}

@@ -24,7 +24,7 @@
     {
       "label": "Generate translations",
       "type": "shell",
-      "command": "for d in packages/stellar apps/business; do (cd $d && flutter gen-l10n); done",
+      "command": "for d in packages/stellar apps/*; do (cd $d && flutter gen-l10n); done",
       "problemMatcher": []
     }
   ]

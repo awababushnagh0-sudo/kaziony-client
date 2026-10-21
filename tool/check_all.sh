@@ -19,7 +19,9 @@ step() { # name, command...
 }
 
 step "import rules" tool/check_imports.sh
-for dir in packages/kernel packages/dev_menu packages/stellar packages/offers_api apps/business; do
+# Every package and app, so new ones are never skipped.
+for dir in packages/*/ apps/*/; do
+  dir=${dir%/}
   step "analyze $dir" bash -c "cd $dir && flutter analyze --no-pub"
   if [ -n "$(find "$dir/test" -name '*_test.dart' 2>/dev/null | head -1)" ]; then
     step "test $dir" bash -c "cd $dir && flutter test --no-pub"

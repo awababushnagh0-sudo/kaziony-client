@@ -125,9 +125,18 @@ buttons that can't submit twice, and friendly error messages.
 
 ## Step 5: Admin dashboard (Flutter Web)
 
-- [ ] Login, dashboard stats
-- [ ] Stores: list/search, create (with branches and owner, show the temporary password
-      once), edit, disable, branches, staff
+- [x] Login (email + password, admins only), forced change of a temporary password
+- [x] Side menu layout (fixed on wide windows, drawer on narrow ones), clean URLs
+- [x] Home: stats (stores, live offers, customers, claims)
+- [x] Shared look for all apps: neutral Frappe-style theme, labels above fields,
+      `StellarDensity.compact` for the web
+- [x] Design system ported from the MIA portal (ERPNext style): IBM Plex Sans Arabic, Lucide
+      icons, colors, labelled fields, ERPNext table + list page + pager, dialogs, menus,
+      badges, side menu
+- [x] Stores: list with search, status filter and pages; create (store, first branch with
+      location from a Google Maps link, owner) showing the temporary password once
+- [x] Reloading or opening a link to a page lands back on it after signing in
+- [ ] Stores: store page (edit, disable, branches, staff, reset owner password)
 - [ ] Users: search, disable/enable, reset password
 - [ ] Categories, offer moderation
 

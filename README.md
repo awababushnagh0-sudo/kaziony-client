@@ -12,6 +12,7 @@ packages/
   offers_api/   client generated from the backend (entry points per app)
 apps/
   business/     store app (Android + iOS); config/ holds dev/staging/prod settings
+  admin/        admin dashboard (Flutter Web), same structure
 .vscode/        launch configurations and tasks
 tool/
   check_all.sh            every check (import rules, analyzer, tests)
@@ -64,6 +65,22 @@ without `API_BASE_URL`.
 enter `http://<your-computer-ip>:3000` (or pass `--dart-define=API_BASE_URL=...`).
 
 Demo login (from the backend seed): `0910000001` / `Merchant123!`.
+
+## Run the admin dashboard
+
+**VS Code:** *Admin · dev (Chrome, local backend)*. **Terminal:**
+
+```bash
+cd apps/admin
+flutter run -d chrome --web-port=8080 --dart-define-from-file=config/dev.json
+```
+
+Dev login (from the backend seed): `admin@offers.local` / `Admin12345!`.
+Real admins are created on the server with `npm run admin:create` in offers-backend; they
+get a temporary password and must change it on first sign-in.
+
+The dashboard uses clean URLs (`/stores`, not `/#/stores`), so the web server that hosts
+`build/web` must answer every unknown path with `index.html`.
 
 ## Dev menu
 
