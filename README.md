@@ -21,8 +21,12 @@ tool/
 
 ## Setup
 
+The Flutter version is pinned in `.fvmrc` (3.47.7), and `.vscode/settings.json` points
+VS Code at it, whatever Flutter your other projects use.
+
 ```bash
-flutter pub get          # from the repo root: resolves the whole workspace
+fvm install              # once: gets the pinned Flutter and links it to .fvm/
+fvm flutter pub get      # from the repo root: resolves the whole workspace
 ```
 
 ## Run the business app
