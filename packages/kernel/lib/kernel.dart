@@ -3,8 +3,20 @@
 library;
 
 // Layout and basic widgets (Row, Column, Padding, ...). Visual components
-// come from `stellar`; apps never import material.dart.
-export 'package:flutter/widgets.dart';
+// come from `stellar`; apps never import material.dart. Raw text, icons and
+// colors are hidden so apps can only use SText, SIcon and SColor tokens.
+export 'package:flutter/widgets.dart'
+    hide
+        Color,
+        DefaultTextStyle,
+        FontWeight,
+        Icon,
+        IconData,
+        IconTheme,
+        RichText,
+        Text,
+        TextSpan,
+        TextStyle;
 
 export 'src/auth/session.dart'
     show

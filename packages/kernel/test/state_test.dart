@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart' show Text;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kernel/kernel.dart';
 
