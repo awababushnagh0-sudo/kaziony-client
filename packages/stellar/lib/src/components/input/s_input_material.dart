@@ -103,10 +103,12 @@ Widget _labelled(
                 ),
             ],
           ),
-          style: TextStyle(fontSize: 13, color: c.text),
+          // Labels lead, values follow: full text color, semibold.
+          style: Theme.of(context).textTheme.labelLarge
+              ?.copyWith(color: c.text, fontWeight: FontWeight.w600),
         ),
       ),
-      const Gap(6),
+      const Gap(Space.sm),
       Semantics(label: label, child: child),
       if (helper != null) ...[
         const Gap(Space.xs),

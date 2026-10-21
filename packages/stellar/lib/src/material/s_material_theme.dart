@@ -29,6 +29,10 @@ ThemeData buildMaterialTheme(
   return base.copyWith(
     // Sizes come from [density]; don't let desktop browsers shrink them.
     visualDensity: VisualDensity.standard,
+    // The dashboard behaves like a website: no ripple or press flash on
+    // buttons, tabs and rows (hover still shows). Phones keep the ripple.
+    splashFactory: compact ? NoSplash.splashFactory : null,
+    highlightColor: compact ? Colors.transparent : null,
     scaffoldBackgroundColor: c.background,
     canvasColor: c.background,
     dividerColor: c.border,
@@ -108,7 +112,8 @@ ThemeData buildMaterialTheme(
       isDense: true,
       contentPadding: EdgeInsets.symmetric(
         horizontal: Space.md,
-        vertical: compact ? 10 : 14,
+        // About 33px tall on the dashboard, a little roomier than ERPNext.
+        vertical: compact ? 6 : 14,
       ),
       hintStyle: TextStyle(color: c.textSubtle, fontSize: size),
       border: inputBorder(Colors.transparent),

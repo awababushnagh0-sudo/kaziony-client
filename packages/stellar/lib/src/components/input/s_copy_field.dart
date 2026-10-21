@@ -7,6 +7,8 @@ import '../../l10n/generated/stellar_localizations.dart';
 import '../button/s_button.dart';
 import '../icon/s_icon.dart';
 import '../snack/s_snack.dart';
+import '../text/s_text.dart';
+import '../text/s_text_renderer.dart';
 
 /// A value to hand over (a temporary password), with a copy button.
 /// Read-only; [ltr] keeps codes and numbers left to right in Arabic.
@@ -29,8 +31,8 @@ class SCopyField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(label, style: TextStyle(fontSize: 13, color: c.text)),
-        const Gap(6),
+        SText(label, variant: TextVariant.label, weight: SFontWeight.semibold),
+        const Gap(Space.sm),
         Container(
           padding: const EdgeInsetsDirectional.only(start: Space.md),
           decoration: BoxDecoration(
