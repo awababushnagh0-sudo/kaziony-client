@@ -6,6 +6,7 @@ import 'config/app_config.dart';
 import 'dev/dev_log.dart';
 import 'dev/dev_settings.dart';
 import 'errors/error_reporter.dart';
+import 'navigation/navigation.dart';
 import 'state/state.dart';
 import 'storage/storage.dart';
 
@@ -24,6 +25,7 @@ Future<void> bootstrap({
   ErrorReporter reporter = const ConsoleErrorReporter(),
   List<Override> overrides = const [],
 }) async {
+  usePathUrls();
   WidgetsFlutterBinding.ensureInitialized();
 
   final devLog = DevLog();

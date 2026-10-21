@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:kernel/kernel.dart';
 
 void main() {
@@ -48,5 +49,12 @@ void main() {
     expect(ok.map((v) => v * 2).valueOrNull, 4);
     expect(err.map((v) => v * 2).failureOrNull, isA<NotFoundFailure>());
     expect(ok.fold(ok: (v) => 'ok $v', err: (_) => 'err'), 'ok 2');
+  });
+
+  test('formatDate writes the day in the given language', () async {
+    await initializeDateFormatting('ar');
+    final day = DateTime(2026, 10, 19, 12);
+    expect(formatDate(day, languageCode: 'en'), 'Oct 19, 2026');
+    expect(formatDate(day, languageCode: 'ar'), contains('أكتوبر'));
   });
 }

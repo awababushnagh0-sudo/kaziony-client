@@ -10,6 +10,7 @@ export 'package:flutter_riverpod/flutter_riverpod.dart'
         AsyncError,
         AsyncLoading,
         AsyncNotifierProvider,
+        AsyncValueExtensions,
         AsyncValue,
         FutureProvider,
         NotifierProvider,
@@ -71,6 +72,14 @@ class AppScope extends StatelessWidget {
   final List<Override> overrides;
 
   @override
-  Widget build(BuildContext context) =>
-      ProviderScope(overrides: overrides, child: child);
+  Widget build(BuildContext context) => ProviderScope(
+    overrides: overrides,
+    // Riverpod retries failed providers by itself (up to 10 times). We
+    // don't: the network layer already retries GETs on bad connections,
+    // and screens show the error with a "Try again" button.
+    retry: _noRetry,
+    child: child,
+  );
 }
+
+Duration? _noRetry(int retryCount, Object error) => null;

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 // go_router does the routing; apps get it only through kernel.
 export 'package:go_router/go_router.dart'
@@ -9,6 +10,7 @@ export 'package:go_router/go_router.dart'
         GoRouter,
         GoRouterHelper,
         GoRouterState,
+        NoTransitionPage,
         RouteBase,
         ShellRoute,
         StatefulNavigationShell,
@@ -24,3 +26,8 @@ class RouterRefresh extends ChangeNotifier {
     }
   }
 }
+
+/// Web only: clean URLs (`/stores`) instead of hash URLs (`/#/stores`).
+/// The web server must then send index.html for every path.
+/// Does nothing on phones. Call before runApp (bootstrap does).
+void usePathUrls() => usePathUrlStrategy();
