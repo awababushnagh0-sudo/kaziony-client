@@ -19,12 +19,27 @@
   "errorInvalid": "Please check the details and try again.",
   "validationRequired": "Required",
   "validationMinLength": "At least {count} characters",
-  "@validationMinLength": { "placeholders": { "count": { "type": "int" } } },
+  "@validationMinLength": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "validationMaxLength": "At most {count} characters",
-  "@validationMaxLength": { "placeholders": { "count": { "type": "int" } } },
+  "@validationMaxLength": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "validationPhone": "Enter a Libyan mobile number, e.g. 0912345678",
   "validationEmail": "Enter a valid email",
   "validationMustMatch": "Doesn't match",
   "updateRequiredTitle": "Update required",
-  "updateRequiredMessage": "This version of the app is no longer supported. Update it from the store to continue."
+  "updateRequiredMessage": "This version of the app is no longer supported. Update it from the store to continue.",
+  "close": "Close",
+  "copy": "Copy",
+  "copied": "Copied"
 }

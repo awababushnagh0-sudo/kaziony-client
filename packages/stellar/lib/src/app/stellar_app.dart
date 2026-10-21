@@ -19,6 +19,7 @@ class StellarApp extends StatelessWidget {
     this.localizationsDelegates = const [],
     this.kit = materialKit,
     this.colors = lightColors,
+    this.density = StellarDensity.comfortable,
     super.key,
   });
 
@@ -31,6 +32,9 @@ class StellarApp extends StatelessWidget {
   final StellarKit kit;
   final StellarColors colors;
 
+  /// [StellarDensity.compact] for the web dashboard.
+  final StellarDensity density;
+
   @override
   Widget build(BuildContext context) => StellarScope(
     kit: kit,
@@ -41,7 +45,7 @@ class StellarApp extends StatelessWidget {
       // Dev and staging builds get the dev menu (bug button) on top.
       builder: (context, child) => DevMenu(child: child ?? const SizedBox()),
       debugShowCheckedModeBanner: false,
-      theme: buildMaterialTheme(colors),
+      theme: buildMaterialTheme(colors, density: density),
       locale: locale,
       supportedLocales: supportedLocales,
       localizationsDelegates: [

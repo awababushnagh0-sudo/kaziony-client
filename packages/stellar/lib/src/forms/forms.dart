@@ -38,6 +38,9 @@ class AppTextInput extends StatelessWidget {
     this.autofillHints,
     this.maxLength,
     this.validationMessages = const {},
+    this.required = false,
+    this.helper,
+    this.autofocus = false,
     super.key,
   });
 
@@ -50,6 +53,13 @@ class AppTextInput extends StatelessWidget {
   final Iterable<String>? autofillHints;
   final int? maxLength;
   final Map<String, String Function(Object error)> validationMessages;
+
+  /// Shows a red asterisk by the label; add `Validators.required` too.
+  final bool required;
+
+  /// A quiet line under the field explaining what to enter.
+  final String? helper;
+  final bool autofocus;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +75,9 @@ class AppTextInput extends StatelessWidget {
         onSubmitted: onSubmitted,
         autofillHints: autofillHints,
         maxLength: maxLength,
+        required: required,
+        helper: helper,
+        autofocus: autofocus,
         validationMessages: {
           ValidationMessage.required: (_) => strings.validationRequired,
           ValidationMessage.minLength: (error) =>
@@ -81,6 +94,42 @@ class AppTextInput extends StatelessWidget {
   }
 }
 
+/// A dropdown bound to the control [controlName] of the enclosing [AppForm].
+class AppSelectInput<T> extends StatelessWidget {
+  const AppSelectInput({
+    required this.controlName,
+    required this.label,
+    required this.options,
+    this.hint,
+    this.required = false,
+    super.key,
+  });
+
+  final String controlName;
+  final String label;
+  final List<SelectOption<T>> options;
+  final String? hint;
+  final bool required;
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = StellarLocalizations.of(context);
+    return StellarKit.of(context).textInput.select<T>(
+      context,
+      SelectInputSpec<T>(
+        controlName: controlName,
+        label: label,
+        options: options,
+        hint: hint,
+        required: required,
+        validationMessages: {
+          ValidationMessage.required: (_) => strings.validationRequired,
+        },
+      ),
+    );
+  }
+}
+
 int _requiredLength(Object error) =>
     error is Map ? (error['requiredLength'] as int? ?? 0) : 0;
 
@@ -89,6 +138,25 @@ abstract final class AppValidators {
 
   /// Any common Libyan mobile format (0912345678, +218 91..., Arabic digits).
   static const Validator<dynamic> libyanPhone = _LibyanPhoneValidator();
+
+  /// An email address. Spaces around it are ignored (pasted text), so
+  /// trim the value before sending it.
+  static const Validator<dynamic> email = _EmailValidator();
+}
+
+class _EmailValidator extends Validator<dynamic> {
+  const _EmailValidator();
+
+  static final _pattern = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
+
+  @override
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+    final value = control.value;
+    if (value is! String || value.trim().isEmpty) return null;
+    return _pattern.hasMatch(value.trim())
+        ? null
+        : {ValidationMessage.email: true};
+  }
 }
 
 class _LibyanPhoneValidator extends Validator<dynamic> {

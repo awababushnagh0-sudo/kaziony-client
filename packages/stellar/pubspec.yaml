@@ -26,3 +26,19 @@ dev_dependencies:
 
 flutter:
   generate: true
+  # IBM Plex Sans Arabic (OFL.txt) covers Arabic and Latin. Lucide (Lucide-LICENSE.txt)
+  # is the icon set ERPNext uses: only its thin 300 weight, so the web app
+  # downloads one icon font instead of seven.
+  fonts:
+    - family: IBMPlexSansArabic
+      fonts:
+        - asset: assets/fonts/IBMPlexSansArabic-Regular.ttf
+        - asset: assets/fonts/IBMPlexSansArabic-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/IBMPlexSansArabic-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/IBMPlexSansArabic-Bold.ttf
+          weight: 700
+    - family: Lucide
+      fonts:
+        - asset: assets/fonts/Lucide-Light.ttf

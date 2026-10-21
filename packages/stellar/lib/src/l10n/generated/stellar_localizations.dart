@@ -250,6 +250,24 @@ abstract class StellarLocalizations {
   /// In en, this message translates to:
   /// **'This version of the app is no longer supported. Update it from the store to continue.'**
   String get updateRequiredMessage;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copy;
+
+  /// No description provided for @copied.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied'**
+  String get copied;
 }
 
 class _StellarLocalizationsDelegate

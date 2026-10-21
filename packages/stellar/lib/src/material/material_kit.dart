@@ -6,6 +6,10 @@ import '../kit/contracts.dart';
 import '../kit/stellar_kit.dart';
 import '../l10n/generated/stellar_localizations.dart';
 import '../tokens/tokens.dart';
+import 'icons.dart';
+import 'material_data.dart';
+import 'material_overlay.dart';
+import 'material_shell.dart';
 
 /// The default kit, built on Material widgets.
 const materialKit = StellarKit(
@@ -17,22 +21,10 @@ const materialKit = StellarKit(
   listTile: MaterialListTileRenderer(),
   status: MaterialStatusRenderer(),
   snack: MaterialSnackRenderer(),
+  shell: MaterialShellRenderer(),
+  data: MaterialDataRenderer(),
+  overlay: MaterialOverlayRenderer(),
 );
-
-IconData materialIcon(AppIcon icon) => switch (icon) {
-  AppIcon.store => Icons.storefront_outlined,
-  AppIcon.location => Icons.place_outlined,
-  AppIcon.logout => Icons.logout,
-  AppIcon.language => Icons.translate,
-  AppIcon.lock => Icons.lock_outline,
-  AppIcon.refresh => Icons.refresh,
-  AppIcon.noConnection => Icons.wifi_off_rounded,
-  AppIcon.error => Icons.error_outline,
-  AppIcon.empty => Icons.inbox_outlined,
-  AppIcon.update => Icons.system_update_outlined,
-  AppIcon.check => Icons.check_circle_outline,
-  AppIcon.chevron => Icons.chevron_right,
-};
 
 class MaterialButtonRenderer implements ButtonRenderer {
   const MaterialButtonRenderer();
@@ -94,6 +86,13 @@ class MaterialButtonRenderer implements ButtonRenderer {
         ? SizedBox(width: double.infinity, child: guarded)
         : guarded;
   }
+
+  @override
+  Widget icon(BuildContext context, IconButtonSpec spec) => IconButton(
+    tooltip: spec.tooltip,
+    onPressed: spec.onPressed,
+    icon: Icon(materialIcon(spec.icon), size: 20),
+  );
 }
 
 class MaterialTextInputRenderer implements TextInputRenderer {
@@ -104,6 +103,70 @@ class MaterialTextInputRenderer implements TextInputRenderer {
       spec.kind == TextInputKind.password
       ? _PasswordInput(spec: spec)
       : _buildField(context, spec);
+
+  @override
+  Widget select<T>(BuildContext context, SelectInputSpec<T> spec) => _labelled(
+    context,
+    label: spec.label,
+    required: spec.required,
+    child: ReactiveDropdownField<T>(
+      formControlName: spec.controlName,
+      validationMessages: spec.validationMessages,
+      isExpanded: true,
+      borderRadius: BorderRadius.circular(Radii.md),
+      dropdownColor: context.colors.surface,
+      icon: Icon(
+        materialIcon(AppIcon.chevronDown),
+        size: 16,
+        color: context.colors.textSubtle,
+      ),
+      hint: spec.hint == null ? null : Text(spec.hint!),
+      style: Theme.of(context).textTheme.bodyLarge,
+      items: [
+        for (final option in spec.options)
+          DropdownMenuItem(value: option.value, child: Text(option.label)),
+      ],
+    ),
+  );
+}
+
+/// A label above a form control, with a red asterisk when [required], as
+/// in ERPNext; [helper] is a quiet line under it.
+Widget _labelled(
+  BuildContext context, {
+  required String label,
+  required Widget child,
+  bool required = false,
+  String? helper,
+}) {
+  final c = context.colors;
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      ExcludeSemantics(
+        child: Text.rich(
+          TextSpan(
+            text: label,
+            children: [
+              if (required)
+                TextSpan(
+                  text: ' *',
+                  style: TextStyle(color: c.danger),
+                ),
+            ],
+          ),
+          style: TextStyle(fontSize: 13, color: c.text),
+        ),
+      ),
+      const Gap(6),
+      Semantics(label: label, child: child),
+      if (helper != null) ...[
+        const Gap(Space.xs),
+        Text(helper, style: TextStyle(fontSize: 12, color: c.textSubtle)),
+      ],
+    ],
+  );
 }
 
 Widget _buildField(
@@ -112,24 +175,36 @@ Widget _buildField(
   bool obscure = false,
   Widget? suffix,
 }) {
-  final isPhone = spec.kind == TextInputKind.phone;
-  return ReactiveTextField<String>(
+  // Phone numbers, emails, links and passwords read left to right, even in
+  // Arabic; they still start at the page's start edge (the right, in
+  // Arabic), like every other field.
+  final ltr = switch (spec.kind) {
+    TextInputKind.phone ||
+    TextInputKind.email ||
+    TextInputKind.url ||
+    TextInputKind.password => true,
+    _ => false,
+  };
+  final rtlPage = Directionality.of(context) == TextDirection.rtl;
+  final field = ReactiveTextField<String>(
     formControlName: spec.controlName,
     validationMessages: spec.validationMessages,
     obscureText: obscure,
     maxLength: spec.maxLength,
     maxLines: spec.kind == TextInputKind.multiline ? 4 : 1,
     autofillHints: spec.autofillHints,
-    // Phone numbers and emails read left to right, even in Arabic.
-    textDirection: isPhone || spec.kind == TextInputKind.email
-        ? TextDirection.ltr
-        : null,
+    autofocus: spec.autofocus,
+    textDirection: ltr ? TextDirection.ltr : null,
+    textAlign: ltr
+        ? (rtlPage ? TextAlign.right : TextAlign.left)
+        : TextAlign.start,
     keyboardType: switch (spec.kind) {
       TextInputKind.phone => TextInputType.phone,
       TextInputKind.number => const TextInputType.numberWithOptions(
         decimal: true,
       ),
       TextInputKind.email => TextInputType.emailAddress,
+      TextInputKind.url => TextInputType.url,
       TextInputKind.multiline => TextInputType.multiline,
       _ => TextInputType.text,
     },
@@ -141,12 +216,23 @@ Widget _buildField(
     onSubmitted: spec.onSubmitted == null
         ? null
         : (_) => spec.onSubmitted!.call(),
+    // Pressing Enter to submit keeps the cursor in the field, so the user
+    // can fix a wrong password right away.
+    onEditingComplete: spec.onSubmitted == null ? null : (_) {},
     decoration: InputDecoration(
-      labelText: spec.label,
       hintText: spec.hint,
-      hintTextDirection: isPhone ? TextDirection.ltr : null,
+      hintTextDirection: ltr ? TextDirection.ltr : null,
       suffixIcon: suffix,
+      // As tall as the other fields despite the button.
+      suffixIconConstraints: const BoxConstraints(minWidth: 36, minHeight: 20),
     ),
+  );
+  return _labelled(
+    context,
+    label: spec.label,
+    required: spec.required,
+    helper: spec.helper,
+    child: field,
   );
 }
 
@@ -170,9 +256,16 @@ class _PasswordInputState extends State<_PasswordInput> {
       widget.spec,
       obscure: _obscure,
       suffix: IconButton(
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints.tightFor(width: 28, height: 28),
+        style: IconButton.styleFrom(
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
         tooltip: _obscure ? strings.showPassword : strings.hidePassword,
         icon: Icon(
-          _obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+          materialIcon(_obscure ? AppIcon.show : AppIcon.hide),
+          size: 18,
+          color: context.colors.textSubtle,
         ),
         onPressed: () => setState(() => _obscure = !_obscure),
       ),
@@ -195,12 +288,47 @@ class MaterialScaffoldRenderer implements ScaffoldRenderer {
         child: body,
       );
     }
-    if (spec.scrollable) body = SingleChildScrollView(child: body);
+    if (spec.maxWidth != null) {
+      body = Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: spec.maxWidth!),
+          child: body,
+        ),
+      );
+    }
+    if (spec.centered) {
+      // Centered when it fits, scrollable when it doesn't (small windows,
+      // open keyboard).
+      final content = body;
+      body = LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: Center(child: content),
+          ),
+        ),
+      );
+    } else if (spec.scrollable) {
+      body = SingleChildScrollView(child: body);
+    }
+
+    // Inside a narrow dashboard shell, top-level pages open the side menu.
+    final openMenu = ShellScope.maybeOf(context)?.openMenu;
+    final canPop = ModalRoute.of(context)?.impliesAppBarDismissal ?? false;
     return Scaffold(
       appBar: spec.showAppBar
           ? AppBar(
+              leading: openMenu != null && !canPop
+                  ? IconButton(
+                      tooltip: MaterialLocalizations.of(context)
+                          .openAppDrawerTooltip,
+                      icon: Icon(materialIcon(AppIcon.menu)),
+                      onPressed: openMenu,
+                    )
+                  : null,
               title: spec.title == null ? null : Text(spec.title!),
-              actions: spec.actions,
+              actions: [...spec.actions, const Gap(Space.sm)],
             )
           : null,
       body: SafeArea(child: body),
@@ -225,9 +353,12 @@ class MaterialTextRenderer implements TextRenderer {
   const MaterialTextRenderer();
 
   @override
+  Widget icon(BuildContext context, AppIcon icon, TextTone tone, double size) =>
+      Icon(materialIcon(icon), size: size, color: _toneColor(context, tone));
+
+  @override
   Widget render(BuildContext context, TextSpec spec) {
     final theme = Theme.of(context).textTheme;
-    final colors = context.colors;
     final base = switch (spec.variant) {
       TextVariant.display => theme.headlineMedium,
       TextVariant.title => theme.titleLarge,
@@ -236,14 +367,7 @@ class MaterialTextRenderer implements TextRenderer {
       TextVariant.caption => theme.bodySmall,
       TextVariant.label => theme.labelLarge,
     };
-    final color = switch (spec.tone) {
-      TextTone.normal => colors.text,
-      TextTone.muted => colors.textMuted,
-      TextTone.primary => colors.primary,
-      TextTone.danger => colors.danger,
-      TextTone.success => colors.success,
-      TextTone.onPrimary => colors.onPrimary,
-    };
+    final color = _toneColor(context, spec.tone);
     return Text(
       spec.text,
       textAlign: spec.align,
@@ -257,6 +381,18 @@ class MaterialTextRenderer implements TextRenderer {
       ),
     );
   }
+}
+
+Color _toneColor(BuildContext context, TextTone tone) {
+  final colors = context.colors;
+  return switch (tone) {
+    TextTone.normal => colors.text,
+    TextTone.muted => colors.textMuted,
+    TextTone.primary => colors.primary,
+    TextTone.danger => colors.danger,
+    TextTone.success => colors.success,
+    TextTone.onPrimary => colors.onPrimary,
+  };
 }
 
 class MaterialCardRenderer implements CardRenderer {
@@ -353,7 +489,7 @@ class MaterialStatusRenderer implements StatusRenderer {
               const Gap(Space.xl),
               OutlinedButton.icon(
                 onPressed: spec.onAction,
-                icon: const Icon(Icons.refresh),
+                icon: Icon(materialIcon(AppIcon.refresh), size: 18),
                 label: Text(spec.actionLabel!),
               ),
             ],

@@ -5,7 +5,11 @@ library;
 
 export 'src/app/stellar_app.dart';
 export 'src/components/app_icon.dart';
+export 'src/components/app_logo.dart';
 export 'src/components/components.dart';
+export 'src/components/data.dart';
+export 'src/components/form_layout.dart';
+export 'src/components/overlays.dart';
 export 'src/feedback/failure_view.dart';
 export 'src/forms/forms.dart';
 export 'src/kit/contracts.dart';

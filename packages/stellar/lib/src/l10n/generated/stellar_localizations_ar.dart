@@ -88,4 +88,13 @@ class StellarLocalizationsAr extends StellarLocalizations {
   @override
   String get updateRequiredMessage =>
       'هذا الإصدار من التطبيق لم يعد مدعوماً. حدّثه من المتجر للمتابعة.';
+
+  @override
+  String get close => 'إغلاق';
+
+  @override
+  String get copy => 'نسخ';
+
+  @override
+  String get copied => 'تم النسخ';
 }

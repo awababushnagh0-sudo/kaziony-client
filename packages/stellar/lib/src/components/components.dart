@@ -57,6 +57,45 @@ class AppButton extends StatelessWidget {
   );
 }
 
+/// A button that is just an icon (toolbars). [tooltip] is required so the
+/// button always has a name for screen readers.
+class AppIconButton extends StatelessWidget {
+  const AppIconButton({
+    required this.icon,
+    required this.tooltip,
+    required this.onPressed,
+    super.key,
+  });
+
+  final AppIcon icon;
+  final String tooltip;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) => StellarKit.of(context).button.icon(
+    context,
+    IconButtonSpec(icon: icon, tooltip: tooltip, onPressed: onPressed),
+  );
+}
+
+/// A standalone icon, colored like text of the same [tone].
+class AppIconView extends StatelessWidget {
+  const AppIconView(
+    this.icon, {
+    this.tone = TextTone.normal,
+    this.size = 20,
+    super.key,
+  });
+
+  final AppIcon icon;
+  final TextTone tone;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) =>
+      StellarKit.of(context).text.icon(context, icon, tone, size);
+}
+
 class AppScaffold extends StatelessWidget {
   const AppScaffold({
     required this.body,
@@ -66,6 +105,8 @@ class AppScaffold extends StatelessWidget {
     this.scrollable = false,
     this.bottom,
     this.showAppBar = true,
+    this.maxWidth,
+    this.centered = false,
     super.key,
   });
 
@@ -76,6 +117,8 @@ class AppScaffold extends StatelessWidget {
   final bool scrollable;
   final Widget? bottom;
   final bool showAppBar;
+  final double? maxWidth;
+  final bool centered;
 
   @override
   Widget build(BuildContext context) => StellarKit.of(context).scaffold.render(
@@ -88,6 +131,44 @@ class AppScaffold extends StatelessWidget {
       scrollable: scrollable,
       bottom: bottom,
       showAppBar: showAppBar,
+      maxWidth: maxWidth,
+      centered: centered,
+    ),
+  );
+}
+
+/// Side menu layout: the dashboard's frame around every page.
+class AppShell extends StatelessWidget {
+  const AppShell({
+    required this.title,
+    required this.items,
+    required this.body,
+    this.subtitle,
+    this.userName,
+    this.userDetail,
+    this.userActions = const [],
+    super.key,
+  });
+
+  final String title;
+  final String? subtitle;
+  final List<NavItemSpec> items;
+  final Widget body;
+  final String? userName;
+  final String? userDetail;
+  final List<ShellMenuAction> userActions;
+
+  @override
+  Widget build(BuildContext context) => StellarKit.of(context).shell.render(
+    context,
+    ShellSpec(
+      title: title,
+      items: items,
+      body: body,
+      subtitle: subtitle,
+      userName: userName,
+      userDetail: userDetail,
+      userActions: userActions,
     ),
   );
 }

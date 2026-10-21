@@ -24,5 +24,8 @@
   "validationEmail": "أدخل بريداً إلكترونياً صحيحاً",
   "validationMustMatch": "غير متطابق",
   "updateRequiredTitle": "يلزم التحديث",
-  "updateRequiredMessage": "هذا الإصدار من التطبيق لم يعد مدعوماً. حدّثه من المتجر للمتابعة."
+  "updateRequiredMessage": "هذا الإصدار من التطبيق لم يعد مدعوماً. حدّثه من المتجر للمتابعة.",
+  "close": "إغلاق",
+  "copy": "نسخ",
+  "copied": "تم النسخ"
 }

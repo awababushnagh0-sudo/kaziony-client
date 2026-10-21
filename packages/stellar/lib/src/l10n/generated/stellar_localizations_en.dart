@@ -91,4 +91,13 @@ class StellarLocalizationsEn extends StellarLocalizations {
   @override
   String get updateRequiredMessage =>
       'This version of the app is no longer supported. Update it from the store to continue.';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get copy => 'Copy';
+
+  @override
+  String get copied => 'Copied';
 }

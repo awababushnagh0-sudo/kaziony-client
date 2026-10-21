@@ -15,6 +15,9 @@ class StellarKit {
     required this.listTile,
     required this.status,
     required this.snack,
+    required this.shell,
+    required this.data,
+    required this.overlay,
   });
 
   final ButtonRenderer button;
@@ -25,6 +28,9 @@ class StellarKit {
   final ListTileRenderer listTile;
   final StatusRenderer status;
   final SnackRenderer snack;
+  final ShellRenderer shell;
+  final DataRenderer data;
+  final OverlayRenderer overlay;
 
   static StellarKit of(BuildContext context) => StellarScope.of(context).kit;
 }
