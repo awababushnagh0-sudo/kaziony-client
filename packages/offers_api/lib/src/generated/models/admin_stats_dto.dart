@@ -4,10 +4,10 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'claim_stats_dto.dart';
-import 'offer_stats_dto.dart';
-import 'store_stats_dto.dart';
-import 'user_stats_dto.dart';
+import 'admin_claim_stats_dto.dart';
+import 'admin_offer_stats_dto.dart';
+import 'admin_store_stats_dto.dart';
+import 'admin_user_stats_dto.dart';
 
 part 'admin_stats_dto.g.dart';
 
@@ -22,10 +22,10 @@ class AdminStatsDto {
   
   factory AdminStatsDto.fromJson(Map<String, Object?> json) => _$AdminStatsDtoFromJson(json);
   
-  final StoreStatsDto stores;
-  final UserStatsDto users;
-  final OfferStatsDto offers;
-  final ClaimStatsDto claims;
+  final AdminStoreStatsDto stores;
+  final AdminUserStatsDto users;
+  final AdminOfferStatsDto offers;
+  final AdminClaimStatsDto claims;
 
   Map<String, Object?> toJson() => _$AdminStatsDtoToJson(this);
 }

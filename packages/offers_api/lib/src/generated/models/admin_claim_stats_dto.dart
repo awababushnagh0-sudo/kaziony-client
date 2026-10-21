@@ -4,11 +4,11 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'claim_stats_dto.g.dart';
+part 'admin_claim_stats_dto.g.dart';
 
 @JsonSerializable()
-class ClaimStatsDto {
-  const ClaimStatsDto({
+class AdminClaimStatsDto {
+  const AdminClaimStatsDto({
     required this.total,
     required this.redeemed,
     required this.expired,
@@ -16,7 +16,7 @@ class ClaimStatsDto {
     required this.redemptionRate,
   });
   
-  factory ClaimStatsDto.fromJson(Map<String, Object?> json) => _$ClaimStatsDtoFromJson(json);
+  factory AdminClaimStatsDto.fromJson(Map<String, Object?> json) => _$AdminClaimStatsDtoFromJson(json);
   
   final num total;
   final num redeemed;
@@ -28,5 +28,5 @@ class ClaimStatsDto {
   /// Redeemed / (redeemed + expired), 0 to 1. Null before any claim finishes.
   final num? redemptionRate;
 
-  Map<String, Object?> toJson() => _$ClaimStatsDtoToJson(this);
+  Map<String, Object?> toJson() => _$AdminClaimStatsDtoToJson(this);
 }

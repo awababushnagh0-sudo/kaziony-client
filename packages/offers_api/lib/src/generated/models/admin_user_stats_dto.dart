@@ -4,17 +4,17 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'user_stats_dto.g.dart';
+part 'admin_user_stats_dto.g.dart';
 
 @JsonSerializable()
-class UserStatsDto {
-  const UserStatsDto({
+class AdminUserStatsDto {
+  const AdminUserStatsDto({
     required this.customers,
     required this.merchants,
     required this.newCustomersLast7Days,
   });
   
-  factory UserStatsDto.fromJson(Map<String, Object?> json) => _$UserStatsDtoFromJson(json);
+  factory AdminUserStatsDto.fromJson(Map<String, Object?> json) => _$AdminUserStatsDtoFromJson(json);
   
   final num customers;
   final num merchants;
@@ -22,5 +22,5 @@ class UserStatsDto {
   /// Customers who signed up in the last 7 days.
   final num newCustomersLast7Days;
 
-  Map<String, Object?> toJson() => _$UserStatsDtoToJson(this);
+  Map<String, Object?> toJson() => _$AdminUserStatsDtoToJson(this);
 }

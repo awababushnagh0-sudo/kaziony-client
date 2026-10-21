@@ -4,20 +4,20 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'offer_stats_dto.g.dart';
+part 'admin_offer_stats_dto.g.dart';
 
 @JsonSerializable()
-class OfferStatsDto {
-  const OfferStatsDto({
+class AdminOfferStatsDto {
+  const AdminOfferStatsDto({
     required this.live,
     required this.total,
   });
   
-  factory OfferStatsDto.fromJson(Map<String, Object?> json) => _$OfferStatsDtoFromJson(json);
+  factory AdminOfferStatsDto.fromJson(Map<String, Object?> json) => _$AdminOfferStatsDtoFromJson(json);
   
   /// Active and not yet ended.
   final num live;
   final num total;
 
-  Map<String, Object?> toJson() => _$OfferStatsDtoToJson(this);
+  Map<String, Object?> toJson() => _$AdminOfferStatsDtoToJson(this);
 }
