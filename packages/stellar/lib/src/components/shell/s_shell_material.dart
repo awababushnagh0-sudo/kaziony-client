@@ -182,7 +182,9 @@ class _NavItem extends StatelessWidget {
             // No ripple or dark press highlight, as in ERPNext.
             splashFactory: NoSplash.splashFactory,
             highlightColor: Colors.transparent,
-            onTap: selected ? null : onTap,
+            // Still clickable when selected: on a store's page "Stores" is
+            // selected, and it's the way back to the list.
+            onTap: onTap,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               child: Row(
