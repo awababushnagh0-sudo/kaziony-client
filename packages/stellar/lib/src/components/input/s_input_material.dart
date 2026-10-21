@@ -135,45 +135,52 @@ Widget _buildField(
     _ => false,
   };
   final rtlPage = Directionality.of(context) == TextDirection.rtl;
-  final field = ReactiveTextField<String>(
+  // A spinner at the end while the field is checked (async validators).
+  final field = ReactiveStatusListenableBuilder(
     formControlName: spec.controlName,
-    validationMessages: spec.validationMessages,
-    obscureText: obscure,
-    maxLength: spec.maxLength,
-    maxLines: spec.kind == TextInputKind.multiline ? 4 : 1,
-    autofillHints: spec.autofillHints,
-    autofocus: spec.autofocus,
-    textDirection: ltr ? TextDirection.ltr : null,
-    textAlign: ltr
-        ? (rtlPage ? TextAlign.right : TextAlign.left)
-        : TextAlign.start,
-    keyboardType: switch (spec.kind) {
-      TextInputKind.phone => TextInputType.phone,
-      TextInputKind.number => const TextInputType.numberWithOptions(
-        decimal: true,
+    builder: (context, control, _) => ReactiveTextField<String>(
+      formControlName: spec.controlName,
+      validationMessages: spec.validationMessages,
+      obscureText: obscure,
+      maxLength: spec.maxLength,
+      maxLines: spec.kind == TextInputKind.multiline ? 4 : 1,
+      autofillHints: spec.autofillHints,
+      autofocus: spec.autofocus,
+      textDirection: ltr ? TextDirection.ltr : null,
+      textAlign: ltr
+          ? (rtlPage ? TextAlign.right : TextAlign.left)
+          : TextAlign.start,
+      keyboardType: switch (spec.kind) {
+        TextInputKind.phone => TextInputType.phone,
+        TextInputKind.number => const TextInputType.numberWithOptions(
+          decimal: true,
+        ),
+        TextInputKind.email => TextInputType.emailAddress,
+        TextInputKind.url => TextInputType.url,
+        TextInputKind.multiline => TextInputType.multiline,
+        _ => TextInputType.text,
+      },
+      textInputAction: spec.kind == TextInputKind.multiline
+          ? TextInputAction.newline
+          : spec.isLast
+          ? TextInputAction.done
+          : TextInputAction.next,
+      onSubmitted: spec.onSubmitted == null
+          ? null
+          : (_) => spec.onSubmitted!.call(),
+      // Pressing Enter to submit keeps the cursor in the field, so the user
+      // can fix a wrong password right away.
+      onEditingComplete: spec.onSubmitted == null ? null : (_) {},
+      decoration: InputDecoration(
+        hintText: spec.hint,
+        hintTextDirection: ltr ? TextDirection.ltr : null,
+        suffixIcon: control.pending ? const _Checking() : suffix,
+        // As tall as the other fields despite the button.
+        suffixIconConstraints: const BoxConstraints(
+          minWidth: 36,
+          minHeight: 20,
+        ),
       ),
-      TextInputKind.email => TextInputType.emailAddress,
-      TextInputKind.url => TextInputType.url,
-      TextInputKind.multiline => TextInputType.multiline,
-      _ => TextInputType.text,
-    },
-    textInputAction: spec.kind == TextInputKind.multiline
-        ? TextInputAction.newline
-        : spec.isLast
-        ? TextInputAction.done
-        : TextInputAction.next,
-    onSubmitted: spec.onSubmitted == null
-        ? null
-        : (_) => spec.onSubmitted!.call(),
-    // Pressing Enter to submit keeps the cursor in the field, so the user
-    // can fix a wrong password right away.
-    onEditingComplete: spec.onSubmitted == null ? null : (_) {},
-    decoration: InputDecoration(
-      hintText: spec.hint,
-      hintTextDirection: ltr ? TextDirection.ltr : null,
-      suffixIcon: suffix,
-      // As tall as the other fields despite the button.
-      suffixIconConstraints: const BoxConstraints(minWidth: 36, minHeight: 20),
     ),
   );
   return _labelled(
@@ -182,6 +189,25 @@ Widget _buildField(
     required: spec.required,
     helper: spec.helper,
     child: field,
+  );
+}
+
+class _Checking extends StatelessWidget {
+  const _Checking();
+
+  @override
+  Widget build(BuildContext context) => Center(
+    widthFactor: 1,
+    child: Padding(
+      padding: const EdgeInsetsDirectional.only(end: Space.md),
+      child: SizedBox.square(
+        dimension: SIconSize.xs.pixels,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          color: context.colors.textSubtle,
+        ),
+      ),
+    ),
   );
 }
 
