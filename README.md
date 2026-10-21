@@ -99,5 +99,5 @@ Commit `packages/offers_api` (spec + generated code) with the change.
 
 ## Translations
 
-Strings live in `.arb` files (`packages/stellar/lib/l10n`, `apps/<app>/lib/l10n`), Arabic and
+Strings live in `.arb` files (`packages/stellar/lib/l10n`, `apps/<app>/lib/core/l10n`), Arabic and
 English. After editing them, run `flutter gen-l10n` in that package or app.

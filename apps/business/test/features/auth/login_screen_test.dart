@@ -1,6 +1,6 @@
+import 'package:business/core/l10n/generated/business_localizations.dart';
 import 'package:business/features/auth/domain/auth_repository.dart';
 import 'package:business/features/auth/presentation/login/login_screen.dart';
-import 'package:business/l10n/generated/business_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kernel/kernel.dart';
 import 'package:kernel/testing.dart';

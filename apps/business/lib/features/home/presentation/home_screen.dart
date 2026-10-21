@@ -1,8 +1,8 @@
 import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
-import '../../../app/language_button.dart';
-import '../../../l10n/generated/business_localizations.dart';
+import '../../../core/l10n/generated/business_localizations.dart';
+import '../../../core/widgets/language_button.dart';
 import '../../auth/domain/auth_repository.dart';
 import 'home_view_model.dart';
 

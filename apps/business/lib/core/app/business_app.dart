@@ -2,7 +2,7 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../l10n/generated/business_localizations.dart';
-import 'router.dart';
+import '../routes/router.dart';
 
 class BusinessApp extends AppView {
   const BusinessApp({super.key});

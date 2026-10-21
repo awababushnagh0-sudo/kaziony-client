@@ -1,8 +1,8 @@
 import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
-import '../../../../app/language_button.dart';
-import '../../../../l10n/generated/business_localizations.dart';
+import '../../../../core/l10n/generated/business_localizations.dart';
+import '../../../../core/widgets/language_button.dart';
 import 'login_view_model.dart';
 
 class LoginScreen extends AppView {

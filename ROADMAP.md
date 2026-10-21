@@ -39,7 +39,9 @@ offers-client/
 
   ```
   lib/
-    app/                      app shell: kit, router, locale, DI overrides
+    main.dart                 entry: kernel's bootstrap with the app's config and DI
+    core/                     app-wide, one folder each: app/, providers/ (DI), routes/,
+                              utils/, l10n/, widgets/
     features/<feature>/
       data/                   API calls (offers_api), DTO → entity mapping, repository impls
       domain/                 entities, repository interfaces, use cases (when there's logic)

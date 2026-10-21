@@ -1,7 +1,7 @@
 import 'package:kernel/kernel.dart';
 
-import 'app/business_app.dart';
-import 'app/dependencies.dart';
+import 'core/app/business_app.dart';
+import 'core/providers/dependencies.dart';
 
 /// Run against the local backend:
 ///   flutter run

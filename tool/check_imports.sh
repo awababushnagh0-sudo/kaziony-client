@@ -4,7 +4,7 @@
 #      No third-party packages and no package:flutter/... (kernel re-exports widgets).
 #   2. Each app only imports its own offers_api entry point (+ auth.dart).
 #   3. offers_api is only used in data/ layers.
-# Generated translations (lib/l10n/generated) are exempt.
+# Generated translations (lib/core/l10n/generated) are exempt.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -28,7 +28,7 @@ for app_dir in apps/*/; do
       package:*)
         echo "✗ $file: imports $import directly; go through kernel or stellar" ; status=1 ;;
     esac
-  done < <(grep -rn --include='*.dart' -E "^import '" "$app_dir/lib" | grep -v '/l10n/generated/' | sed -E 's/^([^:]+):[0-9]+:/\1:/')
+  done < <(grep -rn --include='*.dart' -E "^import '" "$app_dir/lib" | grep -v '/core/l10n/generated/' | sed -E 's/^([^:]+):[0-9]+:/\1:/')
 done
 
 if [ $status -eq 0 ]; then echo "✓ Import rules OK"; fi

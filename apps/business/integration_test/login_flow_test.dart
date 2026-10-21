@@ -34,7 +34,9 @@ void main() {
     // Gives the screenshot script time to capture the home screen.
     // ignore: avoid_print
     print('HOME_VISIBLE');
-    await tester.runAsync(() => Future<void>.delayed(const Duration(seconds: 8)));
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(seconds: 8)),
+    );
 
     // Log out again so the next run starts at the login screen.
     await tester.tap(find.text('تسجيل الخروج'));
