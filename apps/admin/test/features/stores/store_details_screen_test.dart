@@ -116,4 +116,85 @@ void main() {
     expect(stores.opened, ['store-1', 'store-1']);
     expect(find.text('Fresh sweets every morning.'), findsOneWidget);
   });
+
+  Future<void> chooseAction(WidgetTester tester, String action) async {
+    await tester.tap(find.text('Actions'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(action));
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('disables a store after confirming', (tester) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository();
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await chooseAction(tester, 'Disable store');
+    expect(find.text('Disable Sweet Coast?'), findsOneWidget);
+    await tester.tap(find.text('Disable store').last);
+    await tester.pumpAndSettle();
+
+    expect(stores.activeChanges, [('store-1', false)]);
+    expect(find.text('Store disabled'), findsOneWidget);
+    expect(find.text('Disabled'), findsOneWidget);
+
+    await chooseAction(tester, 'Enable store');
+    expect(stores.activeChanges.last, ('store-1', true));
+    expect(find.text('Active'), findsOneWidget);
+  });
+
+  testWidgets('keeps the store when the confirmation is cancelled', (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository();
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await chooseAction(tester, 'Delete store');
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+
+    expect(stores.deleted, isEmpty);
+    expect(find.byType(StoreDetailsScreen), findsOneWidget);
+  });
+
+  testWidgets('deletes a store and goes back to the list', (tester) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository();
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await chooseAction(tester, 'Delete store');
+    expect(find.text('Delete Sweet Coast?'), findsOneWidget);
+    await tester.tap(find.text('Delete store').last);
+    await tester.pumpAndSettle();
+
+    expect(stores.deleted, ['store-1']);
+    expect(find.byType(StoreDetailsScreen), findsNothing);
+    expect(find.text('Store deleted'), findsOneWidget);
+  });
+
+  testWidgets('explains that a store with offers can only be disabled', (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..deleteResult = const Err(ConflictFailure('has offers'));
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await chooseAction(tester, 'Delete store');
+    await tester.tap(find.text('Delete store').last);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text(
+        "This store has offers, so it can't be deleted. Disable it instead.",
+      ),
+      findsOneWidget,
+    );
+    expect(find.byType(StoreDetailsScreen), findsOneWidget);
+  });
 }

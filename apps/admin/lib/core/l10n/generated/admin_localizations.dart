@@ -542,6 +542,90 @@ abstract class AdminLocalizations {
   /// **'Team'**
   String get storeTeam;
 
+  /// No description provided for @storeActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get storeActions;
+
+  /// No description provided for @disableStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable store'**
+  String get disableStore;
+
+  /// No description provided for @disableStoreHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide it from customers'**
+  String get disableStoreHint;
+
+  /// No description provided for @enableStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable store'**
+  String get enableStore;
+
+  /// No description provided for @deleteStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete store'**
+  String get deleteStore;
+
+  /// No description provided for @deleteStoreHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Only for stores without offers'**
+  String get deleteStoreHint;
+
+  /// No description provided for @disableStoreTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable {store}?'**
+  String disableStoreTitle(String store);
+
+  /// No description provided for @disableStoreMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers won\'t see the store or its offers, and its team can\'t post new ones. You can enable it again at any time.'**
+  String get disableStoreMessage;
+
+  /// No description provided for @deleteStoreTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {store}?'**
+  String deleteStoreTitle(String store);
+
+  /// No description provided for @deleteStoreMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The store, its branches and its products are deleted for good. Its team keeps their accounts.'**
+  String get deleteStoreMessage;
+
+  /// No description provided for @storeDisabledDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Store disabled'**
+  String get storeDisabledDone;
+
+  /// No description provided for @storeEnabledDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Store enabled'**
+  String get storeEnabledDone;
+
+  /// No description provided for @storeDeletedDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Store deleted'**
+  String get storeDeletedDone;
+
+  /// No description provided for @storeHasOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'This store has offers, so it can\'t be deleted. Disable it instead.'**
+  String get storeHasOffers;
+
   /// No description provided for @branchName.
   ///
   /// In en, this message translates to:

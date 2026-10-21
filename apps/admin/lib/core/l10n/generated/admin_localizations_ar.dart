@@ -255,6 +255,55 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get storeTeam => 'الفريق';
 
   @override
+  String get storeActions => 'إجراءات';
+
+  @override
+  String get disableStore => 'إيقاف المتجر';
+
+  @override
+  String get disableStoreHint => 'إخفاؤه عن الزبائن';
+
+  @override
+  String get enableStore => 'تفعيل المتجر';
+
+  @override
+  String get deleteStore => 'حذف المتجر';
+
+  @override
+  String get deleteStoreHint => 'فقط للمتاجر التي ليس لها عروض';
+
+  @override
+  String disableStoreTitle(String store) {
+    return 'إيقاف $store؟';
+  }
+
+  @override
+  String get disableStoreMessage =>
+      'لن يرى الزبائن المتجر ولا عروضه، ولن يستطيع فريقه نشر عروض جديدة. يمكنك تفعيله مجددًا في أي وقت.';
+
+  @override
+  String deleteStoreTitle(String store) {
+    return 'حذف $store؟';
+  }
+
+  @override
+  String get deleteStoreMessage =>
+      'سيُحذف المتجر وفروعه ومنتجاته نهائيًا، ويحتفظ فريقه بحساباتهم.';
+
+  @override
+  String get storeDisabledDone => 'أُوقف المتجر';
+
+  @override
+  String get storeEnabledDone => 'فُعِّل المتجر';
+
+  @override
+  String get storeDeletedDone => 'حُذف المتجر';
+
+  @override
+  String get storeHasOffers =>
+      'لهذا المتجر عروض، لذا لا يمكن حذفه. أوقفه بدلًا من ذلك.';
+
+  @override
   String get branchName => 'اسم الفرع';
 
   @override

@@ -119,6 +119,34 @@
   "storeFacebook": "Facebook",
   "storeInstagram": "Instagram",
   "storeTeam": "Team",
+  "storeActions": "Actions",
+  "disableStore": "Disable store",
+  "disableStoreHint": "Hide it from customers",
+  "enableStore": "Enable store",
+  "deleteStore": "Delete store",
+  "deleteStoreHint": "Only for stores without offers",
+  "disableStoreTitle": "Disable {store}?",
+  "@disableStoreTitle": {
+    "placeholders": {
+      "store": {
+        "type": "String"
+      }
+    }
+  },
+  "disableStoreMessage": "Customers won't see the store or its offers, and its team can't post new ones. You can enable it again at any time.",
+  "deleteStoreTitle": "Delete {store}?",
+  "@deleteStoreTitle": {
+    "placeholders": {
+      "store": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteStoreMessage": "The store, its branches and its products are deleted for good. Its team keeps their accounts.",
+  "storeDisabledDone": "Store disabled",
+  "storeEnabledDone": "Store enabled",
+  "storeDeletedDone": "Store deleted",
+  "storeHasOffers": "This store has offers, so it can't be deleted. Disable it instead.",
   "branchName": "Branch name",
   "branchNameHint": "e.g. Hay Al Andalus",
   "branchCity": "City",

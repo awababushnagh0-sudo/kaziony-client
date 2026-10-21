@@ -253,6 +253,55 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get storeTeam => 'Team';
 
   @override
+  String get storeActions => 'Actions';
+
+  @override
+  String get disableStore => 'Disable store';
+
+  @override
+  String get disableStoreHint => 'Hide it from customers';
+
+  @override
+  String get enableStore => 'Enable store';
+
+  @override
+  String get deleteStore => 'Delete store';
+
+  @override
+  String get deleteStoreHint => 'Only for stores without offers';
+
+  @override
+  String disableStoreTitle(String store) {
+    return 'Disable $store?';
+  }
+
+  @override
+  String get disableStoreMessage =>
+      'Customers won\'t see the store or its offers, and its team can\'t post new ones. You can enable it again at any time.';
+
+  @override
+  String deleteStoreTitle(String store) {
+    return 'Delete $store?';
+  }
+
+  @override
+  String get deleteStoreMessage =>
+      'The store, its branches and its products are deleted for good. Its team keeps their accounts.';
+
+  @override
+  String get storeDisabledDone => 'Store disabled';
+
+  @override
+  String get storeEnabledDone => 'Store enabled';
+
+  @override
+  String get storeDeletedDone => 'Store deleted';
+
+  @override
+  String get storeHasOffers =>
+      'This store has offers, so it can\'t be deleted. Disable it instead.';
+
+  @override
   String get branchName => 'Branch name';
 
   @override

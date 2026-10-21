@@ -75,11 +75,11 @@ StoreSummary sampleStore(int n, {bool active = true}) => StoreSummary(
   createdAt: DateTime.utc(2026, 10, n),
 );
 
-StoreDetails sampleDetails(String id) => StoreDetails(
+StoreDetails sampleDetails(String id, {bool active = true}) => StoreDetails(
   id: id,
   name: 'Sweet Coast',
   category: sampleCategory,
-  isActive: true,
+  isActive: active,
   createdAt: DateTime.utc(2026, 10, 15, 12),
   branchCount: 2,
   teamCount: 3,
@@ -93,6 +93,9 @@ class FakeStoreRepository implements StoreRepository {
   final queries = <StoreQuery>[];
   final opened = <String>[];
   Result<StoreDetails>? detailsResult;
+  final activeChanges = <(String, bool)>[];
+  final deleted = <String>[];
+  Result<void> deleteResult = const Ok(null);
   final created = <NewStore>[];
   Result<CreatedStore>? createResult;
 
@@ -111,6 +114,21 @@ class FakeStoreRepository implements StoreRepository {
   Future<Result<StoreDetails>> get(String id) async {
     opened.add(id);
     return detailsResult ?? Ok(sampleDetails(id));
+  }
+
+  @override
+  Future<Result<StoreDetails>> setActive(
+    String id, {
+    required bool active,
+  }) async {
+    activeChanges.add((id, active));
+    return Ok(sampleDetails(id, active: active));
+  }
+
+  @override
+  Future<Result<void>> delete(String id) async {
+    deleted.add(id);
+    return deleteResult;
   }
 
   @override

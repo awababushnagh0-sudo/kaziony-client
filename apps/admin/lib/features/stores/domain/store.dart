@@ -140,6 +140,13 @@ class CreatedStore {
 abstract interface class StoreRepository {
   Future<Result<StorePage>> list(StoreQuery query);
   Future<Result<StoreDetails>> get(String id);
+
+  /// Disabled stores are hidden from customers and can't post offers.
+  Future<Result<StoreDetails>> setActive(String id, {required bool active});
+
+  /// Fails with a [ConflictFailure] when the store has offers: their claims
+  /// are customers' history, so such a store can only be disabled.
+  Future<Result<void>> delete(String id);
   Future<Result<List<Category>>> categories();
   Future<Result<CreatedStore>> create(NewStore store);
 }

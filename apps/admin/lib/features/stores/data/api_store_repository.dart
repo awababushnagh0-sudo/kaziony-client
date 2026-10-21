@@ -45,23 +45,26 @@ class ApiStoreRepository implements StoreRepository {
   @override
   Future<Result<StoreDetails>> get(String id) async {
     final result = await _api.guard(() => _stores.getStore(id: id));
-    return result.map(
-      (dto) => StoreDetails(
-        id: dto.id,
-        name: dto.name,
-        category: _toCategory(dto.category),
-        isActive: dto.isActive,
-        createdAt: dto.createdAt,
-        branchCount: dto.branches.length,
-        teamCount: dto.members.length,
-        description: dto.description,
-        logoUrl: dto.logoUrl,
-        phone: dto.phone,
-        facebookUrl: dto.facebookUrl,
-        instagramUrl: dto.instagramUrl,
+    return result.map(_toDetails);
+  }
+
+  @override
+  Future<Result<StoreDetails>> setActive(
+    String id, {
+    required bool active,
+  }) async {
+    final result = await _api.guard(
+      () => _stores.update(
+        id: id,
+        body: UpdateStoreDto(isActive: active),
       ),
     );
+    return result.map(_toDetails);
   }
+
+  @override
+  Future<Result<void>> delete(String id) =>
+      _api.guard(() => _stores.remove(id: id));
 
   @override
   Future<Result<List<Category>>> categories() async {
@@ -111,3 +114,18 @@ class ApiStoreRepository implements StoreRepository {
 
 Category _toCategory(CategoryDto dto) =>
     Category(id: dto.id, nameAr: dto.nameAr, nameEn: dto.nameEn);
+
+StoreDetails _toDetails(StoreDetailDto dto) => StoreDetails(
+  id: dto.id,
+  name: dto.name,
+  category: _toCategory(dto.category),
+  isActive: dto.isActive,
+  createdAt: dto.createdAt,
+  branchCount: dto.branches.length,
+  teamCount: dto.members.length,
+  description: dto.description,
+  logoUrl: dto.logoUrl,
+  phone: dto.phone,
+  facebookUrl: dto.facebookUrl,
+  instagramUrl: dto.instagramUrl,
+);
