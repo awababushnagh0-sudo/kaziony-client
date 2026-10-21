@@ -6,6 +6,7 @@ abstract final class Routes {
   static const changePassword = '/change-password';
   static const home = '/home';
   static const stores = '/stores';
+  static String store(String id) => '$stores/$id';
   static const users = '/users';
   static const offers = '/offers';
   static const categories = '/categories';

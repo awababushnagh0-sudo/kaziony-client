@@ -41,6 +41,41 @@ class Category {
   String name(Locale locale) => locale.languageCode == 'ar' ? nameAr : nameEn;
 }
 
+/// One store, for its details page.
+class StoreDetails {
+  const StoreDetails({
+    required this.id,
+    required this.name,
+    required this.category,
+    required this.isActive,
+    required this.createdAt,
+    required this.branchCount,
+    required this.teamCount,
+    this.description,
+    this.logoUrl,
+    this.phone,
+    this.facebookUrl,
+    this.instagramUrl,
+  });
+
+  final String id;
+  final String name;
+  final Category category;
+  final bool isActive;
+  final DateTime createdAt;
+  final int branchCount;
+
+  /// Owners and staff.
+  final int teamCount;
+  final String? description;
+  final String? logoUrl;
+
+  /// Normalized (+2189XXXXXXXX).
+  final String? phone;
+  final String? facebookUrl;
+  final String? instagramUrl;
+}
+
 /// A new store with its first branch and owner, as entered by an admin.
 class NewStore {
   const NewStore({
@@ -104,6 +139,7 @@ class CreatedStore {
 
 abstract interface class StoreRepository {
   Future<Result<StorePage>> list(StoreQuery query);
+  Future<Result<StoreDetails>> get(String id);
   Future<Result<List<Category>>> categories();
   Future<Result<CreatedStore>> create(NewStore store);
 }

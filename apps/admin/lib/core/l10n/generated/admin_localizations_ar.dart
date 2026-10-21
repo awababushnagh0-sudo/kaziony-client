@@ -240,6 +240,21 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get storeDescription => 'الوصف';
 
   @override
+  String get tabDetails => 'البيانات الأساسية';
+
+  @override
+  String get tabContact => 'التواصل';
+
+  @override
+  String get storeFacebook => 'فيسبوك';
+
+  @override
+  String get storeInstagram => 'إنستغرام';
+
+  @override
+  String get storeTeam => 'الفريق';
+
+  @override
   String get branchName => 'اسم الفرع';
 
   @override

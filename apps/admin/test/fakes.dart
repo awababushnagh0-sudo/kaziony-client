@@ -75,9 +75,24 @@ StoreSummary sampleStore(int n, {bool active = true}) => StoreSummary(
   createdAt: DateTime.utc(2026, 10, n),
 );
 
+StoreDetails sampleDetails(String id) => StoreDetails(
+  id: id,
+  name: 'Sweet Coast',
+  category: sampleCategory,
+  isActive: true,
+  createdAt: DateTime.utc(2026, 10, 15, 12),
+  branchCount: 2,
+  teamCount: 3,
+  description: 'Fresh sweets every morning.',
+  phone: '+218912345678',
+  instagramUrl: 'https://instagram.com/sweetcoast',
+);
+
 class FakeStoreRepository implements StoreRepository {
   List<StoreSummary> stores = [sampleStore(1), sampleStore(2, active: false)];
   final queries = <StoreQuery>[];
+  final opened = <String>[];
+  Result<StoreDetails>? detailsResult;
   final created = <NewStore>[];
   Result<CreatedStore>? createResult;
 
@@ -90,6 +105,12 @@ class FakeStoreRepository implements StoreRepository {
           store,
     ];
     return Ok(StorePage(items: matching, total: matching.length));
+  }
+
+  @override
+  Future<Result<StoreDetails>> get(String id) async {
+    opened.add(id);
+    return detailsResult ?? Ok(sampleDetails(id));
   }
 
   @override

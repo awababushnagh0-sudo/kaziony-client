@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/admin_localizations.dart';
 import '../../../core/list/paged_table.dart';
+import '../../../core/routes/routes.dart';
 import '../domain/store.dart';
 import 'add_store_dialog.dart';
 import 'store_created_dialog.dart';
@@ -48,6 +49,7 @@ class StoresScreen extends AppView {
         ],
         totalLabel: s.storesTotal,
         columns: _columns(context),
+        onOpen: (store) => context.go(Routes.store(store.id)),
         empty: SEmptyView(
           title: s.storesEmpty,
           message: s.storesEmptyMessage,

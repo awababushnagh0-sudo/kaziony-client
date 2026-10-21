@@ -512,6 +512,36 @@ abstract class AdminLocalizations {
   /// **'Description'**
   String get storeDescription;
 
+  /// No description provided for @tabDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get tabDetails;
+
+  /// No description provided for @tabContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get tabContact;
+
+  /// No description provided for @storeFacebook.
+  ///
+  /// In en, this message translates to:
+  /// **'Facebook'**
+  String get storeFacebook;
+
+  /// No description provided for @storeInstagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Instagram'**
+  String get storeInstagram;
+
+  /// No description provided for @storeTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Team'**
+  String get storeTeam;
+
   /// No description provided for @branchName.
   ///
   /// In en, this message translates to:

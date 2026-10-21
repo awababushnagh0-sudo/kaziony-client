@@ -238,6 +238,21 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get storeDescription => 'Description';
 
   @override
+  String get tabDetails => 'Details';
+
+  @override
+  String get tabContact => 'Contact';
+
+  @override
+  String get storeFacebook => 'Facebook';
+
+  @override
+  String get storeInstagram => 'Instagram';
+
+  @override
+  String get storeTeam => 'Team';
+
+  @override
   String get branchName => 'Branch name';
 
   @override
