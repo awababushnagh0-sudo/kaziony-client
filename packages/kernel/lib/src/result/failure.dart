@@ -42,11 +42,13 @@ final class ForbiddenFailure extends AppFailure {
 }
 
 /// The request was rejected as invalid. [messages] are the backend's
-/// validation messages.
+/// validation messages; [code] is its `error` field when it's more specific
+/// than "Bad Request" (e.g. `LocationOutsideLibya`).
 final class ValidationFailure extends AppFailure {
-  const ValidationFailure(this.messages) : super(null);
+  const ValidationFailure(this.messages, {this.code}) : super(null);
 
   final List<String> messages;
+  final String? code;
 
   @override
   String? get serverMessage => messages.isEmpty ? null : messages.join('\n');

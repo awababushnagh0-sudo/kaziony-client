@@ -54,6 +54,21 @@ void main() {
       'phone is invalid',
       'name is empty',
     ]);
+    expect(failure.code, isNull);
+  });
+
+  test('keeps the code of a specific validation error', () {
+    final failure = failureFromError(
+      response(
+        400,
+        backendError(
+          400,
+          'LocationOutsideLibya',
+          'This location is outside Libya',
+        ),
+      ),
+    );
+    expect((failure as ValidationFailure).code, 'LocationOutsideLibya');
   });
 
   test('recognizes the temporary password and other 403 codes', () {

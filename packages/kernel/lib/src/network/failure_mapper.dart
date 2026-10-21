@@ -53,7 +53,13 @@ AppFailure _fromResponse(Response<dynamic> response) {
   final message = messages.isEmpty ? null : messages.join('\n');
 
   return switch (status) {
-    400 || 413 || 422 => ValidationFailure(messages),
+    400 || 413 || 422 => ValidationFailure(
+      messages,
+      code: switch (code) {
+        'Bad Request' || 'Payload Too Large' || 'Unprocessable Entity' => null,
+        _ => code,
+      },
+    ),
     401 => UnauthorizedFailure(message),
     403 when code == 'PasswordChangeRequired' => PasswordChangeRequiredFailure(
       message,
