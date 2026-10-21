@@ -55,6 +55,14 @@ abstract class AdminStoresClient {
     @Body() required UpdateStoreDto body,
   });
 
+  /// Delete a store that has no offers.
+  ///
+  /// Removes its branches, products and team links; the merchant accounts stay. A store with offers keeps its customers' history and can only be disabled: 409 with error "StoreHasOffers".
+  @DELETE('/api/v1/admin/stores/{id}')
+  Future<void> remove({
+    @Path('id') required String id,
+  });
+
   /// Add a branch
   @POST('/api/v1/admin/stores/{id}/branches')
   Future<BranchDto> addBranch({
