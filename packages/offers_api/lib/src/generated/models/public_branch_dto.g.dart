@@ -22,14 +22,14 @@ PublicBranchDto _$PublicBranchDtoFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$PublicBranchDtoToJson(PublicBranchDto instance) =>
     <String, dynamic>{
-      'openingHours': instance.openingHours,
+      'openingHours': ?instance.openingHours,
       'id': instance.id,
       'name': instance.name,
       'city': instance.city,
-      'area': instance.area,
-      'address': instance.address,
+      'area': ?instance.area,
+      'address': ?instance.address,
       'latitude': instance.latitude,
       'longitude': instance.longitude,
-      'phone': instance.phone,
-      'distanceKm': instance.distanceKm,
+      'phone': ?instance.phone,
+      'distanceKm': ?instance.distanceKm,
     };

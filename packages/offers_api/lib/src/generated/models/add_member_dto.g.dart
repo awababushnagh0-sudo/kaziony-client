@@ -16,7 +16,7 @@ AddMemberDto _$AddMemberDtoFromJson(Map<String, dynamic> json) => AddMemberDto(
 Map<String, dynamic> _$AddMemberDtoToJson(AddMemberDto instance) =>
     <String, dynamic>{
       'role': instance.role,
-      'branchId': instance.branchId,
+      'branchId': ?instance.branchId,
       'name': instance.name,
       'phone': instance.phone,
     };

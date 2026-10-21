@@ -13,4 +13,4 @@ RedeemClaimDto _$RedeemClaimDtoFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$RedeemClaimDtoToJson(RedeemClaimDto instance) =>
-    <String, dynamic>{'code': instance.code, 'branchId': instance.branchId};
+    <String, dynamic>{'code': instance.code, 'branchId': ?instance.branchId};

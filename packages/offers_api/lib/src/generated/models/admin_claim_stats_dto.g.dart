@@ -21,5 +21,5 @@ Map<String, dynamic> _$AdminClaimStatsDtoToJson(AdminClaimStatsDto instance) =>
       'redeemed': instance.redeemed,
       'expired': instance.expired,
       'last7Days': instance.last7Days,
-      'redemptionRate': instance.redemptionRate,
+      'redemptionRate': ?instance.redemptionRate,
     };

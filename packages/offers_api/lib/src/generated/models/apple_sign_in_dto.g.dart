@@ -13,4 +13,4 @@ AppleSignInDto _$AppleSignInDtoFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$AppleSignInDtoToJson(AppleSignInDto instance) =>
-    <String, dynamic>{'idToken': instance.idToken, 'name': instance.name};
+    <String, dynamic>{'idToken': instance.idToken, 'name': ?instance.name};

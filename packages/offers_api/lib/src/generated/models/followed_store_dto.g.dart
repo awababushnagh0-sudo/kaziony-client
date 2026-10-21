@@ -20,7 +20,7 @@ Map<String, dynamic> _$FollowedStoreDtoToJson(FollowedStoreDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'logoUrl': instance.logoUrl,
+      'logoUrl': ?instance.logoUrl,
       'category': instance.category,
       'liveOfferCount': instance.liveOfferCount,
       'followedAt': instance.followedAt.toIso8601String(),

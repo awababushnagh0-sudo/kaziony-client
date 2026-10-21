@@ -25,5 +25,5 @@ Map<String, dynamic> _$CustomerClaimOfferDtoToJson(
   'title': instance.title,
   'offerPrice': instance.offerPrice,
   'originalPrice': instance.originalPrice,
-  'thumbUrl': instance.thumbUrl,
+  'thumbUrl': ?instance.thumbUrl,
 };

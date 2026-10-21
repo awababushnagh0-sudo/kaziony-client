@@ -16,6 +16,6 @@ MembershipDto _$MembershipDtoFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$MembershipDtoToJson(MembershipDto instance) =>
     <String, dynamic>{
       'role': instance.role,
-      'branchId': instance.branchId,
+      'branchId': ?instance.branchId,
       'store': instance.store,
     };

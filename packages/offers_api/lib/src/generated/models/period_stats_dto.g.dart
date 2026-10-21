@@ -19,5 +19,5 @@ Map<String, dynamic> _$PeriodStatsDtoToJson(PeriodStatsDto instance) =>
       'claims': instance.claims,
       'redeemed': instance.redeemed,
       'expired': instance.expired,
-      'redemptionRate': instance.redemptionRate,
+      'redemptionRate': ?instance.redemptionRate,
     };

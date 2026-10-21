@@ -21,7 +21,7 @@ Map<String, dynamic> _$StoreListItemDtoToJson(StoreListItemDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'logoUrl': instance.logoUrl,
+      'logoUrl': ?instance.logoUrl,
       'isActive': instance.isActive,
       'category': instance.category,
       'branchCount': instance.branchCount,

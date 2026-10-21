@@ -21,13 +21,13 @@ UpdateBranchDto _$UpdateBranchDtoFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$UpdateBranchDtoToJson(UpdateBranchDto instance) =>
     <String, dynamic>{
-      'name': instance.name,
-      'city': instance.city,
-      'area': instance.area,
-      'address': instance.address,
-      'latitude': instance.latitude,
-      'longitude': instance.longitude,
-      'phone': instance.phone,
-      'openingHours': instance.openingHours,
-      'isActive': instance.isActive,
+      'name': ?instance.name,
+      'city': ?instance.city,
+      'area': ?instance.area,
+      'address': ?instance.address,
+      'latitude': ?instance.latitude,
+      'longitude': ?instance.longitude,
+      'phone': ?instance.phone,
+      'openingHours': ?instance.openingHours,
+      'isActive': ?instance.isActive,
     };

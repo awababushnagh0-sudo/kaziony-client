@@ -24,10 +24,10 @@ Map<String, dynamic> _$CreateStoreDtoToJson(CreateStoreDto instance) =>
     <String, dynamic>{
       'categoryId': instance.categoryId,
       'name': instance.name,
-      'description': instance.description,
-      'phone': instance.phone,
-      'facebookUrl': instance.facebookUrl,
-      'instagramUrl': instance.instagramUrl,
+      'description': ?instance.description,
+      'phone': ?instance.phone,
+      'facebookUrl': ?instance.facebookUrl,
+      'instagramUrl': ?instance.instagramUrl,
       'branches': instance.branches,
       'owner': instance.owner,
     };

@@ -22,10 +22,10 @@ Map<String, dynamic> _$CreateBranchDtoToJson(CreateBranchDto instance) =>
     <String, dynamic>{
       'name': instance.name,
       'city': instance.city,
-      'area': instance.area,
-      'address': instance.address,
+      'area': ?instance.area,
+      'address': ?instance.address,
       'latitude': instance.latitude,
       'longitude': instance.longitude,
-      'phone': instance.phone,
-      'openingHours': instance.openingHours,
+      'phone': ?instance.phone,
+      'openingHours': ?instance.openingHours,
     };

@@ -13,5 +13,5 @@ Error _$ErrorFromJson(Map<String, dynamic> json) => Error(
 
 Map<String, dynamic> _$ErrorToJson(Error instance) => <String, dynamic>{
   'status': instance.status,
-  'responseTime': instance.responseTime,
+  'responseTime': ?instance.responseTime,
 };

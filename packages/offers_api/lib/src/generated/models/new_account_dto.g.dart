@@ -17,5 +17,5 @@ Map<String, dynamic> _$NewAccountDtoToJson(NewAccountDto instance) =>
     <String, dynamic>{
       'userId': instance.userId,
       'phone': instance.phone,
-      'temporaryPassword': instance.temporaryPassword,
+      'temporaryPassword': ?instance.temporaryPassword,
     };

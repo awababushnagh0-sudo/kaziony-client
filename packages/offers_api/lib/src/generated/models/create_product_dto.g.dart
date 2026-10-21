@@ -16,6 +16,6 @@ CreateProductDto _$CreateProductDtoFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$CreateProductDtoToJson(CreateProductDto instance) =>
     <String, dynamic>{
       'title': instance.title,
-      'description': instance.description,
+      'description': ?instance.description,
       'regularPrice': instance.regularPrice,
     };

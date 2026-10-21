@@ -26,8 +26,8 @@ GetApiV1HealthResponse _$GetApiV1HealthResponseFromJson(
 Map<String, dynamic> _$GetApiV1HealthResponseToJson(
   GetApiV1HealthResponse instance,
 ) => <String, dynamic>{
-  'status': instance.status,
-  'info': instance.info,
-  'error': instance.error,
-  'details': instance.details,
+  'status': ?instance.status,
+  'info': ?instance.info,
+  'error': ?instance.error,
+  'details': ?instance.details,
 };

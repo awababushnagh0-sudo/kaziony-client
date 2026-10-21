@@ -21,9 +21,9 @@ Map<String, dynamic> _$StoreMemberDtoToJson(StoreMemberDto instance) =>
     <String, dynamic>{
       'role': instance.role,
       'userId': instance.userId,
-      'name': instance.name,
-      'phone': instance.phone,
-      'branchId': instance.branchId,
+      'name': ?instance.name,
+      'phone': ?instance.phone,
+      'branchId': ?instance.branchId,
       'isActive': instance.isActive,
       'mustChangePassword': instance.mustChangePassword,
     };

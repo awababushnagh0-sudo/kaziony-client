@@ -19,11 +19,11 @@ UpdateStoreDto _$UpdateStoreDtoFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$UpdateStoreDtoToJson(UpdateStoreDto instance) =>
     <String, dynamic>{
-      'categoryId': instance.categoryId,
-      'name': instance.name,
-      'description': instance.description,
-      'phone': instance.phone,
-      'facebookUrl': instance.facebookUrl,
-      'instagramUrl': instance.instagramUrl,
-      'isActive': instance.isActive,
+      'categoryId': ?instance.categoryId,
+      'name': ?instance.name,
+      'description': ?instance.description,
+      'phone': ?instance.phone,
+      'facebookUrl': ?instance.facebookUrl,
+      'instagramUrl': ?instance.instagramUrl,
+      'isActive': ?instance.isActive,
     };

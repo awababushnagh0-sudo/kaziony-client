@@ -11,4 +11,4 @@ DevCustomerLoginDto _$DevCustomerLoginDtoFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$DevCustomerLoginDtoToJson(
   DevCustomerLoginDto instance,
-) => <String, dynamic>{'name': instance.name};
+) => <String, dynamic>{'name': ?instance.name};

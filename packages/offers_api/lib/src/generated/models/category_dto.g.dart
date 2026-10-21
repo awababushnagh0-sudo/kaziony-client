@@ -22,7 +22,7 @@ Map<String, dynamic> _$CategoryDtoToJson(CategoryDto instance) =>
       'slug': instance.slug,
       'nameAr': instance.nameAr,
       'nameEn': instance.nameEn,
-      'iconUrl': instance.iconUrl,
+      'iconUrl': ?instance.iconUrl,
       'sortOrder': instance.sortOrder,
       'isActive': instance.isActive,
     };

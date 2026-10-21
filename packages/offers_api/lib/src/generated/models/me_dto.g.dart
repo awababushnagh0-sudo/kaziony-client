@@ -23,11 +23,11 @@ MeDto _$MeDtoFromJson(Map<String, dynamic> json) => MeDto(
 Map<String, dynamic> _$MeDtoToJson(MeDto instance) => <String, dynamic>{
   'role': instance.role,
   'id': instance.id,
-  'name': instance.name,
-  'email': instance.email,
-  'phone': instance.phone,
-  'avatarUrl': instance.avatarUrl,
+  'name': ?instance.name,
+  'email': ?instance.email,
+  'phone': ?instance.phone,
+  'avatarUrl': ?instance.avatarUrl,
   'mustChangePassword': instance.mustChangePassword,
-  'contactPhone': instance.contactPhone,
+  'contactPhone': ?instance.contactPhone,
   'memberships': instance.memberships,
 };

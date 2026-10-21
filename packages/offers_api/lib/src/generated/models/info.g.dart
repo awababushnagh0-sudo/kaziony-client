@@ -13,5 +13,5 @@ Info _$InfoFromJson(Map<String, dynamic> json) => Info(
 
 Map<String, dynamic> _$InfoToJson(Info instance) => <String, dynamic>{
   'status': instance.status,
-  'responseTime': instance.responseTime,
+  'responseTime': ?instance.responseTime,
 };

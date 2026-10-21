@@ -1,0 +1,9 @@
+# Requests leave out fields the app didn't set, instead of sending null.
+# An update then changes only what it names: `UpdateStoreDto(isActive: false)`
+# sends {"isActive": false}, not nulls for the store's name and category.
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          include_if_null: false

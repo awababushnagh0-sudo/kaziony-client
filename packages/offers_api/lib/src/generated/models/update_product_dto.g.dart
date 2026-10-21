@@ -16,8 +16,8 @@ UpdateProductDto _$UpdateProductDtoFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$UpdateProductDtoToJson(UpdateProductDto instance) =>
     <String, dynamic>{
-      'title': instance.title,
-      'description': instance.description,
-      'regularPrice': instance.regularPrice,
-      'isArchived': instance.isArchived,
+      'title': ?instance.title,
+      'description': ?instance.description,
+      'regularPrice': ?instance.regularPrice,
+      'isArchived': ?instance.isArchived,
     };

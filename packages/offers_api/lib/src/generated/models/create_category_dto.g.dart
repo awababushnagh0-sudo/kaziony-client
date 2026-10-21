@@ -20,6 +20,6 @@ Map<String, dynamic> _$CreateCategoryDtoToJson(CreateCategoryDto instance) =>
       'slug': instance.slug,
       'nameAr': instance.nameAr,
       'nameEn': instance.nameEn,
-      'iconUrl': instance.iconUrl,
-      'sortOrder': instance.sortOrder,
+      'iconUrl': ?instance.iconUrl,
+      'sortOrder': ?instance.sortOrder,
     };

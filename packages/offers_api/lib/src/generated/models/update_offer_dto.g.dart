@@ -17,7 +17,7 @@ UpdateOfferDto _$UpdateOfferDtoFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$UpdateOfferDtoToJson(UpdateOfferDto instance) =>
     <String, dynamic>{
-      'title': instance.title,
-      'description': instance.description,
-      'endsAt': instance.endsAt?.toIso8601String(),
+      'title': ?instance.title,
+      'description': ?instance.description,
+      'endsAt': ?instance.endsAt?.toIso8601String(),
     };

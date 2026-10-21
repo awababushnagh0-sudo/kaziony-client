@@ -13,5 +13,5 @@ Details _$DetailsFromJson(Map<String, dynamic> json) => Details(
 
 Map<String, dynamic> _$DetailsToJson(Details instance) => <String, dynamic>{
   'status': instance.status,
-  'responseTime': instance.responseTime,
+  'responseTime': ?instance.responseTime,
 };

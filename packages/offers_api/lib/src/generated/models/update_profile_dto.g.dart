@@ -14,6 +14,6 @@ UpdateProfileDto _$UpdateProfileDtoFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$UpdateProfileDtoToJson(UpdateProfileDto instance) =>
     <String, dynamic>{
-      'name': instance.name,
-      'contactPhone': instance.contactPhone,
+      'name': ?instance.name,
+      'contactPhone': ?instance.contactPhone,
     };

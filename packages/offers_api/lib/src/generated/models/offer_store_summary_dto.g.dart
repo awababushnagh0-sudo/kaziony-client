@@ -20,6 +20,6 @@ Map<String, dynamic> _$OfferStoreSummaryDtoToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'name': instance.name,
-  'logoUrl': instance.logoUrl,
+  'logoUrl': ?instance.logoUrl,
   'category': instance.category,
 };

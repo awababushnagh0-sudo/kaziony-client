@@ -18,10 +18,10 @@ UpdateCategoryDto _$UpdateCategoryDtoFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$UpdateCategoryDtoToJson(UpdateCategoryDto instance) =>
     <String, dynamic>{
-      'slug': instance.slug,
-      'nameAr': instance.nameAr,
-      'nameEn': instance.nameEn,
-      'iconUrl': instance.iconUrl,
-      'sortOrder': instance.sortOrder,
-      'isActive': instance.isActive,
+      'slug': ?instance.slug,
+      'nameAr': ?instance.nameAr,
+      'nameEn': ?instance.nameEn,
+      'iconUrl': ?instance.iconUrl,
+      'sortOrder': ?instance.sortOrder,
+      'isActive': ?instance.isActive,
     };

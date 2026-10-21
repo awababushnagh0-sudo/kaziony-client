@@ -18,8 +18,8 @@ UpdateStoreProfileDto _$UpdateStoreProfileDtoFromJson(
 Map<String, dynamic> _$UpdateStoreProfileDtoToJson(
   UpdateStoreProfileDto instance,
 ) => <String, dynamic>{
-  'description': instance.description,
-  'phone': instance.phone,
-  'facebookUrl': instance.facebookUrl,
-  'instagramUrl': instance.instagramUrl,
+  'description': ?instance.description,
+  'phone': ?instance.phone,
+  'facebookUrl': ?instance.facebookUrl,
+  'instagramUrl': ?instance.instagramUrl,
 };

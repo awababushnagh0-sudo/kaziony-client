@@ -17,5 +17,5 @@ Map<String, dynamic> _$MembershipStoreDtoToJson(MembershipStoreDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'logoUrl': instance.logoUrl,
+      'logoUrl': ?instance.logoUrl,
     };

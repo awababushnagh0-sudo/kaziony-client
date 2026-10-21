@@ -19,5 +19,5 @@ Map<String, dynamic> _$CustomerClaimStoreDtoToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'name': instance.name,
-  'logoUrl': instance.logoUrl,
+  'logoUrl': ?instance.logoUrl,
 };

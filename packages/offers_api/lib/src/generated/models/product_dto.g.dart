@@ -22,10 +22,10 @@ Map<String, dynamic> _$ProductDtoToJson(ProductDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
-      'description': instance.description,
+      'description': ?instance.description,
       'regularPrice': instance.regularPrice,
-      'imageUrl': instance.imageUrl,
-      'thumbUrl': instance.thumbUrl,
+      'imageUrl': ?instance.imageUrl,
+      'thumbUrl': ?instance.thumbUrl,
       'isArchived': instance.isArchived,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
