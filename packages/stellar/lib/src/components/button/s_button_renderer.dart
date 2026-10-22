@@ -13,7 +13,7 @@ class ButtonSpec {
     this.loading = false,
     this.expand = false,
     this.icon,
-    this.iconAtEnd = false,
+    this.smallIcon = false,
   });
 
   final String label;
@@ -27,10 +27,12 @@ class ButtonSpec {
 
   /// Fill the available width.
   final bool expand;
+  /// Drawn after the label, on the same side for every button (the left in
+  /// Arabic), as ERPNext does.
   final SIcons? icon;
 
-  /// The icon after the label, smaller (a menu button's chevron).
-  final bool iconAtEnd;
+  /// A smaller icon: a menu button's chevron.
+  final bool smallIcon;
 }
 
 @immutable

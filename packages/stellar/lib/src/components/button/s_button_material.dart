@@ -29,11 +29,9 @@ class MaterialButtonRenderer implements ButtonRenderer {
         ? null
         : Icon(
             materialIcon(spec.icon!),
-            size: (spec.iconAtEnd ? SIconSize.xs : SIconSize.md).pixels,
+            size: (spec.smallIcon ? SIconSize.xs : SIconSize.md).pixels,
           );
-    final iconAlignment = spec.iconAtEnd
-        ? IconAlignment.end
-        : IconAlignment.start;
+    const iconAlignment = IconAlignment.end;
     // While loading the button keeps its look but ignores taps.
     final onPressed = spec.loading ? () {} : spec.onPressed;
 

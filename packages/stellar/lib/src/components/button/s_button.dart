@@ -17,7 +17,7 @@ class SButton extends StatelessWidget {
     this.icon,
     super.key,
   }) : _iconOnly = false,
-       _iconAtEnd = false;
+       _smallIcon = false;
 
   const SButton.secondary({
     required this.label,
@@ -28,7 +28,7 @@ class SButton extends StatelessWidget {
     super.key,
   }) : variant = ButtonVariant.secondary,
        _iconOnly = false,
-       _iconAtEnd = false;
+       _smallIcon = false;
 
   const SButton.text({
     required this.label,
@@ -39,7 +39,7 @@ class SButton extends StatelessWidget {
        loading = false,
        expand = false,
        _iconOnly = false,
-       _iconAtEnd = false;
+       _smallIcon = false;
 
   /// Opens a menu, as ERPNext's "Actions": a primary button with
   /// up-and-down chevrons after the label. Use it as an SMenuButton's builder.
@@ -49,7 +49,7 @@ class SButton extends StatelessWidget {
       loading = false,
       expand = false,
       _iconOnly = false,
-      _iconAtEnd = true;
+      _smallIcon = true;
 
   /// Just an icon (toolbars). [tooltip] is required so the button always
   /// has a name for screen readers.
@@ -63,7 +63,7 @@ class SButton extends StatelessWidget {
        loading = false,
        expand = false,
        _iconOnly = true,
-       _iconAtEnd = false;
+       _smallIcon = false;
 
   /// The text on the button; the tooltip of an icon button.
   final String label;
@@ -73,7 +73,7 @@ class SButton extends StatelessWidget {
   final bool expand;
   final SIcons? icon;
   final bool _iconOnly;
-  final bool _iconAtEnd;
+  final bool _smallIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +93,7 @@ class SButton extends StatelessWidget {
         loading: loading,
         expand: expand,
         icon: icon,
-        iconAtEnd: _iconAtEnd,
+        smallIcon: _smallIcon,
       ),
     );
   }
