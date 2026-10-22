@@ -1,7 +1,7 @@
 import 'package:dev_menu/dev_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:kernel/kernel.dart' show supportedLocales;
+import 'package:kernel/kernel.dart' show ThemeChoice, supportedLocales;
 
 import '../foundation/s_kit.dart';
 import '../foundation/s_tokens.dart';
@@ -19,6 +19,7 @@ class SApp extends StatelessWidget {
     this.localizationsDelegates = const [],
     this.kit = materialKit,
     this.colors = lightColors,
+    this.theme = ThemeChoice.light,
     this.density = StellarDensity.comfortable,
     super.key,
   });
@@ -32,29 +33,41 @@ class SApp extends StatelessWidget {
   final StellarKit kit;
   final StellarColors colors;
 
+  /// Light, dark, or following the device.
+  final ThemeChoice theme;
+
   /// [StellarDensity.compact] for the web dashboard.
   final StellarDensity density;
 
   @override
-  Widget build(BuildContext context) => StellarScope(
-    kit: kit,
-    colors: colors,
-    child: MaterialApp.router(
-      routerConfig: routerConfig,
-      onGenerateTitle: onGenerateTitle,
-      // Dev and staging builds get the dev menu (bug button) on top.
-      builder: (context, child) => DevMenu(child: child ?? const SizedBox()),
-      debugShowCheckedModeBanner: false,
-      theme: buildMaterialTheme(colors, density: density),
-      locale: locale,
-      supportedLocales: supportedLocales,
-      localizationsDelegates: [
-        ...localizationsDelegates,
-        StellarLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
+  Widget build(BuildContext context) => MaterialApp.router(
+    routerConfig: routerConfig,
+    onGenerateTitle: onGenerateTitle,
+    // Below MaterialApp, so "follow the device" can see whether the
+    // device is dark. Dev and staging builds get the dev menu on top.
+    builder: (context, child) => StellarScope(
+      kit: kit,
+      colors: Theme.of(context).brightness == Brightness.dark
+          ? darkColors
+          : colors,
+      child: DevMenu(child: child ?? const SizedBox()),
     ),
+    debugShowCheckedModeBanner: false,
+    theme: buildMaterialTheme(colors, density: density),
+    darkTheme: buildMaterialTheme(darkColors, density: density),
+    themeMode: switch (theme) {
+      ThemeChoice.system => ThemeMode.system,
+      ThemeChoice.light => ThemeMode.light,
+      ThemeChoice.dark => ThemeMode.dark,
+    },
+    locale: locale,
+    supportedLocales: supportedLocales,
+    localizationsDelegates: [
+      ...localizationsDelegates,
+      StellarLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
   );
 }

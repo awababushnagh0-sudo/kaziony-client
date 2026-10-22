@@ -18,7 +18,11 @@ ThemeData buildMaterialTheme(
     fontSize: size,
     fontWeight: FontWeight.w500,
   );
-  final base = ThemeData(useMaterial3: true, fontFamily: stellarFont);
+  final base = ThemeData(
+    useMaterial3: true,
+    fontFamily: stellarFont,
+    brightness: c.brightness,
+  );
 
   OutlineInputBorder inputBorder(Color color, [double width = 1]) =>
       OutlineInputBorder(
@@ -36,24 +40,28 @@ ThemeData buildMaterialTheme(
     scaffoldBackgroundColor: c.background,
     canvasColor: c.background,
     dividerColor: c.border,
-    colorScheme: ColorScheme.fromSeed(seedColor: c.primary).copyWith(
-      primary: c.primary,
-      onPrimary: c.onPrimary,
-      secondaryContainer: c.primarySoft,
-      onSecondaryContainer: c.text,
-      surface: c.surface,
-      onSurface: c.text,
-      onSurfaceVariant: c.textMuted,
-      surfaceContainerLowest: c.surface,
-      surfaceContainerLow: c.surface,
-      surfaceContainer: c.surface,
-      surfaceContainerHigh: c.surface,
-      surfaceContainerHighest: c.primarySoft,
-      error: c.danger,
-      onError: c.onDanger,
-      outline: c.border,
-      outlineVariant: c.border,
-    ),
+    colorScheme:
+        ColorScheme.fromSeed(
+          seedColor: c.primary,
+          brightness: c.brightness,
+        ).copyWith(
+          primary: c.primary,
+          onPrimary: c.onPrimary,
+          secondaryContainer: c.primarySoft,
+          onSecondaryContainer: c.text,
+          surface: c.surface,
+          onSurface: c.text,
+          onSurfaceVariant: c.textMuted,
+          surfaceContainerLowest: c.surface,
+          surfaceContainerLow: c.surface,
+          surfaceContainer: c.surface,
+          surfaceContainerHigh: c.surface,
+          surfaceContainerHighest: c.primarySoft,
+          error: c.danger,
+          onError: c.onDanger,
+          outline: c.border,
+          outlineVariant: c.border,
+        ),
     textTheme: base.textTheme
         .apply(bodyColor: c.text, displayColor: c.text)
         .copyWith(

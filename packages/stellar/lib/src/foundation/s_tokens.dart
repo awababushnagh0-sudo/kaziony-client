@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 @immutable
 class StellarColors {
   const StellarColors({
+    required this.brightness,
     required this.primary,
     required this.onPrimary,
     required this.primarySoft,
@@ -25,6 +26,8 @@ class StellarColors {
     required this.link,
   });
 
+  /// Whether these are light colors (dark text) or dark ones.
+  final Brightness brightness;
   final Color primary;
   final Color onPrimary;
 
@@ -99,6 +102,7 @@ enum SColor {
 /// filled gray fields and soft status badges. A brand color can replace
 /// [StellarColors.primary] later without touching any screen.
 const lightColors = StellarColors(
+  brightness: Brightness.light,
   primary: Color(0xFF171717),
   onPrimary: Color(0xFFFFFFFF),
   primarySoft: Color(0xFFF3F3F3),
@@ -118,6 +122,31 @@ const lightColors = StellarColors(
   dangerSoft: Color(0xFFFFF0F0),
   onDanger: Color(0xFFFFFFFF),
   link: Color(0xFF0289F7),
+);
+
+/// The same colors at night: dark grays, a near-white primary button, and
+/// brighter status colors on dark badges (as ERPNext's dark theme).
+const darkColors = StellarColors(
+  brightness: Brightness.dark,
+  primary: Color(0xFFF3F3F3),
+  onPrimary: Color(0xFF171717),
+  primarySoft: Color(0xFF2C2C2C),
+  background: Color(0xFF1C1C1C),
+  surface: Color(0xFF232323),
+  surfaceMuted: Color(0xFF171717),
+  fieldFill: Color(0xFF2C2C2C),
+  border: Color(0xFF343434),
+  text: Color(0xFFF3F3F3),
+  textMuted: Color(0xFFC7C7C7),
+  textSubtle: Color(0xFF999999),
+  success: Color(0xFF5FD39A),
+  successSoft: Color(0xFF173326),
+  warning: Color(0xFFF5B656),
+  warningSoft: Color(0xFF3B2E16),
+  danger: Color(0xFFFF7575),
+  dangerSoft: Color(0xFF3D1F1F),
+  onDanger: Color(0xFF171717),
+  link: Color(0xFF52B0FF),
 );
 
 /// The font of every app: IBM Plex Sans Arabic, bundled in stellar.
