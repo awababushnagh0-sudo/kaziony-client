@@ -2,10 +2,10 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../features/auth/domain/auth_repository.dart';
+import '../../features/settings/presentation/settings_dialog.dart';
 import '../l10n/generated/admin_localizations.dart';
 import '../providers/access.dart';
 import '../routes/routes.dart';
-import '../utils/language.dart';
 
 /// The side menu around every page after signing in.
 class AdminShell extends AppView {
@@ -44,9 +44,10 @@ class AdminShell extends AppView {
       userDetail: user?.name == null ? null : user?.email,
       userActions: [
         ShellMenuAction(
-          label: s.switchLanguage,
-          icon: SIcons.language,
-          onTap: () => toggleLanguage(ref),
+          label: s.settings,
+          icon: SIcons.settings,
+          onTap: () =>
+              SDialog.show<void>(context, (_) => const SettingsDialog()),
         ),
         ShellMenuAction(
           label: s.logout,

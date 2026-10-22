@@ -136,6 +136,8 @@ buttons that can't submit twice, and friendly error messages.
 - [x] Stores: list with search, status filter and pages; create (store, first branch with
       location from a Google Maps link, owner) showing the temporary password once
 - [x] Reloading or opening a link to a page lands back on it after signing in
+- [x] Settings (account menu): theme (automatic, light, dark) and language, saved on the
+      device, in the MIA portal's settings dialog
 - [x] Stores: store page with its fields edited in place (Not saved / Save), disable, delete
 - [ ] Stores: branches, staff, reset owner password
 - [x] Users (admins only): our team with search and a role filter; add an admin or editor,

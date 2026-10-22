@@ -13,9 +13,6 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get appTitle => 'Offers Admin';
 
   @override
-  String get switchLanguage => 'العربية';
-
-  @override
   String get loginTitle => 'Sign in';
 
   @override
@@ -544,4 +541,43 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get userEnabledDone => 'User enabled';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get settingsAppearance => 'Appearance';
+
+  @override
+  String get settingsAppearanceHint =>
+      'How the dashboard looks on this device.';
+
+  @override
+  String get settingsTheme => 'Theme';
+
+  @override
+  String get settingsThemeHint =>
+      'Automatic follows your device\'s light or dark setting.';
+
+  @override
+  String get themeSystem => 'Automatic';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get settingsLanguageHint =>
+      'The dashboard\'s language on this device. Arabic reads right to left.';
+
+  @override
+  String get languageArabic => 'العربية';
+
+  @override
+  String get languageEnglish => 'English';
 }

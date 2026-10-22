@@ -1,7 +1,6 @@
 {
   "@@locale": "en",
   "appTitle": "Offers Admin",
-  "switchLanguage": "العربية",
   "loginTitle": "Sign in",
   "loginSubtitle": "Welcome back. Sign in to manage stores and offers.",
   "emailLabel": "Email",
@@ -275,5 +274,17 @@
   },
   "disableUserMessage": "They're logged out everywhere and can't log in until you enable them again.",
   "userDisabledDone": "User disabled",
-  "userEnabledDone": "User enabled"
+  "userEnabledDone": "User enabled",
+  "settings": "Settings",
+  "settingsAppearance": "Appearance",
+  "settingsAppearanceHint": "How the dashboard looks on this device.",
+  "settingsTheme": "Theme",
+  "settingsThemeHint": "Automatic follows your device's light or dark setting.",
+  "themeSystem": "Automatic",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "settingsLanguage": "Language",
+  "settingsLanguageHint": "The dashboard's language on this device. Arabic reads right to left.",
+  "languageArabic": "العربية",
+  "languageEnglish": "English"
 }

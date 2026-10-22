@@ -13,9 +13,6 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get appTitle => 'إدارة العروض';
 
   @override
-  String get switchLanguage => 'English';
-
-  @override
   String get loginTitle => 'تسجيل الدخول';
 
   @override
@@ -547,4 +544,41 @@ class AdminLocalizationsAr extends AdminLocalizations {
 
   @override
   String get userEnabledDone => 'فُعّل المستخدم';
+
+  @override
+  String get settings => 'الإعدادات';
+
+  @override
+  String get settingsAppearance => 'المظهر';
+
+  @override
+  String get settingsAppearanceHint => 'شكل لوحة التحكم على هذا الجهاز.';
+
+  @override
+  String get settingsTheme => 'السمة';
+
+  @override
+  String get settingsThemeHint => 'التلقائي يتبع إعداد جهازك الفاتح أو الداكن.';
+
+  @override
+  String get themeSystem => 'تلقائي';
+
+  @override
+  String get themeLight => 'فاتح';
+
+  @override
+  String get themeDark => 'داكن';
+
+  @override
+  String get settingsLanguage => 'اللغة';
+
+  @override
+  String get settingsLanguageHint =>
+      'لغة لوحة التحكم على هذا الجهاز. العربية تُقرأ من اليمين إلى اليسار.';
+
+  @override
+  String get languageArabic => 'العربية';
+
+  @override
+  String get languageEnglish => 'English';
 }

@@ -104,12 +104,6 @@ abstract class AdminLocalizations {
   /// **'Offers Admin'**
   String get appTitle;
 
-  /// No description provided for @switchLanguage.
-  ///
-  /// In en, this message translates to:
-  /// **'العربية'**
-  String get switchLanguage;
-
   /// No description provided for @loginTitle.
   ///
   /// In en, this message translates to:
@@ -1045,6 +1039,78 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'User enabled'**
   String get userEnabledDone;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @settingsAppearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsAppearance;
+
+  /// No description provided for @settingsAppearanceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'How the dashboard looks on this device.'**
+  String get settingsAppearanceHint;
+
+  /// No description provided for @settingsTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsTheme;
+
+  /// No description provided for @settingsThemeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic follows your device\'s light or dark setting.'**
+  String get settingsThemeHint;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic'**
+  String get themeSystem;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// No description provided for @settingsLanguageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The dashboard\'s language on this device. Arabic reads right to left.'**
+  String get settingsLanguageHint;
+
+  /// No description provided for @languageArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'العربية'**
+  String get languageArabic;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
 }
 
 class _AdminLocalizationsDelegate

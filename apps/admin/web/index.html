@@ -32,6 +32,21 @@
   <link rel="icon" type="image/png" href="favicon.png"/>
 
   <title>Offers Admin</title>
+
+  <!-- While Flutter loads, the page takes the saved theme's background
+       (the dashboard's settings.theme), so a dark dashboard doesn't flash
+       white. -->
+  <script>
+    (function () {
+      var theme;
+      try {
+        theme = JSON.parse(localStorage.getItem('settings.theme'));
+      } catch (e) {}
+      var dark = theme === 'dark' || (theme === 'system' &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.style.background = dark ? '#1C1C1C' : '#FFFFFF';
+    })();
+  </script>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>

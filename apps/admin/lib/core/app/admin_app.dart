@@ -11,6 +11,7 @@ class AdminApp extends AppView {
   Widget build(BuildContext context, WidgetRef ref) => SApp(
     routerConfig: ref.watch(routerProvider),
     locale: ref.watch(localeProvider),
+    theme: ref.watch(themeChoiceProvider),
     density: StellarDensity.compact,
     onGenerateTitle: (context) => AdminLocalizations.of(context).appTitle,
     localizationsDelegates: const [AdminLocalizations.delegate],

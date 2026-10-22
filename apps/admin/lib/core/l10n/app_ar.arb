@@ -1,7 +1,6 @@
 {
   "@@locale": "ar",
   "appTitle": "إدارة العروض",
-  "switchLanguage": "English",
   "loginTitle": "تسجيل الدخول",
   "loginSubtitle": "مرحباً بعودتك. سجّل الدخول لإدارة المتاجر والعروض.",
   "emailLabel": "البريد الإلكتروني",
@@ -157,5 +156,17 @@
   "disableUserTitle": "إيقاف {name}؟",
   "disableUserMessage": "سيُسجَّل خروجه من كل الأجهزة ولن يستطيع الدخول حتى تفعّله مجدداً.",
   "userDisabledDone": "أُوقف المستخدم",
-  "userEnabledDone": "فُعّل المستخدم"
+  "userEnabledDone": "فُعّل المستخدم",
+  "settings": "الإعدادات",
+  "settingsAppearance": "المظهر",
+  "settingsAppearanceHint": "شكل لوحة التحكم على هذا الجهاز.",
+  "settingsTheme": "السمة",
+  "settingsThemeHint": "التلقائي يتبع إعداد جهازك الفاتح أو الداكن.",
+  "themeSystem": "تلقائي",
+  "themeLight": "فاتح",
+  "themeDark": "داكن",
+  "settingsLanguage": "اللغة",
+  "settingsLanguageHint": "لغة لوحة التحكم على هذا الجهاز. العربية تُقرأ من اليمين إلى اليسار.",
+  "languageArabic": "العربية",
+  "languageEnglish": "English"
 }
