@@ -2,10 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import 'appearance/theme_choice.dart';
 import 'config/app_config.dart';
 import 'dev/dev_log.dart';
 import 'dev/dev_settings.dart';
 import 'errors/error_reporter.dart';
+import 'locale/locale.dart';
 import 'navigation/navigation.dart';
 import 'state/state.dart';
 import 'storage/storage.dart';
@@ -53,6 +55,12 @@ Future<void> bootstrap({
     return true;
   };
 
+  // Read before the first frame, so the app opens in its own theme and
+  // language instead of switching to them a moment later.
+  final settings = DeviceSettingsStore();
+  final theme = await ThemeChoiceController.readSaved(settings);
+  final locale = await LocaleController.readSaved(settings);
+
   final info = await PackageInfo.fromPlatform();
   runApp(
     AppScope(
@@ -64,6 +72,8 @@ Future<void> bootstrap({
         errorReporterProvider.overrideWithValue(reporter),
         devLogProvider.overrideWithValue(devLog),
         initialDevSettingsProvider.overrideWithValue(devSettings),
+        themeChoiceProvider.overrideWith(() => ThemeChoiceController(theme)),
+        localeProvider.overrideWith(() => LocaleController(locale)),
         ...overrides,
       ],
       child: app(),

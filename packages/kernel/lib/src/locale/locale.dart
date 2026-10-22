@@ -10,10 +10,28 @@ const supportedLocales = [Locale('ar'), Locale('en')];
 
 /// The app language, remembered across restarts.
 class LocaleController extends Notifier<Locale> {
+  /// [saved] is the language [bootstrap] read before the first frame, so
+  /// the app doesn't flash in Arabic first.
+  LocaleController([this._saved]);
+
   static const _key = 'settings.locale';
+
+  final Locale? _saved;
+
+  /// The saved language, or Arabic.
+  static Future<Locale> readSaved(SettingsStore store) async =>
+      await _find(store) ?? supportedLocales.first;
+
+  static Future<Locale?> _find(SettingsStore store) async {
+    final saved = await store.getString(_key);
+    return supportedLocales
+        .where((locale) => locale.languageCode == saved)
+        .firstOrNull;
+  }
 
   @override
   Locale build() {
+    if (_saved case final saved?) return saved;
     unawaited(_load());
     return supportedLocales.first;
   }
@@ -24,9 +42,8 @@ class LocaleController extends Notifier<Locale> {
   }
 
   Future<void> _load() async {
-    final saved = await ref.read(settingsStoreProvider).getString(_key);
-    final match = supportedLocales.where((l) => l.languageCode == saved);
-    if (match.isNotEmpty && ref.mounted) state = match.first;
+    final saved = await _find(ref.read(settingsStoreProvider));
+    if (saved != null && ref.mounted) state = saved;
   }
 }
 

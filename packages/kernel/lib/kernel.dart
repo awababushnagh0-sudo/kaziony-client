@@ -18,6 +18,7 @@ export 'package:flutter/widgets.dart'
         TextSpan,
         TextStyle;
 
+export 'src/appearance/theme_choice.dart';
 export 'src/auth/session.dart'
     show
         SessionController,
