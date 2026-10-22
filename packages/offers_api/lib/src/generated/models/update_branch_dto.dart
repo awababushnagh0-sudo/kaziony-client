@@ -11,30 +11,30 @@ part 'update_branch_dto.g.dart';
 @JsonSerializable()
 class UpdateBranchDto {
   const UpdateBranchDto({
-    required this.city,
-    required this.name,
-    required this.area,
-    required this.address,
-    required this.latitude,
-    required this.longitude,
-    required this.phone,
-    required this.openingHours,
-    required this.isActive,
+    this.city,
+    this.name,
+    this.area,
+    this.address,
+    this.latitude,
+    this.longitude,
+    this.phone,
+    this.openingHours,
+    this.isActive,
   });
   
   factory UpdateBranchDto.fromJson(Map<String, Object?> json) => _$UpdateBranchDtoFromJson(json);
   
-  final City city;
-  final String name;
-  final String area;
-  final String address;
-  final num latitude;
-  final num longitude;
-  final String phone;
+  final City? city;
+  final String? name;
+  final String? area;
+  final String? address;
+  final num? latitude;
+  final num? longitude;
+  final String? phone;
 
   /// Opening hours per day.
   final dynamic openingHours;
-  final bool isActive;
+  final bool? isActive;
 
   Map<String, Object?> toJson() => _$UpdateBranchDtoToJson(this);
 }

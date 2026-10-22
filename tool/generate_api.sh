@@ -20,6 +20,7 @@ curl -sf "$BASE_URL/docs/json" -o "$PKG/openapi/openapi.json.tmp" || {
 mv "$PKG/openapi/openapi.json.tmp" "$PKG/openapi/openapi.json"
 
 cd "$PKG"
+dart run tool/prepare_spec.dart openapi/openapi.json
 rm -rf lib/src/generated
 dart run swagger_parser
 dart run build_runner build --delete-conflicting-outputs

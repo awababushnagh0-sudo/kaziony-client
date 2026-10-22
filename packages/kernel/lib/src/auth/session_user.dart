@@ -1,6 +1,15 @@
 import 'package:offers_api/auth.dart' as api;
 
-enum AccountRole { customer, merchant, admin, unknown }
+enum AccountRole {
+  customer,
+  merchant,
+  admin,
+
+  /// On our team like an admin, but can't delete or take things down, and
+  /// can't manage the team.
+  editor,
+  unknown,
+}
 
 /// A store the logged-in merchant works at.
 class StoreMembership {
@@ -60,6 +69,7 @@ class SessionUser {
       api.UserRole.customer => AccountRole.customer,
       api.UserRole.merchant => AccountRole.merchant,
       api.UserRole.admin => AccountRole.admin,
+      api.UserRole.editor => AccountRole.editor,
       api.UserRole.$unknown => AccountRole.unknown,
     },
     name: me.name,
@@ -95,6 +105,10 @@ class SessionUser {
 
   final String id;
   final AccountRole role;
+
+  /// Our team, who use the admin dashboard: admins and editors.
+  bool get onDashboardTeam =>
+      role == AccountRole.admin || role == AccountRole.editor;
   final String? name;
   final String? phone;
   final String? email;
