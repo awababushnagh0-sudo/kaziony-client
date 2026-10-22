@@ -47,7 +47,7 @@ class RecordingErrorReporter implements ErrorReporter {
 
 /// Overrides that make kernel work in tests without plugins.
 List<Override> testOverrides({
-  AppKind kind = AppKind.business,
+  AppKind kind = AppKind.partner,
   String apiBaseUrl = 'http://test.invalid',
   String version = '1.0.0',
 }) => [

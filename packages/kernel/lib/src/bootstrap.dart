@@ -17,8 +17,8 @@ import 'storage/storage.dart';
 ///
 /// ```dart
 /// void main() => bootstrap(
-///   config: AppConfig.fromEnvironment(AppKind.business),
-///   app: () => const BusinessApp(),
+///   config: AppConfig.fromEnvironment(AppKind.partner),
+///   app: () => const PartnerApp(),
 /// );
 /// ```
 Future<void> bootstrap({

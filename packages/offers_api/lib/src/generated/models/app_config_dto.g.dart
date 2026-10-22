@@ -7,14 +7,14 @@ part of 'app_config_dto.dart';
 // **************************************************************************
 
 AppConfigDto _$AppConfigDtoFromJson(Map<String, dynamic> json) => AppConfigDto(
-  business: AppVersionDto.fromJson(json['business'] as Map<String, dynamic>),
+  partner: AppVersionDto.fromJson(json['partner'] as Map<String, dynamic>),
   customer: AppVersionDto.fromJson(json['customer'] as Map<String, dynamic>),
   admin: AppVersionDto.fromJson(json['admin'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$AppConfigDtoToJson(AppConfigDto instance) =>
     <String, dynamic>{
-      'business': instance.business,
+      'partner': instance.partner,
       'customer': instance.customer,
       'admin': instance.admin,
     };

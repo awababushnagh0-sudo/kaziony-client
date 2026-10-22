@@ -17,7 +17,7 @@ import 'interceptors.dart';
 /// Gateway to the backend for the data layers of the apps.
 ///
 /// ```dart
-/// final stores = api.client(BusinessStoreClient.new);
+/// final stores = api.client(PartnerStoreClient.new);
 /// final result = await api.guard(() => stores.getStore(storeId: id));
 /// ```
 class Api {

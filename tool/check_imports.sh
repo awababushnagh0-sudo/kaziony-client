@@ -8,7 +8,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-# Each app's offers_api entry point has the app's name (business.dart, ...).
+# Each app's offers_api entry point has the app's name (partner.dart, ...).
 status=0
 
 for app_dir in apps/*/; do

@@ -3,7 +3,7 @@
 # only sees the endpoints meant for it:
 #
 #   package:offers_api/auth.dart      login, tokens, profile, app config (all apps)
-#   package:offers_api/business.dart  store app
+#   package:offers_api/partner.dart   partner app
 #   package:offers_api/customer.dart  customer app
 #   package:offers_api/admin.dart     admin dashboard
 #
@@ -45,8 +45,8 @@ write() { # file, description, client files...
 
 write auth.dart "Shared by all apps: login, tokens, profile, app config." \
   auth_client.dart app_config_client.dart health_client.dart
-write business.dart "Store app: the store, products, offers, claims at the counter." \
-  $(ls business_*_client.dart | sort)
+write partner.dart "Partner app: the store, products, offers, claims at the counter." \
+  $(ls partner_*_client.dart | sort)
 write customer.dart "Customer app: browsing, store pages, claims, follows." \
   offers_client.dart stores_client.dart claims_client.dart categories_client.dart
 write admin.dart "Admin dashboard." \
@@ -60,4 +60,4 @@ for client in *_client.dart; do
     exit 1
   }
 done
-echo "Wrote entry points: auth, business, customer, admin"
+echo "Wrote entry points: auth, partner, customer, admin"

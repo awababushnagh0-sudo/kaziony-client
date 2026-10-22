@@ -14,7 +14,7 @@ offers-client/
                    form wrappers, RTL
     offers_api/    Dart client generated from the backend's Swagger
   apps/
-    business/      store app (Android + iOS)      ← first
+    partner/       partner app for stores (Android + iOS)      ← first
     customer/      customer app (Android + iOS)
     admin/         admin dashboard (Flutter Web)
   tool/            scripts (import rules check, API client generation)
@@ -71,16 +71,16 @@ buttons that can't submit twice, and friendly error messages.
 ## Step 1: Workspace + login slice ✅
 
 - [x] Pub workspace (`packages/kernel`, `packages/stellar`, `packages/offers_api`,
-      `apps/business`), shared lints, `tool/check_imports.sh`
+      `apps/partner`), shared lints, `tool/check_imports.sh`
 - [x] `offers_api`: client generated from the backend's `/docs/json` (`tool/generate_api.sh`),
-      with entry points per app (`auth`, `business`, `customer`, `admin`)
+      with entry points per app (`auth`, `partner`, `customer`, `admin`)
 - [x] `kernel`: state wrapper, `Result` / `AppFailure`, API with token refresh (queued, once)
       and GET retries, secure storage, session (works offline with the cached user), config,
       navigation, locale (Arabic default), version check, error reporter, phone/price utils
 - [x] `stellar`: tokens + theme, component contracts, `StellarKit` + Material kit, button,
       text input, form, scaffold, text, card, list tile, loading/error/empty views, snack,
       `SApp`, Arabic/English strings
-- [x] `apps/business`: router with auth + update redirects, DI composition root, login
+- [x] `apps/partner`: router with auth + update redirects, DI composition root, login
       (phone + password, only store accounts), forced change of the temporary password,
       home with the store and branches, language switch, logout
 - [x] Forced update screen (backend `GET /app-config`)
@@ -97,7 +97,7 @@ buttons that can't submit twice, and friendly error messages.
       log with secrets hidden, app log, server switching with connection test
 - [x] `tool/check_all.sh`
 
-## Step 2: Business app — products and offers
+## Step 2: Partner app — products and offers
 
 - [ ] Store picker for owners of several stores
 - [ ] Products: list, create/edit, archive
@@ -106,7 +106,7 @@ buttons that can't submit twice, and friendly error messages.
 - [ ] Offers: list with state and claim counts, post from a product (price, type,
       quantity, end time, branches), edit, pause, resume, end, repost
 
-## Step 3: Business app — counter and stats
+## Step 3: Partner app — counter and stats
 
 - [ ] QR scanner, or type a code by hand
 - [ ] Claim preview (customer, offer, price, problems) → confirm redeem

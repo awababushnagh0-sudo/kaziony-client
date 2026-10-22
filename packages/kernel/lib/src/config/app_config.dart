@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Which app is running. Used for the minimum-version check.
-enum AppKind { business, customer, admin }
+enum AppKind { partner, customer, admin }
 
 enum AppEnv { dev, staging, prod }
 

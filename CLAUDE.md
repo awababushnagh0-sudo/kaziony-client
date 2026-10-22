@@ -13,7 +13,7 @@ packages/
   stellar/    shared look: every widget, color, size, radius, font and icon
   offers_api/ generated API client; never edit by hand (tool/generate_api.sh)
   dev_menu/   developer menu, dev/staging builds only
-apps/<app>/   business, admin (customer later)
+apps/<app>/   partner, admin (customer later)
 ```
 
 - **Logic** (no UI) used by more than one app goes in `kernel`. Logic for one app stays

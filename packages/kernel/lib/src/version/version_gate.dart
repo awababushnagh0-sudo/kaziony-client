@@ -40,7 +40,7 @@ class VersionGate extends Notifier<UpdateStatus> {
 }
 
 String _minVersion(api.AppConfigDto config, AppKind kind) => switch (kind) {
-  AppKind.business => config.business.minVersion,
+  AppKind.partner => config.partner.minVersion,
   AppKind.customer => config.customer.minVersion,
   AppKind.admin => config.admin.minVersion,
 };

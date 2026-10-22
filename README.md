@@ -11,7 +11,7 @@ packages/
   stellar/      design system: component contracts, Material kit, tokens, forms, l10n
   offers_api/   client generated from the backend (entry points per app)
 apps/
-  business/     store app (Android + iOS); config/ holds dev/staging/prod settings
+  partner/      partner app for stores (Android + iOS); config/ holds dev/staging/prod settings
   admin/        admin dashboard (Flutter Web), same structure
 .vscode/        launch configurations and tasks
 tool/
@@ -30,7 +30,7 @@ fvm install              # once: gets the pinned Flutter and links it to .fvm/
 fvm flutter pub get      # from the repo root: resolves the whole workspace
 ```
 
-## Run the business app
+## Run the partner app
 
 Start the backend first (`npm run start:dev` in offers-backend, with the seed data).
 
@@ -38,15 +38,15 @@ Start the backend first (`npm run start:dev` in offers-backend, with the seed da
 
 | Configuration | What it does |
 |---|---|
-| Business · dev (local backend) | Debug build, dev menu, local backend |
-| Business · dev · profile | Same, in profile mode for performance checks |
-| Business · staging | Staging server, dev menu |
-| Business · prod (release, no dev menu) | Release build against production |
+| Partner · dev (local backend) | Debug build, dev menu, local backend |
+| Partner · dev · profile | Same, in profile mode for performance checks |
+| Partner · staging | Staging server, dev menu |
+| Partner · prod (release, no dev menu) | Release build against production |
 
 **Terminal:**
 
 ```bash
-cd apps/business
+cd apps/partner
 flutter run --dart-define-from-file=config/dev.json
 ```
 
@@ -101,7 +101,7 @@ builds (`kDevTools` is a compile-time constant).
 
 ```bash
 tool/check_all.sh     # import rules + analyzer + tests in every package (VS Code task too)
-cd apps/business && flutter test integration_test -d <device> \
+cd apps/partner && flutter test integration_test -d <device> \
   --dart-define-from-file=config/dev.json    # real backend with seed data
 ```
 

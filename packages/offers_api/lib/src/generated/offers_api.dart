@@ -10,21 +10,21 @@ import 'clients/app_config_client.dart';
 import 'clients/categories_client.dart';
 import 'clients/admin_categories_client.dart';
 import 'clients/stores_client.dart';
-import 'clients/business_store_client.dart';
+import 'clients/partner_store_client.dart';
 import 'clients/admin_stores_client.dart';
 import 'clients/offers_client.dart';
-import 'clients/business_offers_client.dart';
+import 'clients/partner_offers_client.dart';
 import 'clients/admin_offers_client.dart';
 import 'clients/admin_locations_client.dart';
 import 'clients/admin_users_client.dart';
-import 'clients/business_products_client.dart';
+import 'clients/partner_products_client.dart';
 import 'clients/claims_client.dart';
-import 'clients/business_claims_client.dart';
+import 'clients/partner_claims_client.dart';
 import 'clients/admin_stats_client.dart';
 
 /// Offers API `v1.0`.
 ///
-/// Backend for the customer app, business app and admin dashboard.
+/// Backend for the customer app, partner app and admin dashboard.
 class OffersApi {
   OffersApi(
     Dio dio, {
@@ -43,16 +43,16 @@ class OffersApi {
   CategoriesClient? _categories;
   AdminCategoriesClient? _adminCategories;
   StoresClient? _stores;
-  BusinessStoreClient? _businessStore;
+  PartnerStoreClient? _partnerStore;
   AdminStoresClient? _adminStores;
   OffersClient? _offers;
-  BusinessOffersClient? _businessOffers;
+  PartnerOffersClient? _partnerOffers;
   AdminOffersClient? _adminOffers;
   AdminLocationsClient? _adminLocations;
   AdminUsersClient? _adminUsers;
-  BusinessProductsClient? _businessProducts;
+  PartnerProductsClient? _partnerProducts;
   ClaimsClient? _claims;
-  BusinessClaimsClient? _businessClaims;
+  PartnerClaimsClient? _partnerClaims;
   AdminStatsClient? _adminStats;
 
   AuthClient get auth => _auth ??= AuthClient(_dio, baseUrl: _baseUrl);
@@ -67,13 +67,13 @@ class OffersApi {
 
   StoresClient get stores => _stores ??= StoresClient(_dio, baseUrl: _baseUrl);
 
-  BusinessStoreClient get businessStore => _businessStore ??= BusinessStoreClient(_dio, baseUrl: _baseUrl);
+  PartnerStoreClient get partnerStore => _partnerStore ??= PartnerStoreClient(_dio, baseUrl: _baseUrl);
 
   AdminStoresClient get adminStores => _adminStores ??= AdminStoresClient(_dio, baseUrl: _baseUrl);
 
   OffersClient get offers => _offers ??= OffersClient(_dio, baseUrl: _baseUrl);
 
-  BusinessOffersClient get businessOffers => _businessOffers ??= BusinessOffersClient(_dio, baseUrl: _baseUrl);
+  PartnerOffersClient get partnerOffers => _partnerOffers ??= PartnerOffersClient(_dio, baseUrl: _baseUrl);
 
   AdminOffersClient get adminOffers => _adminOffers ??= AdminOffersClient(_dio, baseUrl: _baseUrl);
 
@@ -81,11 +81,11 @@ class OffersApi {
 
   AdminUsersClient get adminUsers => _adminUsers ??= AdminUsersClient(_dio, baseUrl: _baseUrl);
 
-  BusinessProductsClient get businessProducts => _businessProducts ??= BusinessProductsClient(_dio, baseUrl: _baseUrl);
+  PartnerProductsClient get partnerProducts => _partnerProducts ??= PartnerProductsClient(_dio, baseUrl: _baseUrl);
 
   ClaimsClient get claims => _claims ??= ClaimsClient(_dio, baseUrl: _baseUrl);
 
-  BusinessClaimsClient get businessClaims => _businessClaims ??= BusinessClaimsClient(_dio, baseUrl: _baseUrl);
+  PartnerClaimsClient get partnerClaims => _partnerClaims ??= PartnerClaimsClient(_dio, baseUrl: _baseUrl);
 
   AdminStatsClient get adminStats => _adminStats ??= AdminStatsClient(_dio, baseUrl: _baseUrl);
 }

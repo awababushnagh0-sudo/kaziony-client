@@ -9,7 +9,7 @@ Entry points (each app imports only its own, plus `auth.dart`):
 | Import | For |
 |---|---|
 | `package:offers_api/auth.dart` | All apps: login, tokens, profile, app config |
-| `package:offers_api/business.dart` | Store app |
+| `package:offers_api/partner.dart` | Partner app |
 | `package:offers_api/customer.dart` | Customer app |
 | `package:offers_api/admin.dart` | Admin dashboard |
 

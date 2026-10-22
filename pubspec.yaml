@@ -10,7 +10,7 @@ workspace:
   - packages/dev_menu
   - packages/stellar
   - packages/offers_api
-  - apps/business
+  - apps/partner
   - apps/admin
 
 dev_dependencies:

@@ -11,14 +11,14 @@ part 'app_config_dto.g.dart';
 @JsonSerializable()
 class AppConfigDto {
   const AppConfigDto({
-    required this.business,
+    required this.partner,
     required this.customer,
     required this.admin,
   });
   
   factory AppConfigDto.fromJson(Map<String, Object?> json) => _$AppConfigDtoFromJson(json);
   
-  final AppVersionDto business;
+  final AppVersionDto partner;
   final AppVersionDto customer;
   final AppVersionDto admin;
 

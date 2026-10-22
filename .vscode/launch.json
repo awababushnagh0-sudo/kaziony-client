@@ -22,35 +22,35 @@
       "args": ["--dart-define-from-file=config/staging.json", "--web-port=8080"]
     },
     {
-      "name": "Business · dev (local backend)",
+      "name": "Partner · dev (local backend)",
       "type": "dart",
       "request": "launch",
-      "cwd": "apps/business",
+      "cwd": "apps/partner",
       "program": "lib/main.dart",
       "args": ["--dart-define-from-file=config/dev.json"]
     },
     {
-      "name": "Business · dev · profile (performance)",
+      "name": "Partner · dev · profile (performance)",
       "type": "dart",
       "request": "launch",
-      "cwd": "apps/business",
+      "cwd": "apps/partner",
       "program": "lib/main.dart",
       "flutterMode": "profile",
       "args": ["--dart-define-from-file=config/dev.json"]
     },
     {
-      "name": "Business · staging",
+      "name": "Partner · staging",
       "type": "dart",
       "request": "launch",
-      "cwd": "apps/business",
+      "cwd": "apps/partner",
       "program": "lib/main.dart",
       "args": ["--dart-define-from-file=config/staging.json"]
     },
     {
-      "name": "Business · prod (release, no dev menu)",
+      "name": "Partner · prod (release, no dev menu)",
       "type": "dart",
       "request": "launch",
-      "cwd": "apps/business",
+      "cwd": "apps/partner",
       "program": "lib/main.dart",
       "flutterMode": "release",
       "args": ["--dart-define-from-file=config/prod.json"]
