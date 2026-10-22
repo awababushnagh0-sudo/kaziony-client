@@ -21,7 +21,7 @@ lib/src/
 | Folder | Widgets |
 |---|---|
 | `button` | `SButton`, `.secondary`, `.text`, `.menu` ("Actions" dropdown), `.icon` |
-| `input` | `STextInput`, `SSelectInput`, `SSearchField`, `SCopyField`, `SReadField` (a saved value, read-only) |
+| `input` | `STextInput`, `SSelectInput`, `SSearchField`, `SCopyField` |
 | `form` | `SForm`, `SFieldGrid`, `SFormSection`, `SValidators` (+ `FormGroup`, `FormControl`, `Validators`) |
 | `text` | `SText`, `.display`, `.title`, `.caption`: takes `TextVariant`, `SFontWeight`, `SColor` |
 | `icon` | `SIcon` (takes `SIconSize`, `SColor`), `SIcons` (the icons apps can use) |

@@ -25,7 +25,6 @@ export 'src/components/icon/s_icon.dart';
 export 'src/components/icon/s_icon_renderer.dart';
 export 'src/components/input/s_copy_field.dart';
 export 'src/components/input/s_input_renderer.dart';
-export 'src/components/input/s_read_field.dart';
 export 'src/components/input/s_search_field.dart';
 export 'src/components/input/s_select_input.dart';
 export 'src/components/input/s_text_input.dart';
