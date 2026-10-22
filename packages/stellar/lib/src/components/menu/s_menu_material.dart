@@ -21,8 +21,8 @@ class MaterialMenuRenderer implements MenuRenderer {
     // back by its own width so the two end edges line up.
     alignmentOffset: Offset(alignEnd ? -width : 0, 4),
     style: alignEnd
-        ? _menuStyle.copyWith(alignment: AlignmentDirectional.bottomEnd)
-        : _menuStyle,
+        ? menuStyle.copyWith(alignment: AlignmentDirectional.bottomEnd)
+        : menuStyle,
     menuChildren: [
       MenuPanel(
         opensUp: false,
@@ -45,8 +45,8 @@ class MaterialMenuRenderer implements MenuRenderer {
 }
 
 /// Hides [MenuAnchor]'s own panel, since [MenuPanel] draws (and animates)
-/// the box itself.
-const _menuStyle = MenuStyle(
+/// the box itself. Also used by the select input.
+const menuStyle = MenuStyle(
   backgroundColor: WidgetStatePropertyAll(Colors.transparent),
   surfaceTintColor: WidgetStatePropertyAll(Colors.transparent),
   shadowColor: WidgetStatePropertyAll(Colors.transparent),
@@ -64,7 +64,7 @@ MenuAnchor menuAnchor({
   Widget? header,
 }) => MenuAnchor(
   alignmentOffset: const Offset(0, 4),
-  style: _menuStyle,
+  style: menuStyle,
   menuChildren: [
     MenuPanel(
       opensUp: opensUp,
@@ -91,29 +91,15 @@ class _MenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final color = entry.destructive ? c.danger : c.text;
     final description = entry.description;
     return MenuItemButton(
       onPressed: entry.onTap,
-      style:
-          MenuItemButton.styleFrom(
-            foregroundColor: color,
-            iconColor: color,
-            minimumSize: const Size(0, 32),
-            fixedSize: description == null ? const Size.fromHeight(32) : null,
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            visualDensity: VisualDensity.compact,
-            padding: const EdgeInsets.symmetric(horizontal: Space.sm),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(Radii.sm),
-            ),
-            textStyle: const TextStyle(fontFamily: stellarFont, fontSize: 13),
-          ).copyWith(
-            // A flat tint on hover, red for the destructive item.
-            overlayColor: WidgetStatePropertyAll(
-              entry.destructive ? c.dangerSoft : c.primarySoft,
-            ),
-          ),
+      style: menuItemStyle(
+        context,
+        destructive: entry.destructive,
+        // A described entry grows to fit its two lines.
+        oneLine: description == null,
+      ),
       leadingIcon: Icon(materialIcon(entry.icon), size: SIconSize.xs.pixels),
       child: description == null
           ? Text(entry.label)
@@ -133,6 +119,34 @@ class _MenuItem extends StatelessWidget {
             ),
     );
   }
+}
+
+/// A menu row: 32px ([oneLine]) or more, a flat tint on hover, red when
+/// [destructive]. Also used by the select input's options.
+ButtonStyle menuItemStyle(
+  BuildContext context, {
+  bool destructive = false,
+  bool oneLine = true,
+}) {
+  final c = context.colors;
+  final color = destructive ? c.danger : c.text;
+  return MenuItemButton.styleFrom(
+    foregroundColor: color,
+    iconColor: color,
+    minimumSize: const Size(0, 32),
+    fixedSize: oneLine ? const Size.fromHeight(32) : null,
+    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    visualDensity: VisualDensity.compact,
+    padding: const EdgeInsets.symmetric(horizontal: Space.sm),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(Radii.sm),
+    ),
+    textStyle: const TextStyle(fontFamily: stellarFont, fontSize: 13),
+  ).copyWith(
+    overlayColor: WidgetStatePropertyAll(
+      destructive ? c.dangerSoft : c.primarySoft,
+    ),
+  );
 }
 
 /// The bordered menu box. Fades in and rises a few pixels when the menu

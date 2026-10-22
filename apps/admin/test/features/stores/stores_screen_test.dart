@@ -2,7 +2,6 @@ import 'package:admin/core/l10n/generated/admin_localizations.dart';
 import 'package:admin/features/stores/domain/location.dart';
 import 'package:admin/features/stores/domain/store.dart';
 import 'package:admin/features/stores/presentation/stores_screen.dart';
-import 'package:flutter/material.dart' show DropdownButton;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kernel/kernel.dart';
 import 'package:kernel/testing.dart';
@@ -140,7 +139,7 @@ void main() {
     expect(stores.created, isEmpty);
 
     await type(tester, Field.name, 'حلويات الساحل');
-    await tester.tap(find.byType(DropdownButton<String>));
+    await tester.tap(find.byType(SSelectInput<String>));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Sweets').last);
     await tester.pumpAndSettle();
@@ -198,7 +197,7 @@ void main() {
     await tester.tap(find.text('Add store'));
     await tester.pumpAndSettle();
     await type(tester, Field.name, 'Cafe');
-    await tester.tap(find.byType(DropdownButton<String>));
+    await tester.tap(find.byType(SSelectInput<String>));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Sweets').last);
     await tester.pumpAndSettle();

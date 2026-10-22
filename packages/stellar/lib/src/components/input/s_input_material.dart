@@ -7,6 +7,7 @@ import '../../l10n/generated/stellar_localizations.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import 's_input_renderer.dart';
+import 's_select_material.dart';
 
 class MaterialInputRenderer implements InputRenderer {
   const MaterialInputRenderer();
@@ -22,24 +23,7 @@ class MaterialInputRenderer implements InputRenderer {
     context,
     label: spec.label,
     required: spec.required,
-    child: ReactiveDropdownField<T>(
-      formControlName: spec.controlName,
-      validationMessages: spec.validationMessages,
-      isExpanded: true,
-      borderRadius: BorderRadius.circular(Radii.md),
-      dropdownColor: context.colors.surface,
-      icon: Icon(
-        materialIcon(SIcons.chevronDown),
-        size: SIconSize.xs.pixels,
-        color: context.colors.textSubtle,
-      ),
-      hint: spec.hint == null ? null : Text(spec.hint!),
-      style: Theme.of(context).textTheme.bodyLarge,
-      items: [
-        for (final option in spec.options)
-          DropdownMenuItem(value: option.value, child: Text(option.label)),
-      ],
-    ),
+    child: SelectField<T>(spec: spec),
   );
 
   @override
