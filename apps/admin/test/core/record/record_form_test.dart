@@ -30,12 +30,15 @@ class NoteForm extends RecordForm<Note> {
   Map<String, AbstractControl<Object?>> fields() => {
     'title': FormControl<String>(validators: [Validators.required]),
     'body': FormControl<String>(),
+    // Shown, not edited.
+    'code': FormControl<String>(disabled: true),
   };
 
   @override
   Map<String, Object?> valuesOf(Note note) => {
     'title': note.title,
     'body': note.body,
+    'code': 'N-1',
   };
 
   @override
@@ -123,4 +126,16 @@ void main() {
     expect(form().form.control('title').value, 'Mine');
     expect(state().changed, isTrue);
   });
+
+  test(
+    'keeps shown-only fields read-only through filling and saving',
+    () async {
+      expect(form().form.control('code').value, 'N-1');
+      expect(form().form.control('code').disabled, isTrue);
+
+      await edit('title', 'Hi');
+      await form().save();
+      expect(form().form.control('code').disabled, isTrue);
+    },
+  );
 }

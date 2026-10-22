@@ -71,7 +71,11 @@ abstract class RecordForm<T> extends ViewModel<RecordFormState> {
     _saved = {
       for (final MapEntry(:key, :value) in values.entries) key: _normal(value),
     };
-    form.reset(value: values);
+    // Field by field: resetting the whole group would enable the fields
+    // that are only shown (disabled), such as a login email.
+    for (final MapEntry(:key, value: control) in form.controls.entries) {
+      control.reset(value: values[key]);
+    }
   }
 
   void _compare() {
