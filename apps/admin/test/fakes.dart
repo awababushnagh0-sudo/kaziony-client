@@ -95,6 +95,8 @@ class FakeStoreRepository implements StoreRepository {
   final queries = <StoreQuery>[];
   final opened = <String>[];
   Result<StoreDetails>? detailsResult;
+  final updates = <(String, EditedStore)>[];
+  Result<StoreDetails>? updateResult;
   final activeChanges = <(String, bool)>[];
   final deleted = <String>[];
   Result<void> deleteResult = const Ok(null);
@@ -121,6 +123,28 @@ class FakeStoreRepository implements StoreRepository {
   Future<Result<StoreDetails>> get(String id) async {
     opened.add(id);
     return detailsResult ?? Ok(sampleDetails(id));
+  }
+
+  @override
+  Future<Result<StoreDetails>> update(String id, EditedStore store) async {
+    updates.add((id, store));
+    return updateResult ??
+        Ok(
+          StoreDetails(
+            id: id,
+            name: store.name,
+            category: sampleCategory,
+            isActive: true,
+            createdAt: DateTime.utc(2026, 10, 15, 12),
+            branchCount: 2,
+            teamCount: 3,
+            description: store.description,
+            phone: store.phone,
+            email: store.email,
+            facebookUrl: store.facebookUrl,
+            instagramUrl: store.instagramUrl,
+          ),
+        );
   }
 
   @override

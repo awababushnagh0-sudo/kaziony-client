@@ -87,6 +87,10 @@ when a second user appears:
 
 App widgets only arrange stellar widgets; they never style anything themselves.
 
+A pattern every page of a kind repeats goes in the app's `core/`, and those pages build on
+it instead of copying it: lists use `core/list` (`ListController`, `PagedTable`), record
+pages use `core/record` (`RecordForm` for the fields, `RecordScreen` for the page).
+
 ## 6. Stellar components
 
 Each component has its own folder, and every file in stellar starts with `s_`. The

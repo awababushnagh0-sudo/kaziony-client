@@ -52,6 +52,26 @@ class ApiStoreRepository implements StoreRepository {
   }
 
   @override
+  Future<Result<StoreDetails>> update(String id, EditedStore store) async {
+    final result = await _api.guard(
+      () => _stores.update(
+        id: id,
+        // Every field is sent; an empty string clears an optional one.
+        body: UpdateStoreDto(
+          name: store.name,
+          categoryId: store.categoryId,
+          description: store.description ?? '',
+          phone: store.phone ?? '',
+          email: store.email ?? '',
+          facebookUrl: store.facebookUrl ?? '',
+          instagramUrl: store.instagramUrl ?? '',
+        ),
+      ),
+    );
+    return result.map(_toDetails);
+  }
+
+  @override
   Future<Result<StoreDetails>> setActive(
     String id, {
     required bool active,

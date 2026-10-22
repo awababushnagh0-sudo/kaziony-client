@@ -79,6 +79,30 @@ class StoreDetails {
   final String? instagramUrl;
 }
 
+/// A store's own fields as an admin edited them. Empty optional fields
+/// are null, and saving clears them.
+class EditedStore {
+  const EditedStore({
+    required this.name,
+    required this.categoryId,
+    this.description,
+    this.phone,
+    this.email,
+    this.facebookUrl,
+    this.instagramUrl,
+  });
+
+  final String name;
+  final String categoryId;
+  final String? description;
+
+  /// Normalized (+2189XXXXXXXX).
+  final String? phone;
+  final String? email;
+  final String? facebookUrl;
+  final String? instagramUrl;
+}
+
 /// A new store with its first branch and owner, as entered by an admin.
 class NewStore {
   const NewStore({
@@ -145,6 +169,8 @@ class CreatedStore {
 abstract interface class StoreRepository {
   Future<Result<StorePage>> list(StoreQuery query);
   Future<Result<StoreDetails>> get(String id);
+
+  Future<Result<StoreDetails>> update(String id, EditedStore store);
 
   /// Disabled stores are hidden from customers and can't post offers.
   Future<Result<StoreDetails>> setActive(String id, {required bool active});

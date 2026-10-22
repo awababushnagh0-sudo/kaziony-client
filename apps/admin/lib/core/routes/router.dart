@@ -16,7 +16,8 @@ final routerProvider = Provider<GoRouter>((ref) {
   final refresh = RouterRefresh(ref, [sessionProvider, versionGateProvider]);
   ref.onDispose(refresh.dispose);
 
-  // Dashboard pages switch instantly, like a website.
+  // Dashboard pages switch instantly, like a website, and any of them can
+  // ask before it's left with unsaved changes (LeaveGuard).
   GoRoute page(
     String path,
     Widget Function(BuildContext context, GoRouterState state) build, {
@@ -24,6 +25,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   }) => GoRoute(
     path: path,
     routes: routes,
+    onExit: LeaveGuard.onExit,
     pageBuilder: (context, state) =>
         NoTransitionPage(key: state.pageKey, child: build(context, state)),
   );

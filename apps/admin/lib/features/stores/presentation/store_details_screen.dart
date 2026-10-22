@@ -2,13 +2,16 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/admin_localizations.dart';
+import '../../../core/record/record_screen.dart';
 import '../../../core/routes/routes.dart';
 import '../domain/store.dart';
+import 'add_store_view_model.dart';
 import 'store_details_view_model.dart';
+import 'store_form_view_model.dart';
 
 /// One store, ERPNext-style: "Stores / name" with its status and an
 /// actions menu, tabs of fields, and a side panel with its logo and key
-/// facts.
+/// facts. The fields are edited in place (see [RecordScreen]).
 class StoreDetailsScreen extends AppStatefulView {
   const StoreDetailsScreen({required this.storeId, super.key});
 
@@ -83,32 +86,24 @@ class _StoreDetailsScreenState extends AppViewState<StoreDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final s = AdminLocalizations.of(context);
-    final provider = storeDetailsViewModel(widget.storeId);
-    final details = ref.watch(provider);
-    final store = details.value;
-
-    return SScaffold(
-      title: store?.name ?? '',
+    return RecordScreen(
+      record: storeDetailsViewModel(widget.storeId),
+      form: storeFormViewModel(widget.storeId),
       parent: ScaffoldParent(
         label: s.storesTitle,
         onTap: () => context.go(Routes.stores),
       ),
-      status: store == null ? null : _StatusBadge(active: store.isActive),
-      actions: [
-        if (store != null)
-          _ActionsMenu(
-            store: store,
-            busy: _busy,
-            onSetActive: (active) => _setActive(store, active: active),
-            onDelete: () => _delete(store),
-          ),
+      title: (store) => store.name,
+      status: (store) => _StatusBadge(active: store.isActive),
+      actions: (store) => [
+        _ActionsMenu(
+          store: store,
+          busy: _busy,
+          onSetActive: (active) => _setActive(store, active: active),
+          onDelete: () => _delete(store),
+        ),
       ],
-      padded: false,
-      body: SAsyncView(
-        value: details,
-        onRetry: () => ref.invalidate(provider),
-        builder: (context, store) => _StoreRecord(store: store),
-      ),
+      builder: (context, store) => _StoreRecord(store: store),
     );
   }
 }
@@ -161,16 +156,22 @@ class _ActionsMenu extends StatelessWidget {
   }
 }
 
-class _StoreRecord extends StatelessWidget {
+class _StoreRecord extends AppView {
   const _StoreRecord({required this.store});
 
   final StoreDetails store;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final s = AdminLocalizations.of(context);
     final locale = Localizations.localeOf(context);
-    final phone = store.phone;
+    // The store's own category stays listed even if it was hidden since.
+    final categories = [
+      store.category,
+      for (final category
+          in ref.watch(categoriesProvider).value ?? const <Category>[])
+        if (category.id != store.category.id) category,
+    ];
 
     return SRecordPage(
       tabs: [
@@ -182,12 +183,25 @@ class _StoreRecord extends StatelessWidget {
             child: SFieldGrid(
               columns: 3,
               children: [
-                SReadField(label: s.storeName, value: store.name),
-                SReadField(
-                  label: s.storeCategory,
-                  value: store.category.name(locale),
+                STextInput(
+                  controlName: 'name',
+                  label: s.storeName,
+                  required: true,
                 ),
-                SReadField(label: s.storeDescription, value: store.description),
+                SSelectInput<String>(
+                  controlName: 'categoryId',
+                  label: s.storeCategory,
+                  required: true,
+                  options: [
+                    for (final category in categories)
+                      SelectOption(category.id, category.name(locale)),
+                  ],
+                ),
+                STextInput(
+                  controlName: 'description',
+                  label: s.storeDescription,
+                  kind: TextInputKind.multiline,
+                ),
               ],
             ),
           ),
@@ -200,21 +214,28 @@ class _StoreRecord extends StatelessWidget {
             child: SFieldGrid(
               columns: 3,
               children: [
-                SReadField(
+                STextInput(
+                  controlName: 'phone',
                   label: s.storePhone,
-                  value: phone == null ? null : formatLibyanPhone(phone),
-                  ltr: true,
+                  hint: '0912345678',
+                  kind: TextInputKind.phone,
                 ),
-                SReadField(label: s.storeEmail, value: store.email, ltr: true),
-                SReadField(
+                STextInput(
+                  controlName: 'email',
+                  label: s.storeEmail,
+                  kind: TextInputKind.email,
+                ),
+                STextInput(
+                  controlName: 'facebookUrl',
                   label: s.storeFacebook,
-                  value: store.facebookUrl,
-                  ltr: true,
+                  hint: 'https://facebook.com/...',
+                  kind: TextInputKind.url,
                 ),
-                SReadField(
+                STextInput(
+                  controlName: 'instagramUrl',
                   label: s.storeInstagram,
-                  value: store.instagramUrl,
-                  ltr: true,
+                  hint: 'https://instagram.com/...',
+                  kind: TextInputKind.url,
                 ),
               ],
             ),

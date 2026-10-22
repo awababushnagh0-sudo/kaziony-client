@@ -27,6 +27,7 @@ Widget harness(FakeStoreRepository stores, {String at = '/stores/store-1'}) =>
               routes: [
                 GoRoute(
                   path: ':id',
+                  onExit: LeaveGuard.onExit,
                   builder: (_, state) =>
                       StoreDetailsScreen(storeId: state.pathParameters['id']!),
                 ),
@@ -197,5 +198,124 @@ void main() {
       findsOneWidget,
     );
     expect(find.byType(StoreDetailsScreen), findsOneWidget);
+  });
+
+  Finder field(String label) => find.descendant(
+    of: find.byWidgetPredicate(
+      (widget) => widget is STextInput && widget.label == label,
+    ),
+    matching: find.byType(EditableText),
+  );
+
+  testWidgets('shows "Not saved" and Save once a field changes', (
+    tester,
+  ) async {
+    setWindow(tester);
+    await tester.pumpWidget(harness(FakeStoreRepository()));
+    await tester.pumpAndSettle();
+    expect(find.text('Actions'), findsOneWidget);
+
+    await tester.enterText(field('Store name'), 'Sweet Coast 2');
+    await tester.pumpAndSettle();
+    expect(find.text('Not saved'), findsOneWidget);
+    expect(find.text('Save'), findsOneWidget);
+    expect(find.text('Actions'), findsNothing);
+
+    // Typed back to what was saved: nothing to save.
+    await tester.enterText(field('Store name'), ' Sweet Coast ');
+    await tester.pumpAndSettle();
+    expect(find.text('Not saved'), findsNothing);
+    expect(find.text('Active'), findsOneWidget);
+    expect(find.text('Actions'), findsOneWidget);
+  });
+
+  testWidgets('saves the edited fields, clearing emptied ones', (tester) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository();
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(field('Description'), 'Open late.');
+    await tester.tap(find.text('Contact'));
+    await tester.pumpAndSettle();
+    await tester.enterText(field('Store phone'), '092 123 4567');
+    await tester.enterText(field('Store email'), '');
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+
+    final (id, edited) = stores.updates.single;
+    expect(id, 'store-1');
+    expect(edited.name, 'Sweet Coast');
+    expect(edited.categoryId, 'cat-sweets');
+    expect(edited.description, 'Open late.');
+    expect(edited.phone, '+218921234567');
+    expect(edited.email, isNull);
+    expect(edited.instagramUrl, 'https://instagram.com/sweetcoast');
+    expect(find.text('Saved'), findsOneWidget);
+    expect(find.text('Not saved'), findsNothing);
+    expect(find.text('Actions'), findsOneWidget);
+  });
+
+  testWidgets("doesn't save invalid fields", (tester) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository();
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(field('Store name'), '');
+    await tester.tap(find.text('Contact'));
+    await tester.pumpAndSettle();
+    await tester.enterText(field('Instagram'), 'instagram.com/sweetcoast');
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+
+    expect(stores.updates, isEmpty);
+    expect(
+      find.text('Enter a valid link starting with https://'),
+      findsOneWidget,
+    );
+    await tester.tap(find.text('Details'));
+    await tester.pumpAndSettle();
+    expect(find.text('Required'), findsOneWidget);
+  });
+
+  testWidgets('keeps the changes when saving fails', (tester) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..updateResult = const Err(NoConnectionFailure());
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(field('Store name'), 'Sweet Coast 2');
+    await tester.pump();
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+
+    expect(stores.updates, hasLength(1));
+    expect(find.text('Not saved'), findsOneWidget);
+    expect(find.text('Sweet Coast 2'), findsOneWidget);
+  });
+
+  testWidgets('asks before leaving with unsaved changes', (tester) async {
+    setWindow(tester);
+    await tester.pumpWidget(harness(FakeStoreRepository()));
+    await tester.pumpAndSettle();
+    await tester.enterText(field('Store name'), 'Sweet Coast 2');
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Stores'));
+    await tester.pumpAndSettle();
+    expect(find.text('Discard your changes?'), findsOneWidget);
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    expect(find.byType(StoreDetailsScreen), findsOneWidget);
+    expect(find.text('Sweet Coast 2'), findsOneWidget);
+
+    await tester.tap(find.text('Stores'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Discard'));
+    await tester.pumpAndSettle();
+    expect(find.byType(StoreDetailsScreen), findsNothing);
+    expect(find.text('Store 1'), findsOneWidget);
   });
 }

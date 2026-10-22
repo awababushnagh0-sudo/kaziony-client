@@ -258,6 +258,25 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get storeTeam => 'الفريق';
 
   @override
+  String get save => 'حفظ';
+
+  @override
+  String get notSaved => 'غير محفوظ';
+
+  @override
+  String get savedDone => 'تم الحفظ';
+
+  @override
+  String get discardChangesTitle => 'تجاهل التعديلات؟';
+
+  @override
+  String get discardChangesMessage =>
+      'لم تُحفظ تعديلاتك. هل تريد المغادرة دون حفظ؟';
+
+  @override
+  String get discardChanges => 'تجاهل';
+
+  @override
   String get storeActions => 'إجراءات';
 
   @override

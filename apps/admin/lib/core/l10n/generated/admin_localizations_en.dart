@@ -256,6 +256,25 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get storeTeam => 'Team';
 
   @override
+  String get save => 'Save';
+
+  @override
+  String get notSaved => 'Not saved';
+
+  @override
+  String get savedDone => 'Saved';
+
+  @override
+  String get discardChangesTitle => 'Discard your changes?';
+
+  @override
+  String get discardChangesMessage =>
+      'Your changes haven\'t been saved. Leave without saving?';
+
+  @override
+  String get discardChanges => 'Discard';
+
+  @override
   String get storeActions => 'Actions';
 
   @override

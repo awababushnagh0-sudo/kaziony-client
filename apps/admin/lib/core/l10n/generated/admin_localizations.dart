@@ -548,6 +548,42 @@ abstract class AdminLocalizations {
   /// **'Team'**
   String get storeTeam;
 
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @notSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Not saved'**
+  String get notSaved;
+
+  /// No description provided for @savedDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get savedDone;
+
+  /// No description provided for @discardChangesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard your changes?'**
+  String get discardChangesTitle;
+
+  /// No description provided for @discardChangesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your changes haven\'t been saved. Leave without saving?'**
+  String get discardChangesMessage;
+
+  /// No description provided for @discardChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get discardChanges;
+
   /// No description provided for @storeActions.
   ///
   /// In en, this message translates to:

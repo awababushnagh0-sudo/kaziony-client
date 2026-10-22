@@ -20,13 +20,21 @@ class StoreDetailsViewModel extends AsyncViewModel<StoreDetails> {
     };
   }
 
+  Future<Result<StoreDetails>> save(EditedStore edited) =>
+      _apply(_stores.update(storeId, edited));
+
   /// Hides the store from customers (and stops new offers), or shows it
   /// again.
-  Future<Result<StoreDetails>> setActive({required bool active}) async {
-    final result = await _stores.setActive(storeId, active: active);
-    if (result case Ok(:final value)) {
+  Future<Result<StoreDetails>> setActive({required bool active}) =>
+      _apply(_stores.setActive(storeId, active: active));
+
+  Future<Result<StoreDetails>> _apply(
+    Future<Result<StoreDetails>> change,
+  ) async {
+    final result = await change;
+    if (result case Ok(:final value) when ref.mounted) {
       state = AsyncData(value);
-      // The list beneath shows the status too.
+      // The list beneath shows the name, category and status too.
       ref.invalidate(storePageProvider);
     }
     return result;
