@@ -47,7 +47,7 @@ class LoginViewModel extends ViewModel<LoginState> {
     if (!ref.mounted) return;
 
     switch (result) {
-      case Ok(:final value) when value.role != AccountRole.admin:
+      case Ok(:final value) when !value.onDashboardTeam:
         // A store or customer account: the dashboard is for our team only.
         await auth.logout();
         if (ref.mounted) {

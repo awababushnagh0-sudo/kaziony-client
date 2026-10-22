@@ -74,4 +74,11 @@ void main() {
       Routes.update,
     );
   });
+
+  test('sends editors from admin-only pages home', () {
+    final session = SignedIn(user(role: AccountRole.editor));
+    expect(go(session, Routes.users), Routes.home);
+    expect(go(session, '${Routes.users}/user-1'), Routes.home);
+    expect(go(session, Routes.stores), isNull);
+  });
 }

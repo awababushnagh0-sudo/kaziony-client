@@ -41,7 +41,8 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get sessionExpired => 'Your session ended. Please sign in again.';
 
   @override
-  String get notAdminAccount => 'This dashboard is for admin accounts only.';
+  String get notAdminAccount =>
+      'This dashboard is for our team\'s accounts only.';
 
   @override
   String get changePasswordTitle => 'Choose a new password';
@@ -275,7 +276,7 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get discardChanges => 'Discard';
 
   @override
-  String get storeActions => 'Actions';
+  String get actions => 'Actions';
 
   @override
   String get disableStore => 'Disable store';
@@ -406,4 +407,141 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get done => 'Done';
+
+  @override
+  String get usersTitle => 'Users';
+
+  @override
+  String usersTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count users',
+      one: '1 user',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get usersSearch => 'Search by name or email';
+
+  @override
+  String get usersEmpty => 'No users yet';
+
+  @override
+  String get usersEmptyMessage =>
+      'Add the people on your team who use this dashboard.';
+
+  @override
+  String get filterAdmins => 'Admins';
+
+  @override
+  String get filterEditors => 'Editors';
+
+  @override
+  String get roleAdmin => 'Admin';
+
+  @override
+  String get roleEditor => 'Editor';
+
+  @override
+  String get columnEmail => 'Email';
+
+  @override
+  String get columnRole => 'Role';
+
+  @override
+  String get columnLastLogin => 'Last login';
+
+  @override
+  String get neverLoggedIn => 'Never';
+
+  @override
+  String get userActive => 'Active';
+
+  @override
+  String get userDisabled => 'Disabled';
+
+  @override
+  String get addUser => 'Add user';
+
+  @override
+  String get addUserTitle => 'Add a user';
+
+  @override
+  String get userName => 'Name';
+
+  @override
+  String get userEmail => 'Email';
+
+  @override
+  String get userEmailHelp => 'They log in with it.';
+
+  @override
+  String get userRole => 'Role';
+
+  @override
+  String get userRoleHelp =>
+      'Editors can add and edit, but can\'t delete or manage users.';
+
+  @override
+  String get emailTaken => 'This email already has an account.';
+
+  @override
+  String get userCreatedTitle => 'User added';
+
+  @override
+  String userCreatedMessage(String name) {
+    return 'Give these details to $name. They will choose their own password when they first log in.';
+  }
+
+  @override
+  String get loginEmail => 'Login email';
+
+  @override
+  String get resetPassword => 'Reset password';
+
+  @override
+  String get resetPasswordHint => 'Give them a new temporary password';
+
+  @override
+  String resetPasswordTitle(String name) {
+    return 'Reset $name\'s password?';
+  }
+
+  @override
+  String get resetPasswordMessage =>
+      'They\'ll get a new temporary password and be logged out everywhere. Their current password stops working.';
+
+  @override
+  String get newPasswordTitle => 'New password';
+
+  @override
+  String newPasswordMessage(String name) {
+    return 'Give this to $name. They will choose their own password when they next log in.';
+  }
+
+  @override
+  String get disableUser => 'Disable user';
+
+  @override
+  String get disableUserHint => 'Log them out and stop them logging in';
+
+  @override
+  String get enableUser => 'Enable user';
+
+  @override
+  String disableUserTitle(String name) {
+    return 'Disable $name?';
+  }
+
+  @override
+  String get disableUserMessage =>
+      'They\'re logged out everywhere and can\'t log in until you enable them again.';
+
+  @override
+  String get userDisabledDone => 'User disabled';
+
+  @override
+  String get userEnabledDone => 'User enabled';
 }

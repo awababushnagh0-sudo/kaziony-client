@@ -41,7 +41,7 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get sessionExpired => 'انتهت الجلسة. سجّل الدخول مرة أخرى.';
 
   @override
-  String get notAdminAccount => 'لوحة التحكم هذه لحسابات المشرفين فقط.';
+  String get notAdminAccount => 'لوحة التحكم هذه لحسابات فريقنا فقط.';
 
   @override
   String get changePasswordTitle => 'اختر كلمة مرور جديدة';
@@ -277,7 +277,7 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get discardChanges => 'تجاهل';
 
   @override
-  String get storeActions => 'إجراءات';
+  String get actions => 'إجراءات';
 
   @override
   String get disableStore => 'إيقاف المتجر';
@@ -408,4 +408,143 @@ class AdminLocalizationsAr extends AdminLocalizations {
 
   @override
   String get done => 'تم';
+
+  @override
+  String get usersTitle => 'المستخدمون';
+
+  @override
+  String usersTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count مستخدم',
+      few: '$count مستخدمين',
+      two: 'مستخدمان',
+      one: 'مستخدم واحد',
+      zero: 'لا مستخدمين',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get usersSearch => 'ابحث بالاسم أو البريد';
+
+  @override
+  String get usersEmpty => 'لا يوجد مستخدمون بعد';
+
+  @override
+  String get usersEmptyMessage => 'أضف أفراد فريقك الذين يستخدمون لوحة التحكم.';
+
+  @override
+  String get filterAdmins => 'المديرون';
+
+  @override
+  String get filterEditors => 'المحررون';
+
+  @override
+  String get roleAdmin => 'مدير';
+
+  @override
+  String get roleEditor => 'محرر';
+
+  @override
+  String get columnEmail => 'البريد الإلكتروني';
+
+  @override
+  String get columnRole => 'الدور';
+
+  @override
+  String get columnLastLogin => 'آخر دخول';
+
+  @override
+  String get neverLoggedIn => 'لم يدخل بعد';
+
+  @override
+  String get userActive => 'نشط';
+
+  @override
+  String get userDisabled => 'موقوف';
+
+  @override
+  String get addUser => 'إضافة مستخدم';
+
+  @override
+  String get addUserTitle => 'إضافة مستخدم';
+
+  @override
+  String get userName => 'الاسم';
+
+  @override
+  String get userEmail => 'البريد الإلكتروني';
+
+  @override
+  String get userEmailHelp => 'يسجّل الدخول به.';
+
+  @override
+  String get userRole => 'الدور';
+
+  @override
+  String get userRoleHelp =>
+      'يستطيع المحرر الإضافة والتعديل، لكن لا يستطيع الحذف أو إدارة المستخدمين.';
+
+  @override
+  String get emailTaken => 'هذا البريد مسجّل لحساب آخر.';
+
+  @override
+  String get userCreatedTitle => 'أُضيف المستخدم';
+
+  @override
+  String userCreatedMessage(String name) {
+    return 'أعطِ هذه البيانات لـ $name. سيختار كلمة مروره عند أول دخول.';
+  }
+
+  @override
+  String get loginEmail => 'بريد الدخول';
+
+  @override
+  String get resetPassword => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get resetPasswordHint => 'إعطاؤه كلمة مرور مؤقتة جديدة';
+
+  @override
+  String resetPasswordTitle(String name) {
+    return 'إعادة تعيين كلمة مرور $name؟';
+  }
+
+  @override
+  String get resetPasswordMessage =>
+      'سيحصل على كلمة مرور مؤقتة جديدة ويُسجَّل خروجه من كل الأجهزة، وتتوقف كلمة مروره الحالية.';
+
+  @override
+  String get newPasswordTitle => 'كلمة مرور جديدة';
+
+  @override
+  String newPasswordMessage(String name) {
+    return 'أعطِ هذه البيانات لـ $name. سيختار كلمة مروره عند دخوله القادم.';
+  }
+
+  @override
+  String get disableUser => 'إيقاف المستخدم';
+
+  @override
+  String get disableUserHint => 'تسجيل خروجه ومنعه من الدخول';
+
+  @override
+  String get enableUser => 'تفعيل المستخدم';
+
+  @override
+  String disableUserTitle(String name) {
+    return 'إيقاف $name؟';
+  }
+
+  @override
+  String get disableUserMessage =>
+      'سيُسجَّل خروجه من كل الأجهزة ولن يستطيع الدخول حتى تفعّله مجدداً.';
+
+  @override
+  String get userDisabledDone => 'أُوقف المستخدم';
+
+  @override
+  String get userEnabledDone => 'فُعّل المستخدم';
 }

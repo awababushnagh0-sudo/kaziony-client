@@ -31,12 +31,20 @@ String? redirectFor({
     (_, SignedIn(:final user)) when user.mustChangePassword => keepingFrom(
       Routes.changePassword,
     ),
+    // An editor following an admin's link.
+    (_, SignedIn(:final user))
+        when user.role != AccountRole.admin && _adminOnly(location) =>
+      Routes.home,
     // Signed in: stay on dashboard pages, leave the entry pages.
     (_, SignedIn()) =>
       Routes.entry.contains(location) ? from ?? Routes.home : null,
   };
   return target == uri.toString() ? null : target;
 }
+
+bool _adminOnly(String location) => Routes.adminOnly.any(
+  (page) => location == page || location.startsWith('$page/'),
+);
 
 /// Only our own dashboard pages, never an entry page or another site.
 String? _safeFrom(String? from) {

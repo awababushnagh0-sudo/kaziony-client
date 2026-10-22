@@ -10,7 +10,7 @@
   "wrongCredentials": "Wrong email or password.",
   "accountDisabled": "This account is disabled.",
   "sessionExpired": "Your session ended. Please sign in again.",
-  "notAdminAccount": "This dashboard is for admin accounts only.",
+  "notAdminAccount": "This dashboard is for our team's accounts only.",
   "changePasswordTitle": "Choose a new password",
   "changePasswordSubtitle": "You're using a temporary password. Choose your own to continue.",
   "currentPasswordLabel": "Temporary password",
@@ -126,7 +126,7 @@
   "discardChangesTitle": "Discard your changes?",
   "discardChangesMessage": "Your changes haven't been saved. Leave without saving?",
   "discardChanges": "Discard",
-  "storeActions": "Actions",
+  "actions": "Actions",
   "disableStore": "Disable store",
   "disableStoreHint": "Hide it from customers",
   "enableStore": "Enable store",
@@ -201,5 +201,79 @@
       }
     }
   },
-  "done": "Done"
+  "done": "Done",
+  "usersTitle": "Users",
+  "usersTotal": "{count, plural, =1{1 user} other{{count} users}}",
+  "@usersTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "usersSearch": "Search by name or email",
+  "usersEmpty": "No users yet",
+  "usersEmptyMessage": "Add the people on your team who use this dashboard.",
+  "filterAdmins": "Admins",
+  "filterEditors": "Editors",
+  "roleAdmin": "Admin",
+  "roleEditor": "Editor",
+  "columnEmail": "Email",
+  "columnRole": "Role",
+  "columnLastLogin": "Last login",
+  "neverLoggedIn": "Never",
+  "userActive": "Active",
+  "userDisabled": "Disabled",
+  "addUser": "Add user",
+  "addUserTitle": "Add a user",
+  "userName": "Name",
+  "userEmail": "Email",
+  "userEmailHelp": "They log in with it.",
+  "userRole": "Role",
+  "userRoleHelp": "Editors can add and edit, but can't delete or manage users.",
+  "emailTaken": "This email already has an account.",
+  "userCreatedTitle": "User added",
+  "userCreatedMessage": "Give these details to {name}. They will choose their own password when they first log in.",
+  "@userCreatedMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "loginEmail": "Login email",
+  "resetPassword": "Reset password",
+  "resetPasswordHint": "Give them a new temporary password",
+  "resetPasswordTitle": "Reset {name}'s password?",
+  "@resetPasswordTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "resetPasswordMessage": "They'll get a new temporary password and be logged out everywhere. Their current password stops working.",
+  "newPasswordTitle": "New password",
+  "newPasswordMessage": "Give this to {name}. They will choose their own password when they next log in.",
+  "@newPasswordMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "disableUser": "Disable user",
+  "disableUserHint": "Log them out and stop them logging in",
+  "enableUser": "Enable user",
+  "disableUserTitle": "Disable {name}?",
+  "@disableUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "disableUserMessage": "They're logged out everywhere and can't log in until you enable them again.",
+  "userDisabledDone": "User disabled",
+  "userEnabledDone": "User enabled"
 }

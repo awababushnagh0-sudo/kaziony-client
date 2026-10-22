@@ -1,4 +1,5 @@
 import 'package:admin/core/l10n/generated/admin_localizations.dart';
+import 'package:admin/core/providers/access.dart';
 import 'package:admin/core/widgets/admin_shell.dart';
 import 'package:admin/core/widgets/coming_soon_screen.dart';
 import 'package:admin/features/auth/domain/auth_repository.dart';
@@ -11,9 +12,10 @@ import 'package:stellar/stellar.dart';
 
 import '../../fakes.dart';
 
-Widget harness(FakeDashboardRepository stats) => AppScope(
+Widget harness(FakeDashboardRepository stats, {bool admin = true}) => AppScope(
   overrides: [
     ...testOverrides(kind: AppKind.admin),
+    isAdminProvider.overrideWithValue(admin),
     authRepositoryProvider.overrideWithValue(FakeAuthRepository()),
     dashboardRepositoryProvider.overrideWithValue(stats),
   ],
@@ -107,5 +109,14 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('12'), findsOneWidget);
     expect(stats.calls, 2);
+  });
+
+  testWidgets("editors don't see the Users page in the menu", (tester) async {
+    setWindow(tester, 1280);
+    await tester.pumpWidget(harness(FakeDashboardRepository(), admin: false));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Users'), findsNothing);
+    expect(find.text('Offers'), findsWidgets);
   });
 }

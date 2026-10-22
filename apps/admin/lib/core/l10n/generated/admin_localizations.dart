@@ -161,7 +161,7 @@ abstract class AdminLocalizations {
   /// No description provided for @notAdminAccount.
   ///
   /// In en, this message translates to:
-  /// **'This dashboard is for admin accounts only.'**
+  /// **'This dashboard is for our team\'s accounts only.'**
   String get notAdminAccount;
 
   /// No description provided for @changePasswordTitle.
@@ -584,11 +584,11 @@ abstract class AdminLocalizations {
   /// **'Discard'**
   String get discardChanges;
 
-  /// No description provided for @storeActions.
+  /// No description provided for @actions.
   ///
   /// In en, this message translates to:
   /// **'Actions'**
-  String get storeActions;
+  String get actions;
 
   /// No description provided for @disableStore.
   ///
@@ -811,6 +811,240 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'Done'**
   String get done;
+
+  /// No description provided for @usersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
+  String get usersTitle;
+
+  /// No description provided for @usersTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 user} other{{count} users}}'**
+  String usersTotal(int count);
+
+  /// No description provided for @usersSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name or email'**
+  String get usersSearch;
+
+  /// No description provided for @usersEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No users yet'**
+  String get usersEmpty;
+
+  /// No description provided for @usersEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the people on your team who use this dashboard.'**
+  String get usersEmptyMessage;
+
+  /// No description provided for @filterAdmins.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins'**
+  String get filterAdmins;
+
+  /// No description provided for @filterEditors.
+  ///
+  /// In en, this message translates to:
+  /// **'Editors'**
+  String get filterEditors;
+
+  /// No description provided for @roleAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get roleAdmin;
+
+  /// No description provided for @roleEditor.
+  ///
+  /// In en, this message translates to:
+  /// **'Editor'**
+  String get roleEditor;
+
+  /// No description provided for @columnEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get columnEmail;
+
+  /// No description provided for @columnRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get columnRole;
+
+  /// No description provided for @columnLastLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Last login'**
+  String get columnLastLogin;
+
+  /// No description provided for @neverLoggedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get neverLoggedIn;
+
+  /// No description provided for @userActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get userActive;
+
+  /// No description provided for @userDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get userDisabled;
+
+  /// No description provided for @addUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Add user'**
+  String get addUser;
+
+  /// No description provided for @addUserTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a user'**
+  String get addUserTitle;
+
+  /// No description provided for @userName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get userName;
+
+  /// No description provided for @userEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get userEmail;
+
+  /// No description provided for @userEmailHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'They log in with it.'**
+  String get userEmailHelp;
+
+  /// No description provided for @userRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get userRole;
+
+  /// No description provided for @userRoleHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Editors can add and edit, but can\'t delete or manage users.'**
+  String get userRoleHelp;
+
+  /// No description provided for @emailTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'This email already has an account.'**
+  String get emailTaken;
+
+  /// No description provided for @userCreatedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'User added'**
+  String get userCreatedTitle;
+
+  /// No description provided for @userCreatedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Give these details to {name}. They will choose their own password when they first log in.'**
+  String userCreatedMessage(String name);
+
+  /// No description provided for @loginEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Login email'**
+  String get loginEmail;
+
+  /// No description provided for @resetPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset password'**
+  String get resetPassword;
+
+  /// No description provided for @resetPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Give them a new temporary password'**
+  String get resetPasswordHint;
+
+  /// No description provided for @resetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset {name}\'s password?'**
+  String resetPasswordTitle(String name);
+
+  /// No description provided for @resetPasswordMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'They\'ll get a new temporary password and be logged out everywhere. Their current password stops working.'**
+  String get resetPasswordMessage;
+
+  /// No description provided for @newPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get newPasswordTitle;
+
+  /// No description provided for @newPasswordMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Give this to {name}. They will choose their own password when they next log in.'**
+  String newPasswordMessage(String name);
+
+  /// No description provided for @disableUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable user'**
+  String get disableUser;
+
+  /// No description provided for @disableUserHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Log them out and stop them logging in'**
+  String get disableUserHint;
+
+  /// No description provided for @enableUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable user'**
+  String get enableUser;
+
+  /// No description provided for @disableUserTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable {name}?'**
+  String disableUserTitle(String name);
+
+  /// No description provided for @disableUserMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'They\'re logged out everywhere and can\'t log in until you enable them again.'**
+  String get disableUserMessage;
+
+  /// No description provided for @userDisabledDone.
+  ///
+  /// In en, this message translates to:
+  /// **'User disabled'**
+  String get userDisabledDone;
+
+  /// No description provided for @userEnabledDone.
+  ///
+  /// In en, this message translates to:
+  /// **'User enabled'**
+  String get userEnabledDone;
 }
 
 class _AdminLocalizationsDelegate

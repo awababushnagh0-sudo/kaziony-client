@@ -2,13 +2,15 @@ import 'package:admin/features/auth/domain/auth_repository.dart';
 import 'package:admin/features/dashboard/domain/dashboard_stats.dart';
 import 'package:admin/features/stores/domain/location.dart';
 import 'package:admin/features/stores/domain/store.dart';
+import 'package:admin/features/users/domain/dashboard_user.dart';
 import 'package:kernel/kernel.dart';
 
 SessionUser user({
+  String id = 'u1',
   AccountRole role = AccountRole.admin,
   bool mustChangePassword = false,
 }) => SessionUser(
-  id: 'u1',
+  id: id,
   role: role,
   name: 'Test Admin',
   phone: null,
@@ -17,6 +19,16 @@ SessionUser user({
   mustChangePassword: mustChangePassword,
   memberships: const [],
 );
+
+/// Signed in as [signedIn], without restoring a stored session.
+class FakeSession extends SessionController {
+  FakeSession(this.signedIn);
+
+  final SessionUser signedIn;
+
+  @override
+  SessionState build() => SignedIn(signedIn);
+}
 
 class FakeAuthRepository implements AuthRepository {
   Result<SessionUser> loginResult = Ok(user());
@@ -182,6 +194,118 @@ class FakeStoreRepository implements StoreRepository {
             storeName: store.name,
             ownerPhone: store.ownerPhone,
             temporaryPassword: 'Tmp-4821-xk',
+          ),
+        );
+  }
+}
+
+DashboardUser sampleUser(
+  int n, {
+  DashboardRole role = DashboardRole.editor,
+  bool active = true,
+}) => DashboardUser(
+  id: 'user-$n',
+  name: 'User $n',
+  email: 'user$n@offers.ly',
+  role: role,
+  isActive: active,
+  createdAt: DateTime.utc(2026, 10, n, 12),
+  lastLoginAt: n == 1 ? DateTime.utc(2026, 10, 20, 12) : null,
+);
+
+class FakeDashboardUserRepository implements DashboardUserRepository {
+  List<DashboardUser> users = [
+    sampleUser(1, role: DashboardRole.admin),
+    sampleUser(2, active: false),
+  ];
+  final queries = <DashboardUserQuery>[];
+  final created = <NewDashboardUser>[];
+  Result<CreatedDashboardUser>? createResult;
+  final opened = <String>[];
+  final updates = <(String, EditedDashboardUser)>[];
+  final activeChanges = <(String, bool)>[];
+  final resets = <String>[];
+
+  DashboardUser _find(String id) =>
+      users.firstWhere((user) => user.id == id, orElse: () => sampleUser(9));
+
+  @override
+  Future<Result<DashboardUser>> get(String id) async {
+    opened.add(id);
+    return Ok(_find(id));
+  }
+
+  @override
+  Future<Result<DashboardUser>> update(
+    String id,
+    EditedDashboardUser user,
+  ) async {
+    updates.add((id, user));
+    final saved = _find(id);
+    return Ok(
+      DashboardUser(
+        id: id,
+        name: user.name,
+        email: saved.email,
+        role: user.role,
+        isActive: saved.isActive,
+        createdAt: saved.createdAt,
+        lastLoginAt: saved.lastLoginAt,
+      ),
+    );
+  }
+
+  @override
+  Future<Result<DashboardUser>> setActive(
+    String id, {
+    required bool active,
+  }) async {
+    activeChanges.add((id, active));
+    final saved = _find(id);
+    return Ok(
+      DashboardUser(
+        id: id,
+        name: saved.name,
+        email: saved.email,
+        role: saved.role,
+        isActive: active,
+        createdAt: saved.createdAt,
+        lastLoginAt: saved.lastLoginAt,
+      ),
+    );
+  }
+
+  @override
+  Future<Result<String>> resetPassword(String id) async {
+    resets.add(id);
+    return const Ok('Tmp-5521-hw');
+  }
+
+  @override
+  Future<Result<DashboardUserPage>> list(DashboardUserQuery query) async {
+    queries.add(query);
+    final matching = [
+      for (final user in users)
+        if (query.filter == null || user.role == query.filter) user,
+    ];
+    return Ok(DashboardUserPage(items: matching, total: matching.length));
+  }
+
+  @override
+  Future<Result<CreatedDashboardUser>> create(NewDashboardUser user) async {
+    created.add(user);
+    return createResult ??
+        Ok(
+          CreatedDashboardUser(
+            user: DashboardUser(
+              id: 'new',
+              name: user.name,
+              email: user.email,
+              role: user.role,
+              isActive: true,
+              createdAt: DateTime.utc(2026, 10, 22, 12),
+            ),
+            temporaryPassword: 'Tmp-7310-qz',
           ),
         );
   }

@@ -2,6 +2,7 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/admin_localizations.dart';
+import '../../../core/providers/access.dart';
 import '../../../core/record/record_screen.dart';
 import '../../../core/routes/routes.dart';
 import '../domain/store.dart';
@@ -99,6 +100,7 @@ class _StoreDetailsScreenState extends AppViewState<StoreDetailsScreen> {
         _ActionsMenu(
           store: store,
           busy: _busy,
+          canDelete: ref.watch(isAdminProvider),
           onSetActive: (active) => _setActive(store, active: active),
           onDelete: () => _delete(store),
         ),
@@ -113,12 +115,16 @@ class _ActionsMenu extends StatelessWidget {
   const _ActionsMenu({
     required this.store,
     required this.busy,
+    required this.canDelete,
     required this.onSetActive,
     required this.onDelete,
   });
 
   final StoreDetails store;
   final bool busy;
+
+  /// Only admins delete stores.
+  final bool canDelete;
   final ValueChanged<bool> onSetActive;
   final VoidCallback onDelete;
 
@@ -141,17 +147,19 @@ class _ActionsMenu extends StatelessWidget {
             icon: SIcons.enable,
             onTap: () => onSetActive(true),
           ),
-        null,
-        MenuEntry(
-          label: s.deleteStore,
-          description: s.deleteStoreHint,
-          icon: SIcons.delete,
-          destructive: true,
-          onTap: onDelete,
-        ),
+        if (canDelete) ...[
+          null,
+          MenuEntry(
+            label: s.deleteStore,
+            description: s.deleteStoreHint,
+            icon: SIcons.delete,
+            destructive: true,
+            onTap: onDelete,
+          ),
+        ],
       ],
       builder: (context, toggle) =>
-          SButton.menu(label: s.storeActions, onPressed: busy ? null : toggle),
+          SButton.menu(label: s.actions, onPressed: busy ? null : toggle),
     );
   }
 }

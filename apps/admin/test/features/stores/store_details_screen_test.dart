@@ -1,4 +1,5 @@
 import 'package:admin/core/l10n/generated/admin_localizations.dart';
+import 'package:admin/core/providers/access.dart';
 import 'package:admin/features/stores/domain/store.dart';
 import 'package:admin/features/stores/presentation/store_details_screen.dart';
 import 'package:admin/features/stores/presentation/stores_screen.dart';
@@ -10,37 +11,41 @@ import 'package:stellar/stellar.dart';
 import '../../fakes.dart';
 
 /// The stores list with a store's page on top of it, as in the app.
-Widget harness(FakeStoreRepository stores, {String at = '/stores/store-1'}) =>
-    AppScope(
-      overrides: [
-        ...testOverrides(kind: AppKind.admin),
-        storeRepositoryProvider.overrideWithValue(stores),
-        localeProvider.overrideWith(EnglishLocale.new),
-      ],
-      child: SApp(
-        routerConfig: GoRouter(
-          initialLocation: at,
+Widget harness(
+  FakeStoreRepository stores, {
+  String at = '/stores/store-1',
+  bool admin = true,
+}) => AppScope(
+  overrides: [
+    ...testOverrides(kind: AppKind.admin),
+    isAdminProvider.overrideWithValue(admin),
+    storeRepositoryProvider.overrideWithValue(stores),
+    localeProvider.overrideWith(EnglishLocale.new),
+  ],
+  child: SApp(
+    routerConfig: GoRouter(
+      initialLocation: at,
+      routes: [
+        GoRoute(
+          path: '/stores',
+          builder: (_, _) => const StoresScreen(),
           routes: [
             GoRoute(
-              path: '/stores',
-              builder: (_, _) => const StoresScreen(),
-              routes: [
-                GoRoute(
-                  path: ':id',
-                  onExit: LeaveGuard.onExit,
-                  builder: (_, state) =>
-                      StoreDetailsScreen(storeId: state.pathParameters['id']!),
-                ),
-              ],
+              path: ':id',
+              onExit: LeaveGuard.onExit,
+              builder: (_, state) =>
+                  StoreDetailsScreen(storeId: state.pathParameters['id']!),
             ),
           ],
         ),
-        locale: const Locale('en'),
-        density: StellarDensity.compact,
-        onGenerateTitle: (_) => 'test',
-        localizationsDelegates: const [AdminLocalizations.delegate],
-      ),
-    );
+      ],
+    ),
+    locale: const Locale('en'),
+    density: StellarDensity.compact,
+    onGenerateTitle: (_) => 'test',
+    localizationsDelegates: const [AdminLocalizations.delegate],
+  ),
+);
 
 void setWindow(WidgetTester tester) {
   tester.view
@@ -317,5 +322,16 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(StoreDetailsScreen), findsNothing);
     expect(find.text('Store 1'), findsOneWidget);
+  });
+
+  testWidgets('editors can disable a store but not delete it', (tester) async {
+    setWindow(tester);
+    await tester.pumpWidget(harness(FakeStoreRepository(), admin: false));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Actions'));
+    await tester.pumpAndSettle();
+    expect(find.text('Disable store'), findsOneWidget);
+    expect(find.text('Delete store'), findsNothing);
   });
 }

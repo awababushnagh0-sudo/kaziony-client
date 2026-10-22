@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../features/auth/domain/auth_repository.dart';
 import '../l10n/generated/admin_localizations.dart';
+import '../providers/access.dart';
 import '../routes/routes.dart';
 import '../utils/language.dart';
 
@@ -34,7 +35,8 @@ class AdminShell extends AppView {
       items: [
         item(Routes.home, s.navHome, SIcons.home),
         item(Routes.stores, s.navStores, SIcons.store),
-        item(Routes.users, s.navUsers, SIcons.users),
+        if (ref.watch(isAdminProvider))
+          item(Routes.users, s.navUsers, SIcons.users),
         item(Routes.offers, s.navOffers, SIcons.offers),
         item(Routes.categories, s.navCategories, SIcons.category),
       ],

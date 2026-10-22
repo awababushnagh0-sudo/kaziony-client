@@ -140,9 +140,20 @@ void main() {
 
     await fillIn(tester, 'owner@example.com', 'Merchant123!');
     expect(
-      find.text('This dashboard is for admin accounts only.'),
+      find.text("This dashboard is for our team's accounts only."),
       findsOneWidget,
     );
     expect(auth.logouts, 1);
+  });
+
+  testWidgets('lets editors in', (tester) async {
+    final auth = FakeAuthRepository()
+      ..loginResult = Ok(user(role: AccountRole.editor));
+    await tester.pumpWidget(harness(auth, locale: const Locale('en')));
+    await tester.pumpAndSettle();
+
+    await fillIn(tester, 'editor@offers.local', 'Editor12345!');
+    expect(auth.logins, [('editor@offers.local', 'Editor12345!')]);
+    expect(auth.logouts, 0);
   });
 }

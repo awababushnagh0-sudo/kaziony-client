@@ -125,7 +125,7 @@ buttons that can't submit twice, and friendly error messages.
 
 ## Step 5: Admin dashboard (Flutter Web)
 
-- [x] Login (email + password, admins only), forced change of a temporary password
+- [x] Login (email + password, admins and editors), forced change of a temporary password
 - [x] Side menu layout (fixed on wide windows, drawer on narrow ones), clean URLs
 - [x] Home: stats (stores, live offers, customers, claims)
 - [x] Shared look for all apps: neutral Frappe-style theme, labels above fields,
@@ -136,8 +136,12 @@ buttons that can't submit twice, and friendly error messages.
 - [x] Stores: list with search, status filter and pages; create (store, first branch with
       location from a Google Maps link, owner) showing the temporary password once
 - [x] Reloading or opening a link to a page lands back on it after signing in
-- [ ] Stores: store page (edit, disable, branches, staff, reset owner password)
-- [ ] Users: search, disable/enable, reset password
+- [x] Stores: store page with its fields edited in place (Not saved / Save), disable, delete
+- [ ] Stores: branches, staff, reset owner password
+- [x] Users (admins only): our team with search and a role filter; add an admin or editor,
+      showing the temporary password once. Editors don't see Users or delete stores
+- [x] Users: a user's page (rename, change role, reset password, disable/enable); admins
+      can't change their own role or disable themselves
 - [ ] Categories, offer moderation
 
 ## Later

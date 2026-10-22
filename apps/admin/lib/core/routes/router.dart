@@ -6,6 +6,8 @@ import '../../features/auth/presentation/login/login_screen.dart';
 import '../../features/dashboard/presentation/dashboard_screen.dart';
 import '../../features/stores/presentation/store_details_screen.dart';
 import '../../features/stores/presentation/stores_screen.dart';
+import '../../features/users/presentation/user_details_screen.dart';
+import '../../features/users/presentation/users_screen.dart';
 import '../l10n/generated/admin_localizations.dart';
 import '../widgets/admin_shell.dart';
 import '../widgets/coming_soon_screen.dart';
@@ -69,11 +71,17 @@ final routerProvider = Provider<GoRouter>((ref) {
               ),
             ],
           ),
+          // Like a store, a user opens on top of the list.
           page(
             Routes.users,
-            (context, _) => ComingSoonScreen(
-              title: AdminLocalizations.of(context).navUsers,
-            ),
+            (_, _) => const UsersScreen(),
+            routes: [
+              page(
+                ':id',
+                (_, state) =>
+                    UserDetailsScreen(userId: state.pathParameters['id']!),
+              ),
+            ],
           ),
           page(
             Routes.offers,
