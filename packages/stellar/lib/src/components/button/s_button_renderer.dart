@@ -27,6 +27,7 @@ class ButtonSpec {
 
   /// Fill the available width.
   final bool expand;
+
   /// Drawn after the label, on the same side for every button (the left in
   /// Arabic), as ERPNext does.
   final SIcons? icon;

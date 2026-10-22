@@ -10,6 +10,7 @@ import '../components/menu/s_menu_material.dart';
 import '../components/pill/s_pill_material.dart';
 import '../components/record_page/s_record_page_material.dart';
 import '../components/scaffold/s_scaffold_material.dart';
+import '../components/settings/s_settings_material.dart';
 import '../components/shell/s_shell_material.dart';
 import '../components/snack/s_snack_material.dart';
 import '../components/status/s_status_material.dart';
@@ -37,4 +38,5 @@ const materialKit = StellarKit(
   pill: MaterialPillRenderer(),
   dialog: MaterialDialogRenderer(),
   menu: MaterialMenuRenderer(),
+  settings: MaterialSettingsRenderer(),
 );

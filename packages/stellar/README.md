@@ -33,6 +33,7 @@ lib/src/
 | `table` | `STable`, `TableColumn`, `SCellText` |
 | `list_page` | `SListPage`, `SFilterBar`, `SPager` |
 | `record_page` | `SRecordPage` (tabs + side panel), `RecordTab`, `SRecordProfile`, `SRecordFacts` |
+| `settings` | `SSettingsDialog` (page list + pages), `SettingsPage`, `SSettingsGroup`, `SOptionGrid`, `SOptionCard` (a window preview, light/dark) |
 | `badge`, `pill` | `SBadge`, `SPill` |
 | `dialog` | `SDialog`, `SDialog.show`, `.confirm` |
 | `menu` | `SMenuButton`, `MenuEntry` |

@@ -12,6 +12,7 @@ import '../components/menu/s_menu_renderer.dart';
 import '../components/pill/s_pill_renderer.dart';
 import '../components/record_page/s_record_page_renderer.dart';
 import '../components/scaffold/s_scaffold_renderer.dart';
+import '../components/settings/s_settings_renderer.dart';
 import '../components/shell/s_shell_renderer.dart';
 import '../components/snack/s_snack_renderer.dart';
 import '../components/status/s_status_renderer.dart';
@@ -41,6 +42,7 @@ class StellarKit {
     required this.pill,
     required this.dialog,
     required this.menu,
+    required this.settings,
   });
 
   final ButtonRenderer button;
@@ -60,6 +62,7 @@ class StellarKit {
   final PillRenderer pill;
   final DialogRenderer dialog;
   final MenuRenderer menu;
+  final SettingsRenderer settings;
 
   static StellarKit of(BuildContext context) => StellarScope.of(context).kit;
 }

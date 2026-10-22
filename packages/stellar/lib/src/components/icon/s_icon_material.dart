@@ -77,6 +77,11 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // settings
+  SIcons.appearance => const IconData(
+    0xe178,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // sun
   SIcons.language => const IconData(
     0xe0fe,
     fontFamily: _f,

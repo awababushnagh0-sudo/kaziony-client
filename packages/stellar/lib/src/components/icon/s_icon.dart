@@ -17,6 +17,9 @@ enum SIcons {
   phone,
   key,
   settings,
+
+  /// Light or dark: the theme settings.
+  appearance,
   language,
   lock,
   show,

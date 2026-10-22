@@ -149,6 +149,14 @@ const darkColors = StellarColors(
   link: Color(0xFF52B0FF),
 );
 
+/// The red, yellow and green dots of a Mac window, in the small window
+/// pictures of the theme and language settings.
+const windowDotColors = [
+  Color(0xFFFF5F57),
+  Color(0xFFFEBC2E),
+  Color(0xFF28C840),
+];
+
 /// The font of every app: IBM Plex Sans Arabic, bundled in stellar.
 const stellarFont = 'packages/stellar/IBMPlexSansArabic';
 
