@@ -69,6 +69,7 @@ class STextInput extends StatelessWidget {
           ValidationMessage.email: (_) => strings.validationEmail,
           ValidationMessage.mustMatch: (_) => strings.validationMustMatch,
           SValidators.libyanPhoneKey: (_) => strings.validationPhone,
+          SValidators.urlKey: (_) => strings.validationUrl,
           ...validationMessages,
         },
       ),

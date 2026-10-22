@@ -36,6 +36,7 @@
   },
   "validationPhone": "Enter a Libyan mobile number, e.g. 0912345678",
   "validationEmail": "Enter a valid email",
+  "validationUrl": "Enter a valid link starting with https://",
   "validationMustMatch": "Doesn't match",
   "updateRequiredTitle": "Update required",
   "updateRequiredMessage": "This version of the app is no longer supported. Update it from the store to continue.",

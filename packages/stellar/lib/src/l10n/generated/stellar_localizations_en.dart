@@ -83,6 +83,9 @@ class StellarLocalizationsEn extends StellarLocalizations {
   String get validationEmail => 'Enter a valid email';
 
   @override
+  String get validationUrl => 'Enter a valid link starting with https://';
+
+  @override
   String get validationMustMatch => 'Doesn\'t match';
 
   @override

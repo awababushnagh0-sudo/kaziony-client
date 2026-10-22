@@ -22,6 +22,7 @@
   "validationMaxLength": "{count} حرفاً كحد أقصى",
   "validationPhone": "أدخل رقم هاتف ليبي، مثل 0912345678",
   "validationEmail": "أدخل بريداً إلكترونياً صحيحاً",
+  "validationUrl": "أدخل رابطاً صحيحاً يبدأ بـ https://",
   "validationMustMatch": "غير متطابق",
   "updateRequiredTitle": "يلزم التحديث",
   "updateRequiredMessage": "هذا الإصدار من التطبيق لم يعد مدعوماً. حدّثه من المتجر للمتابعة.",

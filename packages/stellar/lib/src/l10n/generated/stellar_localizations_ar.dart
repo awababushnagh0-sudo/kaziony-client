@@ -80,6 +80,9 @@ class StellarLocalizationsAr extends StellarLocalizations {
   String get validationEmail => 'أدخل بريداً إلكترونياً صحيحاً';
 
   @override
+  String get validationUrl => 'أدخل رابطاً صحيحاً يبدأ بـ https://';
+
+  @override
   String get validationMustMatch => 'غير متطابق';
 
   @override

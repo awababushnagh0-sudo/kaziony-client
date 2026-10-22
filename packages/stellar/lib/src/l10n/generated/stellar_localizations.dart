@@ -233,6 +233,12 @@ abstract class StellarLocalizations {
   /// **'Enter a valid email'**
   String get validationEmail;
 
+  /// No description provided for @validationUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid link starting with https://'**
+  String get validationUrl;
+
   /// No description provided for @validationMustMatch.
   ///
   /// In en, this message translates to:
