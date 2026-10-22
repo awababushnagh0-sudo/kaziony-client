@@ -107,7 +107,12 @@ class _RecordPageState extends State<_RecordPage> {
           );
     final content = Padding(
       padding: const EdgeInsets.all(Space.xl),
-      child: spec.tabs[selected].child,
+      // A fresh subtree per tab: fields in the same spot on two tabs must not
+      // share their state (a text field would keep the other one's text).
+      child: KeyedSubtree(
+        key: ValueKey(selected),
+        child: spec.tabs[selected].child,
+      ),
     );
     final sidePanel = spec.sidebar.isEmpty
         ? null
