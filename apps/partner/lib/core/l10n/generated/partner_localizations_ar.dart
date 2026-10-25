@@ -13,9 +13,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get appTitle => 'عروض للمتاجر';
 
   @override
-  String get switchLanguage => 'English';
-
-  @override
   String get loginTitle => 'دخول المتجر';
 
   @override
@@ -72,19 +69,17 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get logout => 'تسجيل الخروج';
 
   @override
-  String get branchesTitle => 'الفروع';
+  String get homeTitle => 'الرئيسية';
 
   @override
-  String get storeActive => 'مفعّل';
+  String get profileTitle => 'حسابي';
 
   @override
-  String get storeDisabled => 'موقوف. تواصل معنا لإعادة تفعيله.';
+  String get chooseStoreTitle => 'اختر المتجر';
 
   @override
-  String get branchClosed => 'مغلق';
-
-  @override
-  String get cityTripoli => 'طرابلس';
+  String get chooseStoreSubtitle =>
+      'تعمل في أكثر من متجر. يمكنك التبديل لاحقًا من حسابك.';
 
   @override
   String get ownerRole => 'مالك';
@@ -93,11 +88,84 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get staffRole => 'موظف';
 
   @override
-  String get noStoreTitle => 'لا يوجد متجر مرتبط بهذا الحساب';
+  String get switchStore => 'تبديل المتجر';
 
   @override
-  String get noStoreMessage => 'تواصل مع فريقنا لإعداد متجرك.';
+  String get noStoreTitle => 'لا يوجد متجر بعد';
 
   @override
-  String get comingNext => 'المنتجات والعروض في الخطوة القادمة.';
+  String get noStoreMessage =>
+      'هذا الحساب غير مرتبط بأي متجر. تواصل مع فريقنا لإعداده.';
+
+  @override
+  String get storeSection => 'المتجر';
+
+  @override
+  String get storeInfoTitle => 'معلومات المتجر';
+
+  @override
+  String get storeInfoHint => 'يرى الزبائن هذه المعلومات في صفحة متجرك.';
+
+  @override
+  String get branchesTitle => 'الفروع';
+
+  @override
+  String get teamTitle => 'الفريق';
+
+  @override
+  String get teamHint => 'لإضافة شخص أو إزالته، تواصل مع فريقنا.';
+
+  @override
+  String get accountSection => 'الحساب';
+
+  @override
+  String get changePasswordAction => 'تغيير كلمة المرور';
+
+  @override
+  String get appSection => 'التطبيق';
+
+  @override
+  String get versionLabel => 'الإصدار';
+
+  @override
+  String get categoryLabel => 'الفئة';
+
+  @override
+  String get descriptionLabel => 'الوصف';
+
+  @override
+  String get emailLabel => 'البريد الإلكتروني';
+
+  @override
+  String get facebookLabel => 'فيسبوك';
+
+  @override
+  String get instagramLabel => 'إنستغرام';
+
+  @override
+  String get notSet => 'غير محدد';
+
+  @override
+  String get edit => 'تعديل';
+
+  @override
+  String get save => 'حفظ';
+
+  @override
+  String get saved => 'تم الحفظ.';
+
+  @override
+  String get inactive => 'متوقف';
+
+  @override
+  String get allBranches => 'كل الفروع';
+
+  @override
+  String get cityTripoli => 'طرابلس';
+
+  @override
+  String get oldPasswordLabel => 'كلمة المرور الحالية';
+
+  @override
+  String get wrongOldPassword => 'كلمة المرور الحالية غير صحيحة.';
 }

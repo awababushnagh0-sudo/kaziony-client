@@ -1,11 +1,23 @@
 import 'package:kernel/kernel.dart';
 
+import '../../features/store/domain/current_store.dart';
 import 'routes.dart';
 
-/// Where the user must be, given the session and the version check.
-/// Null means "stay where you are".
+/// Screens shown before the tabs. Once in a store, the user leaves them.
+const _entryScreens = {
+  Routes.splash,
+  Routes.update,
+  Routes.login,
+  Routes.changePassword,
+  Routes.chooseStore,
+  Routes.noStore,
+};
+
+/// Where the user must be, given the session, the store picked on this
+/// device and the version check. Null means "stay where you are".
 String? redirectFor({
   required SessionState session,
+  required AsyncValue<String?> chosenStore,
   required UpdateStatus update,
   required String location,
 }) {
@@ -15,16 +27,16 @@ String? redirectFor({
     (_, SignedOut()) => Routes.login,
     (_, SignedIn(:final user)) when user.mustChangePassword =>
       Routes.changePassword,
-    // Signed in: stay on app screens, leave the entry screens.
-    (_, SignedIn()) =>
-      const {
-            Routes.splash,
-            Routes.update,
-            Routes.login,
-            Routes.changePassword,
-          }.contains(location)
-          ? Routes.home
-          : null,
+    (_, SignedIn(:final user)) => switch (storeAccessFor(
+      user.memberships,
+      chosenStore,
+    )) {
+      StoreAccessLoading() => Routes.splash,
+      NoStore() => Routes.noStore,
+      MustChooseStore() => Routes.chooseStore,
+      // In a store: stay on app screens, leave the entry screens.
+      InStore() => _entryScreens.contains(location) ? Routes.home : null,
+    },
   };
   return target == location ? null : target;
 }

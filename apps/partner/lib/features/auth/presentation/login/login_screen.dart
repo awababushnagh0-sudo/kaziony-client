@@ -2,7 +2,6 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../../core/l10n/generated/partner_localizations.dart';
-import '../../../../core/widgets/language_button.dart';
 import 'login_view_model.dart';
 
 class LoginScreen extends AppView {
@@ -27,23 +26,19 @@ class LoginScreen extends AppView {
       _ => null,
     };
 
-    return SScaffold(
-      actions: const [LanguageButton()],
-      scrollable: true,
-      body: SForm(
+    return SAuthPage(
+      title: s.loginTitle,
+      subtitle: s.loginSubtitle,
+      actions: const [SLanguageButton()],
+      child: SForm(
         form: viewModel.form,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Gap(Space.xl),
-            SText.display(s.loginTitle),
-            const Gap(Space.sm),
-            SText(s.loginSubtitle, color: SColor.textMuted),
-            const Gap(Space.xxl),
             STextInput(
               controlName: 'phone',
               label: s.phoneLabel,
-              hint: '0912345678',
+              hint: '091-000-000',
               kind: TextInputKind.phone,
               autofillHints: const ['telephoneNumber'],
             ),

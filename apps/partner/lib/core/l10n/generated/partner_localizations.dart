@@ -107,12 +107,6 @@ abstract class PartnerLocalizations {
   /// **'Offers for Stores'**
   String get appTitle;
 
-  /// No description provided for @switchLanguage.
-  ///
-  /// In en, this message translates to:
-  /// **'العربية'**
-  String get switchLanguage;
-
   /// No description provided for @loginTitle.
   ///
   /// In en, this message translates to:
@@ -221,35 +215,29 @@ abstract class PartnerLocalizations {
   /// **'Log out'**
   String get logout;
 
-  /// No description provided for @branchesTitle.
+  /// No description provided for @homeTitle.
   ///
   /// In en, this message translates to:
-  /// **'Branches'**
-  String get branchesTitle;
+  /// **'Home'**
+  String get homeTitle;
 
-  /// No description provided for @storeActive.
+  /// No description provided for @profileTitle.
   ///
   /// In en, this message translates to:
-  /// **'Active'**
-  String get storeActive;
+  /// **'Profile'**
+  String get profileTitle;
 
-  /// No description provided for @storeDisabled.
+  /// No description provided for @chooseStoreTitle.
   ///
   /// In en, this message translates to:
-  /// **'Disabled. Contact us to re-enable it.'**
-  String get storeDisabled;
+  /// **'Choose a store'**
+  String get chooseStoreTitle;
 
-  /// No description provided for @branchClosed.
+  /// No description provided for @chooseStoreSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Closed'**
-  String get branchClosed;
-
-  /// No description provided for @cityTripoli.
-  ///
-  /// In en, this message translates to:
-  /// **'Tripoli'**
-  String get cityTripoli;
+  /// **'You work at more than one store. You can switch later from your profile.'**
+  String get chooseStoreSubtitle;
 
   /// No description provided for @ownerRole.
   ///
@@ -263,23 +251,167 @@ abstract class PartnerLocalizations {
   /// **'Staff'**
   String get staffRole;
 
+  /// No description provided for @switchStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch store'**
+  String get switchStore;
+
   /// No description provided for @noStoreTitle.
   ///
   /// In en, this message translates to:
-  /// **'No store is linked to this account'**
+  /// **'No store yet'**
   String get noStoreTitle;
 
   /// No description provided for @noStoreMessage.
   ///
   /// In en, this message translates to:
-  /// **'Contact our team to set up your store.'**
+  /// **'This account isn\'t linked to a store. Contact our team to set it up.'**
   String get noStoreMessage;
 
-  /// No description provided for @comingNext.
+  /// No description provided for @storeSection.
   ///
   /// In en, this message translates to:
-  /// **'Products and offers are coming next.'**
-  String get comingNext;
+  /// **'Store'**
+  String get storeSection;
+
+  /// No description provided for @storeInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Store info'**
+  String get storeInfoTitle;
+
+  /// No description provided for @storeInfoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers see this on your store\'s page.'**
+  String get storeInfoHint;
+
+  /// No description provided for @branchesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Branches'**
+  String get branchesTitle;
+
+  /// No description provided for @teamTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Team'**
+  String get teamTitle;
+
+  /// No description provided for @teamHint.
+  ///
+  /// In en, this message translates to:
+  /// **'To add or remove someone, contact our team.'**
+  String get teamHint;
+
+  /// No description provided for @accountSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get accountSection;
+
+  /// No description provided for @changePasswordAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get changePasswordAction;
+
+  /// No description provided for @appSection.
+  ///
+  /// In en, this message translates to:
+  /// **'App'**
+  String get appSection;
+
+  /// No description provided for @versionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get versionLabel;
+
+  /// No description provided for @categoryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get categoryLabel;
+
+  /// No description provided for @descriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get descriptionLabel;
+
+  /// No description provided for @emailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailLabel;
+
+  /// No description provided for @facebookLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Facebook'**
+  String get facebookLabel;
+
+  /// No description provided for @instagramLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Instagram'**
+  String get instagramLabel;
+
+  /// No description provided for @notSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get notSet;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved.'**
+  String get saved;
+
+  /// No description provided for @inactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get inactive;
+
+  /// No description provided for @allBranches.
+  ///
+  /// In en, this message translates to:
+  /// **'All branches'**
+  String get allBranches;
+
+  /// No description provided for @cityTripoli.
+  ///
+  /// In en, this message translates to:
+  /// **'Tripoli'**
+  String get cityTripoli;
+
+  /// No description provided for @oldPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get oldPasswordLabel;
+
+  /// No description provided for @wrongOldPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'The current password is wrong.'**
+  String get wrongOldPassword;
 }
 
 class _PartnerLocalizationsDelegate

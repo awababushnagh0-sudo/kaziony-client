@@ -6,11 +6,19 @@ import 'package:partner/core/routes/routes.dart';
 import '../../fakes.dart';
 
 void main() {
+  final inStore = SignedIn(user(memberships: [store('a')]));
+
   String? go(
     SessionState session,
     String location, {
+    AsyncValue<String?> chosenStore = const AsyncData(null),
     UpdateStatus update = UpdateStatus.upToDate,
-  }) => redirectFor(session: session, update: update, location: location);
+  }) => redirectFor(
+    session: session,
+    chosenStore: chosenStore,
+    update: update,
+    location: location,
+  );
 
   test('waits on the splash while the session is restored', () {
     expect(go(const SessionRestoring(), Routes.home), Routes.splash);
@@ -23,27 +31,62 @@ void main() {
   });
 
   test('forces a temporary password to be changed first', () {
-    final session = SignedIn(user(mustChangePassword: true));
+    final session = SignedIn(
+      user(mustChangePassword: true, memberships: [store('a')]),
+    );
     expect(go(session, Routes.home), Routes.changePassword);
     expect(go(session, Routes.changePassword), isNull);
   });
 
-  test('takes signed-in users from the entry screens to home', () {
+  test('takes members of one store from the entry screens to home', () {
+    expect(go(inStore, Routes.login), Routes.home);
+    expect(go(inStore, Routes.changePassword), Routes.home);
+    expect(go(inStore, Routes.chooseStore), Routes.home);
+    expect(go(inStore, Routes.home), isNull);
+    expect(go(inStore, Routes.profile), isNull);
+  });
+
+  test('sends accounts without a store to the no-store page', () {
     final session = SignedIn(user());
-    expect(go(session, Routes.login), Routes.home);
-    expect(go(session, Routes.changePassword), Routes.home);
-    expect(go(session, Routes.home), isNull);
+    expect(go(session, Routes.home), Routes.noStore);
+    expect(go(session, Routes.noStore), isNull);
+  });
+
+  group('members of several stores', () {
+    final session = SignedIn(user(memberships: [store('a'), store('b')]));
+
+    test('wait while the store picked on this device is read', () {
+      expect(
+        go(session, Routes.login, chosenStore: const AsyncLoading()),
+        Routes.splash,
+      );
+    });
+
+    test('choose a store first', () {
+      expect(go(session, Routes.home), Routes.chooseStore);
+      expect(go(session, Routes.chooseStore), isNull);
+    });
+
+    test('choose again when the picked store is no longer theirs', () {
+      expect(
+        go(session, Routes.home, chosenStore: const AsyncData('gone')),
+        Routes.chooseStore,
+      );
+    });
+
+    test('go home once a store is picked', () {
+      const chosen = AsyncData<String?>('b');
+      expect(go(session, Routes.chooseStore, chosenStore: chosen), Routes.home);
+      expect(go(session, Routes.home, chosenStore: chosen), isNull);
+    });
   });
 
   test('blocks everything when an update is required', () {
     expect(
-      go(SignedIn(user()), Routes.home, update: UpdateStatus.updateRequired),
+      go(inStore, Routes.home, update: UpdateStatus.updateRequired),
       Routes.update,
     );
     // Still checking (or offline): don't block.
-    expect(
-      go(SignedIn(user()), Routes.home, update: UpdateStatus.checking),
-      isNull,
-    );
+    expect(go(inStore, Routes.home, update: UpdateStatus.checking), isNull);
   });
 }

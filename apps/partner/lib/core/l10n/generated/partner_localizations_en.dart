@@ -13,9 +13,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get appTitle => 'Offers for Stores';
 
   @override
-  String get switchLanguage => 'العربية';
-
-  @override
   String get loginTitle => 'Store login';
 
   @override
@@ -72,19 +69,17 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get logout => 'Log out';
 
   @override
-  String get branchesTitle => 'Branches';
+  String get homeTitle => 'Home';
 
   @override
-  String get storeActive => 'Active';
+  String get profileTitle => 'Profile';
 
   @override
-  String get storeDisabled => 'Disabled. Contact us to re-enable it.';
+  String get chooseStoreTitle => 'Choose a store';
 
   @override
-  String get branchClosed => 'Closed';
-
-  @override
-  String get cityTripoli => 'Tripoli';
+  String get chooseStoreSubtitle =>
+      'You work at more than one store. You can switch later from your profile.';
 
   @override
   String get ownerRole => 'Owner';
@@ -93,11 +88,84 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get staffRole => 'Staff';
 
   @override
-  String get noStoreTitle => 'No store is linked to this account';
+  String get switchStore => 'Switch store';
 
   @override
-  String get noStoreMessage => 'Contact our team to set up your store.';
+  String get noStoreTitle => 'No store yet';
 
   @override
-  String get comingNext => 'Products and offers are coming next.';
+  String get noStoreMessage =>
+      'This account isn\'t linked to a store. Contact our team to set it up.';
+
+  @override
+  String get storeSection => 'Store';
+
+  @override
+  String get storeInfoTitle => 'Store info';
+
+  @override
+  String get storeInfoHint => 'Customers see this on your store\'s page.';
+
+  @override
+  String get branchesTitle => 'Branches';
+
+  @override
+  String get teamTitle => 'Team';
+
+  @override
+  String get teamHint => 'To add or remove someone, contact our team.';
+
+  @override
+  String get accountSection => 'Account';
+
+  @override
+  String get changePasswordAction => 'Change password';
+
+  @override
+  String get appSection => 'App';
+
+  @override
+  String get versionLabel => 'Version';
+
+  @override
+  String get categoryLabel => 'Category';
+
+  @override
+  String get descriptionLabel => 'Description';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get facebookLabel => 'Facebook';
+
+  @override
+  String get instagramLabel => 'Instagram';
+
+  @override
+  String get notSet => 'Not set';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get saved => 'Saved.';
+
+  @override
+  String get inactive => 'Inactive';
+
+  @override
+  String get allBranches => 'All branches';
+
+  @override
+  String get cityTripoli => 'Tripoli';
+
+  @override
+  String get oldPasswordLabel => 'Current password';
+
+  @override
+  String get wrongOldPassword => 'The current password is wrong.';
 }

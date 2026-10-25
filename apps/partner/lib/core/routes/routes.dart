@@ -5,4 +5,14 @@ abstract final class Routes {
   static const login = '/login';
   static const changePassword = '/change-password';
   static const home = '/home';
+  static const profile = '/profile';
+  static const chooseStore = '/choose-store';
+  static const noStore = '/no-store';
+
+  // Opened from Profile, over the tabs.
+  static const storeInfo = '/store-info';
+  static const editStoreInfo = '/store-info/edit';
+  static const branches = '/branches';
+  static const team = '/team';
+  static const password = '/password';
 }
