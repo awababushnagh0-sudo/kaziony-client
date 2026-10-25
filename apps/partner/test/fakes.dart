@@ -1,5 +1,6 @@
 import 'package:kernel/kernel.dart';
 import 'package:partner/features/auth/domain/auth_repository.dart';
+import 'package:partner/features/products/domain/product.dart';
 import 'package:partner/features/store/domain/store.dart';
 
 SessionUser user({
@@ -105,5 +106,87 @@ class FakeStoreRepository implements StoreRepository {
   ) async {
     updates.add(profile);
     return Ok(storeDetails(profile: profile));
+  }
+}
+
+Product product(String id, {String price = '8.000', bool isArchived = false}) =>
+    Product(
+      id: id,
+      title: 'Product $id',
+      description: null,
+      regularPrice: price,
+      imageUrl: null,
+      thumbUrl: null,
+      isArchived: isArchived,
+    );
+
+/// Serves [products] a page at a time, filtered like the API.
+class FakeProductRepository implements ProductRepository {
+  FakeProductRepository([List<Product>? products])
+    : products = products ?? [product('1'), product('2')];
+
+  final List<Product> products;
+  final listCalls = <({int page, String search, bool archived})>[];
+  final created = <ProductDraft>[];
+  final updated = <(String, ProductDraft)>[];
+  final archived = <(String, bool)>[];
+
+  /// The next list call fails with this, once.
+  AppFailure? failNextList;
+
+  @override
+  Future<Result<PageResult<Product>>> list(
+    String storeId, {
+    required int page,
+    required int pageSize,
+    String search = '',
+    bool archived = false,
+  }) async {
+    listCalls.add((page: page, search: search, archived: archived));
+    if (failNextList case final failure?) {
+      failNextList = null;
+      return Err(failure);
+    }
+    final matching = [
+      for (final product in products)
+        if (product.isArchived == archived && product.title.contains(search))
+          product,
+    ];
+    return Ok(
+      PageResult(
+        items: matching.skip((page - 1) * pageSize).take(pageSize).toList(),
+        total: matching.length,
+      ),
+    );
+  }
+
+  @override
+  Future<Result<Product>> get(String storeId, String productId) async =>
+      Ok(products.firstWhere((product) => product.id == productId));
+
+  @override
+  Future<Result<Product>> create(String storeId, ProductDraft draft) async {
+    created.add(draft);
+    return Ok(product('new', price: draft.regularPrice));
+  }
+
+  @override
+  Future<Result<Product>> update(
+    String storeId,
+    String productId,
+    ProductDraft draft,
+  ) async {
+    updated.add((productId, draft));
+    return Ok(product(productId, price: draft.regularPrice));
+  }
+
+  @override
+  Future<Result<Product>> setArchived(
+    String storeId,
+    String productId, {
+    required bool archived,
+  }) async {
+    this.archived.add((productId, archived));
+    return Ok(product(productId, isArchived: archived));
   }
 }

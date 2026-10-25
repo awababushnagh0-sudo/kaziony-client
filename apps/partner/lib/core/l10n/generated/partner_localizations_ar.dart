@@ -168,4 +168,58 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get wrongOldPassword => 'كلمة المرور الحالية غير صحيحة.';
+
+  @override
+  String get productsTitle => 'المنتجات';
+
+  @override
+  String get addProduct => 'إضافة منتج';
+
+  @override
+  String get newProductTitle => 'منتج جديد';
+
+  @override
+  String get editProductTitle => 'تعديل المنتج';
+
+  @override
+  String get searchProducts => 'ابحث في المنتجات';
+
+  @override
+  String get currentProducts => 'الحالية';
+
+  @override
+  String get archivedProducts => 'المؤرشفة';
+
+  @override
+  String get noProductsTitle => 'لا توجد منتجات بعد';
+
+  @override
+  String get noProductsMessage => 'أضف ما تبيعه، ثم انشر عروضك منه في ثوانٍ.';
+
+  @override
+  String get noProductsMatch => 'لا توجد منتجات مطابقة لبحثك.';
+
+  @override
+  String get noArchivedProducts => 'لا توجد منتجات مؤرشفة.';
+
+  @override
+  String get productTitleLabel => 'الاسم';
+
+  @override
+  String get regularPriceLabel => 'السعر العادي';
+
+  @override
+  String get regularPriceHelper => 'السعر المعتاد قبل أي عرض.';
+
+  @override
+  String get archiveProduct => 'أرشفة';
+
+  @override
+  String get restoreProduct => 'استعادة';
+
+  @override
+  String get productArchived => 'تمت الأرشفة.';
+
+  @override
+  String get productRestored => 'تمت الاستعادة.';
 }

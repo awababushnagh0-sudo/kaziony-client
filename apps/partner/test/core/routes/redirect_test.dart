@@ -46,6 +46,15 @@ void main() {
     expect(go(inStore, Routes.profile), isNull);
   });
 
+  test('keeps staff out of the owner-only pages', () {
+    final staff = SignedIn(user(memberships: [store('a', isOwner: false)]));
+    expect(go(staff, Routes.products), Routes.home);
+    expect(go(staff, Routes.product('p1')), Routes.home);
+    expect(go(staff, Routes.newProduct), Routes.home);
+    expect(go(inStore, Routes.products), isNull);
+    expect(go(inStore, Routes.product('p1')), isNull);
+  });
+
   test('sends accounts without a store to the no-store page', () {
     final session = SignedIn(user());
     expect(go(session, Routes.home), Routes.noStore);

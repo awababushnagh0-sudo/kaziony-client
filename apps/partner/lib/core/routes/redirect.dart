@@ -35,7 +35,11 @@ String? redirectFor({
       NoStore() => Routes.noStore,
       MustChooseStore() => Routes.chooseStore,
       // In a store: stay on app screens, leave the entry screens.
-      InStore() => _entryScreens.contains(location) ? Routes.home : null,
+      InStore(:final store) =>
+        _entryScreens.contains(location) ||
+                (!store.isOwner && Routes.ownerOnly(location))
+            ? Routes.home
+            : null,
     },
   };
   return target == location ? null : target;

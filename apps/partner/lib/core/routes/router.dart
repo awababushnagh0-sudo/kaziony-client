@@ -4,6 +4,8 @@ import 'package:stellar/stellar.dart';
 import '../../features/auth/presentation/change_password/change_password_screen.dart';
 import '../../features/auth/presentation/login/login_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
+import '../../features/products/presentation/product_form_screen.dart';
+import '../../features/products/presentation/products_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/store/domain/current_store.dart';
 import '../../features/store/presentation/branches_screen.dart';
@@ -69,12 +71,31 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.password,
         builder: (_, _) => const ChangePasswordScreen(temporary: false),
       ),
+      // Before the product's page, so "new" isn't taken for an id.
+      GoRoute(
+        path: Routes.newProduct,
+        builder: (_, _) => const ProductFormScreen(),
+      ),
+      GoRoute(
+        path: Routes.product(':productId'),
+        builder: (_, state) =>
+            ProductFormScreen(productId: state.pathParameters['productId']),
+      ),
+      // One branch per [PartnerTab], in its order.
       StatefulShellRoute.indexedStack(
         builder: (_, _, shell) => PartnerShell(shell: shell),
         branches: [
           StatefulShellBranch(
             routes: [
               GoRoute(path: Routes.home, builder: (_, _) => const HomeScreen()),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: Routes.products,
+                builder: (_, _) => const ProductsScreen(),
+              ),
             ],
           ),
           StatefulShellBranch(

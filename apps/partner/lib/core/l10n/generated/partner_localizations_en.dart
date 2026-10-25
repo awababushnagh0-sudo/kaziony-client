@@ -168,4 +168,59 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get wrongOldPassword => 'The current password is wrong.';
+
+  @override
+  String get productsTitle => 'Products';
+
+  @override
+  String get addProduct => 'Add product';
+
+  @override
+  String get newProductTitle => 'New product';
+
+  @override
+  String get editProductTitle => 'Edit product';
+
+  @override
+  String get searchProducts => 'Search products';
+
+  @override
+  String get currentProducts => 'Current';
+
+  @override
+  String get archivedProducts => 'Archived';
+
+  @override
+  String get noProductsTitle => 'No products yet';
+
+  @override
+  String get noProductsMessage =>
+      'Add what you sell, then post offers from it in seconds.';
+
+  @override
+  String get noProductsMatch => 'No products match your search.';
+
+  @override
+  String get noArchivedProducts => 'No archived products.';
+
+  @override
+  String get productTitleLabel => 'Name';
+
+  @override
+  String get regularPriceLabel => 'Regular price';
+
+  @override
+  String get regularPriceHelper => 'The usual price, before any offer.';
+
+  @override
+  String get archiveProduct => 'Archive';
+
+  @override
+  String get restoreProduct => 'Restore';
+
+  @override
+  String get productArchived => 'Archived.';
+
+  @override
+  String get productRestored => 'Restored.';
 }

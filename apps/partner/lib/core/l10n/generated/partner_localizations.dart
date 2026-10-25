@@ -412,6 +412,114 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'The current password is wrong.'**
   String get wrongOldPassword;
+
+  /// No description provided for @productsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Products'**
+  String get productsTitle;
+
+  /// No description provided for @addProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Add product'**
+  String get addProduct;
+
+  /// No description provided for @newProductTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New product'**
+  String get newProductTitle;
+
+  /// No description provided for @editProductTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit product'**
+  String get editProductTitle;
+
+  /// No description provided for @searchProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Search products'**
+  String get searchProducts;
+
+  /// No description provided for @currentProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Current'**
+  String get currentProducts;
+
+  /// No description provided for @archivedProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived'**
+  String get archivedProducts;
+
+  /// No description provided for @noProductsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No products yet'**
+  String get noProductsTitle;
+
+  /// No description provided for @noProductsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add what you sell, then post offers from it in seconds.'**
+  String get noProductsMessage;
+
+  /// No description provided for @noProductsMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No products match your search.'**
+  String get noProductsMatch;
+
+  /// No description provided for @noArchivedProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'No archived products.'**
+  String get noArchivedProducts;
+
+  /// No description provided for @productTitleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get productTitleLabel;
+
+  /// No description provided for @regularPriceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Regular price'**
+  String get regularPriceLabel;
+
+  /// No description provided for @regularPriceHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'The usual price, before any offer.'**
+  String get regularPriceHelper;
+
+  /// No description provided for @archiveProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get archiveProduct;
+
+  /// No description provided for @restoreProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get restoreProduct;
+
+  /// No description provided for @productArchived.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived.'**
+  String get productArchived;
+
+  /// No description provided for @productRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored.'**
+  String get productRestored;
 }
 
 class _PartnerLocalizationsDelegate
