@@ -20,7 +20,7 @@ class Harness extends AppView {
     routerConfig: router,
     locale: ref.watch(localeProvider),
     theme: ref.watch(themeChoiceProvider),
-    density: StellarDensity.compact,
+    style: StellarStyle.dashboard,
     onGenerateTitle: (_) => 'test',
     localizationsDelegates: const [AdminLocalizations.delegate],
   );

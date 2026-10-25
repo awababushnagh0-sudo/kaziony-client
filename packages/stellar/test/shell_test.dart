@@ -33,7 +33,7 @@ void main() {
           ],
         ),
         locale: const Locale('en'),
-        density: StellarDensity.compact,
+        style: StellarStyle.dashboard,
         onGenerateTitle: (_) => 'test',
       ),
     );

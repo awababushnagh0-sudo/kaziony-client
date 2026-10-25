@@ -83,10 +83,40 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontPackage: _p,
   ), // sun
   SIcons.language => const IconData(
-    0xe0fe,
+    0xe0e8,
     fontFamily: _f,
     fontPackage: _p,
-  ), // languages
+  ), // globe
+  SIcons.info => const IconData(
+    0xe0f9,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // info
+  SIcons.device => const IconData(
+    0xe163,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // smartphone
+  SIcons.products => const IconData(
+    0xe129,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // package
+  SIcons.image => const IconData(
+    0xe0f6,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // image
+  SIcons.archive => const IconData(
+    0xe041,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // archive
+  SIcons.restore => const IconData(
+    0xe2cd,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // archive-restore
   SIcons.lock => const IconData(
     0xe10b,
     fontFamily: _f,

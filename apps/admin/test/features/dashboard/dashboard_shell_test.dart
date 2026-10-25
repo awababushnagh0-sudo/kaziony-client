@@ -42,7 +42,7 @@ Widget harness(FakeDashboardRepository stats, {bool admin = true}) => AppScope(
       ],
     ),
     locale: const Locale('en'),
-    density: StellarDensity.compact,
+    style: StellarStyle.dashboard,
     onGenerateTitle: (_) => 'test',
     localizationsDelegates: const [AdminLocalizations.delegate],
   ),

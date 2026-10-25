@@ -19,7 +19,7 @@ Widget harness(FakeAuthRepository auth, {Locale locale = const Locale('ar')}) =>
           routes: [GoRoute(path: '/', builder: (_, _) => const LoginScreen())],
         ),
         locale: locale,
-        density: StellarDensity.compact,
+        style: StellarStyle.dashboard,
         onGenerateTitle: (_) => 'test',
         localizationsDelegates: const [AdminLocalizations.delegate],
       ),

@@ -26,7 +26,11 @@ class MaterialBadgeRenderer implements BadgeRenderer {
       child: Text(
         label,
         maxLines: 1,
-        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: fg),
+        style: TextStyle(
+          fontSize: context.style.text.tiny,
+          fontWeight: SFontWeight.medium.value,
+          color: fg,
+        ),
       ),
     );
   }

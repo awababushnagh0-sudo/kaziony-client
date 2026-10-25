@@ -13,6 +13,12 @@ enum SIcons {
   users,
   user,
   offers,
+
+  /// What a store sells.
+  products,
+
+  /// A picture's place while it loads, or when there's none.
+  image,
   category,
   phone,
   key,
@@ -22,6 +28,12 @@ enum SIcons {
   appearance,
   language,
   lock,
+
+  /// About the app, more details.
+  info,
+
+  /// The phone the app runs on (its version).
+  device,
   show,
   hide,
   // Actions.
@@ -38,6 +50,10 @@ enum SIcons {
   disable,
   enable,
   delete,
+  archive,
+
+  /// Brings back something archived.
+  restore,
   // Lists and navigation.
   chevron,
   chevronBack,

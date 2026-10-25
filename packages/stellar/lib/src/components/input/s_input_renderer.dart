@@ -1,6 +1,18 @@
 import 'package:flutter/widgets.dart';
 
-enum TextInputKind { text, phone, password, number, email, url, multiline }
+enum TextInputKind {
+  text,
+  phone,
+  password,
+  number,
+
+  /// LD with up to 3 decimals ("4.500"); check it with
+  /// `SValidators.price` and read it with kernel's `parsePrice`.
+  price,
+  email,
+  url,
+  multiline,
+}
 
 @immutable
 class TextInputSpec {

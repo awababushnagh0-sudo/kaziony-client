@@ -41,7 +41,7 @@ Widget harness(
       ],
     ),
     locale: const Locale('en'),
-    density: StellarDensity.compact,
+    style: StellarStyle.dashboard,
     onGenerateTitle: (_) => 'test',
     localizationsDelegates: const [AdminLocalizations.delegate],
   ),

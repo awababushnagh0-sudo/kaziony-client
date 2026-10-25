@@ -2,7 +2,6 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../../core/l10n/generated/admin_localizations.dart';
-import '../auth_page.dart';
 import 'login_view_model.dart';
 
 class LoginScreen extends AppView {
@@ -27,7 +26,7 @@ class LoginScreen extends AppView {
       _ => null,
     };
 
-    return AuthPage(
+    return SAuthPage(
       title: s.loginTitle,
       subtitle: s.loginSubtitle,
       child: SForm(

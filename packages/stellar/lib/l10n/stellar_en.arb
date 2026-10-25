@@ -42,5 +42,8 @@
   "updateRequiredMessage": "This version of the app is no longer supported. Update it from the store to continue.",
   "close": "Close",
   "copy": "Copy",
-  "copied": "Copied"
+  "copied": "Copied",
+  "language": "Language",
+  "validationPrice": "Enter a price above 0, e.g. 4.500",
+  "currency": "LD"
 }

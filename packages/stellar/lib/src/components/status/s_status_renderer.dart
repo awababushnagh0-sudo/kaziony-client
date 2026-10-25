@@ -9,6 +9,7 @@ class StatusSpec {
     this.message,
     this.icon,
     this.actionLabel,
+    this.actionIcon = SIcons.refresh,
     this.onAction,
   });
 
@@ -16,6 +17,9 @@ class StatusSpec {
   final String? message;
   final SIcons? icon;
   final String? actionLabel;
+
+  /// Refresh by default: most actions here are "Try again".
+  final SIcons actionIcon;
   final VoidCallback? onAction;
 }
 

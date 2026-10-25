@@ -8,7 +8,16 @@ lib/src/
   app/s_app.dart              SApp: theme, kit, Arabic/English, right to left
   foundation/
     s_kit.dart                StellarKit (one renderer per component), StellarScope
-    s_tokens.dart             colors + SColor, SFontWeight, SIconSize, Space, Radii, density, Gap, font
+    s_tokens.dart             imports every token file below at once
+    tokens/
+      s_palette.dart          the brand's color values (lightColors, darkColors): rebrand here
+      s_colors.dart           StellarColors (the color slots) and SColor (what widgets take)
+      s_typography.dart       the font, SFontWeight, TextSizes (text sizes by role)
+      s_spacing.dart          Space, Gap
+      s_radii.dart            Radii
+      s_icon_sizes.dart       SIconSize
+      s_image_sizes.dart      SImageSize
+      s_style.dart            StellarStyle: the app or dashboard look, with its sizes
   material/
     s_material_kit.dart       materialKit: the Material renderers put together
     s_material_theme.dart     the Material theme built from the tokens
@@ -21,13 +30,15 @@ lib/src/
 | Folder | Widgets |
 |---|---|
 | `button` | `SButton`, `.secondary`, `.text`, `.menu` ("Actions" dropdown), `.icon` |
-| `input` | `STextInput`, `SSelectInput`, `SSearchField`, `SCopyField` |
+| `input` | `STextInput` (`TextInputKind.price` for LD), `SSelectInput`, `SSearchField`, `SCopyField` |
 | `form` | `SForm`, `SFieldGrid`, `SFormSection`, `SValidators` (+ `FormGroup`, `FormControl`, `Validators`) |
 | `text` | `SText`, `.display`, `.title`, `.caption`: takes `TextVariant`, `SFontWeight`, `SColor` |
 | `icon` | `SIcon` (takes `SIconSize`, `SColor`), `SIcons` (the icons apps can use) |
 | `scaffold` | `SScaffold` (`parent` for a breadcrumb, `status` for a badge after the title) |
 | `shell` | `SShell` (side menu layout for the dashboard) |
-| `card`, `list_tile` | `SCard`, `SListTile` |
+| `image` | `SImage` (a photo from the server, cached on the device, with a placeholder) |
+| `paged_list` | `SPagedList` (phone list: pull to refresh, more rows on scroll) |
+| `card`, `list_tile` | `SCard`, `SListTile` (tappable rows get an arrow; `value` at the end), `SListGroup` (rows in a rounded box under a title) |
 | `status` | `SLoadingView`, `SEmptyView`, `SErrorView`, `SAsyncView`, `SUpdateRequiredView`, `failureMessage` |
 | `snack` | `SSnack.info`, `.success`, `.error` |
 | `table` | `STable`, `TableColumn`, `SCellText` |
@@ -37,7 +48,10 @@ lib/src/
 | `badge`, `pill` | `SBadge`, `SPill` |
 | `dialog` | `SDialog`, `SDialog.show`, `.confirm` |
 | `menu` | `SMenuButton`, `MenuEntry` |
-| `logo` | `SLogo` |
+| `auth_page` | `SAuthPage` (sign-in pages: title, hint, form) |
+| `nav_bar` | `SNavBar`, `NavBarItem` (the phone apps' bottom tabs) |
+| `sheet` | `SSheet.choose`, `SheetOption` (bottom sheets) |
+| `language` | `SLanguageButton` (globe that opens the language sheet), `chooseLanguage`, `languageName` (for settings rows) |
 
 One folder can hold several kinds of the same thing behind one renderer: `ButtonRenderer`
 draws labelled buttons and icon buttons, `InputRenderer` draws text fields, dropdowns,

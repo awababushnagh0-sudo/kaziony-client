@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../foundation/s_kit.dart';
@@ -59,14 +60,20 @@ Widget _labelled(
           ),
           // Labels lead, values follow: full text color, semibold.
           style: Theme.of(context).textTheme.labelLarge
-              ?.copyWith(color: c.text, fontWeight: FontWeight.w600),
+              ?.copyWith(color: c.text, fontWeight: SFontWeight.semibold.value),
         ),
       ),
       const Gap(Space.sm),
       Semantics(label: label, child: child),
       if (helper != null) ...[
         const Gap(Space.xs),
-        Text(helper, style: TextStyle(fontSize: 12, color: c.textSubtle)),
+        Text(
+          helper,
+          style: TextStyle(
+            fontSize: context.style.text.tiny,
+            color: c.textSubtle,
+          ),
+        ),
       ],
     ],
   );
@@ -83,6 +90,7 @@ Widget _buildField(
   // Arabic), like every other field.
   final ltr = switch (spec.kind) {
     TextInputKind.phone ||
+    TextInputKind.price ||
     TextInputKind.email ||
     TextInputKind.url ||
     TextInputKind.password => true,
@@ -100,15 +108,17 @@ Widget _buildField(
       maxLines: spec.kind == TextInputKind.multiline ? 4 : 1,
       autofillHints: spec.autofillHints,
       autofocus: spec.autofocus,
+      inputFormatters: spec.kind == TextInputKind.price
+          ? [_priceCharacters]
+          : null,
       textDirection: ltr ? TextDirection.ltr : null,
       textAlign: ltr
           ? (rtlPage ? TextAlign.right : TextAlign.left)
           : TextAlign.start,
       keyboardType: switch (spec.kind) {
         TextInputKind.phone => TextInputType.phone,
-        TextInputKind.number => const TextInputType.numberWithOptions(
-          decimal: true,
-        ),
+        TextInputKind.number || TextInputKind.price =>
+          const TextInputType.numberWithOptions(decimal: true),
         TextInputKind.email => TextInputType.emailAddress,
         TextInputKind.url => TextInputType.url,
         TextInputKind.multiline => TextInputType.multiline,
@@ -128,6 +138,9 @@ Widget _buildField(
       decoration: InputDecoration(
         hintText: spec.hint,
         hintTextDirection: ltr ? TextDirection.ltr : null,
+        suffixText: spec.kind == TextInputKind.price
+            ? StellarLocalizations.of(context).currency
+            : null,
         suffixIcon: control.pending ? const _Checking() : suffix,
         // As tall as the other fields despite the button.
         suffixIconConstraints: const BoxConstraints(
@@ -145,6 +158,11 @@ Widget _buildField(
     child: field,
   );
 }
+
+/// Digits (Arabic ones too) and a decimal sign: what a price can hold.
+final _priceCharacters = FilteringTextInputFormatter.allow(
+  RegExp('[0-9٠-٩.٫]'),
+);
 
 class _Checking extends StatelessWidget {
   const _Checking();
@@ -228,7 +246,7 @@ class _SearchFieldState extends State<_SearchField> {
     return TextField(
       controller: _controller,
       onChanged: widget.spec.onChanged,
-      style: const TextStyle(fontSize: 14),
+      style: TextStyle(fontSize: context.style.text.body),
       decoration: InputDecoration(
         hintText: widget.spec.hint,
         prefixIcon: Icon(

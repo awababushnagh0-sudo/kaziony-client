@@ -274,6 +274,24 @@ abstract class StellarLocalizations {
   /// In en, this message translates to:
   /// **'Copied'**
   String get copied;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @validationPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a price above 0, e.g. 4.500'**
+  String get validationPrice;
+
+  /// No description provided for @currency.
+  ///
+  /// In en, this message translates to:
+  /// **'LD'**
+  String get currency;
 }
 
 class _StellarLocalizationsDelegate

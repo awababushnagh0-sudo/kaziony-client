@@ -79,7 +79,10 @@ class _Pager extends StatelessWidget {
           const Spacer(),
           Text(
             spec.pageLabel,
-            style: TextStyle(color: c.textMuted, fontSize: 13),
+            style: TextStyle(
+              color: c.textMuted,
+              fontSize: context.style.text.small,
+            ),
           ),
           const Gap(Space.sm),
           IconButton(

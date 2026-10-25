@@ -12,13 +12,12 @@ class MaterialScaffoldRenderer implements ScaffoldRenderer {
 
   @override
   Widget render(BuildContext context, ScaffoldSpec spec) {
+    // Phones keep the usual 16 at the sides, as the big apps do.
+    final sides = context.style == StellarStyle.app ? Space.lg : Space.xl;
     Widget body = spec.body;
     if (spec.padded) {
       body = Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: Space.xl,
-          vertical: Space.lg,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: sides, vertical: Space.lg),
         child: body,
       );
     }
@@ -63,6 +62,15 @@ class MaterialScaffoldRenderer implements ScaffoldRenderer {
                       icon: Icon(materialIcon(SIcons.menu)),
                       onPressed: openMenu,
                     )
+                  // Stellar's own arrow, not Material's, so it matches
+                  // the other icons. It points the other way in Arabic.
+                  : canPop && !hasParent
+                  ? IconButton(
+                      tooltip: MaterialLocalizations.of(context)
+                          .backButtonTooltip,
+                      icon: Icon(materialIcon(SIcons.chevronBack)),
+                      onPressed: () => Navigator.maybePop(context),
+                    )
                   : null,
               title: _title(context, spec),
               actions: [...spec.actions, const Gap(Space.sm)],
@@ -73,12 +81,7 @@ class MaterialScaffoldRenderer implements ScaffoldRenderer {
           ? null
           : SafeArea(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  Space.xl,
-                  Space.sm,
-                  Space.xl,
-                  Space.lg,
-                ),
+                padding: EdgeInsets.fromLTRB(sides, Space.sm, sides, Space.lg),
                 child: spec.bottom,
               ),
             ),

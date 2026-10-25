@@ -103,4 +103,13 @@ class StellarLocalizationsEn extends StellarLocalizations {
 
   @override
   String get copied => 'Copied';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get validationPrice => 'Enter a price above 0, e.g. 4.500';
+
+  @override
+  String get currency => 'LD';
 }

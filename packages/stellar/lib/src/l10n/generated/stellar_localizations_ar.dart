@@ -100,4 +100,13 @@ class StellarLocalizationsAr extends StellarLocalizations {
 
   @override
   String get copied => 'تم النسخ';
+
+  @override
+  String get language => 'اللغة';
+
+  @override
+  String get validationPrice => 'أدخل سعرًا أكبر من صفر، مثل 4.500';
+
+  @override
+  String get currency => 'د.ل';
 }

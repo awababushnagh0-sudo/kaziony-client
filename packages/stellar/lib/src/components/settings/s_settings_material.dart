@@ -35,13 +35,19 @@ class MaterialSettingsRenderer implements SettingsRenderer {
         Text(
           spec.title,
           style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
+            fontSize: context.style.text.subtitle,
+            fontWeight: SFontWeight.semibold.value,
             color: c.text,
           ),
         ),
         const Gap(2),
-        Text(spec.hint, style: TextStyle(fontSize: 13, color: c.textMuted)),
+        Text(
+          spec.hint,
+          style: TextStyle(
+            fontSize: context.style.text.small,
+            color: c.textMuted,
+          ),
+        ),
         const Gap(Space.md),
         spec.child,
       ],
@@ -130,7 +136,10 @@ class MaterialSettingsRenderer implements SettingsRenderer {
                     Expanded(
                       child: Text(
                         spec.label,
-                        style: TextStyle(fontSize: 14, color: c.text),
+                        style: TextStyle(
+                          fontSize: context.style.text.body,
+                          color: c.text,
+                        ),
                       ),
                     ),
                     Icon(
@@ -200,7 +209,10 @@ class _SettingsDialogState extends State<_SettingsDialog> {
                       ),
                       child: Text(
                         spec.title,
-                        style: TextStyle(fontSize: 13, color: c.textSubtle),
+                        style: TextStyle(
+                          fontSize: context.style.text.small,
+                          color: c.textSubtle,
+                        ),
                       ),
                     ),
                   for (final (i, page) in spec.pages.indexed)
@@ -281,7 +293,10 @@ class _PageItem extends StatelessWidget {
                     page.label,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 14, color: c.text),
+                    style: TextStyle(
+                      fontSize: context.style.text.body,
+                      color: c.text,
+                    ),
                   ),
                 ),
             ],
@@ -314,13 +329,19 @@ class _PageBody extends StatelessWidget {
           Text(
             page.label,
             style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
+              fontSize: context.style.text.title,
+              fontWeight: SFontWeight.semibold.value,
               color: c.text,
             ),
           ),
           const Gap(Space.xs),
-          Text(page.hint, style: TextStyle(fontSize: 14, color: c.textMuted)),
+          Text(
+            page.hint,
+            style: TextStyle(
+              fontSize: context.style.text.body,
+              color: c.textMuted,
+            ),
+          ),
           const Gap(Space.xl),
           ...page.children,
         ],

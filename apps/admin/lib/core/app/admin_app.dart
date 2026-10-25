@@ -12,7 +12,7 @@ class AdminApp extends AppView {
     routerConfig: ref.watch(routerProvider),
     locale: ref.watch(localeProvider),
     theme: ref.watch(themeChoiceProvider),
-    density: StellarDensity.compact,
+    style: StellarStyle.dashboard,
     onGenerateTitle: (context) => AdminLocalizations.of(context).appTitle,
     localizationsDelegates: const [AdminLocalizations.delegate],
   );

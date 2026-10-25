@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../foundation/s_kit.dart';
 import '../../foundation/s_tokens.dart';
-import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import 's_status_renderer.dart';
 
@@ -65,7 +64,7 @@ class MaterialStatusRenderer implements StatusRenderer {
               OutlinedButton.icon(
                 onPressed: spec.onAction,
                 icon: Icon(
-                  materialIcon(SIcons.refresh),
+                  materialIcon(spec.actionIcon),
                   size: SIconSize.sm.pixels,
                 ),
                 label: Text(spec.actionLabel!),

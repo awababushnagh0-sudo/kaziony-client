@@ -209,8 +209,8 @@ class _TabBar extends StatelessWidget {
                         height: 1.2,
                         color: i == selected ? c.text : c.textMuted,
                         fontWeight: i == selected
-                            ? FontWeight.w600
-                            : FontWeight.w500,
+                            ? SFontWeight.semibold.value
+                            : SFontWeight.medium.value,
                       ),
                     ),
                   ),

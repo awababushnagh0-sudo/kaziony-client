@@ -12,7 +12,7 @@ Widget app(Widget page, {ThemeChoice theme = ThemeChoice.light}) => SApp(
     ],
   ),
   locale: const Locale('en'),
-  density: StellarDensity.compact,
+  style: StellarStyle.dashboard,
   theme: theme,
   onGenerateTitle: (_) => 'test',
 );

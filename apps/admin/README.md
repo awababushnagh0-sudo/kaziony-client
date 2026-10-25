@@ -6,7 +6,7 @@ Offers admin dashboard (Flutter Web). See the [repo README](../../README.md) to 
 lib/
   main.dart                 entry: bootstrap with the app's config and DI
   core/                     app-wide code
-    app/                    the app widget (theme, compact density, router)
+    app/                    the app widget (theme, dashboard style, router)
     providers/              DI: which repositories the app uses
     routes/                 page paths, sign-in redirects (?from=), the router
     list/                   shared list logic: ListQuery, ListController, PagedTable

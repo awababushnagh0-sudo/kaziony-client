@@ -112,7 +112,10 @@ class _MenuItem extends StatelessWidget {
                   Text(entry.label),
                   Text(
                     description,
-                    style: TextStyle(fontSize: 11.5, color: c.textSubtle),
+                    style: TextStyle(
+                      fontSize: context.style.text.tiny,
+                      color: c.textSubtle,
+                    ),
                   ),
                 ],
               ),
@@ -141,7 +144,10 @@ ButtonStyle menuItemStyle(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(Radii.sm),
     ),
-    textStyle: const TextStyle(fontFamily: stellarFont, fontSize: 13),
+    textStyle: TextStyle(
+      fontFamily: stellarFont,
+      fontSize: context.style.text.small,
+    ),
   ).copyWith(
     overlayColor: WidgetStatePropertyAll(
       destructive ? c.dangerSoft : c.primarySoft,

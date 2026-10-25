@@ -1,9 +1,10 @@
-import 'package:kernel/kernel.dart' show normalizeLibyanPhone;
+import 'package:kernel/kernel.dart' show normalizeLibyanPhone, parsePrice;
 import 'package:reactive_forms/reactive_forms.dart';
 
 abstract final class SValidators {
   static const libyanPhoneKey = 'libyanPhone';
   static const urlKey = 'url';
+  static const priceKey = 'price';
 
   /// Any common Libyan mobile format (0912345678, +218 91..., Arabic digits).
   static const Validator<dynamic> libyanPhone = _LibyanPhoneValidator();
@@ -15,6 +16,20 @@ abstract final class SValidators {
   /// A web link (http or https) to a real host, like the backend accepts.
   /// Spaces around it are ignored, so trim the value before sending it.
   static const Validator<dynamic> url = _UrlValidator();
+
+  /// A price in LD above 0 with up to 3 decimals, as the backend takes it.
+  static const Validator<dynamic> price = _PriceValidator();
+}
+
+class _PriceValidator extends Validator<dynamic> {
+  const _PriceValidator();
+
+  @override
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+    final value = control.value;
+    if (value is! String || value.trim().isEmpty) return null;
+    return parsePrice(value) == null ? {SValidators.priceKey: true} : null;
+  }
 }
 
 class _EmailValidator extends Validator<dynamic> {

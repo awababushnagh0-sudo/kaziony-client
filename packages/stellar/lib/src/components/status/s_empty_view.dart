@@ -10,6 +10,7 @@ class SEmptyView extends StatelessWidget {
     this.message,
     this.icon = SIcons.empty,
     this.actionLabel,
+    this.actionIcon = SIcons.refresh,
     this.onAction,
     super.key,
   });
@@ -18,6 +19,7 @@ class SEmptyView extends StatelessWidget {
   final String? message;
   final SIcons icon;
   final String? actionLabel;
+  final SIcons actionIcon;
   final VoidCallback? onAction;
 
   @override
@@ -28,6 +30,7 @@ class SEmptyView extends StatelessWidget {
       message: message,
       icon: icon,
       actionLabel: actionLabel,
+      actionIcon: actionIcon,
       onAction: onAction,
     ),
   );

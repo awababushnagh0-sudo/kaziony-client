@@ -18,9 +18,9 @@ class SApp extends StatelessWidget {
     required this.locale,
     this.localizationsDelegates = const [],
     this.kit = materialKit,
+    this.style = StellarStyle.app,
     this.colors = lightColors,
     this.theme = ThemeChoice.light,
-    this.density = StellarDensity.comfortable,
     super.key,
   });
 
@@ -31,43 +31,47 @@ class SApp extends StatelessWidget {
   /// The app's own translations.
   final List<LocalizationsDelegate<Object>> localizationsDelegates;
   final StellarKit kit;
+
+  /// [StellarStyle.dashboard] for the web dashboard.
+  final StellarStyle style;
+
   final StellarColors colors;
 
   /// Light, dark, or following the device.
   final ThemeChoice theme;
 
-  /// [StellarDensity.compact] for the web dashboard.
-  final StellarDensity density;
-
   @override
-  Widget build(BuildContext context) => MaterialApp.router(
-    routerConfig: routerConfig,
-    onGenerateTitle: onGenerateTitle,
-    // Below MaterialApp, so "follow the device" can see whether the
-    // device is dark. Dev and staging builds get the dev menu on top.
-    builder: (context, child) => StellarScope(
-      kit: kit,
-      colors: Theme.of(context).brightness == Brightness.dark
-          ? darkColors
-          : colors,
-      child: DevMenu(child: child ?? const SizedBox()),
-    ),
-    debugShowCheckedModeBanner: false,
-    theme: buildMaterialTheme(colors, density: density),
-    darkTheme: buildMaterialTheme(darkColors, density: density),
-    themeMode: switch (theme) {
-      ThemeChoice.system => ThemeMode.system,
-      ThemeChoice.light => ThemeMode.light,
-      ThemeChoice.dark => ThemeMode.dark,
-    },
-    locale: locale,
-    supportedLocales: supportedLocales,
-    localizationsDelegates: [
-      ...localizationsDelegates,
-      StellarLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-  );
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      routerConfig: routerConfig,
+      onGenerateTitle: onGenerateTitle,
+      // Below MaterialApp, so "follow the device" can see whether the
+      // device is dark. Dev and staging builds get the dev menu on top.
+      builder: (context, child) => StellarScope(
+        kit: kit,
+        style: style,
+        colors: Theme.of(context).brightness == Brightness.dark
+            ? darkColors
+            : colors,
+        child: DevMenu(child: child ?? const SizedBox()),
+      ),
+      debugShowCheckedModeBanner: false,
+      theme: buildMaterialTheme(colors, style: style),
+      darkTheme: buildMaterialTheme(darkColors, style: style),
+      themeMode: switch (theme) {
+        ThemeChoice.system => ThemeMode.system,
+        ThemeChoice.light => ThemeMode.light,
+        ThemeChoice.dark => ThemeMode.dark,
+      },
+      locale: locale,
+      supportedLocales: supportedLocales,
+      localizationsDelegates: [
+        ...localizationsDelegates,
+        StellarLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+    );
+  }
 }

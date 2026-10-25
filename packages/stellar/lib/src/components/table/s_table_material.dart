@@ -32,8 +32,12 @@ class MaterialTableRenderer implements TableRenderer {
           ? (rtl ? TextAlign.right : TextAlign.left)
           : TextAlign.start,
       style: strong
-          ? TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: c.text)
-          : TextStyle(fontSize: 13, color: c.textMuted),
+          ? TextStyle(
+              fontSize: context.style.text.body,
+              fontWeight: SFontWeight.medium.value,
+              color: c.text,
+            )
+          : TextStyle(fontSize: context.style.text.small, color: c.textMuted),
     );
   }
 }
@@ -100,8 +104,8 @@ class _Table<T> extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
+                fontSize: context.style.text.tiny,
+                fontWeight: SFontWeight.medium.value,
                 color: c.textSubtle,
               ),
             ),
@@ -112,7 +116,10 @@ class _Table<T> extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.end,
-            style: TextStyle(fontSize: 12, color: c.textSubtle),
+            style: TextStyle(
+              fontSize: context.style.text.tiny,
+              color: c.textSubtle,
+            ),
           ),
         );
 

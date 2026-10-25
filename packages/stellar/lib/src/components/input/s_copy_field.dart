@@ -50,8 +50,8 @@ class SCopyField extends StatelessWidget {
                       ? TextAlign.right
                       : TextAlign.left,
                   style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
+                    fontSize: context.style.text.subtitle,
+                    fontWeight: SFontWeight.semibold.value,
                     color: c.text,
                     letterSpacing: 0.5,
                   ),

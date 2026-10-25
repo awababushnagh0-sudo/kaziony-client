@@ -22,7 +22,10 @@ class MaterialPillRenderer implements PillRenderer {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(spec.label, style: TextStyle(color: fg, fontSize: 13)),
+          Text(
+            spec.label,
+            style: TextStyle(color: fg, fontSize: context.style.text.small),
+          ),
           if (spec.icon != null) ...[
             const Gap(Space.xs),
             Icon(

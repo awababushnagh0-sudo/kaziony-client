@@ -4,11 +4,15 @@ import '../../foundation/s_kit.dart';
 import '../icon/s_icon.dart';
 import 's_list_tile_renderer.dart';
 
+/// A row with an icon, a title and an optional subtitle. Tappable rows get
+/// an arrow at the end.
 class SListTile extends StatelessWidget {
   const SListTile({
     required this.title,
     this.subtitle,
     this.icon,
+    this.leading,
+    this.value,
     this.trailing,
     this.onTap,
     super.key,
@@ -17,6 +21,14 @@ class SListTile extends StatelessWidget {
   final String title;
   final String? subtitle;
   final SIcons? icon;
+
+  /// Takes [icon]'s place, for a picture (`SImage`).
+  final Widget? leading;
+
+  /// A short value at the end of the row (the current language).
+  final String? value;
+
+  /// Replaces the arrow tappable rows get.
   final Widget? trailing;
   final VoidCallback? onTap;
 
@@ -27,6 +39,8 @@ class SListTile extends StatelessWidget {
       title: title,
       subtitle: subtitle,
       icon: icon,
+      leading: leading,
+      value: value,
       trailing: trailing,
       onTap: onTap,
     ),

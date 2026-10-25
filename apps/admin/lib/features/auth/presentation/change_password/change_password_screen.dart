@@ -2,7 +2,6 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../../core/l10n/generated/admin_localizations.dart';
-import '../auth_page.dart';
 import 'change_password_view_model.dart';
 
 /// Shown right after signing in with a temporary password.
@@ -28,7 +27,7 @@ class ChangePasswordScreen extends AppView {
         ? null
         : failureMessage(context, state.failure!);
 
-    return AuthPage(
+    return SAuthPage(
       title: s.changePasswordTitle,
       subtitle: s.changePasswordSubtitle,
       footer: [SButton.text(label: s.logout, onPressed: viewModel.logout)],

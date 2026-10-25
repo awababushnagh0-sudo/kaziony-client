@@ -2,21 +2,27 @@ import 'package:flutter/material.dart';
 
 import '../foundation/s_tokens.dart';
 
-/// Material theme built from the stellar tokens, in the style of ERPNext.
-/// [density] only changes sizes: phones get bigger text and touch targets.
+/// Material theme built from the stellar tokens in one of the two looks:
+/// the phone apps' (like the big consumer apps) or the dashboard's (like
+/// ERPNext).
 ThemeData buildMaterialTheme(
   StellarColors c, {
-  StellarDensity density = StellarDensity.comfortable,
+  StellarStyle style = StellarStyle.app,
 }) {
-  final compact = density == StellarDensity.compact;
-  final size = density.fontSize;
-  final radius = BorderRadius.circular(Radii.md);
+  final compact = style == StellarStyle.dashboard;
+  final text = style.text;
+  final radius = BorderRadius.circular(style.radius);
   final rounded = RoundedRectangleBorder(borderRadius: radius);
-  final controlSize = Size(0, density.controlHeight);
+  // Buttons are pills in every app, as in the big apps.
+  const pill = StadiumBorder();
+  final controlSize = Size(0, style.controlHeight);
   final buttonText = TextStyle(
     fontFamily: stellarFont,
-    fontSize: size,
-    fontWeight: FontWeight.w500,
+    fontSize: text.body,
+    fontWeight: compact ? SFontWeight.medium.value : SFontWeight.semibold.value,
+  );
+  final buttonPadding = EdgeInsets.symmetric(
+    horizontal: compact ? 14 : Space.xl,
   );
   final base = ThemeData(
     useMaterial3: true,
@@ -31,7 +37,7 @@ ThemeData buildMaterialTheme(
       );
 
   return base.copyWith(
-    // Sizes come from [density]; don't let desktop browsers shrink them.
+    // Sizes come from [style]; don't let desktop browsers shrink them.
     visualDensity: VisualDensity.standard,
     // The dashboard behaves like a website: no ripple or press flash on
     // buttons, tabs and rows (hover still shows). Phones keep the ripple.
@@ -68,28 +74,38 @@ ThemeData buildMaterialTheme(
           // Text typed into fields: medium weight, so values stand out from
           // their labels as in ERPNext.
           bodyLarge: TextStyle(
-            fontSize: size,
-            fontWeight: FontWeight.w500,
+            fontSize: text.body,
+            fontWeight: SFontWeight.medium.value,
             color: c.text,
           ),
-          bodyMedium: TextStyle(fontSize: size, color: c.text, height: 1.5),
-          bodySmall: TextStyle(fontSize: size - 1, color: c.textSubtle),
-          headlineMedium: TextStyle(
-            fontSize: compact ? 26 : 28,
-            fontWeight: FontWeight.w700,
+          bodyMedium: TextStyle(
+            fontSize: text.body,
             color: c.text,
+            height: 1.5,
+          ),
+          bodySmall: TextStyle(fontSize: text.small, color: c.textSubtle),
+          headlineMedium: TextStyle(
+            fontSize: text.display,
+            fontWeight: SFontWeight.bold.value,
+            color: c.text,
+            height: 1.3,
           ),
           titleLarge: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
+            fontSize: text.title,
+            fontWeight: compact
+                ? SFontWeight.semibold.value
+                : SFontWeight.bold.value,
             color: c.text,
           ),
           titleMedium: TextStyle(
-            fontSize: compact ? 15 : 17,
-            fontWeight: FontWeight.w600,
+            fontSize: text.subtitle,
+            fontWeight: SFontWeight.semibold.value,
             color: c.text,
           ),
-          labelLarge: TextStyle(fontSize: size, fontWeight: FontWeight.w500),
+          labelLarge: TextStyle(
+            fontSize: text.body,
+            fontWeight: SFontWeight.medium.value,
+          ),
         )
         // Last, so the styles replaced above get the font too.
         .apply(fontFamily: stellarFont),
@@ -98,38 +114,46 @@ ThemeData buildMaterialTheme(
       foregroundColor: c.text,
       elevation: 0,
       scrolledUnderElevation: 0,
-      // Phones center the title; the dashboard's page header is a row with
-      // the title at the start and the actions at the end, as in ERPNext.
-      centerTitle: !compact,
+      // The title at the start: big and bold on phones, as in the big
+      // apps; a row with the actions at the end on the dashboard, as in
+      // ERPNext.
+      centerTitle: false,
       toolbarHeight: compact ? 64 : null,
-      titleSpacing: compact ? Space.xl : null,
+      titleSpacing: compact ? Space.xl : Space.lg,
       titleTextStyle: TextStyle(
         fontFamily: stellarFont,
-        fontSize: 20,
-        fontWeight: FontWeight.w600,
+        fontSize: text.title,
+        fontWeight: compact
+            ? SFontWeight.semibold.value
+            : SFontWeight.bold.value,
         color: c.text,
       ),
       shape: compact ? Border(bottom: BorderSide(color: c.border)) : null,
     ),
     dividerTheme: DividerThemeData(color: c.border, thickness: 1, space: 1),
-    // Labels sit above the field (see the text input renderer), so the
-    // field itself is a plain gray box with a border only when focused.
+    // Labels sit above the field (see the text input renderer). Phones get
+    // white fields with a thin border that turns the brand color when
+    // focused, as in the big apps; the dashboard gets ERPNext's gray boxes
+    // with a border only when focused.
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: c.fieldFill,
+      fillColor: compact ? c.fieldFill : c.surface,
       isDense: true,
       contentPadding: EdgeInsets.symmetric(
         horizontal: Space.md,
-        // About 33px tall on the dashboard, a little roomier than ERPNext.
-        vertical: compact ? 6 : 14,
+        // About 33px tall on the dashboard, a little roomier than ERPNext;
+        // 48px on phones.
+        vertical: compact ? 6 : 12,
       ),
-      hintStyle: TextStyle(color: c.textSubtle, fontSize: size),
-      border: inputBorder(Colors.transparent),
-      enabledBorder: inputBorder(Colors.transparent),
-      focusedBorder: inputBorder(c.textSubtle),
+      hintStyle: TextStyle(color: c.textSubtle, fontSize: text.body),
+      border: inputBorder(compact ? Colors.transparent : c.border),
+      enabledBorder: inputBorder(compact ? Colors.transparent : c.border),
+      focusedBorder: compact
+          ? inputBorder(c.textSubtle)
+          : inputBorder(c.primary, 1.5),
       errorBorder: inputBorder(c.danger),
       focusedErrorBorder: inputBorder(c.danger, 1.5),
-      errorStyle: TextStyle(color: c.danger, fontSize: 12),
+      errorStyle: TextStyle(color: c.danger, fontSize: text.tiny),
     ),
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: c.text,
@@ -141,20 +165,21 @@ ThemeData buildMaterialTheme(
         backgroundColor: c.primary,
         foregroundColor: c.onPrimary,
         minimumSize: controlSize,
-        padding: const EdgeInsets.symmetric(horizontal: 14),
-        shape: rounded,
+        padding: buttonPadding,
+        shape: pill,
         textStyle: buttonText,
       ),
     ),
-    // "Secondary": a soft gray button, no outline.
+    // "Secondary": a soft gray button on the dashboard; white with a thin
+    // dark outline on phones, as DoorDash's.
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: c.text,
-        backgroundColor: c.primarySoft,
-        side: BorderSide.none,
+        backgroundColor: compact ? c.primarySoft : c.surface,
+        side: compact ? BorderSide.none : BorderSide(color: c.text),
         minimumSize: controlSize,
-        padding: const EdgeInsets.symmetric(horizontal: 14),
-        shape: rounded,
+        padding: buttonPadding,
+        shape: pill,
         textStyle: buttonText,
       ),
     ),
@@ -162,7 +187,7 @@ ThemeData buildMaterialTheme(
       style: TextButton.styleFrom(
         foregroundColor: c.text,
         minimumSize: controlSize,
-        shape: rounded,
+        shape: pill,
         textStyle: buttonText,
       ),
     ),
@@ -182,14 +207,16 @@ ThemeData buildMaterialTheme(
       elevation: 0,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(compact ? 10 : 16),
         side: BorderSide(color: c.border),
       ),
     ),
     dialogTheme: DialogThemeData(
       backgroundColor: c.surface,
       surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(compact ? 12 : 20),
+      ),
     ),
     listTileTheme: ListTileThemeData(
       iconColor: c.textMuted,
@@ -207,20 +234,22 @@ ThemeData buildMaterialTheme(
       backgroundColor: c.surfaceMuted,
       shape: const RoundedRectangleBorder(),
     ),
+    // Snack bars and tooltips are dark ink, not the brand color, so they
+    // never look like a button.
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
-      backgroundColor: c.primary,
-      contentTextStyle: TextStyle(fontFamily: stellarFont, color: c.onPrimary),
+      backgroundColor: c.text,
+      contentTextStyle: TextStyle(fontFamily: stellarFont, color: c.background),
       shape: rounded,
       width: compact ? 420 : null,
     ),
     tooltipTheme: TooltipThemeData(
       textStyle: TextStyle(
         fontFamily: stellarFont,
-        fontSize: 12,
-        color: c.onPrimary,
+        fontSize: text.tiny,
+        color: c.background,
       ),
-      decoration: BoxDecoration(color: c.primary, borderRadius: radius),
+      decoration: BoxDecoration(color: c.text, borderRadius: radius),
     ),
     progressIndicatorTheme: ProgressIndicatorThemeData(
       color: c.textMuted,
