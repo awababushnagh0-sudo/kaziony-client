@@ -45,11 +45,13 @@ class RecordingErrorReporter implements ErrorReporter {
   void setUser(String? userId) => this.userId = userId;
 }
 
-/// Overrides that make kernel work in tests without plugins.
+/// Overrides that make kernel work in tests without plugins. Pass
+/// [settings] to check what was saved.
 List<Override> testOverrides({
   AppKind kind = AppKind.partner,
   String apiBaseUrl = 'http://test.invalid',
   String version = '1.0.0',
+  SettingsStore? settings,
 }) => [
   appConfigProvider.overrideWithValue(
     AppConfig(kind: kind, apiBaseUrl: apiBaseUrl),
@@ -58,6 +60,6 @@ List<Override> testOverrides({
     AppInfo(version: version, buildNumber: '1'),
   ),
   secureStoreProvider.overrideWithValue(MemorySecureStore()),
-  settingsStoreProvider.overrideWithValue(MemorySettingsStore()),
+  settingsStoreProvider.overrideWithValue(settings ?? MemorySettingsStore()),
   errorReporterProvider.overrideWithValue(RecordingErrorReporter()),
 ];

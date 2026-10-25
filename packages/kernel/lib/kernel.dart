@@ -33,6 +33,7 @@ export 'src/config/app_config.dart';
 export 'src/dev/dev_log.dart';
 export 'src/dev/dev_settings.dart';
 export 'src/errors/error_reporter.dart';
+export 'src/list/page_result.dart';
 export 'src/locale/locale.dart';
 export 'src/navigation/leave_guard.dart';
 export 'src/navigation/navigation.dart';

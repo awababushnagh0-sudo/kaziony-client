@@ -10,3 +10,25 @@ String formatPrice(String amount, {required String languageCode}) {
       : value.toStringAsFixed(3).replaceFirst(RegExp(r'0+$'), '');
   return languageCode == 'ar' ? '$number د.ل' : '$number LD';
 }
+
+final _easternDigits = RegExp('[٠-٩]');
+
+/// The price typed in a field, as the backend takes it: "4.5" becomes
+/// "4.500". Arabic digits and the Arabic decimal sign (٫) are accepted.
+/// Null when it isn't a price above 0 with up to 3 decimals. Only text is
+/// rearranged: no number math, so no rounding.
+String? parsePrice(String input) {
+  final text = input
+      .trim()
+      .replaceAllMapped(
+        _easternDigits,
+        (match) => '${match[0]!.codeUnitAt(0) - 0x0660}',
+      )
+      .replaceAll('٫', '.');
+  final match = RegExp(r'^(\d{1,7})(?:\.(\d{0,3}))?$').firstMatch(text);
+  if (match == null) return null;
+  final whole = match[1]!.replaceFirst(RegExp('^0+(?=.)'), '');
+  final dirhams = (match[2] ?? '').padRight(3, '0');
+  if (whole == '0' && dirhams == '000') return null;
+  return '$whole.$dirhams';
+}

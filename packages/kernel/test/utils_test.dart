@@ -57,4 +57,30 @@ void main() {
     expect(formatDate(day, languageCode: 'en'), 'Oct 19, 2026');
     expect(formatDate(day, languageCode: 'ar'), contains('أكتوبر'));
   });
+
+  group('parsePrice', () {
+    test('writes prices with 3 decimals', () {
+      expect(parsePrice('4'), '4.000');
+      expect(parsePrice('4.5'), '4.500');
+      expect(parsePrice('4.'), '4.000');
+      expect(parsePrice(' 12.345 '), '12.345');
+      expect(parsePrice('007.25'), '7.250');
+      expect(parsePrice('0.5'), '0.500');
+    });
+
+    test('reads Arabic digits and the Arabic decimal sign', () {
+      expect(parsePrice('٤٫٥'), '4.500');
+    });
+
+    test('refuses what the backend would refuse', () {
+      expect(parsePrice(''), isNull);
+      expect(parsePrice('0'), isNull);
+      expect(parsePrice('0.000'), isNull);
+      expect(parsePrice('4.5555'), isNull);
+      expect(parsePrice('-4'), isNull);
+      expect(parsePrice('12345678'), isNull);
+      expect(parsePrice('4,5'), isNull);
+      expect(parsePrice('abc'), isNull);
+    });
+  });
 }
