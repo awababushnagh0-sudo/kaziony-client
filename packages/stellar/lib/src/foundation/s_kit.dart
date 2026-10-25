@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import '../components/badge/s_badge_renderer.dart';
 import '../components/button/s_button_renderer.dart';
 import '../components/card/s_card_renderer.dart';
+import '../components/deal/s_deal_renderer.dart';
 import '../components/dialog/s_dialog_renderer.dart';
 import '../components/icon/s_icon_renderer.dart';
 import '../components/image/s_image_renderer.dart';
@@ -39,6 +40,7 @@ class StellarKit {
     required this.shell,
     required this.navBar,
     required this.card,
+    required this.deal,
     required this.listTile,
     required this.pagedList,
     required this.photo,
@@ -64,6 +66,7 @@ class StellarKit {
   final ShellRenderer shell;
   final NavBarRenderer navBar;
   final CardRenderer card;
+  final DealRenderer deal;
   final ListTileRenderer listTile;
   final PagedListRenderer pagedList;
   final PhotoRenderer photo;

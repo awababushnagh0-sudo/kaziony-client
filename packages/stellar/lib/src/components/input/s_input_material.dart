@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kernel/kernel.dart' show formatDateTime;
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../foundation/s_kit.dart';
@@ -7,6 +8,7 @@ import '../../foundation/s_tokens.dart';
 import '../../l10n/generated/stellar_localizations.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
+import '../pill/s_pill.dart';
 import 's_input_renderer.dart';
 import 's_select_material.dart';
 
@@ -30,6 +32,126 @@ class MaterialInputRenderer implements InputRenderer {
   @override
   Widget search(BuildContext context, SearchFieldSpec spec) =>
       _SearchField(spec: spec);
+
+  @override
+  Widget choice<T>(BuildContext context, ChoiceInputSpec<T> spec) => _labelled(
+    context,
+    label: spec.label,
+    child: ReactiveFormField<T, T>(
+      formControlName: spec.controlName,
+      builder: (field) => Wrap(
+        spacing: Space.sm,
+        runSpacing: Space.sm,
+        children: [
+          for (final option in spec.options)
+            SPill(
+              label: option.label,
+              selected: field.value == option.value,
+              onTap: () {
+                field.didChange(option.value);
+                spec.onChanged?.call(option.value);
+              },
+            ),
+        ],
+      ),
+    ),
+  );
+
+  @override
+  Widget dateTime(BuildContext context, DateTimeInputSpec spec) => _labelled(
+    context,
+    label: spec.label,
+    helper: spec.helper,
+    child: _DateTimeField(spec: spec),
+  );
+}
+
+class _DateTimeField extends StatelessWidget {
+  const _DateTimeField({required this.spec});
+
+  final DateTimeInputSpec spec;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final c = context.colors;
+    final language = Localizations.localeOf(context).languageCode;
+    return ReactiveFormField<DateTime, DateTime>(
+      formControlName: spec.controlName,
+      validationMessages: spec.validationMessages,
+      builder: (field) {
+        final value = field.value;
+        void choose(DateTime chosen) {
+          field.didChange(chosen);
+          field.control.markAsTouched();
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          spacing: Space.sm,
+          children: [
+            if (spec.presets.isNotEmpty)
+              Wrap(
+                spacing: Space.sm,
+                runSpacing: Space.sm,
+                children: [
+                  for (final preset in spec.presets)
+                    SPill(
+                      label: preset.label,
+                      selected: value == preset.value,
+                      onTap: () => choose(preset.value),
+                    ),
+                ],
+              ),
+            InkWell(
+              borderRadius: BorderRadius.circular(context.style.radius),
+              onTap: () async {
+                final picked = await _pick(context, value);
+                if (picked != null) choose(picked);
+              },
+              child: InputDecorator(
+                isEmpty: value == null,
+                decoration: InputDecoration(
+                  hintText: StellarLocalizations.of(context).chooseDateTime,
+                  errorText: field.errorText,
+                  suffixIcon: Icon(
+                    materialIcon(SIcons.calendar),
+                    size: SIconSize.sm.pixels,
+                    color: c.textMuted,
+                  ),
+                ),
+                child: value == null
+                    ? null
+                    : Text(
+                        formatDateTime(value, languageCode: language),
+                        style: theme.textTheme.bodyLarge,
+                      ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// The phone's calendar, then its clock.
+  Future<DateTime?> _pick(BuildContext context, DateTime? current) async {
+    final initial = current ?? spec.firstDate;
+    final day = await showDatePicker(
+      context: context,
+      initialDate: initial.isBefore(spec.firstDate) ? spec.firstDate : initial,
+      firstDate: spec.firstDate,
+      lastDate: spec.lastDate,
+    );
+    if (day == null || !context.mounted) return null;
+    final time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(initial),
+    );
+    if (time == null) return null;
+    return DateTime(day.year, day.month, day.day, time.hour, time.minute);
+  }
 }
 
 /// A label above a form control, with a red asterisk when [required], as

@@ -97,8 +97,58 @@ class SearchFieldSpec {
 }
 
 /// Draws every kind of input: text fields, dropdowns and search boxes.
+/// One of a few values, as pills, bound to a form control.
+@immutable
+class ChoiceInputSpec<T> {
+  const ChoiceInputSpec({
+    required this.controlName,
+    required this.label,
+    required this.options,
+    this.onChanged,
+  });
+
+  final String controlName;
+  final String label;
+  final List<SelectOption<T>> options;
+  final ValueChanged<T>? onChanged;
+}
+
+/// A ready-made answer for a date and time field ("Tonight").
+@immutable
+class DateTimePreset {
+  const DateTimePreset(this.label, this.value);
+
+  final String label;
+  final DateTime value;
+}
+
+/// A day and time picked with the phone's calendar and clock, bound to a
+/// form control of [DateTime].
+@immutable
+class DateTimeInputSpec {
+  const DateTimeInputSpec({
+    required this.controlName,
+    required this.label,
+    required this.validationMessages,
+    required this.firstDate,
+    required this.lastDate,
+    this.presets = const [],
+    this.helper,
+  });
+
+  final String controlName;
+  final String label;
+  final Map<String, String Function(Object error)> validationMessages;
+  final DateTime firstDate;
+  final DateTime lastDate;
+  final List<DateTimePreset> presets;
+  final String? helper;
+}
+
 abstract interface class InputRenderer {
   Widget text(BuildContext context, TextInputSpec spec);
   Widget select<T>(BuildContext context, SelectInputSpec<T> spec);
   Widget search(BuildContext context, SearchFieldSpec spec);
+  Widget choice<T>(BuildContext context, ChoiceInputSpec<T> spec);
+  Widget dateTime(BuildContext context, DateTimeInputSpec spec);
 }

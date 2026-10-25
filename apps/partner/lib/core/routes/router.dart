@@ -4,6 +4,11 @@ import 'package:stellar/stellar.dart';
 import '../../features/auth/presentation/change_password/change_password_screen.dart';
 import '../../features/auth/presentation/login/login_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
+import '../../features/offers/presentation/choose_offer_product_screen.dart';
+import '../../features/offers/presentation/edit_offer_screen.dart';
+import '../../features/offers/presentation/new_offer_screen.dart';
+import '../../features/offers/presentation/offer_screen.dart';
+import '../../features/offers/presentation/offers_screen.dart';
 import '../../features/products/presentation/product_form_screen.dart';
 import '../../features/products/presentation/products_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
@@ -71,6 +76,28 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.password,
         builder: (_, _) => const ChangePasswordScreen(temporary: false),
       ),
+      // Before the offer's page, so "new" isn't taken for an id.
+      GoRoute(
+        path: Routes.chooseOfferProduct,
+        builder: (_, _) => const ChooseOfferProductScreen(),
+      ),
+      GoRoute(
+        path: Routes.newOffer(':productId'),
+        builder: (_, state) => NewOfferScreen(
+          productId: state.pathParameters['productId']!,
+          fromOfferId: state.uri.queryParameters['from'],
+        ),
+      ),
+      GoRoute(
+        path: Routes.offer(':offerId'),
+        builder: (_, state) =>
+            OfferScreen(offerId: state.pathParameters['offerId']!),
+      ),
+      GoRoute(
+        path: Routes.editOffer(':offerId'),
+        builder: (_, state) =>
+            EditOfferScreen(offerId: state.pathParameters['offerId']!),
+      ),
       // Before the product's page, so "new" isn't taken for an id.
       GoRoute(
         path: Routes.newProduct,
@@ -88,6 +115,14 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(path: Routes.home, builder: (_, _) => const HomeScreen()),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: Routes.offers,
+                builder: (_, _) => const OffersScreen(),
+              ),
             ],
           ),
           StatefulShellBranch(

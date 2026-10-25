@@ -5,6 +5,7 @@ abstract final class Routes {
   static const login = '/login';
   static const changePassword = '/change-password';
   static const home = '/home';
+  static const offers = '/offers';
   static const products = '/products';
   static const profile = '/profile';
   static const chooseStore = '/choose-store';
@@ -19,7 +20,19 @@ abstract final class Routes {
   static const newProduct = '$products/new';
   static String product(String id) => '$products/$id';
 
-  /// Pages staff can't open: the API refuses them anyway.
+  /// Posting an offer starts with its product.
+  static const chooseOfferProduct = '$offers/new';
+  static String newOffer(String productId, {String? from}) =>
+      '$chooseOfferProduct/$productId${from == null ? '' : '?from=$from'}';
+  static String offer(String id) => '$offers/$id';
+  static String editOffer(String id) => '${offer(id)}/edit';
+
+  /// Pages staff can't open: the API refuses them anyway. Staff see
+  /// offers, but don't post or change them.
   static bool ownerOnly(String location) =>
-      location == products || location.startsWith('$products/');
+      location == products ||
+      location.startsWith('$products/') ||
+      location == chooseOfferProduct ||
+      location.startsWith('$chooseOfferProduct/') ||
+      (location.startsWith('$offers/') && location.endsWith('/edit'));
 }

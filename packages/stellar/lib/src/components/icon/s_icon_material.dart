@@ -112,6 +112,31 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // camera
+  SIcons.calendar => const IconData(
+    0xe063,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // calendar
+  SIcons.pause => const IconData(
+    0xe12e,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // pause
+  SIcons.resume => const IconData(
+    0xe13c,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // play
+  SIcons.stop => const IconData(
+    0xe083,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // circle-stop
+  SIcons.repost => const IconData(
+    0xe411,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // repeat-2
   SIcons.archive => const IconData(
     0xe041,
     fontFamily: _f,

@@ -52,6 +52,17 @@ enum SIcons {
   enable,
   delete,
   archive,
+  calendar,
+  pause,
+
+  /// Starts again (a paused offer).
+  resume,
+
+  /// Stops for good (an offer).
+  stop,
+
+  /// Posts again (an ended offer).
+  repost,
 
   /// Brings back something archived.
   restore,

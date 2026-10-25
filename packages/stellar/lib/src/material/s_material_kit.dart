@@ -1,6 +1,7 @@
 import '../components/badge/s_badge_material.dart';
 import '../components/button/s_button_material.dart';
 import '../components/card/s_card_material.dart';
+import '../components/deal/s_deal_material.dart';
 import '../components/dialog/s_dialog_material.dart';
 import '../components/icon/s_icon_material.dart';
 import '../components/image/s_image_material.dart';
@@ -35,6 +36,7 @@ const materialKit = StellarKit(
   shell: MaterialShellRenderer(),
   navBar: MaterialNavBarRenderer(),
   card: MaterialCardRenderer(),
+  deal: MaterialDealRenderer(),
   listTile: MaterialListTileRenderer(),
   pagedList: MaterialPagedListRenderer(),
   photo: MaterialPhotoRenderer(),

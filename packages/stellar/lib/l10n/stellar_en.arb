@@ -63,5 +63,17 @@
         "type": "int"
       }
     }
+  },
+  "validationWholeNumber": "Enter a whole number from {min} to {max}",
+  "chooseDateTime": "Choose a day and time",
+  "@validationWholeNumber": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
   }
 }

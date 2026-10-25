@@ -226,4 +226,220 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get productAddedAddPhoto => 'Saved. Now add its photo.';
+
+  @override
+  String get offersTitle => 'Offers';
+
+  @override
+  String get postOffer => 'Post an offer';
+
+  @override
+  String get noOffersTitle => 'No offers yet';
+
+  @override
+  String get noOffersMessage =>
+      'Post one from a product: customers nearby see it right away.';
+
+  @override
+  String get noOffersHere => 'No offers here.';
+
+  @override
+  String get allOffers => 'All';
+
+  @override
+  String get activeOffers => 'Active';
+
+  @override
+  String get pausedOffers => 'Paused';
+
+  @override
+  String get endedOffers => 'Ended';
+
+  @override
+  String get offerLive => 'Live';
+
+  @override
+  String get offerScheduled => 'Scheduled';
+
+  @override
+  String get offerSoldOut => 'Sold out';
+
+  @override
+  String get offerPaused => 'Paused';
+
+  @override
+  String get offerEnded => 'Ended';
+
+  @override
+  String get offerRemoved => 'Removed by our team';
+
+  @override
+  String piecesLeft(int left, int total) {
+    return '$left of $total left';
+  }
+
+  @override
+  String get noLimit => 'No limit';
+
+  @override
+  String until(String date) {
+    return 'Until $date';
+  }
+
+  @override
+  String get chooseProductTitle => 'Choose a product';
+
+  @override
+  String get noProductsForOffer =>
+      'Offers are posted from your products. Add one first.';
+
+  @override
+  String get newOfferTitle => 'New offer';
+
+  @override
+  String regularPriceIs(String price) {
+    return 'Regular price $price';
+  }
+
+  @override
+  String get offerPriceLabel => 'Offer price';
+
+  @override
+  String discountHelper(int percent) {
+    return '$percent% off the regular price';
+  }
+
+  @override
+  String offerPriceTooHigh(String price) {
+    return 'Must be lower than the regular price ($price)';
+  }
+
+  @override
+  String get offerTypeLabel => 'Pieces';
+
+  @override
+  String get limitedType => 'A set number';
+
+  @override
+  String get unlimitedType => 'No limit';
+
+  @override
+  String get quantityLabel => 'How many pieces';
+
+  @override
+  String get holdLabel => 'Held for (minutes)';
+
+  @override
+  String get holdHelper =>
+      'How long a reservation waits for the customer to come.';
+
+  @override
+  String get perCustomerLabel => 'Per customer';
+
+  @override
+  String get perCustomerHelper => 'How many times one customer can claim it.';
+
+  @override
+  String get endsLabel => 'Ends';
+
+  @override
+  String get endsTonight => 'Tonight';
+
+  @override
+  String get endsTomorrow => 'Tomorrow night';
+
+  @override
+  String get endsIn3Days => 'In 3 days';
+
+  @override
+  String get endsInAWeek => 'In a week';
+
+  @override
+  String get endsInPast => 'Choose a time that\'s still to come.';
+
+  @override
+  String get endsTooLate => 'Offers can last at most 30 days.';
+
+  @override
+  String get chooseABranch => 'Choose at least one branch.';
+
+  @override
+  String get offerPosted => 'Offer posted.';
+
+  @override
+  String get claimsSection => 'Claims';
+
+  @override
+  String get claimsReserved => 'Reserved';
+
+  @override
+  String get claimsRedeemed => 'Picked up';
+
+  @override
+  String get claimsExpired => 'Not picked up';
+
+  @override
+  String get claimsCancelled => 'Cancelled';
+
+  @override
+  String get viewsLabel => 'Views';
+
+  @override
+  String get detailsSection => 'Details';
+
+  @override
+  String holdValue(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get startsLabel => 'Starts';
+
+  @override
+  String branchCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count branches',
+      one: '1 branch',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pauseOffer => 'Pause';
+
+  @override
+  String get resumeOffer => 'Resume';
+
+  @override
+  String get endOffer => 'End the offer';
+
+  @override
+  String get endOfferTitle => 'End this offer?';
+
+  @override
+  String get endOfferMessage =>
+      'Customers can\'t claim it anymore. Reservations already made can still be picked up.';
+
+  @override
+  String get offerPausedDone => 'Paused: customers don\'t see it now.';
+
+  @override
+  String get offerResumed => 'Customers see it again.';
+
+  @override
+  String get offerEndedDone => 'Offer ended.';
+
+  @override
+  String get repostOffer => 'Post it again';
+
+  @override
+  String get editOfferTitle => 'Edit the offer';
+
+  @override
+  String get offerTitleLabel => 'Title';
+
+  @override
+  String get holdTitle => 'Held for';
 }

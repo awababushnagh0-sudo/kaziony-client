@@ -70,5 +70,121 @@
   "restoreProduct": "Restore",
   "productArchived": "Archived.",
   "productRestored": "Restored.",
-  "productAddedAddPhoto": "Saved. Now add its photo."
+  "productAddedAddPhoto": "Saved. Now add its photo.",
+  "offersTitle": "Offers",
+  "postOffer": "Post an offer",
+  "noOffersTitle": "No offers yet",
+  "noOffersMessage": "Post one from a product: customers nearby see it right away.",
+  "noOffersHere": "No offers here.",
+  "allOffers": "All",
+  "activeOffers": "Active",
+  "pausedOffers": "Paused",
+  "endedOffers": "Ended",
+  "offerLive": "Live",
+  "offerScheduled": "Scheduled",
+  "offerSoldOut": "Sold out",
+  "offerPaused": "Paused",
+  "offerEnded": "Ended",
+  "offerRemoved": "Removed by our team",
+  "piecesLeft": "{left} of {total} left",
+  "@piecesLeft": {
+    "placeholders": {
+      "left": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "noLimit": "No limit",
+  "until": "Until {date}",
+  "@until": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "chooseProductTitle": "Choose a product",
+  "noProductsForOffer": "Offers are posted from your products. Add one first.",
+  "newOfferTitle": "New offer",
+  "regularPriceIs": "Regular price {price}",
+  "@regularPriceIs": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "offerPriceLabel": "Offer price",
+  "discountHelper": "{percent}% off the regular price",
+  "@discountHelper": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "offerPriceTooHigh": "Must be lower than the regular price ({price})",
+  "@offerPriceTooHigh": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "offerTypeLabel": "Pieces",
+  "limitedType": "A set number",
+  "unlimitedType": "No limit",
+  "quantityLabel": "How many pieces",
+  "holdLabel": "Held for (minutes)",
+  "holdHelper": "How long a reservation waits for the customer to come.",
+  "perCustomerLabel": "Per customer",
+  "perCustomerHelper": "How many times one customer can claim it.",
+  "endsLabel": "Ends",
+  "endsTonight": "Tonight",
+  "endsTomorrow": "Tomorrow night",
+  "endsIn3Days": "In 3 days",
+  "endsInAWeek": "In a week",
+  "endsInPast": "Choose a time that's still to come.",
+  "endsTooLate": "Offers can last at most 30 days.",
+  "chooseABranch": "Choose at least one branch.",
+  "offerPosted": "Offer posted.",
+  "claimsSection": "Claims",
+  "claimsReserved": "Reserved",
+  "claimsRedeemed": "Picked up",
+  "claimsExpired": "Not picked up",
+  "claimsCancelled": "Cancelled",
+  "viewsLabel": "Views",
+  "detailsSection": "Details",
+  "holdValue": "{minutes} min",
+  "@holdValue": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "startsLabel": "Starts",
+  "branchCount": "{count, plural, =1{1 branch} other{{count} branches}}",
+  "@branchCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pauseOffer": "Pause",
+  "resumeOffer": "Resume",
+  "endOffer": "End the offer",
+  "endOfferTitle": "End this offer?",
+  "endOfferMessage": "Customers can't claim it anymore. Reservations already made can still be picked up.",
+  "offerPausedDone": "Paused: customers don't see it now.",
+  "offerResumed": "Customers see it again.",
+  "offerEndedDone": "Offer ended.",
+  "repostOffer": "Post it again",
+  "editOfferTitle": "Edit the offer",
+  "offerTitleLabel": "Title",
+  "holdTitle": "Held for"
 }

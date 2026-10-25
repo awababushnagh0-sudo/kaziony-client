@@ -30,12 +30,13 @@ lib/src/
 | Folder | Widgets |
 |---|---|
 | `button` | `SButton`, `.secondary`, `.text`, `.menu` ("Actions" dropdown), `.icon` |
-| `input` | `STextInput` (`TextInputKind.price` for LD), `SSelectInput`, `SSearchField`, `SCopyField` |
+| `input` | `STextInput` (`TextInputKind.price` for LD), `SSelectInput`, `SChoiceInput` (pills), `SDateTimeInput` (one-tap presets, then the phone's calendar and clock), `SSearchField`, `SCopyField` |
 | `form` | `SForm`, `SFieldGrid`, `SFormSection`, `SValidators` (+ `FormGroup`, `FormControl`, `Validators`) |
 | `text` | `SText`, `.display`, `.title`, `.caption`: takes `TextVariant`, `SFontWeight`, `SColor` |
 | `icon` | `SIcon` (takes `SIconSize`, `SColor`), `SIcons` (the icons apps can use) |
 | `scaffold` | `SScaffold` (`parent` for a breadcrumb, `status` for a badge after the title) |
 | `shell` | `SShell` (side menu layout for the dashboard) |
+| `deal` | `SDealTile` (an offer in a list: photo, offer price beside the crossed-out regular one, the discount in orange) |
 | `image` | `SImage` (a photo from the server, cached on the device, with a placeholder) |
 | `photo` | `SPhotoField` (a record's photo: add, change, upload progress, retry), `SPhoto.chooseSource`, `SPhoto.askToOpenSettings` |
 | `paged_list` | `SPagedList` (phone list: pull to refresh, more rows on scroll) |

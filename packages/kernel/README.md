@@ -16,5 +16,7 @@ Riverpod, Dio, go_router or storage plugins.
   logout; works offline with the cached user
 - **Also:** config (`--dart-define=API_BASE_URL`), locale (Arabic default), version check,
   error reporting interface, navigation (go_router), Libyan phone and price helpers
+  (`parsePrice`, `dirhamsOf`, `discountPercent`), dates (`formatDate`, `formatDateTime`,
+  always with 0-9 digits), `PageResult` for lists
 
 Tests: `flutter test`. Test fakes: `package:kernel/testing.dart`.

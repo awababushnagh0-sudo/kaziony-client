@@ -173,18 +173,22 @@ A product is the saved item an offer is posted from, so it can be reposted in se
 - [ ] Before a Flutter upgrade: `app_settings` and `flutter_image_compress` still use the old
       Kotlin Gradle plugin, which future Flutter versions refuse
 
-### 2.5 Offers
+### 2.5 Offers ✅
 
-- [ ] Offers tab: list grouped by state (live, scheduled, paused, sold out, ended) with
-      the photo, prices, discount badge (orange), pieces left and claim counts
-- [ ] Post an offer from a product: offer price (below the regular one), limited (quantity,
-      max per customer, minutes to pick up) or unlimited, start and end time (max 30
-      days), branches. A short form with good defaults, so posting takes under a minute
-- [ ] Offer page: details, claims (reserved, redeemed, expired, cancelled), views
-- [ ] Edit (title, description, end time), pause, resume, end (with a confirm), repost an
-      ended one
-- [ ] **new** stellar: date and time picker, segmented choice (limited / unlimited),
-      stepper for quantities, badges for the states, confirm dialog in the phone look
+- [x] Offers tab for the whole store (owners post and change, staff look): all, active,
+      paused or ended; each with its photo, prices, discount, pieces left, end time and state
+- [x] Post an offer: from the Offers tab (choose a product) or a product's page. Offer price
+      (below the regular one, with the discount shown as it's typed), a set number of pieces
+      (held 60 minutes by default) or no limit, per customer, end time (tonight, tomorrow,
+      3 days, a week, or any time within 30 days), branches when there are several
+- [x] Offer page: claims (reserved, picked up, not picked up, cancelled), views, details;
+      edit (title, description, end time), pause, resume, end (asks first; reservations
+      made can still be picked up), post an ended offer again with its values
+- [x] Dates are sent in UTC (the generated client sends them as given) and shown with 0-9
+      digits, like prices
+- [x] **new** stellar: `SDealTile`, `SChoiceInput`, `SDateTimeInput`, an orange badge tone,
+      `SValidators.wholeNumberBetween`; kernel: `formatDateTime`, `discountPercent`
+- [ ] A later start time (the backend takes `startsAt`; the app posts offers starting now)
 
 ## Step 3: Partner app — counter, home and store
 

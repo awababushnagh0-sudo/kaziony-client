@@ -3,8 +3,8 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
-import '../domain/product.dart';
 import 'products_view_model.dart';
+import 'widgets/product_tile.dart';
 
 /// The Products tab (owners only): what the store sells, to post offers
 /// from.
@@ -86,8 +86,13 @@ class _ProductList extends AppView {
         }
         return SPagedList(
           itemCount: page.items.length,
-          itemBuilder: (context, index) =>
-              _ProductRow(product: page.items[index]),
+          itemBuilder: (context, index) {
+            final product = page.items[index];
+            return ProductTile(
+              product: product,
+              onTap: () => context.push(Routes.product(product.id)),
+            );
+          },
           onRefresh: () async {
             final failure = await viewModel.refresh();
             if (failure != null && context.mounted) {
@@ -102,23 +107,6 @@ class _ProductList extends AppView {
       },
     );
   }
-}
-
-class _ProductRow extends StatelessWidget {
-  const _ProductRow({required this.product});
-
-  final Product product;
-
-  @override
-  Widget build(BuildContext context) => SListTile(
-    leading: SImage(product.thumbUrl),
-    title: product.title,
-    subtitle: formatPrice(
-      product.regularPrice,
-      languageCode: Localizations.localeOf(context).languageCode,
-    ),
-    onTap: () => context.push(Routes.product(product.id)),
-  );
 }
 
 class _Empty extends StatelessWidget {

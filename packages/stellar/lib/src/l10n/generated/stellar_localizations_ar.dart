@@ -145,4 +145,12 @@ class StellarLocalizationsAr extends StellarLocalizations {
 
   @override
   String get openSettings => 'فتح الإعدادات';
+
+  @override
+  String validationWholeNumber(int min, int max) {
+    return 'أدخل رقمًا صحيحًا من $min إلى $max';
+  }
+
+  @override
+  String get chooseDateTime => 'اختر اليوم والوقت';
 }

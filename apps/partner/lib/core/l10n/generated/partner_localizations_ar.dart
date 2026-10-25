@@ -225,4 +225,220 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get productAddedAddPhoto => 'تم الحفظ. أضف صورته الآن.';
+
+  @override
+  String get offersTitle => 'العروض';
+
+  @override
+  String get postOffer => 'نشر عرض';
+
+  @override
+  String get noOffersTitle => 'لا توجد عروض بعد';
+
+  @override
+  String get noOffersMessage =>
+      'انشر عرضًا من أحد منتجاتك، ويراه الزبائن القريبون فورًا.';
+
+  @override
+  String get noOffersHere => 'لا توجد عروض هنا.';
+
+  @override
+  String get allOffers => 'الكل';
+
+  @override
+  String get activeOffers => 'الحالية';
+
+  @override
+  String get pausedOffers => 'المتوقفة';
+
+  @override
+  String get endedOffers => 'المنتهية';
+
+  @override
+  String get offerLive => 'متاح';
+
+  @override
+  String get offerScheduled => 'مجدول';
+
+  @override
+  String get offerSoldOut => 'نفدت الكمية';
+
+  @override
+  String get offerPaused => 'متوقف مؤقتًا';
+
+  @override
+  String get offerEnded => 'انتهى';
+
+  @override
+  String get offerRemoved => 'أزاله فريقنا';
+
+  @override
+  String piecesLeft(int left, int total) {
+    return 'باقي $left من $total';
+  }
+
+  @override
+  String get noLimit => 'بدون حد';
+
+  @override
+  String until(String date) {
+    return 'حتى $date';
+  }
+
+  @override
+  String get chooseProductTitle => 'اختر منتجًا';
+
+  @override
+  String get noProductsForOffer => 'تُنشر العروض من منتجاتك. أضف منتجًا أولًا.';
+
+  @override
+  String get newOfferTitle => 'عرض جديد';
+
+  @override
+  String regularPriceIs(String price) {
+    return 'السعر العادي $price';
+  }
+
+  @override
+  String get offerPriceLabel => 'سعر العرض';
+
+  @override
+  String discountHelper(int percent) {
+    return 'خصم $percent% من السعر العادي';
+  }
+
+  @override
+  String offerPriceTooHigh(String price) {
+    return 'يجب أن يكون أقل من السعر العادي ($price)';
+  }
+
+  @override
+  String get offerTypeLabel => 'الكمية';
+
+  @override
+  String get limitedType => 'عدد محدد';
+
+  @override
+  String get unlimitedType => 'بدون حد';
+
+  @override
+  String get quantityLabel => 'عدد القطع';
+
+  @override
+  String get holdLabel => 'مدة الحجز (بالدقائق)';
+
+  @override
+  String get holdHelper => 'المدة التي يُحجز فيها العرض للزبون حتى يصل.';
+
+  @override
+  String get perCustomerLabel => 'لكل زبون';
+
+  @override
+  String get perCustomerHelper => 'كم مرة يمكن للزبون الواحد أن يحجزه.';
+
+  @override
+  String get endsLabel => 'ينتهي';
+
+  @override
+  String get endsTonight => 'الليلة';
+
+  @override
+  String get endsTomorrow => 'ليلة الغد';
+
+  @override
+  String get endsIn3Days => 'بعد 3 أيام';
+
+  @override
+  String get endsInAWeek => 'بعد أسبوع';
+
+  @override
+  String get endsInPast => 'اختر وقتًا لم يأتِ بعد.';
+
+  @override
+  String get endsTooLate => 'مدة العرض 30 يومًا كحد أقصى.';
+
+  @override
+  String get chooseABranch => 'اختر فرعًا واحدًا على الأقل.';
+
+  @override
+  String get offerPosted => 'تم نشر العرض.';
+
+  @override
+  String get claimsSection => 'الحجوزات';
+
+  @override
+  String get claimsReserved => 'محجوز';
+
+  @override
+  String get claimsRedeemed => 'تم الاستلام';
+
+  @override
+  String get claimsExpired => 'لم يُستلم';
+
+  @override
+  String get claimsCancelled => 'أُلغي';
+
+  @override
+  String get viewsLabel => 'المشاهدات';
+
+  @override
+  String get detailsSection => 'التفاصيل';
+
+  @override
+  String holdValue(int minutes) {
+    return '$minutes دقيقة';
+  }
+
+  @override
+  String get startsLabel => 'يبدأ';
+
+  @override
+  String branchCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count فرعًا',
+      few: '$count فروع',
+      two: 'فرعان',
+      one: 'فرع واحد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pauseOffer => 'إيقاف مؤقت';
+
+  @override
+  String get resumeOffer => 'استئناف';
+
+  @override
+  String get endOffer => 'إنهاء العرض';
+
+  @override
+  String get endOfferTitle => 'إنهاء هذا العرض؟';
+
+  @override
+  String get endOfferMessage =>
+      'لن يتمكن الزبائن من حجزه بعد الآن. الحجوزات الحالية يمكن استلامها.';
+
+  @override
+  String get offerPausedDone => 'تم الإيقاف المؤقت: لا يراه الزبائن الآن.';
+
+  @override
+  String get offerResumed => 'أصبح العرض ظاهرًا للزبائن من جديد.';
+
+  @override
+  String get offerEndedDone => 'تم إنهاء العرض.';
+
+  @override
+  String get repostOffer => 'نشره مرة أخرى';
+
+  @override
+  String get editOfferTitle => 'تعديل العرض';
+
+  @override
+  String get offerTitleLabel => 'العنوان';
+
+  @override
+  String get holdTitle => 'مدة الحجز';
 }

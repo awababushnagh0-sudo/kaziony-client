@@ -148,4 +148,12 @@ class StellarLocalizationsEn extends StellarLocalizations {
 
   @override
   String get openSettings => 'Open Settings';
+
+  @override
+  String validationWholeNumber(int min, int max) {
+    return 'Enter a whole number from $min to $max';
+  }
+
+  @override
+  String get chooseDateTime => 'Choose a day and time';
 }

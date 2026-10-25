@@ -55,7 +55,11 @@ void main() {
     await initializeDateFormatting('ar');
     final day = DateTime(2026, 10, 19, 12);
     expect(formatDate(day, languageCode: 'en'), 'Oct 19, 2026');
-    expect(formatDate(day, languageCode: 'ar'), contains('أكتوبر'));
+    expect(formatDate(day, languageCode: 'ar'), '19 أكتوبر 2026');
+    expect(
+      formatDateTime(day, languageCode: 'ar'),
+      'الاثنين، 19 أكتوبر 12:00 م',
+    );
   });
 
   group('parsePrice', () {
@@ -82,5 +86,14 @@ void main() {
       expect(parsePrice('4,5'), isNull);
       expect(parsePrice('abc'), isNull);
     });
+  });
+
+  test('dirhamsOf and discountPercent compare prices exactly', () {
+    expect(dirhamsOf('4.500'), 4500);
+    expect(dirhamsOf('12.000'), 12000);
+    expect(dirhamsOf('0.050'), 50);
+    expect(discountPercent(original: '8.000', offer: '4.000'), 50);
+    expect(discountPercent(original: '3.000', offer: '2.000'), 33);
+    expect(discountPercent(original: '9.000', offer: '1.000'), 89);
   });
 }

@@ -1,5 +1,6 @@
 import 'package:kernel/kernel.dart';
 import 'package:partner/features/auth/domain/auth_repository.dart';
+import 'package:partner/features/offers/domain/offer.dart';
 import 'package:partner/features/products/domain/product.dart';
 import 'package:partner/features/store/domain/store.dart';
 
@@ -222,5 +223,106 @@ class FakeProductRepository implements ProductRepository {
         isArchived: false,
       ),
     );
+  }
+}
+
+Offer offer(
+  String id, {
+  OfferStatus status = OfferStatus.active,
+  OfferState state = OfferState.live,
+  OfferType type = OfferType.limited,
+  String productId = '1',
+}) => Offer(
+  id: id,
+  productId: productId,
+  title: 'Offer $id',
+  description: null,
+  thumbUrl: null,
+  originalPrice: '8.000',
+  offerPrice: '4.000',
+  discountPercent: 50,
+  type: type,
+  status: status,
+  state: state,
+  totalQuantity: type == OfferType.limited ? 10 : null,
+  remainingQuantity: type == OfferType.limited ? 3 : null,
+  maxPerUser: 1,
+  claimWindowMinutes: 60,
+  startsAt: DateTime.utc(2026, 10, 25, 8),
+  endsAt: DateTime.now().add(const Duration(hours: 5)),
+  branchIds: const ['b1'],
+  viewCount: 42,
+  claims: const ClaimCounts(reserved: 2, redeemed: 5, expired: 1, cancelled: 0),
+);
+
+/// Serves [offers] filtered by status like the API, and records changes.
+class FakeOfferRepository implements OfferRepository {
+  FakeOfferRepository([List<Offer>? offers]) : offers = offers ?? [offer('o1')];
+
+  final List<Offer> offers;
+  final statuses = <OfferStatus?>[];
+  final created = <NewOffer>[];
+  final updated = <(String, OfferChanges)>[];
+  final actions = <(String, String)>[];
+
+  @override
+  Future<Result<PageResult<Offer>>> list(
+    String storeId, {
+    required int page,
+    required int pageSize,
+    OfferStatus? status,
+  }) async {
+    statuses.add(status);
+    final matching = [
+      for (final offer in offers)
+        if (status == null || offer.status == status) offer,
+    ];
+    return Ok(PageResult(items: matching, total: matching.length));
+  }
+
+  @override
+  Future<Result<Offer>> get(String storeId, String offerId) async =>
+      Ok(offers.firstWhere((offer) => offer.id == offerId));
+
+  @override
+  Future<Result<Offer>> create(String storeId, NewOffer newOffer) async {
+    created.add(newOffer);
+    final posted = offer('posted', productId: newOffer.productId);
+    offers.add(posted);
+    return Ok(posted);
+  }
+
+  @override
+  Future<Result<Offer>> update(
+    String storeId,
+    String offerId,
+    OfferChanges changes,
+  ) async {
+    updated.add((offerId, changes));
+    return get(storeId, offerId);
+  }
+
+  @override
+  Future<Result<Offer>> pause(String storeId, String offerId) =>
+      _set(offerId, 'pause', OfferStatus.paused, OfferState.paused);
+
+  @override
+  Future<Result<Offer>> resume(String storeId, String offerId) =>
+      _set(offerId, 'resume', OfferStatus.active, OfferState.live);
+
+  @override
+  Future<Result<Offer>> end(String storeId, String offerId) =>
+      _set(offerId, 'end', OfferStatus.ended, OfferState.ended);
+
+  Future<Result<Offer>> _set(
+    String offerId,
+    String action,
+    OfferStatus status,
+    OfferState state,
+  ) async {
+    actions.add((offerId, action));
+    final index = offers.indexWhere((offer) => offer.id == offerId);
+    offers[index] = offer(offerId, status: status, state: state);
+    return Ok(offers[index]);
   }
 }

@@ -42,5 +42,7 @@
   "photoFailed": "تعذّر استخدام هذه الصورة. جرّب صورة أخرى.",
   "cameraOffTitle": "الكاميرا متوقفة",
   "cameraOffMessage": "اسمح لهذا التطبيق باستخدام الكاميرا من الإعدادات لالتقاط الصور.",
-  "openSettings": "فتح الإعدادات"
+  "openSettings": "فتح الإعدادات",
+  "validationWholeNumber": "أدخل رقمًا صحيحًا من {min} إلى {max}",
+  "chooseDateTime": "اختر اليوم والوقت"
 }

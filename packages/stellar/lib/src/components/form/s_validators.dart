@@ -5,6 +5,7 @@ abstract final class SValidators {
   static const libyanPhoneKey = 'libyanPhone';
   static const urlKey = 'url';
   static const priceKey = 'price';
+  static const wholeNumberKey = 'wholeNumber';
 
   /// Any common Libyan mobile format (0912345678, +218 91..., Arabic digits).
   static const Validator<dynamic> libyanPhone = _LibyanPhoneValidator();
@@ -19,6 +20,41 @@ abstract final class SValidators {
 
   /// A price in LD above 0 with up to 3 decimals, as the backend takes it.
   static const Validator<dynamic> price = _PriceValidator();
+
+  /// A whole number from [min] to [max] (typed as text; Arabic digits
+  /// too). Read it with [wholeNumber].
+  static Validator<dynamic> wholeNumberBetween(int min, int max) =>
+      _WholeNumberValidator(min, max);
+
+  /// The number in a field checked with [wholeNumberBetween], or null when
+  /// it's empty.
+  static int? wholeNumber(Object? value) {
+    if (value is! String) return null;
+    final digits = value.trim().replaceAllMapped(
+      RegExp('[٠-٩]'),
+      (match) => '${match[0]!.codeUnitAt(0) - 0x0660}',
+    );
+    return RegExp(r'^\d{1,9}$').hasMatch(digits) ? int.parse(digits) : null;
+  }
+}
+
+class _WholeNumberValidator extends Validator<dynamic> {
+  const _WholeNumberValidator(this.min, this.max);
+
+  final int min;
+  final int max;
+
+  @override
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+    final value = control.value;
+    if (value is! String || value.trim().isEmpty) return null;
+    final number = SValidators.wholeNumber(value);
+    return number != null && number >= min && number <= max
+        ? null
+        : {
+            SValidators.wholeNumberKey: {'min': min, 'max': max},
+          };
+  }
 }
 
 class _PriceValidator extends Validator<dynamic> {

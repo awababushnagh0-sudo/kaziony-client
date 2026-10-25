@@ -71,6 +71,10 @@ class STextInput extends StatelessWidget {
           SValidators.libyanPhoneKey: (_) => strings.validationPhone,
           SValidators.urlKey: (_) => strings.validationUrl,
           SValidators.priceKey: (_) => strings.validationPrice,
+          SValidators.wholeNumberKey: (error) => strings.validationWholeNumber(
+            _bound(error, 'min'),
+            _bound(error, 'max'),
+          ),
           ...validationMessages,
         },
       ),
@@ -80,3 +84,6 @@ class STextInput extends StatelessWidget {
 
 int _requiredLength(Object error) =>
     error is Map ? (error['requiredLength'] as int? ?? 0) : 0;
+
+int _bound(Object error, String key) =>
+    error is Map ? (error[key] as int? ?? 0) : 0;

@@ -16,6 +16,7 @@ class MaterialBadgeRenderer implements BadgeRenderer {
       BadgeTone.danger => (c.danger, c.dangerSoft),
       // A shade darker than a hovered row, so it stays visible there.
       BadgeTone.neutral => (c.textMuted, c.border),
+      BadgeTone.accent => (c.onAccent, c.accent),
     };
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),

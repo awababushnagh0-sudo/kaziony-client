@@ -526,6 +526,390 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Saved. Now add its photo.'**
   String get productAddedAddPhoto;
+
+  /// No description provided for @offersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers'**
+  String get offersTitle;
+
+  /// No description provided for @postOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Post an offer'**
+  String get postOffer;
+
+  /// No description provided for @noOffersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No offers yet'**
+  String get noOffersTitle;
+
+  /// No description provided for @noOffersMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Post one from a product: customers nearby see it right away.'**
+  String get noOffersMessage;
+
+  /// No description provided for @noOffersHere.
+  ///
+  /// In en, this message translates to:
+  /// **'No offers here.'**
+  String get noOffersHere;
+
+  /// No description provided for @allOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get allOffers;
+
+  /// No description provided for @activeOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get activeOffers;
+
+  /// No description provided for @pausedOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get pausedOffers;
+
+  /// No description provided for @endedOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended'**
+  String get endedOffers;
+
+  /// No description provided for @offerLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Live'**
+  String get offerLive;
+
+  /// No description provided for @offerScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get offerScheduled;
+
+  /// No description provided for @offerSoldOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold out'**
+  String get offerSoldOut;
+
+  /// No description provided for @offerPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get offerPaused;
+
+  /// No description provided for @offerEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended'**
+  String get offerEnded;
+
+  /// No description provided for @offerRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed by our team'**
+  String get offerRemoved;
+
+  /// No description provided for @piecesLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{left} of {total} left'**
+  String piecesLeft(int left, int total);
+
+  /// No description provided for @noLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'No limit'**
+  String get noLimit;
+
+  /// No description provided for @until.
+  ///
+  /// In en, this message translates to:
+  /// **'Until {date}'**
+  String until(String date);
+
+  /// No description provided for @chooseProductTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a product'**
+  String get chooseProductTitle;
+
+  /// No description provided for @noProductsForOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers are posted from your products. Add one first.'**
+  String get noProductsForOffer;
+
+  /// No description provided for @newOfferTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New offer'**
+  String get newOfferTitle;
+
+  /// No description provided for @regularPriceIs.
+  ///
+  /// In en, this message translates to:
+  /// **'Regular price {price}'**
+  String regularPriceIs(String price);
+
+  /// No description provided for @offerPriceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer price'**
+  String get offerPriceLabel;
+
+  /// No description provided for @discountHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% off the regular price'**
+  String discountHelper(int percent);
+
+  /// No description provided for @offerPriceTooHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Must be lower than the regular price ({price})'**
+  String offerPriceTooHigh(String price);
+
+  /// No description provided for @offerTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pieces'**
+  String get offerTypeLabel;
+
+  /// No description provided for @limitedType.
+  ///
+  /// In en, this message translates to:
+  /// **'A set number'**
+  String get limitedType;
+
+  /// No description provided for @unlimitedType.
+  ///
+  /// In en, this message translates to:
+  /// **'No limit'**
+  String get unlimitedType;
+
+  /// No description provided for @quantityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'How many pieces'**
+  String get quantityLabel;
+
+  /// No description provided for @holdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Held for (minutes)'**
+  String get holdLabel;
+
+  /// No description provided for @holdHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'How long a reservation waits for the customer to come.'**
+  String get holdHelper;
+
+  /// No description provided for @perCustomerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Per customer'**
+  String get perCustomerLabel;
+
+  /// No description provided for @perCustomerHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'How many times one customer can claim it.'**
+  String get perCustomerHelper;
+
+  /// No description provided for @endsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends'**
+  String get endsLabel;
+
+  /// No description provided for @endsTonight.
+  ///
+  /// In en, this message translates to:
+  /// **'Tonight'**
+  String get endsTonight;
+
+  /// No description provided for @endsTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow night'**
+  String get endsTomorrow;
+
+  /// No description provided for @endsIn3Days.
+  ///
+  /// In en, this message translates to:
+  /// **'In 3 days'**
+  String get endsIn3Days;
+
+  /// No description provided for @endsInAWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'In a week'**
+  String get endsInAWeek;
+
+  /// No description provided for @endsInPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a time that\'s still to come.'**
+  String get endsInPast;
+
+  /// No description provided for @endsTooLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers can last at most 30 days.'**
+  String get endsTooLate;
+
+  /// No description provided for @chooseABranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose at least one branch.'**
+  String get chooseABranch;
+
+  /// No description provided for @offerPosted.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer posted.'**
+  String get offerPosted;
+
+  /// No description provided for @claimsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Claims'**
+  String get claimsSection;
+
+  /// No description provided for @claimsReserved.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserved'**
+  String get claimsReserved;
+
+  /// No description provided for @claimsRedeemed.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up'**
+  String get claimsRedeemed;
+
+  /// No description provided for @claimsExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Not picked up'**
+  String get claimsExpired;
+
+  /// No description provided for @claimsCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get claimsCancelled;
+
+  /// No description provided for @viewsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Views'**
+  String get viewsLabel;
+
+  /// No description provided for @detailsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get detailsSection;
+
+  /// No description provided for @holdValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String holdValue(int minutes);
+
+  /// No description provided for @startsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts'**
+  String get startsLabel;
+
+  /// No description provided for @branchCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 branch} other{{count} branches}}'**
+  String branchCount(int count);
+
+  /// No description provided for @pauseOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get pauseOffer;
+
+  /// No description provided for @resumeOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get resumeOffer;
+
+  /// No description provided for @endOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'End the offer'**
+  String get endOffer;
+
+  /// No description provided for @endOfferTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'End this offer?'**
+  String get endOfferTitle;
+
+  /// No description provided for @endOfferMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers can\'t claim it anymore. Reservations already made can still be picked up.'**
+  String get endOfferMessage;
+
+  /// No description provided for @offerPausedDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused: customers don\'t see it now.'**
+  String get offerPausedDone;
+
+  /// No description provided for @offerResumed.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers see it again.'**
+  String get offerResumed;
+
+  /// No description provided for @offerEndedDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer ended.'**
+  String get offerEndedDone;
+
+  /// No description provided for @repostOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Post it again'**
+  String get repostOffer;
+
+  /// No description provided for @editOfferTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit the offer'**
+  String get editOfferTitle;
+
+  /// No description provided for @offerTitleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get offerTitleLabel;
+
+  /// No description provided for @holdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Held for'**
+  String get holdTitle;
 }
 
 class _PartnerLocalizationsDelegate

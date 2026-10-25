@@ -358,6 +358,18 @@ abstract class StellarLocalizations {
   /// In en, this message translates to:
   /// **'Open Settings'**
   String get openSettings;
+
+  /// No description provided for @validationWholeNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a whole number from {min} to {max}'**
+  String validationWholeNumber(int min, int max);
+
+  /// No description provided for @chooseDateTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a day and time'**
+  String get chooseDateTime;
 }
 
 class _StellarLocalizationsDelegate

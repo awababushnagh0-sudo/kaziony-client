@@ -51,6 +51,12 @@ void main() {
     expect(go(staff, Routes.products), Routes.home);
     expect(go(staff, Routes.product('p1')), Routes.home);
     expect(go(staff, Routes.newProduct), Routes.home);
+    expect(go(staff, Routes.chooseOfferProduct), Routes.home);
+    expect(go(staff, Routes.newOffer('p1')), Routes.home);
+    expect(go(staff, Routes.editOffer('o1')), Routes.home);
+    // Staff see the offers.
+    expect(go(staff, Routes.offers), isNull);
+    expect(go(staff, Routes.offer('o1')), isNull);
     expect(go(inStore, Routes.products), isNull);
     expect(go(inStore, Routes.product('p1')), isNull);
   });

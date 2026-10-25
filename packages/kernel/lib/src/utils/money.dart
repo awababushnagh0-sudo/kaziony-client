@@ -32,3 +32,19 @@ String? parsePrice(String input) {
   if (whole == '0' && dirhams == '000') return null;
   return '$whole.$dirhams';
 }
+
+/// [price] ("4.500") in dirhams (4500), to compare two prices exactly.
+int dirhamsOf(String price) {
+  final [whole, ...rest] = price.split('.');
+  final dirhams = (rest.isEmpty ? '' : rest.first).padRight(3, '0');
+  return int.parse(whole) * 1000 + int.parse(dirhams.substring(0, 3));
+}
+
+/// How much cheaper [offer] is than [original], in whole percent, rounded
+/// like the backend's: "8.000" → "4.000" is 50. Only for showing it while
+/// the price is typed; the backend's number is the one that counts.
+int discountPercent({required String original, required String offer}) {
+  final full = dirhamsOf(original);
+  if (full <= 0) return 0;
+  return ((1 - dirhamsOf(offer) / full) * 100).round();
+}

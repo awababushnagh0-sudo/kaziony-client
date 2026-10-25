@@ -3,7 +3,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 // reactive_forms holds the form state; apps get only these types from it.
 export 'package:reactive_forms/reactive_forms.dart'
-    show AbstractControl, FormControl, FormGroup, Validators;
+    show AbstractControl, FormControl, FormGroup, Validator, Validators;
 
 /// Wraps a group of AppTextInputs bound to [form].
 class SForm extends StatelessWidget {

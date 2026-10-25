@@ -98,6 +98,12 @@ class _ProductForm extends AppView {
             ),
             if (state.failure case final failure?)
               SText(failureMessage(context, failure), color: SColor.danger),
+            if (id != null && !archived)
+              SButton.secondary(
+                label: s.postOffer,
+                icon: SIcons.offers,
+                onPressed: () => context.push(Routes.newOffer(id)),
+              ),
             if (id != null)
               SButton.secondary(
                 label: archived ? s.restoreProduct : s.archiveProduct,
