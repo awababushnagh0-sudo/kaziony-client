@@ -97,23 +97,117 @@ buttons that can't submit twice, and friendly error messages.
       log with secrets hidden, app log, server switching with connection test
 - [x] `tool/check_all.sh`
 
-## Step 2: Partner app — products and offers
+## Step 2: Partner app — store, products and offers
 
-- [ ] Store picker for owners of several stores
-- [ ] Products: list, create/edit, archive
-- [ ] Photo: camera or gallery, crop, compress on the phone (1280px + 400px thumbnail),
-      upload with progress and retry
-- [ ] Offers: list with state and claim counts, post from a product (price, type,
-      quantity, end time, branches), edit, pause, resume, end, repost
+The backend's partner API is done (Phase 4), so every slice here is client work: a
+`data/` + `domain/` + screens slice in the app, plus the stellar or kernel pieces it needs
+for the first time (marked **new**). Each slice works end to end on a phone before the
+next one starts.
 
-## Step 3: Partner app — counter and stats
+Tabs when done: **Home** · **Offers** · **Products** · **Scan** · **Profile**. Owners see
+everything; staff see Home, Offers (read only), Scan and Profile: owner-only actions are
+hidden from staff (the API refuses them anyway).
 
-- [ ] QR scanner, or type a code by hand
-- [ ] Claim preview (customer, offer, price, problems) → confirm redeem
-- [ ] Upcoming pickups
-- [ ] Stats screen (today, last 30 days, top offers)
-- [ ] Store profile: description, contact, logo/cover, branch opening hours
-- [ ] Settings: language, change password, logout
+- [x] Phone look (`StellarStyle.app`), like DoorDash and Too Good To Go: 16 at the sides,
+      white bordered fields, pill buttons (the dashboard's too), big centered sign-in title,
+      bottom bar; the dashboard keeps the ERPNext look
+- [x] Brand colors (كزيوني) in stellar's tokens for every app: deep green `#0C4E3B` as the
+      main color, orange `#F7731A` as the accent (`SColor.accent`, for discounts), warm grays
+- [x] Language: a globe that opens a sheet (`SLanguageButton`, `SSheet.choose`), shared by
+      the phone apps
+- [x] Tabs (`SNavBar`): Home (empty for now) and Profile (log out)
+
+### 2.1 Current store ✅
+
+Everything after this is scoped to one store (`/partner/stores/:storeId/...`).
+
+- [x] The stores come with the session (`GET /auth/me`); `currentStoreProvider` gives the
+      store the app works on, with the member's role (owner, or staff maybe limited to a
+      branch)
+- [x] One store: straight in. Several: pick one after login (remembered on the device),
+      switch from Profile in a sheet. None: a "no store yet, contact us" page with log out
+- [x] Home's title is the store's name (its logo comes with the photos in 2.4)
+
+### 2.2 Profile ✅
+
+- [x] Profile tab as rows, like the big apps' account pages: the store and the member's
+      role; Store (info, branches, team, switch store); Account (name and phone, change
+      password); App (language, version); log out
+- [x] Store info as customers see it; the owner edits the description, phone, email,
+      Facebook and Instagram (name and category stay with our team)
+- [x] Branches (area, address, phone, inactive ones marked) and team (role, branch,
+      phone), view only: our team adds and removes them
+- [x] **new** stellar: `SListGroup` (rows in a rounded box under a title), rows with a
+      value and an arrow, `chooseLanguage` / `languageName` shared with the globe, stellar's
+      own back arrow
+- [ ] Contact us (call or WhatsApp our team): needs the support number
+- [ ] Logo and cover photo: with the photos in 2.4
+- [ ] Opening hours: needs a format agreed with the backend (`openingHours` is free-form
+      JSON today), then a time picker
+
+### 2.3 Products (owner) ✅
+
+A product is the saved item an offer is posted from, so it can be reposted in seconds.
+
+- [x] Products tab (owners only; staff don't get the tab and are sent home from its
+      pages): search, current or archived, pull to refresh, more rows loaded on scroll
+- [x] Add and edit: name, regular price (LD, 3 decimals; Arabic digits work), description;
+      archive and restore
+- [x] **new** kernel: `PageResult` (shared with the admin), `parsePrice`. Partner
+      `core/list`: `PagedListViewModel` for phone lists
+- [x] **new** stellar: price field (`TextInputKind.price`, `SValidators.price`), `SImage`
+      (cached, placeholder), `SPagedList`, a picture in list rows, empty states with
+      their own action icon
+
+### 2.4 Photos
+
+- [ ] **new** kernel: image picking (camera or gallery), square crop, compression on the
+      phone (1280px full + 400px thumbnail, under the server's 1 MB), multipart upload
+      with progress
+- [ ] Product photo: pick → crop → upload with progress, retry when the connection drops;
+      the form stays usable while it uploads
+- [ ] Camera and photo permissions (iOS strings, Android), with a way to open Settings
+      after a refusal
+
+### 2.5 Offers
+
+- [ ] Offers tab: list grouped by state (live, scheduled, paused, sold out, ended) with
+      the photo, prices, discount badge (orange), pieces left and claim counts
+- [ ] Post an offer from a product: offer price (below the regular one), limited (quantity,
+      max per customer, minutes to pick up) or unlimited, start and end time (max 30
+      days), branches. A short form with good defaults, so posting takes under a minute
+- [ ] Offer page: details, claims (reserved, redeemed, expired, cancelled), views
+- [ ] Edit (title, description, end time), pause, resume, end (with a confirm), repost an
+      ended one
+- [ ] **new** stellar: date and time picker, segmented choice (limited / unlimited),
+      stepper for quantities, badges for the states, confirm dialog in the phone look
+
+## Step 3: Partner app — counter, home and store
+
+### 3.1 Counter (owners and staff)
+
+The screen staff use all day, so it must be fast and work on a weak connection.
+
+- [ ] **new** kernel: QR scanner (camera permission, torch), wrapped behind an interface
+- [ ] Scan tab: scan a code, or type the 8 characters by hand (no look-alike letters)
+- [ ] Claim preview: customer name, offer, price to collect, and the problem when it
+      can't be redeemed (expired, already redeemed, other branch)
+- [ ] Confirm redeem (can't be sent twice), then a clear success screen and back to
+      scanning
+- [ ] Upcoming pickups: reserved claims, soonest expiry first; staff see their branch
+
+### 3.2 Home
+
+- [ ] Today at a glance: claims and redemptions today, live offers, next pickups
+- [ ] Shortcuts: post an offer (owner), scan a code
+- [ ] Stats page: last 30 days and the top offers
+
+### 3.3 Ready for the pilot
+
+- [ ] App name كزيوني (store-facing name), icon and splash screen
+- [ ] Test on a real Android phone on a slow connection: timeouts, retry, "no connection"
+- [ ] Crash reporting (`ErrorReporter` → Sentry or Crashlytics)
+- [ ] Builds: Android APK/AAB and iOS TestFlight for the first stores
 
 ## Step 4: Customer app
 
@@ -128,8 +222,8 @@ buttons that can't submit twice, and friendly error messages.
 - [x] Login (email + password, admins and editors), forced change of a temporary password
 - [x] Side menu layout (fixed on wide windows, drawer on narrow ones), clean URLs
 - [x] Home: stats (stores, live offers, customers, claims)
-- [x] Shared look for all apps: neutral Frappe-style theme, labels above fields,
-      `StellarDensity.compact` for the web
+- [x] Neutral Frappe-style look, labels above fields: `StellarStyle.dashboard` (the phone
+      apps use `StellarStyle.app`, a consumer-app look)
 - [x] Design system ported from the MIA portal (ERPNext style): IBM Plex Sans Arabic, Lucide
       icons, colors, labelled fields, ERPNext table + list page + pager, dialogs, menus,
       badges, side menu

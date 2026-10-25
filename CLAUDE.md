@@ -88,8 +88,9 @@ when a second user appears:
 App widgets only arrange stellar widgets; they never style anything themselves.
 
 A pattern every page of a kind repeats goes in the app's `core/`, and those pages build on
-it instead of copying it: lists use `core/list` (`ListController`, `PagedTable`), record
-pages use `core/record` (`RecordForm` for the fields, `RecordScreen` for the page).
+it instead of copying it: dashboard lists use `core/list` (`ListController`, `PagedTable`),
+phone lists use `core/list` (`PagedListViewModel` with `SPagedList`), record pages use
+`core/record` (`RecordForm` for the fields, `RecordScreen` for the page).
 
 ## 6. Stellar components
 
@@ -109,13 +110,19 @@ packages/stellar/lib/src/components/button/
   (`foundation/s_kit.dart`), its Material renderer in `materialKit`
   (`material/s_material_kit.dart`), and exports in `lib/stellar.dart`.
 - Widgets that only arrange other stellar widgets (`SFieldGrid`) need no renderer.
+- Stellar draws two looks, picked once in `SApp(style: ...)`: `StellarStyle.app` for the
+  phone apps (like DoorDash or Too Good To Go: 16 at the sides, big bold titles, white
+  fields with a thin border) and `StellarStyle.dashboard` for the admin (ERPNext). Both
+  share the colors and pill buttons. Sizes and shapes come from the style in the theme;
+  a renderer whose layout differs reads `context.style`. Never style an app screen to
+  fake the other look.
 - Add a component when a screen needs it, never ahead of time.
 
 ## 7. Design values come from stellar tokens
 
 Colors, text sizes, font weights, icon sizes, spacing, corner radius, font and icons all
-come from `stellar` (`foundation/s_tokens.dart`, `SIcons`). No raw numbers or colors
-anywhere else. Stellar widgets take **enums**, never numbers or `Color`s:
+come from `stellar` (`foundation/tokens/`, one file per kind, and `SIcons`). No raw
+numbers or colors anywhere else. Stellar widgets take **enums**, never numbers or `Color`s:
 
 | What | Use | Never |
 |---|---|---|
@@ -129,8 +136,9 @@ anywhere else. Stellar widgets take **enums**, never numbers or `Color`s:
 - A new stellar widget follows the same pattern: its size, color or style parameters
   are enums of tokens, never `double` or `Color`.
 - Inside stellar, renderers read tokens too (`SIconSize.md.pixels`,
-  `context.colors.resolve(color)`).
-- A value that doesn't exist yet gets a token in `s_tokens.dart` first, then is used.
+  `context.colors.resolve(color)`, `context.style.text.small`, `SFontWeight.medium.value`).
+- A value that doesn't exist yet gets a token in its file in `foundation/tokens/` first,
+  then is used.
 
 ## 8. Arabic, right to left, money and dates
 
