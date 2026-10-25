@@ -12,6 +12,11 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>ar</string>
+		<string>en</string>
+	</array>
 	<key>CFBundleDisplayName</key>
 	<string>Offers Partner</string>
 	<key>CFBundleExecutable</key>
@@ -32,6 +37,11 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<!-- Translated in ar.lproj and en.lproj/InfoPlist.strings. -->
+	<key>NSCameraUsageDescription</key>
+	<string>To take photos of your products and offers.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To choose photos of your products and offers from your gallery.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

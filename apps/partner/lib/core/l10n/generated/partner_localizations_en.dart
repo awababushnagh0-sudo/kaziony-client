@@ -223,4 +223,7 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get productRestored => 'Restored.';
+
+  @override
+  String get productAddedAddPhoto => 'Saved. Now add its photo.';
 }

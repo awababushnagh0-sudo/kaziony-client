@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kernel/kernel.dart';
+import 'package:kernel/testing.dart';
 import 'package:partner/core/routes/routes.dart';
 import 'package:partner/features/products/domain/product.dart';
 import 'package:partner/features/products/presentation/product_form_screen.dart';
@@ -13,8 +15,10 @@ import '../../support/pump_app.dart';
 
 void main() {
   late FakeProductRepository products;
+  late FakePhotoPicker photos;
 
   Future<void> open(WidgetTester tester, String location) async {
+    photos = FakePhotoPicker();
     products = FakeProductRepository([
       product('1', price: '4.500'),
       product('2', isArchived: true),
@@ -25,6 +29,7 @@ void main() {
       overrides: [
         productRepositoryProvider.overrideWithValue(products),
         currentStoreProvider.overrideWithValue(store('a')),
+        photoPickerProvider.overrideWithValue(photos),
       ],
       routes: [
         stubPage(Routes.products, 'products page'),
@@ -63,7 +68,9 @@ void main() {
     expect(draft.title, 'Caramel cake');
     expect(draft.regularPrice, '4.500');
     expect(draft.description, isNull);
-    expect(find.text('products page'), findsOneWidget);
+    // On to its page, to add its photo.
+    expect(find.text('Edit product'), findsOneWidget);
+    expect(find.text('Add a photo'), findsOneWidget);
   });
 
   testWidgets("doesn't save without a name or with a zero price", (
@@ -113,5 +120,84 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(products.archived.single, ('2', false));
+  });
+
+  group('photo', () {
+    // A real 1×1 picture, so the preview can be drawn.
+    final png = base64Decode(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwAD'
+      'hgGAWjR9awAAAABJRU5ErkJggg==',
+    );
+    final ready = PhotoReady(
+      PreparedPhoto(fullPath: 'full.jpg', thumbPath: 'thumb.jpg', preview: png),
+    );
+
+    Future<void> pickFromGallery(WidgetTester tester) async {
+      await tester.tap(find.text('Add a photo'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Choose from gallery'));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('uploads the picked photo', (tester) async {
+      await open(tester, Routes.product('1'));
+      photos.next = ready;
+
+      await pickFromGallery(tester);
+
+      expect(photos.picks, [PhotoSource.gallery]);
+      final (id, photo) = products.photos.single;
+      expect(id, '1');
+      expect(photo.fullPath, 'full.jpg');
+      expect(find.text('Change the photo'), findsOneWidget);
+    });
+
+    testWidgets('offers to try again when the upload fails', (tester) async {
+      await open(tester, Routes.product('1'));
+      photos.next = ready;
+      products.failNextPhoto = const NoConnectionFailure();
+
+      await pickFromGallery(tester);
+      expect(
+        find.text("The photo didn't upload. Tap to try again."),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.text("The photo didn't upload. Tap to try again."));
+      await tester.pumpAndSettle();
+      expect(products.photos, hasLength(2));
+      // The same photo, without picking it again.
+      expect(photos.picks, hasLength(1));
+      expect(find.text('Change the photo'), findsOneWidget);
+    });
+
+    testWidgets('offers the settings when the camera is off', (tester) async {
+      await open(tester, Routes.product('1'));
+      photos.next = const PhotoAccessDenied();
+
+      await tester.tap(find.text('Add a photo'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Take a photo'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('The camera is off'), findsOneWidget);
+      await tester.tap(find.text('Open Settings'));
+      await tester.pumpAndSettle();
+      expect(photos.settingsOpened, 1);
+      expect(products.photos, isEmpty);
+    });
+
+    testWidgets('says when a photo can\'t be used', (tester) async {
+      await open(tester, Routes.product('1'));
+      photos.next = const PhotoFailed('unreadable');
+
+      await pickFromGallery(tester);
+
+      expect(
+        find.text("Couldn't use this photo. Try another one."),
+        findsOneWidget,
+      );
+      expect(products.photos, isEmpty);
+    });
   });
 }

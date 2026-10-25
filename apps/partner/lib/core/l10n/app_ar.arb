@@ -69,5 +69,6 @@
   "archiveProduct": "أرشفة",
   "restoreProduct": "استعادة",
   "productArchived": "تمت الأرشفة.",
-  "productRestored": "تمت الاستعادة."
+  "productRestored": "تمت الاستعادة.",
+  "productAddedAddPhoto": "تم الحفظ. أضف صورته الآن."
 }

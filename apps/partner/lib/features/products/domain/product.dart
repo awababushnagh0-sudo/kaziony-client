@@ -66,6 +66,15 @@ abstract interface class ProductRepository {
     String productId, {
     required bool archived,
   });
+
+  /// Uploads the product's photo; [onProgress] gets the share sent, from 0
+  /// to 1.
+  Future<Result<Product>> setPhoto(
+    String storeId,
+    String productId,
+    PreparedPhoto photo, {
+    required void Function(double sent) onProgress,
+  });
 }
 
 /// Wired to the real implementation in `core/providers/dependencies.dart`.

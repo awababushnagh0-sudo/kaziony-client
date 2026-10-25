@@ -69,5 +69,6 @@
   "archiveProduct": "Archive",
   "restoreProduct": "Restore",
   "productArchived": "Archived.",
-  "productRestored": "Restored."
+  "productRestored": "Restored.",
+  "productAddedAddPhoto": "Saved. Now add its photo."
 }

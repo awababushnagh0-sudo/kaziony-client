@@ -222,4 +222,7 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get productRestored => 'تمت الاستعادة.';
+
+  @override
+  String get productAddedAddPhoto => 'تم الحفظ. أضف صورته الآن.';
 }

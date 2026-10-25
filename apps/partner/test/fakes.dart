@@ -167,7 +167,9 @@ class FakeProductRepository implements ProductRepository {
   @override
   Future<Result<Product>> create(String storeId, ProductDraft draft) async {
     created.add(draft);
-    return Ok(product('new', price: draft.regularPrice));
+    final saved = product('created', price: draft.regularPrice);
+    products.add(saved);
+    return Ok(saved);
   }
 
   @override
@@ -188,5 +190,37 @@ class FakeProductRepository implements ProductRepository {
   }) async {
     this.archived.add((productId, archived));
     return Ok(product(productId, isArchived: archived));
+  }
+
+  final photos = <(String, PreparedPhoto)>[];
+
+  /// The next photo upload fails with this, once.
+  AppFailure? failNextPhoto;
+
+  @override
+  Future<Result<Product>> setPhoto(
+    String storeId,
+    String productId,
+    PreparedPhoto photo, {
+    required void Function(double sent) onProgress,
+  }) async {
+    photos.add((productId, photo));
+    onProgress(0.5);
+    if (failNextPhoto case final failure?) {
+      failNextPhoto = null;
+      return Err(failure);
+    }
+    onProgress(1);
+    return Ok(
+      Product(
+        id: productId,
+        title: 'Product $productId',
+        description: null,
+        regularPrice: '8.000',
+        imageUrl: 'http://test.invalid/$productId.jpg',
+        thumbUrl: 'http://test.invalid/$productId-thumb.jpg',
+        isArchived: false,
+      ),
+    );
   }
 }

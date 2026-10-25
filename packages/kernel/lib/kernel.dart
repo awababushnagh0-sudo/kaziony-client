@@ -38,6 +38,7 @@ export 'src/locale/locale.dart';
 export 'src/navigation/leave_guard.dart';
 export 'src/navigation/navigation.dart';
 export 'src/network/api.dart';
+export 'src/photos/photos.dart' hide DevicePhotoPicker;
 export 'src/result/failure.dart';
 export 'src/result/result.dart';
 export 'src/state/state.dart';

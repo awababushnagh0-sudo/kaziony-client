@@ -109,4 +109,40 @@ class StellarLocalizationsAr extends StellarLocalizations {
 
   @override
   String get currency => 'د.ل';
+
+  @override
+  String get photo => 'الصورة';
+
+  @override
+  String get takePhoto => 'التقاط صورة';
+
+  @override
+  String get choosePhoto => 'اختيار من المعرض';
+
+  @override
+  String get addPhoto => 'إضافة صورة';
+
+  @override
+  String get changePhoto => 'تغيير الصورة';
+
+  @override
+  String photoUploading(int percent) {
+    return 'جارٍ الرفع… $percent%';
+  }
+
+  @override
+  String get photoUploadFailed => 'لم تُرفع الصورة. اضغط للمحاولة مرة أخرى.';
+
+  @override
+  String get photoFailed => 'تعذّر استخدام هذه الصورة. جرّب صورة أخرى.';
+
+  @override
+  String get cameraOffTitle => 'الكاميرا متوقفة';
+
+  @override
+  String get cameraOffMessage =>
+      'اسمح لهذا التطبيق باستخدام الكاميرا من الإعدادات لالتقاط الصور.';
+
+  @override
+  String get openSettings => 'فتح الإعدادات';
 }

@@ -10,6 +10,7 @@ import '../components/list_tile/s_list_tile_material.dart';
 import '../components/menu/s_menu_material.dart';
 import '../components/nav_bar/s_nav_bar_material.dart';
 import '../components/paged_list/s_paged_list_material.dart';
+import '../components/photo/s_photo_material.dart';
 import '../components/pill/s_pill_material.dart';
 import '../components/record_page/s_record_page_material.dart';
 import '../components/scaffold/s_scaffold_material.dart';
@@ -36,6 +37,7 @@ const materialKit = StellarKit(
   card: MaterialCardRenderer(),
   listTile: MaterialListTileRenderer(),
   pagedList: MaterialPagedListRenderer(),
+  photo: MaterialPhotoRenderer(),
   status: MaterialStatusRenderer(),
   snack: MaterialSnackRenderer(),
   table: MaterialTableRenderer(),

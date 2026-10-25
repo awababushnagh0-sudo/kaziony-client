@@ -520,6 +520,12 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Restored.'**
   String get productRestored;
+
+  /// No description provided for @productAddedAddPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved. Now add its photo.'**
+  String get productAddedAddPhoto;
 }
 
 class _PartnerLocalizationsDelegate

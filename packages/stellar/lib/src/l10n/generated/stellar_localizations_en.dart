@@ -112,4 +112,40 @@ class StellarLocalizationsEn extends StellarLocalizations {
 
   @override
   String get currency => 'LD';
+
+  @override
+  String get photo => 'Photo';
+
+  @override
+  String get takePhoto => 'Take a photo';
+
+  @override
+  String get choosePhoto => 'Choose from gallery';
+
+  @override
+  String get addPhoto => 'Add a photo';
+
+  @override
+  String get changePhoto => 'Change the photo';
+
+  @override
+  String photoUploading(int percent) {
+    return 'Uploading… $percent%';
+  }
+
+  @override
+  String get photoUploadFailed => 'The photo didn\'t upload. Tap to try again.';
+
+  @override
+  String get photoFailed => 'Couldn\'t use this photo. Try another one.';
+
+  @override
+  String get cameraOffTitle => 'The camera is off';
+
+  @override
+  String get cameraOffMessage =>
+      'Allow the camera for this app in Settings to take photos.';
+
+  @override
+  String get openSettings => 'Open Settings';
 }

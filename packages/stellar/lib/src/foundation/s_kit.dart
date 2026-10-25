@@ -12,6 +12,7 @@ import '../components/list_tile/s_list_tile_renderer.dart';
 import '../components/menu/s_menu_renderer.dart';
 import '../components/nav_bar/s_nav_bar_renderer.dart';
 import '../components/paged_list/s_paged_list_renderer.dart';
+import '../components/photo/s_photo_renderer.dart';
 import '../components/pill/s_pill_renderer.dart';
 import '../components/record_page/s_record_page_renderer.dart';
 import '../components/scaffold/s_scaffold_renderer.dart';
@@ -40,6 +41,7 @@ class StellarKit {
     required this.card,
     required this.listTile,
     required this.pagedList,
+    required this.photo,
     required this.status,
     required this.snack,
     required this.table,
@@ -64,6 +66,7 @@ class StellarKit {
   final CardRenderer card;
   final ListTileRenderer listTile;
   final PagedListRenderer pagedList;
+  final PhotoRenderer photo;
   final StatusRenderer status;
   final SnackRenderer snack;
   final TableRenderer table;

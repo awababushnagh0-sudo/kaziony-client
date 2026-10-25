@@ -31,5 +31,16 @@
   "copied": "تم النسخ",
   "language": "اللغة",
   "validationPrice": "أدخل سعرًا أكبر من صفر، مثل 4.500",
-  "currency": "د.ل"
+  "currency": "د.ل",
+  "photo": "الصورة",
+  "takePhoto": "التقاط صورة",
+  "choosePhoto": "اختيار من المعرض",
+  "addPhoto": "إضافة صورة",
+  "changePhoto": "تغيير الصورة",
+  "photoUploading": "جارٍ الرفع… {percent}%",
+  "photoUploadFailed": "لم تُرفع الصورة. اضغط للمحاولة مرة أخرى.",
+  "photoFailed": "تعذّر استخدام هذه الصورة. جرّب صورة أخرى.",
+  "cameraOffTitle": "الكاميرا متوقفة",
+  "cameraOffMessage": "اسمح لهذا التطبيق باستخدام الكاميرا من الإعدادات لالتقاط الصور.",
+  "openSettings": "فتح الإعدادات"
 }

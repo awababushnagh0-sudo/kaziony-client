@@ -141,7 +141,7 @@ Everything after this is scoped to one store (`/partner/stores/:storeId/...`).
       value and an arrow, `chooseLanguage` / `languageName` shared with the globe, stellar's
       own back arrow
 - [ ] Contact us (call or WhatsApp our team): needs the support number
-- [ ] Logo and cover photo: with the photos in 2.4
+- [ ] Logo and cover photo: the photo pieces from 2.4 are ready for them
 - [ ] Opening hours: needs a format agreed with the backend (`openingHours` is free-form
       JSON today), then a time picker
 
@@ -159,15 +159,19 @@ A product is the saved item an offer is posted from, so it can be reposted in se
       (cached, placeholder), `SPagedList`, a picture in list rows, empty states with
       their own action icon
 
-### 2.4 Photos
+### 2.4 Photos ✅
 
-- [ ] **new** kernel: image picking (camera or gallery), square crop, compression on the
-      phone (1280px full + 400px thumbnail, under the server's 1 MB), multipart upload
-      with progress
-- [ ] Product photo: pick → crop → upload with progress, retry when the connection drops;
-      the form stays usable while it uploads
-- [ ] Camera and photo permissions (iOS strings, Android), with a way to open Settings
-      after a refusal
+- [x] **new** kernel: `PhotoPicker` (camera or gallery, square crop, shrunk on the phone to
+      1280px + a 400px thumbnail, under the server's 1 MB), `Api.upload` with progress
+- [x] Product photo on its page: pick → crop → upload with progress, retry with the same
+      photo when the connection drops; it finishes even if the user leaves the page. A new
+      product opens its page after saving, to add the photo
+- [x] Permissions: iOS messages in Arabic and English (and the app declares Arabic, so
+      the system screens follow), Android's crop screen; a way to Settings when the camera
+      is off
+- [x] **new** stellar: `SPhotoField`, `SPhoto.chooseSource`, `SPhoto.askToOpenSettings`
+- [ ] Before a Flutter upgrade: `app_settings` and `flutter_image_compress` still use the old
+      Kotlin Gradle plugin, which future Flutter versions refuse
 
 ### 2.5 Offers
 

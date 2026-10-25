@@ -1,0 +1,3 @@
+/* Why the app asks for the camera and the photos (iOS permission prompts). */
+"NSCameraUsageDescription" = "لالتقاط صور منتجاتك وعروضك.";
+"NSPhotoLibraryUsageDescription" = "لاختيار صور منتجاتك وعروضك من المعرض.";

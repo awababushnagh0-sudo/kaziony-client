@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:kernel/kernel.dart';
 import 'package:offers_api/partner.dart';
 
@@ -79,6 +81,26 @@ class ApiProductRepository implements ProductRepository {
     String productId, {
     required bool archived,
   }) => _update(storeId, productId, UpdateProductDto(isArchived: archived));
+
+  @override
+  Future<Result<Product>> setPhoto(
+    String storeId,
+    String productId,
+    PreparedPhoto photo, {
+    required void Function(double sent) onProgress,
+  }) async {
+    final result = await _api.upload(
+      PartnerProductsClient.new,
+      (products) => products.setImage(
+        storeId: storeId,
+        productId: productId,
+        image: File(photo.fullPath),
+        thumb: File(photo.thumbPath),
+      ),
+      onProgress: onProgress,
+    );
+    return result.map(_toProduct);
+  }
 
   Future<Result<Product>> _update(
     String storeId,

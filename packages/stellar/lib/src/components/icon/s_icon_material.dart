@@ -107,6 +107,11 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // image
+  SIcons.camera => const IconData(
+    0xe064,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // camera
   SIcons.archive => const IconData(
     0xe041,
     fontFamily: _f,

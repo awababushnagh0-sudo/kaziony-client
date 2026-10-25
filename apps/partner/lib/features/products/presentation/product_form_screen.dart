@@ -2,7 +2,9 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
+import '../../../core/routes/routes.dart';
 import 'product_form_view_model.dart';
+import 'product_photo_view_model.dart';
 
 /// Adds a product ([productId] null), or edits and archives one.
 class ProductFormScreen extends AppView {
@@ -43,7 +45,13 @@ class _ProductForm extends AppView {
         id != null && ref.watch(productViewModel(id)).requireValue.isArchived;
 
     Future<void> save() async {
-      if (await viewModel.save() && context.mounted) {
+      final saved = await viewModel.save();
+      if (saved == null || !context.mounted) return;
+      if (id == null) {
+        // On to its page, where its photo can be added right away.
+        SSnack.success(context, s.productAddedAddPhoto);
+        context.pushReplacement(Routes.product(saved.id));
+      } else {
         SSnack.success(context, s.saved);
         context.pop();
       }
@@ -74,6 +82,7 @@ class _ProductForm extends AppView {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           spacing: Space.lg,
           children: [
+            if (id != null) _Photo(productId: id),
             STextInput(controlName: 'title', label: s.productTitleLabel),
             STextInput(
               controlName: 'price',
@@ -98,6 +107,51 @@ class _ProductForm extends AppView {
               ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// The product's photo: tap to take or pick one, which uploads right away.
+class _Photo extends AppView {
+  const _Photo({required this.productId});
+
+  final String productId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final provider = productPhotoViewModel(productId);
+    final state = ref.watch(provider);
+    final viewModel = ref.read(provider.notifier);
+    final product = ref.watch(productViewModel(productId)).requireValue;
+
+    Future<void> choose() async {
+      final source = await SPhoto.chooseSource(context);
+      if (source == null || !context.mounted) return;
+      final pick = await viewModel.choose(
+        source,
+        cropTitle: StellarLocalizations.of(context).photo,
+      );
+      if (!context.mounted) return;
+      switch (pick) {
+        case PhotoAccessDenied():
+          if (await SPhoto.askToOpenSettings(context)) {
+            await viewModel.openSettings();
+          }
+        case PhotoFailed():
+          SSnack.error(context, StellarLocalizations.of(context).photoFailed);
+        case PhotoReady() || PhotoCancelled():
+          break;
+      }
+    }
+
+    return Center(
+      child: SPhotoField(
+        url: product.imageUrl,
+        preview: state.photo?.preview,
+        progress: state.progress,
+        failed: state.failed,
+        onTap: state.failed ? viewModel.retry : choose,
       ),
     );
   }

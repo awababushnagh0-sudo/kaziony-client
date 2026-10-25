@@ -4,6 +4,7 @@ library;
 
 import 'src/config/app_config.dart';
 import 'src/errors/error_reporter.dart';
+import 'src/photos/photos.dart';
 import 'src/state/state.dart';
 import 'src/storage/storage.dart';
 
@@ -31,6 +32,27 @@ class MemorySettingsStore implements SettingsStore {
 
   @override
   Future<void> remove(String key) async => values.remove(key);
+}
+
+/// Answers every [pick] with [next], and counts the trips to settings.
+class FakePhotoPicker implements PhotoPicker {
+  FakePhotoPicker([this.next = const PhotoCancelled()]);
+
+  PhotoPick next;
+  final picks = <PhotoSource>[];
+  var settingsOpened = 0;
+
+  @override
+  Future<PhotoPick> pick(
+    PhotoSource source, {
+    required String cropTitle,
+  }) async {
+    picks.add(source);
+    return next;
+  }
+
+  @override
+  Future<void> openSettings() async => settingsOpened++;
 }
 
 class RecordingErrorReporter implements ErrorReporter {

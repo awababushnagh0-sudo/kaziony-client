@@ -22,6 +22,9 @@ class ProductViewModel extends AsyncViewModel<Product> {
       Err(:final failure) => throw failure,
     };
   }
+
+  /// Shows the product the server returned after a change.
+  void replace(Product product) => state = AsyncData(product);
 }
 
 final productViewModel = AsyncNotifierProvider.autoDispose
@@ -72,15 +75,15 @@ class ProductFormViewModel extends ViewModel<ProductFormState> {
     return const ProductFormState();
   }
 
-  /// Returns true when the product was saved.
-  Future<bool> save() async {
-    if (state.saving || state.archiving) return false;
+  /// Returns the saved product, or null when it wasn't saved.
+  Future<Product?> save() async {
+    if (state.saving || state.archiving) return null;
     if (form.invalid) {
       form.markAllAsTouched();
-      return false;
+      return null;
     }
     final storeId = ref.read(currentStoreProvider)?.storeId;
-    if (storeId == null) return false;
+    if (storeId == null) return null;
     state = const ProductFormState(saving: true);
 
     final description = (form.control('description').value as String?)?.trim();
@@ -96,7 +99,7 @@ class ProductFormViewModel extends ViewModel<ProductFormState> {
     final result = id == null
         ? await products.create(storeId, draft)
         : await products.update(storeId, id, draft);
-    return _done(result);
+    return _done(result) ? result.valueOrNull : null;
   }
 
   /// Hides the product from the list, or brings it back. Returns true when

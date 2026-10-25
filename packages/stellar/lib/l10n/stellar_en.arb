@@ -45,5 +45,23 @@
   "copied": "Copied",
   "language": "Language",
   "validationPrice": "Enter a price above 0, e.g. 4.500",
-  "currency": "LD"
+  "currency": "LD",
+  "photo": "Photo",
+  "takePhoto": "Take a photo",
+  "choosePhoto": "Choose from gallery",
+  "addPhoto": "Add a photo",
+  "changePhoto": "Change the photo",
+  "photoUploading": "Uploading… {percent}%",
+  "photoUploadFailed": "The photo didn't upload. Tap to try again.",
+  "photoFailed": "Couldn't use this photo. Try another one.",
+  "cameraOffTitle": "The camera is off",
+  "cameraOffMessage": "Allow the camera for this app in Settings to take photos.",
+  "openSettings": "Open Settings",
+  "@photoUploading": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  }
 }

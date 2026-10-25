@@ -37,6 +37,7 @@ lib/src/
 | `scaffold` | `SScaffold` (`parent` for a breadcrumb, `status` for a badge after the title) |
 | `shell` | `SShell` (side menu layout for the dashboard) |
 | `image` | `SImage` (a photo from the server, cached on the device, with a placeholder) |
+| `photo` | `SPhotoField` (a record's photo: add, change, upload progress, retry), `SPhoto.chooseSource`, `SPhoto.askToOpenSettings` |
 | `paged_list` | `SPagedList` (phone list: pull to refresh, more rows on scroll) |
 | `card`, `list_tile` | `SCard`, `SListTile` (tappable rows get an arrow; `value` at the end), `SListGroup` (rows in a rounded box under a title) |
 | `status` | `SLoadingView`, `SEmptyView`, `SErrorView`, `SAsyncView`, `SUpdateRequiredView`, `failureMessage` |

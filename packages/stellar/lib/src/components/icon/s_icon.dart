@@ -19,6 +19,7 @@ enum SIcons {
 
   /// A picture's place while it loads, or when there's none.
   image,
+  camera,
   category,
   phone,
   key,

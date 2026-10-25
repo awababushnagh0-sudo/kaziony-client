@@ -43,6 +43,54 @@ class Api {
       return Err(failure);
     }
   }
+
+  /// Like [guard], for uploads with a generated client: [onProgress] gets
+  /// the share of the file sent so far, from 0 to 1.
+  ///
+  /// ```dart
+  /// api.upload(
+  ///   PartnerProductsClient.new,
+  ///   (products) => products.setImage(...),
+  ///   onProgress: (sent) => ...,
+  /// );
+  /// ```
+  Future<Result<T>> upload<C, T>(
+    C Function(Dio dio) create,
+    Future<T> Function(C client) request, {
+    required void Function(double sent) onProgress,
+  }) => guard(
+    () => request(
+      create(
+        _ProgressDio(_dio, (sent, total) {
+          if (total > 0) onProgress(sent / total);
+        }),
+      ),
+    ),
+  );
+}
+
+/// The app's connection, with [_onSendProgress] on every request sent
+/// through it. Generated clients only send requests and read the options,
+/// so nothing else is passed on.
+class _ProgressDio implements Dio {
+  _ProgressDio(this._inner, this._onSendProgress);
+
+  final Dio _inner;
+  final ProgressCallback _onSendProgress;
+
+  @override
+  BaseOptions get options => _inner.options;
+
+  @override
+  set options(BaseOptions value) => _inner.options = value;
+
+  @override
+  Future<Response<T>> fetch<T>(RequestOptions requestOptions) =>
+      _inner.fetch<T>(requestOptions..onSendProgress = _onSendProgress);
+
+  @override
+  Never noSuchMethod(Invocation invocation) =>
+      throw UnsupportedError('Uploads only send requests');
 }
 
 /// Builds the HTTP client. Interceptors run in this order:

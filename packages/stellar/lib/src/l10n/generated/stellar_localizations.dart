@@ -292,6 +292,72 @@ abstract class StellarLocalizations {
   /// In en, this message translates to:
   /// **'LD'**
   String get currency;
+
+  /// No description provided for @photo.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get photo;
+
+  /// No description provided for @takePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo'**
+  String get takePhoto;
+
+  /// No description provided for @choosePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from gallery'**
+  String get choosePhoto;
+
+  /// No description provided for @addPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a photo'**
+  String get addPhoto;
+
+  /// No description provided for @changePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Change the photo'**
+  String get changePhoto;
+
+  /// No description provided for @photoUploading.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading… {percent}%'**
+  String photoUploading(int percent);
+
+  /// No description provided for @photoUploadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The photo didn\'t upload. Tap to try again.'**
+  String get photoUploadFailed;
+
+  /// No description provided for @photoFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t use this photo. Try another one.'**
+  String get photoFailed;
+
+  /// No description provided for @cameraOffTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The camera is off'**
+  String get cameraOffTitle;
+
+  /// No description provided for @cameraOffMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow the camera for this app in Settings to take photos.'**
+  String get cameraOffMessage;
+
+  /// No description provided for @openSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get openSettings;
 }
 
 class _StellarLocalizationsDelegate
