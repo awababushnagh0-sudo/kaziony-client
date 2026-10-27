@@ -28,4 +28,8 @@ abstract interface class StatusRenderer {
   Widget loading(BuildContext context, {String? message});
   Widget error(BuildContext context, StatusSpec spec);
   Widget empty(BuildContext context, StatusSpec spec);
+
+  /// Something finished well: a big tick, [StatusSpec.title] and its
+  /// message.
+  Widget success(BuildContext context, StatusSpec spec);
 }

@@ -186,5 +186,55 @@
   "repostOffer": "Post it again",
   "editOfferTitle": "Edit the offer",
   "offerTitleLabel": "Title",
-  "holdTitle": "Held for"
+  "holdTitle": "Held for",
+  "scanTitle": "Scan",
+  "scanHint": "Point the camera at the customer's code",
+  "typeCode": "Type the code",
+  "codeLabel": "Code",
+  "codeHelper": "The 8 letters and numbers under the customer's QR code.",
+  "codeInvalid": "A code is 8 letters and numbers, like ABCD2345.",
+  "checkCode": "Check the code",
+  "notAClaimCode": "This QR code isn't a reservation.",
+  "cameraOffScanMessage": "Allow the camera for this app in Settings to scan codes, or type the code.",
+  "cameraFailedTitle": "The camera didn't open",
+  "cameraFailedMessage": "Type the customer's code instead.",
+  "pickupsTitle": "On their way",
+  "noPickupsTitle": "No one is on their way",
+  "noPickupsMessage": "Reservations show here until they're picked up.",
+  "someCustomer": "A customer",
+  "claimTitle": "Pickup",
+  "toCollect": "To collect",
+  "customerLabel": "Customer",
+  "heldUntil": "Held until",
+  "pickedUpAtLabel": "Picked up",
+  "confirmPickup": "Confirm pickup",
+  "problemRedeemedAt": "Already picked up: {time}.",
+  "@problemRedeemedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "problemRedeemed": "Already picked up.",
+  "problemCancelled": "The customer cancelled this reservation.",
+  "problemExpired": "This reservation has expired.",
+  "problemOtherBranch": "This offer isn't for your branch.",
+  "problemOther": "This code can't be picked up.",
+  "claimNotFound": "No reservation with this code at your store.",
+  "pickedUpTitle": "Picked up",
+  "pickedUpMessage": "Collect {price} from the customer.",
+  "@pickedUpMessage": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "nextCustomer": "Next customer",
+  "counterBranch": "Your branch",
+  "chooseCounterBranch": "Which branch are you at?",
+  "chooseValue": "Choose",
+  "redeemWrongBranch": "This offer isn't valid at the branch picked on this phone.",
+  "refresh": "Refresh"
 }

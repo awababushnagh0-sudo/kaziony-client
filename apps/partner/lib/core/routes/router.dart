@@ -3,6 +3,10 @@ import 'package:stellar/stellar.dart';
 
 import '../../features/auth/presentation/change_password/change_password_screen.dart';
 import '../../features/auth/presentation/login/login_screen.dart';
+import '../../features/counter/presentation/claim_screen.dart';
+import '../../features/counter/presentation/pickups_screen.dart';
+import '../../features/counter/presentation/scan_screen.dart';
+import '../../features/counter/presentation/type_code_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/offers/presentation/choose_offer_product_screen.dart';
 import '../../features/offers/presentation/edit_offer_screen.dart';
@@ -76,6 +80,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.password,
         builder: (_, _) => const ChangePasswordScreen(temporary: false),
       ),
+      // The counter, over the Scan tab.
+      GoRoute(path: Routes.typeCode, builder: (_, _) => const TypeCodeScreen()),
+      GoRoute(path: Routes.pickups, builder: (_, _) => const PickupsScreen()),
+      GoRoute(
+        path: Routes.claim(':code'),
+        builder: (_, state) => ClaimScreen(code: state.pathParameters['code']!),
+      ),
       // Before the offer's page, so "new" isn't taken for an id.
       GoRoute(
         path: Routes.chooseOfferProduct,
@@ -123,6 +134,11 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: Routes.offers,
                 builder: (_, _) => const OffersScreen(),
               ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(path: Routes.scan, builder: (_, _) => const ScanScreen()),
             ],
           ),
           StatefulShellBranch(

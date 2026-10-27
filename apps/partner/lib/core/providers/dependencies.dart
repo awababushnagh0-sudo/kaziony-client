@@ -2,6 +2,8 @@ import 'package:kernel/kernel.dart';
 
 import '../../features/auth/data/session_auth_repository.dart';
 import '../../features/auth/domain/auth_repository.dart';
+import '../../features/counter/data/api_claim_repository.dart';
+import '../../features/counter/domain/claim.dart';
 import '../../features/offers/data/api_offer_repository.dart';
 import '../../features/offers/domain/offer.dart';
 import '../../features/products/data/api_product_repository.dart';
@@ -13,6 +15,9 @@ final List<Override> dependencies = [
   authRepositoryProvider.overrideWith(SessionAuthRepository.new),
   storeRepositoryProvider.overrideWith(
     (ref) => ApiStoreRepository(ref.watch(apiProvider)),
+  ),
+  claimRepositoryProvider.overrideWith(
+    (ref) => ApiClaimRepository(ref.watch(apiProvider)),
   ),
   offerRepositoryProvider.overrideWith(
     (ref) => ApiOfferRepository(ref.watch(apiProvider)),

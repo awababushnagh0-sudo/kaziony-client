@@ -39,7 +39,7 @@
 	<true/>
 	<!-- Translated in ar.lproj and en.lproj/InfoPlist.strings. -->
 	<key>NSCameraUsageDescription</key>
-	<string>To take photos of your products and offers.</string>
+	<string>To scan customers' codes at pickup, and to take photos of your products.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To choose photos of your products and offers from your gallery.</string>
 	<key>UIApplicationSceneManifest</key>

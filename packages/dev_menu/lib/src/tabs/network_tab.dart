@@ -42,7 +42,7 @@ class NetworkTab extends AppView {
                         ),
                         subtitle: Text(
                           [
-                            formatTime(entry.time),
+                            clockTime(entry.time),
                             if (entry.duration != null)
                               '${entry.duration!.inMilliseconds} ms',
                             if (uri.query.isNotEmpty) '?${uri.query}',

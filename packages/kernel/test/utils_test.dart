@@ -62,6 +62,24 @@ void main() {
     );
   });
 
+  test('formatWhen gives only the time on the same day', () async {
+    await initializeDateFormatting('ar');
+    final at = DateTime(2026, 10, 19, 14, 30);
+    expect(
+      formatWhen(at, languageCode: 'en', now: DateTime(2026, 10, 19, 9)),
+      // intl puts a narrow space before AM and PM.
+      '2:30\u202fPM',
+    );
+    expect(
+      formatWhen(at, languageCode: 'ar', now: DateTime(2026, 10, 19, 9)),
+      '2:30 م',
+    );
+    expect(
+      formatWhen(at, languageCode: 'en', now: DateTime(2026, 10, 18, 23)),
+      'Mon, Oct 19 2:30\u202fPM',
+    );
+  });
+
   group('parsePrice', () {
     test('writes prices with 3 decimals', () {
       expect(parsePrice('4'), '4.000');

@@ -44,5 +44,7 @@
   "cameraOffMessage": "اسمح لهذا التطبيق باستخدام الكاميرا من الإعدادات لالتقاط الصور.",
   "openSettings": "فتح الإعدادات",
   "validationWholeNumber": "أدخل رقمًا صحيحًا من {min} إلى {max}",
-  "chooseDateTime": "اختر اليوم والوقت"
+  "chooseDateTime": "اختر اليوم والوقت",
+  "torchOn": "تشغيل الإضاءة",
+  "torchOff": "إطفاء الإضاءة"
 }

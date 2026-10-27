@@ -192,17 +192,31 @@ A product is the saved item an offer is posted from, so it can be reposted in se
 
 ## Step 3: Partner app — counter, home and store
 
-### 3.1 Counter (owners and staff)
+### 3.1 Counter (owners and staff) ✅
 
 The screen staff use all day, so it must be fast and work on a weak connection.
 
-- [ ] **new** kernel: QR scanner (camera permission, torch), wrapped behind an interface
-- [ ] Scan tab: scan a code, or type the 8 characters by hand (no look-alike letters)
-- [ ] Claim preview: customer name, offer, price to collect, and the problem when it
-      can't be redeemed (expired, already redeemed, other branch)
-- [ ] Confirm redeem (can't be sent twice), then a clear success screen and back to
-      scanning
-- [ ] Upcoming pickups: reserved claims, soonest expiry first; staff see their branch
+- [x] **new** kernel: `QrScanner` (mobile_scanner, QR codes only): the camera runs only
+      while on screen and the app is in front, the light, the camera-off state with a way
+      to Settings; `formatTime` / `formatWhen` for times today
+- [x] Scan tab (Home · Offers · Scan · Products · Profile; staff without Products): the
+      camera opens right away; a QR code that isn't a reservation says so once; the same
+      code isn't opened again while the customer still holds it up. Typing the 8
+      characters by hand (capitals forced, no look-alikes)
+- [x] Check page: what to collect (large), the regular price, customer, offer, code, held
+      until; or why it can't be picked up (already picked up and when, cancelled,
+      expired, another branch) in the app's words
+- [x] Confirm pickup: sent once; if it changed meanwhile (another phone, expired), the page
+      loads again and says why; then a success screen and "Next customer" back to the
+      camera
+- [x] On their way: reservations soonest to expire first (staff see their branch), each
+      opening the same check page
+- [x] Branch at the counter: staff limited to a branch never choose; a store with one
+      branch sends it; otherwise the phone asks once and remembers it (changeable on the
+      Scan tab)
+- [x] **new** stellar: `SScannerView`, `SSuccessView`, `TextInputKind.code`, camera colors
+- [ ] Test on real phones: a cracked or dim customer screen, the light, the first camera
+      prompt on iOS and Android
 
 ### 3.2 Home
 

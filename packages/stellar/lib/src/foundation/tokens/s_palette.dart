@@ -30,6 +30,8 @@ const lightColors = StellarColors(
   dangerSoft: Color(0xFFFFF0F0),
   onDanger: Color(0xFFFFFFFF),
   link: Color(0xFF0C7A57),
+  cameraBackdrop: Color(0xFF000000),
+  onCamera: Color(0xFFFFFFFF),
 );
 
 /// The same colors at night: dark grays, the brand's green and orange
@@ -57,6 +59,8 @@ const darkColors = StellarColors(
   dangerSoft: Color(0xFF3D1F1F),
   onDanger: Color(0xFF171717),
   link: Color(0xFF52C79A),
+  cameraBackdrop: Color(0xFF000000),
+  onCamera: Color(0xFFFFFFFF),
 );
 
 /// The red, yellow and green dots of a Mac window, in the small window

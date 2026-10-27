@@ -20,6 +20,15 @@ enum SIcons {
   /// A picture's place while it loads, or when there's none.
   image,
   camera,
+
+  /// Reads a customer's code at the counter.
+  scan,
+  torch,
+  torchOff,
+  keyboard,
+
+  /// Customers on their way to pick up.
+  pickups,
   category,
   phone,
   key,

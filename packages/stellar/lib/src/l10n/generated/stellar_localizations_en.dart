@@ -156,4 +156,10 @@ class StellarLocalizationsEn extends StellarLocalizations {
 
   @override
   String get chooseDateTime => 'Choose a day and time';
+
+  @override
+  String get torchOn => 'Turn the light on';
+
+  @override
+  String get torchOff => 'Turn the light off';
 }

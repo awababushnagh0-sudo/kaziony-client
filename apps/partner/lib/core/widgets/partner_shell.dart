@@ -5,7 +5,7 @@ import '../../features/store/domain/current_store.dart';
 import '../l10n/generated/partner_localizations.dart';
 
 /// The tabs, in the order of the router's branches.
-enum PartnerTab { home, offers, products, profile }
+enum PartnerTab { home, offers, scan, products, profile }
 
 /// The tabs around the signed-in pages. Each tab keeps its own history.
 /// Staff don't get Products: only owners manage them.
@@ -21,6 +21,7 @@ class PartnerShell extends AppView {
     final tabs = [
       PartnerTab.home,
       PartnerTab.offers,
+      PartnerTab.scan,
       if (isOwner) PartnerTab.products,
       PartnerTab.profile,
     ];
@@ -36,6 +37,10 @@ class PartnerShell extends AppView {
             PartnerTab.offers => NavBarItem(
               label: s.offersTitle,
               icon: SIcons.offers,
+            ),
+            PartnerTab.scan => NavBarItem(
+              label: s.scanTitle,
+              icon: SIcons.scan,
             ),
             PartnerTab.products => NavBarItem(
               label: s.productsTitle,

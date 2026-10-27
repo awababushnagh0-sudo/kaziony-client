@@ -41,6 +41,7 @@ export 'src/network/api.dart';
 export 'src/photos/photos.dart' hide DevicePhotoPicker;
 export 'src/result/failure.dart';
 export 'src/result/result.dart';
+export 'src/scanner/qr_scanner.dart' hide DeviceQrScanner;
 export 'src/state/state.dart';
 export 'src/storage/storage.dart';
 export 'src/utils/city.dart';

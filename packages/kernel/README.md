@@ -12,11 +12,14 @@ Riverpod, Dio, go_router or storage plugins.
 - **Photos:** `photoPickerProvider` → `pick(PhotoSource.camera)`: take or pick, crop square,
   shrink to 1280px + a 400px thumbnail (under the server's 1 MB); `PhotoAccessDenied` when
   the camera is off, `openSettings()` to turn it on
+- **QR codes:** `qrScannerProvider` → `view(onCode:, onState:, torch:)`: the camera's picture,
+  running only while on screen and the app is in front; `ScannerStatus.denied` when the
+  camera is off
 - **Session:** `sessionProvider` (restoring / signed in / signed out), login, change password,
   logout; works offline with the cached user
 - **Also:** config (`--dart-define=API_BASE_URL`), locale (Arabic default), version check,
   error reporting interface, navigation (go_router), Libyan phone and price helpers
   (`parsePrice`, `dirhamsOf`, `discountPercent`), dates (`formatDate`, `formatDateTime`,
-  always with 0-9 digits), `PageResult` for lists
+  `formatTime`, `formatWhen`, always with 0-9 digits), `PageResult` for lists
 
 Tests: `flutter test`. Test fakes: `package:kernel/testing.dart`.

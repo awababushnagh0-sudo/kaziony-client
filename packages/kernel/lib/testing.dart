@@ -2,9 +2,12 @@
 /// `import 'package:kernel/testing.dart';`
 library;
 
+import 'package:flutter/widgets.dart';
+
 import 'src/config/app_config.dart';
 import 'src/errors/error_reporter.dart';
 import 'src/photos/photos.dart';
+import 'src/scanner/qr_scanner.dart';
 import 'src/state/state.dart';
 import 'src/storage/storage.dart';
 
@@ -53,6 +56,59 @@ class FakePhotoPicker implements PhotoPicker {
 
   @override
   Future<void> openSettings() async => settingsOpened++;
+}
+
+/// A blank camera in [state]; [read] acts as if a QR code came into view.
+class FakeQrScanner implements QrScanner {
+  FakeQrScanner([this.state = const ScannerState(ScannerStatus.scanning)]);
+
+  final ScannerState state;
+  ValueChanged<String>? _onCode;
+
+  /// What the screen last asked of the light.
+  bool torch = false;
+  var settingsOpened = 0;
+
+  /// Sends [code] to the view on screen.
+  void read(String code) => _onCode?.call(code);
+
+  @override
+  Widget view({
+    required ValueChanged<String> onCode,
+    required ValueChanged<ScannerState> onState,
+    bool torch = false,
+  }) {
+    _onCode = onCode;
+    this.torch = torch;
+    return _FakeCamera(state: state, onState: onState);
+  }
+
+  @override
+  Future<void> openSettings() async => settingsOpened++;
+}
+
+class _FakeCamera extends StatefulWidget {
+  const _FakeCamera({required this.state, required this.onState});
+
+  final ScannerState state;
+  final ValueChanged<ScannerState> onState;
+
+  @override
+  State<_FakeCamera> createState() => _FakeCameraState();
+}
+
+class _FakeCameraState extends State<_FakeCamera> {
+  @override
+  void initState() {
+    super.initState();
+    // Like the camera, which reports once it's open.
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => widget.onState(widget.state),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) => const SizedBox.expand();
 }
 
 class RecordingErrorReporter implements ErrorReporter {

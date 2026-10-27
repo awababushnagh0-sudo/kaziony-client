@@ -66,7 +66,7 @@ class OverviewTab extends AppView {
                   'Access token',
                   expiry == null
                       ? 'invalid / expired'
-                      : 'expires ${formatTime(expiry)} '
+                      : 'expires ${clockTime(expiry)} '
                             '(${expiry.difference(DateTime.now()).inMinutes} min)',
                 ),
               ],

@@ -370,6 +370,18 @@ abstract class StellarLocalizations {
   /// In en, this message translates to:
   /// **'Choose a day and time'**
   String get chooseDateTime;
+
+  /// No description provided for @torchOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn the light on'**
+  String get torchOn;
+
+  /// No description provided for @torchOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn the light off'**
+  String get torchOff;
 }
 
 class _StellarLocalizationsDelegate

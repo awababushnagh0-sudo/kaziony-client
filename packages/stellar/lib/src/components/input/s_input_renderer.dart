@@ -12,6 +12,10 @@ enum TextInputKind {
   email,
   url,
   multiline,
+
+  /// A code read off a screen or paper (a reservation code): capital
+  /// letters and digits, left to right, without the keyboard's suggestions.
+  code,
 }
 
 @immutable

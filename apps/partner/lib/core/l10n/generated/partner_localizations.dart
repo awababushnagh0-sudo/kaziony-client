@@ -910,6 +910,222 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Held for'**
   String get holdTitle;
+
+  /// No description provided for @scanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan'**
+  String get scanTitle;
+
+  /// No description provided for @scanHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Point the camera at the customer\'s code'**
+  String get scanHint;
+
+  /// No description provided for @typeCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Type the code'**
+  String get typeCode;
+
+  /// No description provided for @codeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get codeLabel;
+
+  /// No description provided for @codeHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'The 8 letters and numbers under the customer\'s QR code.'**
+  String get codeHelper;
+
+  /// No description provided for @codeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'A code is 8 letters and numbers, like ABCD2345.'**
+  String get codeInvalid;
+
+  /// No description provided for @checkCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the code'**
+  String get checkCode;
+
+  /// No description provided for @notAClaimCode.
+  ///
+  /// In en, this message translates to:
+  /// **'This QR code isn\'t a reservation.'**
+  String get notAClaimCode;
+
+  /// No description provided for @cameraOffScanMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow the camera for this app in Settings to scan codes, or type the code.'**
+  String get cameraOffScanMessage;
+
+  /// No description provided for @cameraFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The camera didn\'t open'**
+  String get cameraFailedTitle;
+
+  /// No description provided for @cameraFailedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Type the customer\'s code instead.'**
+  String get cameraFailedMessage;
+
+  /// No description provided for @pickupsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'On their way'**
+  String get pickupsTitle;
+
+  /// No description provided for @noPickupsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No one is on their way'**
+  String get noPickupsTitle;
+
+  /// No description provided for @noPickupsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservations show here until they\'re picked up.'**
+  String get noPickupsMessage;
+
+  /// No description provided for @someCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'A customer'**
+  String get someCustomer;
+
+  /// No description provided for @claimTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup'**
+  String get claimTitle;
+
+  /// No description provided for @toCollect.
+  ///
+  /// In en, this message translates to:
+  /// **'To collect'**
+  String get toCollect;
+
+  /// No description provided for @customerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get customerLabel;
+
+  /// No description provided for @heldUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Held until'**
+  String get heldUntil;
+
+  /// No description provided for @pickedUpAtLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up'**
+  String get pickedUpAtLabel;
+
+  /// No description provided for @confirmPickup.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm pickup'**
+  String get confirmPickup;
+
+  /// No description provided for @problemRedeemedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Already picked up: {time}.'**
+  String problemRedeemedAt(String time);
+
+  /// No description provided for @problemRedeemed.
+  ///
+  /// In en, this message translates to:
+  /// **'Already picked up.'**
+  String get problemRedeemed;
+
+  /// No description provided for @problemCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'The customer cancelled this reservation.'**
+  String get problemCancelled;
+
+  /// No description provided for @problemExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'This reservation has expired.'**
+  String get problemExpired;
+
+  /// No description provided for @problemOtherBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'This offer isn\'t for your branch.'**
+  String get problemOtherBranch;
+
+  /// No description provided for @problemOther.
+  ///
+  /// In en, this message translates to:
+  /// **'This code can\'t be picked up.'**
+  String get problemOther;
+
+  /// No description provided for @claimNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No reservation with this code at your store.'**
+  String get claimNotFound;
+
+  /// No description provided for @pickedUpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up'**
+  String get pickedUpTitle;
+
+  /// No description provided for @pickedUpMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect {price} from the customer.'**
+  String pickedUpMessage(String price);
+
+  /// No description provided for @nextCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Next customer'**
+  String get nextCustomer;
+
+  /// No description provided for @counterBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Your branch'**
+  String get counterBranch;
+
+  /// No description provided for @chooseCounterBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Which branch are you at?'**
+  String get chooseCounterBranch;
+
+  /// No description provided for @chooseValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose'**
+  String get chooseValue;
+
+  /// No description provided for @redeemWrongBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'This offer isn\'t valid at the branch picked on this phone.'**
+  String get redeemWrongBranch;
+
+  /// No description provided for @refresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refresh;
 }
 
 class _PartnerLocalizationsDelegate

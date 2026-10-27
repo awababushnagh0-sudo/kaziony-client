@@ -17,6 +17,7 @@ import '../components/photo/s_photo_renderer.dart';
 import '../components/pill/s_pill_renderer.dart';
 import '../components/record_page/s_record_page_renderer.dart';
 import '../components/scaffold/s_scaffold_renderer.dart';
+import '../components/scanner/s_scanner_renderer.dart';
 import '../components/settings/s_settings_renderer.dart';
 import '../components/sheet/s_sheet_renderer.dart';
 import '../components/shell/s_shell_renderer.dart';
@@ -44,6 +45,7 @@ class StellarKit {
     required this.listTile,
     required this.pagedList,
     required this.photo,
+    required this.scanner,
     required this.status,
     required this.snack,
     required this.table,
@@ -70,6 +72,7 @@ class StellarKit {
   final ListTileRenderer listTile;
   final PagedListRenderer pagedList;
   final PhotoRenderer photo;
+  final ScannerRenderer scanner;
   final StatusRenderer status;
   final SnackRenderer snack;
   final TableRenderer table;

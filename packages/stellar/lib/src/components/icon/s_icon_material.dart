@@ -112,6 +112,31 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // camera
+  SIcons.scan => const IconData(
+    0xe5f6,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // scan-qr-code
+  SIcons.torch => const IconData(
+    0xe0d3,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // flashlight
+  SIcons.torchOff => const IconData(
+    0xe0d4,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // flashlight-off
+  SIcons.keyboard => const IconData(
+    0xe284,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // keyboard
+  SIcons.pickups => const IconData(
+    0xe087,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // clock
   SIcons.calendar => const IconData(
     0xe063,
     fontFamily: _f,

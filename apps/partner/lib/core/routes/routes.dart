@@ -6,6 +6,7 @@ abstract final class Routes {
   static const changePassword = '/change-password';
   static const home = '/home';
   static const offers = '/offers';
+  static const scan = '/scan';
   static const products = '/products';
   static const profile = '/profile';
   static const chooseStore = '/choose-store';
@@ -26,6 +27,11 @@ abstract final class Routes {
       '$chooseOfferProduct/$productId${from == null ? '' : '?from=$from'}';
   static String offer(String id) => '$offers/$id';
   static String editOffer(String id) => '${offer(id)}/edit';
+
+  // The counter, over the Scan tab.
+  static const typeCode = '$scan/type';
+  static const pickups = '/pickups';
+  static String claim(String code) => '/claims/$code';
 
   /// Pages staff can't open: the API refuses them anyway. Staff see
   /// offers, but don't post or change them.

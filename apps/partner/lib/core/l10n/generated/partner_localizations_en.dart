@@ -442,4 +442,120 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get holdTitle => 'Held for';
+
+  @override
+  String get scanTitle => 'Scan';
+
+  @override
+  String get scanHint => 'Point the camera at the customer\'s code';
+
+  @override
+  String get typeCode => 'Type the code';
+
+  @override
+  String get codeLabel => 'Code';
+
+  @override
+  String get codeHelper =>
+      'The 8 letters and numbers under the customer\'s QR code.';
+
+  @override
+  String get codeInvalid => 'A code is 8 letters and numbers, like ABCD2345.';
+
+  @override
+  String get checkCode => 'Check the code';
+
+  @override
+  String get notAClaimCode => 'This QR code isn\'t a reservation.';
+
+  @override
+  String get cameraOffScanMessage =>
+      'Allow the camera for this app in Settings to scan codes, or type the code.';
+
+  @override
+  String get cameraFailedTitle => 'The camera didn\'t open';
+
+  @override
+  String get cameraFailedMessage => 'Type the customer\'s code instead.';
+
+  @override
+  String get pickupsTitle => 'On their way';
+
+  @override
+  String get noPickupsTitle => 'No one is on their way';
+
+  @override
+  String get noPickupsMessage =>
+      'Reservations show here until they\'re picked up.';
+
+  @override
+  String get someCustomer => 'A customer';
+
+  @override
+  String get claimTitle => 'Pickup';
+
+  @override
+  String get toCollect => 'To collect';
+
+  @override
+  String get customerLabel => 'Customer';
+
+  @override
+  String get heldUntil => 'Held until';
+
+  @override
+  String get pickedUpAtLabel => 'Picked up';
+
+  @override
+  String get confirmPickup => 'Confirm pickup';
+
+  @override
+  String problemRedeemedAt(String time) {
+    return 'Already picked up: $time.';
+  }
+
+  @override
+  String get problemRedeemed => 'Already picked up.';
+
+  @override
+  String get problemCancelled => 'The customer cancelled this reservation.';
+
+  @override
+  String get problemExpired => 'This reservation has expired.';
+
+  @override
+  String get problemOtherBranch => 'This offer isn\'t for your branch.';
+
+  @override
+  String get problemOther => 'This code can\'t be picked up.';
+
+  @override
+  String get claimNotFound => 'No reservation with this code at your store.';
+
+  @override
+  String get pickedUpTitle => 'Picked up';
+
+  @override
+  String pickedUpMessage(String price) {
+    return 'Collect $price from the customer.';
+  }
+
+  @override
+  String get nextCustomer => 'Next customer';
+
+  @override
+  String get counterBranch => 'Your branch';
+
+  @override
+  String get chooseCounterBranch => 'Which branch are you at?';
+
+  @override
+  String get chooseValue => 'Choose';
+
+  @override
+  String get redeemWrongBranch =>
+      'This offer isn\'t valid at the branch picked on this phone.';
+
+  @override
+  String get refresh => 'Refresh';
 }

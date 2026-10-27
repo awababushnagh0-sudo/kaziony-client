@@ -57,7 +57,7 @@ class _LogTile extends StatelessWidget {
         color: entry.level == LogLevel.error ? color : null,
       ),
     );
-    final subtitle = Text('${formatTime(entry.time)} · ${entry.level.name}');
+    final subtitle = Text('${clockTime(entry.time)} · ${entry.level.name}');
     final marker = Container(width: 4, height: 32, color: color);
 
     if (entry.stack == null) {

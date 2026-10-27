@@ -441,4 +441,118 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get holdTitle => 'مدة الحجز';
+
+  @override
+  String get scanTitle => 'مسح';
+
+  @override
+  String get scanHint => 'وجّه الكاميرا نحو رمز الزبون';
+
+  @override
+  String get typeCode => 'اكتب الرمز';
+
+  @override
+  String get codeLabel => 'الرمز';
+
+  @override
+  String get codeHelper => 'الأحرف والأرقام الثمانية تحت رمز QR عند الزبون.';
+
+  @override
+  String get codeInvalid => 'الرمز 8 أحرف وأرقام، مثل ABCD2345.';
+
+  @override
+  String get checkCode => 'تحقق من الرمز';
+
+  @override
+  String get notAClaimCode => 'رمز QR هذا ليس حجزًا.';
+
+  @override
+  String get cameraOffScanMessage =>
+      'اسمح للتطبيق باستخدام الكاميرا من الإعدادات لمسح الرموز، أو اكتب الرمز.';
+
+  @override
+  String get cameraFailedTitle => 'لم تفتح الكاميرا';
+
+  @override
+  String get cameraFailedMessage => 'اكتب رمز الزبون بدلًا من ذلك.';
+
+  @override
+  String get pickupsTitle => 'في الطريق';
+
+  @override
+  String get noPickupsTitle => 'لا أحد في الطريق';
+
+  @override
+  String get noPickupsMessage => 'تظهر الحجوزات هنا حتى تُستلم.';
+
+  @override
+  String get someCustomer => 'زبون';
+
+  @override
+  String get claimTitle => 'الاستلام';
+
+  @override
+  String get toCollect => 'المبلغ المطلوب';
+
+  @override
+  String get customerLabel => 'الزبون';
+
+  @override
+  String get heldUntil => 'محجوز حتى';
+
+  @override
+  String get pickedUpAtLabel => 'وقت الاستلام';
+
+  @override
+  String get confirmPickup => 'تأكيد الاستلام';
+
+  @override
+  String problemRedeemedAt(String time) {
+    return 'استُلم بالفعل: $time.';
+  }
+
+  @override
+  String get problemRedeemed => 'استُلم بالفعل.';
+
+  @override
+  String get problemCancelled => 'ألغى الزبون هذا الحجز.';
+
+  @override
+  String get problemExpired => 'انتهت مدة هذا الحجز.';
+
+  @override
+  String get problemOtherBranch => 'هذا العرض ليس لفرعك.';
+
+  @override
+  String get problemOther => 'لا يمكن استلام هذا الرمز.';
+
+  @override
+  String get claimNotFound => 'لا يوجد حجز بهذا الرمز في متجرك.';
+
+  @override
+  String get pickedUpTitle => 'تم الاستلام';
+
+  @override
+  String pickedUpMessage(String price) {
+    return 'استلم $price من الزبون.';
+  }
+
+  @override
+  String get nextCustomer => 'الزبون التالي';
+
+  @override
+  String get counterBranch => 'فرعك';
+
+  @override
+  String get chooseCounterBranch => 'في أي فرع أنت؟';
+
+  @override
+  String get chooseValue => 'اختر';
+
+  @override
+  String get redeemWrongBranch =>
+      'هذا العرض غير متاح في الفرع المختار على هذا الهاتف.';
+
+  @override
+  String get refresh => 'تحديث';
 }

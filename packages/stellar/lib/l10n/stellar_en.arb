@@ -75,5 +75,7 @@
         "type": "int"
       }
     }
-  }
+  },
+  "torchOn": "Turn the light on",
+  "torchOff": "Turn the light off"
 }

@@ -23,6 +23,7 @@ dependencies:
   image_picker: ^1.2.4
   intl: ^0.20.3
   meta: ^1.19.0
+  mobile_scanner: ^7.4.2
   offers_api:
     path: ../offers_api
   package_info_plus: ^10.2.2

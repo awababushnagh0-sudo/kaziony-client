@@ -215,6 +215,7 @@ Widget _buildField(
     TextInputKind.price ||
     TextInputKind.email ||
     TextInputKind.url ||
+    TextInputKind.code ||
     TextInputKind.password => true,
     _ => false,
   };
@@ -230,9 +231,16 @@ Widget _buildField(
       maxLines: spec.kind == TextInputKind.multiline ? 4 : 1,
       autofillHints: spec.autofillHints,
       autofocus: spec.autofocus,
-      inputFormatters: spec.kind == TextInputKind.price
-          ? [_priceCharacters]
-          : null,
+      inputFormatters: switch (spec.kind) {
+        TextInputKind.price => [_priceCharacters],
+        TextInputKind.code => [_codeCharacters, _capitals],
+        _ => null,
+      },
+      textCapitalization: spec.kind == TextInputKind.code
+          ? TextCapitalization.characters
+          : TextCapitalization.none,
+      autocorrect: spec.kind != TextInputKind.code,
+      enableSuggestions: spec.kind != TextInputKind.code,
       textDirection: ltr ? TextDirection.ltr : null,
       textAlign: ltr
           ? (rtlPage ? TextAlign.right : TextAlign.left)
@@ -244,6 +252,8 @@ Widget _buildField(
         TextInputKind.email => TextInputType.emailAddress,
         TextInputKind.url => TextInputType.url,
         TextInputKind.multiline => TextInputType.multiline,
+        // Letters and digits on one keyboard, without suggestions.
+        TextInputKind.code => TextInputType.visiblePassword,
         _ => TextInputType.text,
       },
       textInputAction: spec.kind == TextInputKind.multiline
@@ -284,6 +294,16 @@ Widget _buildField(
 /// Digits (Arabic ones too) and a decimal sign: what a price can hold.
 final _priceCharacters = FilteringTextInputFormatter.allow(
   RegExp('[0-9٠-٩.٫]'),
+);
+
+/// Latin letters and digits: what a code can hold.
+final _codeCharacters = FilteringTextInputFormatter.allow(
+  RegExp('[A-Za-z0-9]'),
+);
+
+/// Codes are in capitals, whatever the keyboard sends.
+final _capitals = TextInputFormatter.withFunction(
+  (_, value) => value.copyWith(text: value.text.toUpperCase()),
 );
 
 class _Checking extends StatelessWidget {

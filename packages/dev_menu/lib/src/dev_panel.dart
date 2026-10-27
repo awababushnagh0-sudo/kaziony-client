@@ -109,7 +109,7 @@ class DevInfoRow extends StatelessWidget {
 
 const monospace = TextStyle(fontFamily: 'monospace', fontSize: 12);
 
-String formatTime(DateTime time) =>
+String clockTime(DateTime time) =>
     '${time.hour.toString().padLeft(2, '0')}:'
     '${time.minute.toString().padLeft(2, '0')}:'
     '${time.second.toString().padLeft(2, '0')}';

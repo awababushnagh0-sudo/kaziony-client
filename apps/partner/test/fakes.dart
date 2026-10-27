@@ -1,5 +1,6 @@
 import 'package:kernel/kernel.dart';
 import 'package:partner/features/auth/domain/auth_repository.dart';
+import 'package:partner/features/counter/domain/claim.dart';
 import 'package:partner/features/offers/domain/offer.dart';
 import 'package:partner/features/products/domain/product.dart';
 import 'package:partner/features/store/domain/store.dart';
@@ -48,7 +49,7 @@ class FakeAuthRepository implements AuthRepository {
   Future<void> logout() async => logouts++;
 }
 
-Store storeDetails({StoreProfile? profile}) => Store(
+Store storeDetails({StoreProfile? profile, List<Branch>? branches}) => Store(
   id: 'a',
   name: 'Store a',
   category: const StoreCategory(nameAr: 'حلويات', nameEn: 'Sweets'),
@@ -62,17 +63,7 @@ Store storeDetails({StoreProfile? profile}) => Store(
         instagramUrl: null,
       ),
   isActive: true,
-  branches: const [
-    Branch(
-      id: 'b1',
-      name: 'Andalus',
-      city: City.tripoli,
-      area: 'Hay Al Andalus',
-      address: null,
-      phone: null,
-      isActive: true,
-    ),
-  ],
+  branches: branches ?? [branch('b1', 'Andalus')],
   members: const [
     StoreMember(
       userId: 'u1',
@@ -91,6 +82,16 @@ Store storeDetails({StoreProfile? profile}) => Store(
       isActive: true,
     ),
   ],
+);
+
+Branch branch(String id, String name) => Branch(
+  id: id,
+  name: name,
+  city: City.tripoli,
+  area: 'Hay Al Andalus',
+  address: null,
+  phone: null,
+  isActive: true,
 );
 
 class FakeStoreRepository implements StoreRepository {
@@ -324,5 +325,78 @@ class FakeOfferRepository implements OfferRepository {
     final index = offers.indexWhere((offer) => offer.id == offerId);
     offers[index] = offer(offerId, status: status, state: state);
     return Ok(offers[index]);
+  }
+}
+
+Claim claim(
+  String code, {
+  ClaimStatus status = ClaimStatus.reserved,
+  bool canRedeem = true,
+  DateTime? redeemedAt,
+  String? customerName = 'Sara',
+}) => Claim(
+  id: 'c-$code',
+  code: code,
+  status: status,
+  customerName: customerName,
+  offer: const ClaimOffer(
+    id: 'o1',
+    title: 'Caramel cake',
+    offerPrice: '4.500',
+    originalPrice: '9.000',
+    thumbUrl: null,
+  ),
+  expiresAt: DateTime.now().add(const Duration(minutes: 40)),
+  redeemedAt: redeemedAt,
+  canRedeem: canRedeem,
+);
+
+/// Looks codes up in [claims]; redeeming one marks it picked up, unless
+/// [redeemFailure] says otherwise.
+class FakeClaimRepository implements ClaimRepository {
+  FakeClaimRepository([List<Claim>? claims])
+    : claims = claims ?? [claim('ABCD2345')];
+
+  final List<Claim> claims;
+  final lookups = <String>[];
+  final redeems = <(String, String?)>[];
+  AppFailure? redeemFailure;
+
+  @override
+  Future<Result<PageResult<Claim>>> upcoming(
+    String storeId, {
+    required int page,
+    required int pageSize,
+  }) async {
+    final waiting = [
+      for (final claim in claims)
+        if (claim.status == ClaimStatus.reserved) claim,
+    ];
+    return Ok(PageResult(items: waiting, total: waiting.length));
+  }
+
+  @override
+  Future<Result<Claim>> lookup(String storeId, String code) async {
+    lookups.add(code);
+    final found = claims.where((claim) => claim.code == code).firstOrNull;
+    return found == null ? const Err(NotFoundFailure()) : Ok(found);
+  }
+
+  @override
+  Future<Result<Claim>> redeem(
+    String storeId,
+    String code, {
+    String? branchId,
+  }) async {
+    redeems.add((code, branchId));
+    if (redeemFailure case final failure?) return Err(failure);
+    final index = claims.indexWhere((claim) => claim.code == code);
+    claims[index] = claim(
+      code,
+      status: ClaimStatus.redeemed,
+      canRedeem: false,
+      redeemedAt: DateTime.now(),
+    );
+    return Ok(claims[index]);
   }
 }

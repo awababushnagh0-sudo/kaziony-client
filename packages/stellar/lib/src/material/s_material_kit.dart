@@ -15,6 +15,7 @@ import '../components/photo/s_photo_material.dart';
 import '../components/pill/s_pill_material.dart';
 import '../components/record_page/s_record_page_material.dart';
 import '../components/scaffold/s_scaffold_material.dart';
+import '../components/scanner/s_scanner_material.dart';
 import '../components/settings/s_settings_material.dart';
 import '../components/sheet/s_sheet_material.dart';
 import '../components/shell/s_shell_material.dart';
@@ -40,6 +41,7 @@ const materialKit = StellarKit(
   listTile: MaterialListTileRenderer(),
   pagedList: MaterialPagedListRenderer(),
   photo: MaterialPhotoRenderer(),
+  scanner: MaterialScannerRenderer(),
   status: MaterialStatusRenderer(),
   snack: MaterialSnackRenderer(),
   table: MaterialTableRenderer(),

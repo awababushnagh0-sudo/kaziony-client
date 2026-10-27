@@ -153,4 +153,10 @@ class StellarLocalizationsAr extends StellarLocalizations {
 
   @override
   String get chooseDateTime => 'اختر اليوم والوقت';
+
+  @override
+  String get torchOn => 'تشغيل الإضاءة';
+
+  @override
+  String get torchOff => 'إطفاء الإضاءة';
 }

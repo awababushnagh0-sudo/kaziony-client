@@ -29,6 +29,8 @@ class StellarColors {
     required this.dangerSoft,
     required this.onDanger,
     required this.link,
+    required this.cameraBackdrop,
+    required this.onCamera,
   });
 
   /// Whether these are light colors (dark text) or dark ones.
@@ -69,6 +71,12 @@ class StellarColors {
   final Color dangerSoft;
   final Color onDanger;
   final Color link;
+
+  /// Behind and around a camera's picture, in both looks.
+  final Color cameraBackdrop;
+
+  /// Text and marks over a camera's picture.
+  final Color onCamera;
 
   /// The token behind [color].
   Color resolve(SColor color) => switch (color) {
