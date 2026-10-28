@@ -1,12 +1,12 @@
 # Offers Client — Roadmap
 
 Flutter monorepo for the three apps of the offers platform. The backend lives in
-[offers-backend](https://github.com/awababushnagh0-sudo/offers-backend).
+[kaziony-backend](https://github.com/awababushnagh0-sudo/kaziony-backend).
 
 ## Structure
 
 ```
-offers-client/
+kaziony-client/
   packages/
     kernel/        foundation: state (Riverpod wrapper), networking, auth session,
                    secure storage, Result/Failure, config, locale, shared utils

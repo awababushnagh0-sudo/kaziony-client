@@ -1,7 +1,7 @@
 # Offers Client
 
 Flutter monorepo for the offers apps. See [ROADMAP.md](ROADMAP.md) for the plan and the
-rules, and [offers-backend](https://github.com/awababushnagh0-sudo/offers-backend) for the API.
+rules, and [kaziony-backend](https://github.com/awababushnagh0-sudo/kaziony-backend) for the API.
 
 ```
 packages/
@@ -32,7 +32,7 @@ fvm flutter pub get      # from the repo root: resolves the whole workspace
 
 ## Run the partner app
 
-Start the backend first (`npm run start:dev` in offers-backend, with the seed data).
+Start the backend first (`npm run start:dev` in kaziony-backend, with the seed data).
 
 **VS Code:** open the repo folder and pick a configuration in *Run and Debug* (F5):
 
@@ -76,7 +76,7 @@ flutter run -d chrome --web-port=8080 --dart-define-from-file=config/dev.json
 ```
 
 Dev login (from the backend seed): `admin@offers.local` / `Admin12345!`.
-Real admins are created on the server with `npm run admin:create` in offers-backend; they
+Real admins are created on the server with `npm run admin:create` in kaziony-backend; they
 get a temporary password and must change it on first sign-in.
 
 The dashboard uses clean URLs (`/stores`, not `/#/stores`), so the web server that hosts
