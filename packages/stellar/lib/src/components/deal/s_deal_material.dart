@@ -41,11 +41,12 @@ class MaterialDealRenderer implements DealRenderer {
                   context,
                   ImageSpec(url: spec.imageUrl, size: SImageSize.deal),
                 ),
-                PositionedDirectional(
-                  bottom: 0,
-                  start: 0,
-                  child: _DiscountTag(spec.discountPercent),
-                ),
+                if (spec.discountPercent case final percent?)
+                  PositionedDirectional(
+                    bottom: 0,
+                    start: 0,
+                    child: _DiscountTag(percent),
+                  ),
               ],
             ),
           ),
@@ -121,6 +122,7 @@ class MaterialDealRenderer implements DealRenderer {
     final status = spec.status;
     final onBack = spec.onBack;
     final action = spec.action;
+    final discountLabel = spec.discountLabel;
     final top = MediaQuery.paddingOf(context).top;
     final placeholder = ColoredBox(
       color: c.fieldFill,
@@ -210,26 +212,27 @@ class MaterialDealRenderer implements DealRenderer {
                     originalPrice: spec.originalPrice,
                     priceSize: text.display,
                   ),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: c.accent,
-                      borderRadius: BorderRadius.circular(Radii.pill),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Space.md,
-                        vertical: Space.xs,
+                  if (discountLabel != null)
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: c.accent,
+                        borderRadius: BorderRadius.circular(Radii.pill),
                       ),
-                      child: Text(
-                        spec.discountLabel,
-                        style: TextStyle(
-                          fontSize: text.small,
-                          fontWeight: SFontWeight.bold.value,
-                          color: c.onAccent,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Space.md,
+                          vertical: Space.xs,
+                        ),
+                        child: Text(
+                          discountLabel,
+                          style: TextStyle(
+                            fontSize: text.small,
+                            fontWeight: SFontWeight.bold.value,
+                            color: c.onAccent,
+                          ),
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ],
@@ -290,7 +293,8 @@ class MaterialDealRenderer implements DealRenderer {
   }
 }
 
-/// The offer price in the brand's green, the regular one crossed out.
+/// The price in the brand's green, and the regular one crossed out when
+/// there's an offer.
 class _Prices extends StatelessWidget {
   const _Prices({
     required this.price,
@@ -299,12 +303,13 @@ class _Prices extends StatelessWidget {
   });
 
   final String price;
-  final String originalPrice;
+  final String? originalPrice;
   final double priceSize;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
+    final originalPrice = this.originalPrice;
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -319,15 +324,16 @@ class _Prices extends StatelessWidget {
             color: c.primary,
           ),
         ),
-        Text(
-          originalPrice,
-          style: TextStyle(
-            fontSize: context.style.text.small,
-            color: c.textSubtle,
-            decoration: TextDecoration.lineThrough,
-            decorationColor: c.textSubtle,
+        if (originalPrice != null)
+          Text(
+            originalPrice,
+            style: TextStyle(
+              fontSize: context.style.text.small,
+              color: c.textSubtle,
+              decoration: TextDecoration.lineThrough,
+              decorationColor: c.textSubtle,
+            ),
           ),
-        ),
       ],
     );
   }

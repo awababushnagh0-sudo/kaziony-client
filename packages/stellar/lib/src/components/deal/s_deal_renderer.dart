@@ -19,7 +19,7 @@ class DealTileSpec {
 
   final String title;
   final String price;
-  final int discountPercent;
+  final int? discountPercent;
   final String? imageUrl;
   final String? details;
 
@@ -49,10 +49,10 @@ class DealHeaderSpec {
 
   final String title;
   final String price;
-  final String originalPrice;
+  final String? originalPrice;
 
   /// "40% off".
-  final String discountLabel;
+  final String? discountLabel;
   final String? imageUrl;
   final DealStatus? status;
   final VoidCallback? onBack;

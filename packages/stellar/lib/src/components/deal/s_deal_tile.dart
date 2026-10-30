@@ -6,12 +6,13 @@ import 's_deal_renderer.dart';
 /// An offer in a list, at a glance: its photo with the discount in the
 /// brand's orange, the title, the offer price, and a line of [details]
 /// ("3 of 10 left") that turns orange when [hot]. The rest is on the
-/// offer's page.
+/// offer's page. Without [discountPercent], a product the same way, with
+/// its regular price.
 class SDealTile extends StatelessWidget {
   const SDealTile({
     required this.title,
     required this.price,
-    required this.discountPercent,
+    this.discountPercent,
     this.imageUrl,
     this.details,
     this.hot = false,
@@ -26,8 +27,8 @@ class SDealTile extends StatelessWidget {
   /// Already written for people (`formatPrice`).
   final String price;
 
-  /// 50 for half price.
-  final int discountPercent;
+  /// 50 for half price; null shows the photo alone.
+  final int? discountPercent;
   final String? imageUrl;
   final String? details;
 
@@ -64,13 +65,14 @@ class SDealTile extends StatelessWidget {
 /// bar, with a round back button and an [action] on it and the offer's
 /// [status] at its foot; then the title, the offer price in big figures
 /// beside the regular one crossed out, and the [discountLabel]. The page
-/// shows it without an app bar.
+/// shows it without an app bar. Without [originalPrice] and
+/// [discountLabel], a product's page the same way, with its regular price.
 class SDealHeader extends StatelessWidget {
   const SDealHeader({
     required this.title,
     required this.price,
-    required this.originalPrice,
-    required this.discountLabel,
+    this.originalPrice,
+    this.discountLabel,
     this.imageUrl,
     this.status,
     this.onBack,
@@ -82,10 +84,10 @@ class SDealHeader extends StatelessWidget {
 
   /// Both already written for people (`formatPrice`).
   final String price;
-  final String originalPrice;
+  final String? originalPrice;
 
   /// "40% off".
-  final String discountLabel;
+  final String? discountLabel;
   final String? imageUrl;
   final DealStatus? status;
   final VoidCallback? onBack;
