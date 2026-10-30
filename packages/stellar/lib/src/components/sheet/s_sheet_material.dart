@@ -18,6 +18,9 @@ class MaterialSheetRenderer implements SheetRenderer {
   Future<T?> choose<T>(BuildContext context, ChoiceSheetSpec<T> spec) =>
       showModalBottomSheet<T>(
         context: context,
+        // Over the whole app: a tab's own navigator would put it under
+        // the nav bar.
+        useRootNavigator: true,
         useSafeArea: true,
         showDragHandle: true,
         // Long lists (a store's branches) scroll inside the sheet.
