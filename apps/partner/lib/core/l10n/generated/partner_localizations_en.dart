@@ -232,7 +232,8 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get productRestored => 'Restored.';
 
   @override
-  String get productAddedAddPhoto => 'Saved. Now add its photo.';
+  String get productSavedPhotoFailed =>
+      'Saved. The photo didn\'t upload: tap it to try again.';
 
   @override
   String get offersTitle => 'Offers';

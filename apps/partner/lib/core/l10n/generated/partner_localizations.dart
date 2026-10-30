@@ -533,11 +533,11 @@ abstract class PartnerLocalizations {
   /// **'Restored.'**
   String get productRestored;
 
-  /// No description provided for @productAddedAddPhoto.
+  /// No description provided for @productSavedPhotoFailed.
   ///
   /// In en, this message translates to:
-  /// **'Saved. Now add its photo.'**
-  String get productAddedAddPhoto;
+  /// **'Saved. The photo didn\'t upload: tap it to try again.'**
+  String get productSavedPhotoFailed;
 
   /// No description provided for @offersTitle.
   ///

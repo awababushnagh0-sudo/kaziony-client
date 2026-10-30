@@ -72,7 +72,7 @@
   "restoreProduct": "استعادة",
   "productArchived": "تمت الأرشفة.",
   "productRestored": "تمت الاستعادة.",
-  "productAddedAddPhoto": "تم الحفظ. أضف صورته الآن.",
+  "productSavedPhotoFailed": "تم الحفظ. لم تُرفع الصورة: اضغط عليها لإعادة المحاولة.",
   "offersTitle": "العروض",
   "postOffer": "نشر عرض",
   "noOffersTitle": "لا توجد عروض بعد",

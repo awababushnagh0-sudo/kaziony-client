@@ -37,6 +37,7 @@ void main() {
           path: Routes.newProduct,
           builder: (_, _) => const ProductFormScreen(),
         ),
+        stubPage(Routes.product(':id'), 'product page'),
         GoRoute(
           path: Routes.editProduct(':id'),
           builder: (_, state) =>
@@ -68,9 +69,9 @@ void main() {
     expect(draft.title, 'Caramel cake');
     expect(draft.regularPrice, '4.500');
     expect(draft.description, isNull);
-    // On to editing it, to add its photo.
-    expect(find.text('Edit product'), findsOneWidget);
-    expect(find.text('Add a photo'), findsOneWidget);
+    // Without a photo, nothing to upload: on to its page.
+    expect(products.photos, isEmpty);
+    expect(find.text('product page'), findsOneWidget);
   });
 
   testWidgets("doesn't save without a name or with a zero price", (
@@ -117,6 +118,59 @@ void main() {
       await tester.tap(find.text('Choose from gallery'));
       await tester.pumpAndSettle();
     }
+
+    Future<void> fillNewProduct(WidgetTester tester) async {
+      await open(tester, Routes.newProduct);
+      await tester.enterText(field('Name'), 'Caramel cake');
+      await tester.enterText(field('Regular price'), '4.5');
+    }
+
+    testWidgets('a new product sends its photo once saved', (tester) async {
+      await fillNewProduct(tester);
+      photos.next = ready;
+
+      await pickFromGallery(tester);
+      // Nowhere to send it yet.
+      expect(products.photos, isEmpty);
+      expect(find.text('Change the photo'), findsOneWidget);
+
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+
+      expect(products.created, hasLength(1));
+      final (id, photo) = products.photos.single;
+      expect(id, 'created');
+      expect(photo.fullPath, 'full.jpg');
+      expect(find.text('product page'), findsOneWidget);
+    });
+
+    testWidgets('a new product stays saved when its photo fails', (
+      tester,
+    ) async {
+      await fillNewProduct(tester);
+      photos.next = ready;
+      products.failNextPhoto = const NoConnectionFailure();
+
+      await pickFromGallery(tester);
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+
+      expect(products.created, hasLength(1));
+      expect(find.text('product page'), findsNothing);
+      expect(
+        find.text("Saved. The photo didn't upload: tap it to try again."),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.text("The photo didn't upload. Tap to try again."));
+      await tester.pumpAndSettle();
+
+      // Saved again as the same product, not a second one.
+      expect(products.created, hasLength(1));
+      expect(products.updated.single.$1, 'created');
+      expect(products.photos, hasLength(2));
+      expect(find.text('product page'), findsOneWidget);
+    });
 
     testWidgets('uploads the picked photo', (tester) async {
       await open(tester, Routes.editProduct('1'));

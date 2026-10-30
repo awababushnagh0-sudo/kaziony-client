@@ -20,6 +20,10 @@ class ProductFormViewModel extends ViewModel<ProductFormState> {
 
   final String? productId;
 
+  /// A new product once it's saved: saving again (after its photo failed
+  /// to upload) changes it instead of adding it twice.
+  String? _created;
+
   late final FormGroup form;
 
   @override
@@ -66,19 +70,20 @@ class ProductFormViewModel extends ViewModel<ProductFormState> {
       regularPrice: parsePrice(form.control('price').value as String)!,
     );
     final products = ref.read(productRepositoryProvider);
-    final id = productId;
+    final id = productId ?? _created;
     final result = id == null
         ? await products.create(storeId, draft)
         : await products.update(storeId, id, draft);
     if (!ref.mounted) return null;
     switch (result) {
       case Ok(:final value):
-        if (id == null) {
-          // The list shows it when the user goes back to it.
-          ref.invalidate(productsViewModel);
-        } else {
+        if (productId case final id?) {
           // Its page, under this one, and the list.
           ref.read(productViewModel(id).notifier).replace(value);
+        } else {
+          _created = value.id;
+          // The list shows it when the user goes back to it.
+          ref.invalidate(productsViewModel);
         }
         state = const ProductFormState();
         return value;

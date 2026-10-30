@@ -7,7 +7,7 @@ import 'product_form_view_model.dart';
 import 'product_photo_view_model.dart';
 import 'product_view_model.dart';
 
-/// Adds a product ([productId] null), or edits one and its photo.
+/// Adds a product with its photo ([productId] null), or edits one.
 class ProductFormScreen extends AppView {
   const ProductFormScreen({this.productId, super.key});
 
@@ -42,18 +42,30 @@ class _ProductForm extends AppView {
     final state = ref.watch(provider);
     final viewModel = ref.read(provider.notifier);
     final id = productId;
+    // A new product's photo goes up as part of saving it.
+    final uploading =
+        id == null && ref.watch(productPhotoViewModel(null)).progress != null;
 
     Future<void> save() async {
       final saved = await viewModel.save();
       if (saved == null || !context.mounted) return;
-      if (id == null) {
-        // On to editing it, where its photo can be added right away.
-        SSnack.success(context, s.productAddedAddPhoto);
-        context.pushReplacement(Routes.editProduct(saved.id));
-      } else {
+      if (id != null) {
         SSnack.success(context, s.saved);
         context.pop();
+        return;
       }
+      // The photo had nowhere to go until the product was saved.
+      final sent = await ref
+          .read(productPhotoViewModel(null).notifier)
+          .uploadTo(saved.id);
+      if (!context.mounted) return;
+      if (!sent) {
+        // Saved, so nothing typed is lost; the photo shows how to retry.
+        SSnack.error(context, s.productSavedPhotoFailed);
+        return;
+      }
+      SSnack.success(context, s.saved);
+      context.pushReplacement(Routes.product(saved.id));
     }
 
     return SScaffold(
@@ -62,7 +74,7 @@ class _ProductForm extends AppView {
       bottom: SButton(
         label: s.save,
         onPressed: save,
-        loading: state.saving,
+        loading: state.saving || uploading,
         expand: true,
       ),
       body: SForm(
@@ -71,7 +83,9 @@ class _ProductForm extends AppView {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           spacing: Space.lg,
           children: [
-            if (id != null) _Photo(productId: id),
+            // Retrying a new product's photo saves it again, then goes
+            // on to its page.
+            _Photo(productId: id, onRetry: id == null ? save : null),
             STextInput(controlName: 'title', label: s.productTitleLabel),
             STextInput(
               controlName: 'price',
@@ -94,18 +108,25 @@ class _ProductForm extends AppView {
   }
 }
 
-/// The product's photo: tap to take or pick one, which uploads right away.
+/// The product's photo: tap to take or pick one, which uploads right away,
+/// or for a new product ([productId] null) once it's saved.
 class _Photo extends AppView {
-  const _Photo({required this.productId});
+  const _Photo({required this.productId, this.onRetry});
 
-  final String productId;
+  final String? productId;
+
+  /// After a failed upload, instead of sending the photo again alone.
+  final VoidCallback? onRetry;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final provider = productPhotoViewModel(productId);
     final state = ref.watch(provider);
     final viewModel = ref.read(provider.notifier);
-    final product = ref.watch(productViewModel(productId)).requireValue;
+    final id = productId;
+    final url = id == null
+        ? null
+        : ref.watch(productViewModel(id)).requireValue.imageUrl;
 
     Future<void> choose() async {
       final source = await SPhoto.chooseSource(context);
@@ -129,11 +150,11 @@ class _Photo extends AppView {
 
     return Center(
       child: SPhotoField(
-        url: product.imageUrl,
+        url: url,
         preview: state.photo?.preview,
         progress: state.progress,
         failed: state.failed,
-        onTap: state.failed ? viewModel.retry : choose,
+        onTap: state.failed ? onRetry ?? viewModel.retry : choose,
       ),
     );
   }

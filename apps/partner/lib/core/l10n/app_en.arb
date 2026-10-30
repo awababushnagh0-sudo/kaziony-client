@@ -72,7 +72,7 @@
   "restoreProduct": "Restore",
   "productArchived": "Archived.",
   "productRestored": "Restored.",
-  "productAddedAddPhoto": "Saved. Now add its photo.",
+  "productSavedPhotoFailed": "Saved. The photo didn't upload: tap it to try again.",
   "offersTitle": "Offers",
   "postOffer": "Post an offer",
   "noOffersTitle": "No offers yet",
