@@ -29,7 +29,12 @@ class LoginScreen extends AppView {
     return SAuthPage(
       title: s.loginTitle,
       subtitle: s.loginSubtitle,
+      hero: const SAuthHero(
+        mark: SIllustrations.partnerMark,
+        illustration: SIllustrations.signInHero,
+      ),
       actions: const [SLanguageButton()],
+      footer: [SText.caption(s.loginJoinHint, align: TextAlign.center)],
       child: SForm(
         form: viewModel.form,
         child: Column(

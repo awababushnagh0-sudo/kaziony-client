@@ -14,6 +14,7 @@ class ScaffoldSpec {
     this.showAppBar = true,
     this.maxWidth,
     this.centered = false,
+    this.underStatusBar = false,
   });
 
   final Widget body;
@@ -42,6 +43,11 @@ class ScaffoldSpec {
 
   /// Centers the content vertically too (login pages).
   final bool centered;
+
+  /// Lets [body] start at the top of the screen, behind the status bar,
+  /// for pages that open on a colored band (the stores' sign-in). The body
+  /// keeps the status bar's height free itself. Needs [showAppBar] off.
+  final bool underStatusBar;
 }
 
 /// The breadcrumb link before a page's title.

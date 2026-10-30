@@ -26,6 +26,8 @@ export 'src/components/form/s_form_section.dart';
 export 'src/components/form/s_validators.dart';
 export 'src/components/icon/s_icon.dart';
 export 'src/components/icon/s_icon_renderer.dart';
+export 'src/components/illustration/s_illustration.dart';
+export 'src/components/illustration/s_illustration_renderer.dart';
 export 'src/components/image/s_image.dart';
 export 'src/components/image/s_image_renderer.dart';
 export 'src/components/input/s_choice_input.dart';

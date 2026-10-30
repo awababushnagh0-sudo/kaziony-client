@@ -18,6 +18,7 @@ class SScaffold extends StatelessWidget {
     this.showAppBar = true,
     this.maxWidth,
     this.centered = false,
+    this.underStatusBar = false,
     super.key,
   });
 
@@ -32,6 +33,7 @@ class SScaffold extends StatelessWidget {
   final bool showAppBar;
   final double? maxWidth;
   final bool centered;
+  final bool underStatusBar;
 
   @override
   Widget build(BuildContext context) => StellarKit.of(context).scaffold.render(
@@ -48,6 +50,7 @@ class SScaffold extends StatelessWidget {
       showAppBar: showAppBar,
       maxWidth: maxWidth,
       centered: centered,
+      underStatusBar: underStatusBar,
     ),
   );
 }

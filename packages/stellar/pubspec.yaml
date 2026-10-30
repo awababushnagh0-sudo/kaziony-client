@@ -27,6 +27,9 @@ dev_dependencies:
 
 flutter:
   generate: true
+  # The brand's pictures (SIllustrations), with their 2.0x and 3.0x versions.
+  assets:
+    - assets/illustrations/
   # IBM Plex Sans Arabic (OFL.txt) covers Arabic and Latin. Lucide (Lucide-LICENSE.txt)
   # is the icon set ERPNext uses: only its thin 300 weight, so the web app
   # downloads one icon font instead of seven.

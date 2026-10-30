@@ -110,13 +110,13 @@ abstract class PartnerLocalizations {
   /// No description provided for @loginTitle.
   ///
   /// In en, this message translates to:
-  /// **'Store login'**
+  /// **'Welcome to your store'**
   String get loginTitle;
 
   /// No description provided for @loginSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Use the phone number and password you got from our team.'**
+  /// **'Log in with the phone number and password our team gave you.'**
   String get loginSubtitle;
 
   /// No description provided for @phoneLabel.
@@ -136,6 +136,12 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Log in'**
   String get loginButton;
+
+  /// No description provided for @loginJoinHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Store not on Kaziony yet? Talk to us and we\'ll add it.'**
+  String get loginJoinHint;
 
   /// No description provided for @wrongCredentials.
   ///

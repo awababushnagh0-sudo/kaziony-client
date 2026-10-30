@@ -29,10 +29,10 @@ void main() {
     await tester.pumpWidget(harness(FakeAuthRepository()));
     await tester.pumpAndSettle();
 
-    expect(find.text('دخول المتجر'), findsOneWidget);
+    expect(find.text('أهلًا بك في متجرك'), findsOneWidget);
     expect(find.text('رقم الهاتف'), findsOneWidget);
     final direction = Directionality.of(
-      tester.element(find.text('دخول المتجر')),
+      tester.element(find.text('أهلًا بك في متجرك')),
     );
     expect(direction, TextDirection.rtl);
   });
@@ -44,6 +44,9 @@ void main() {
     await tester.pumpWidget(harness(auth));
     await tester.pumpAndSettle();
 
+    // The form is under the brand's picture, below the test window's fold.
+    await tester.ensureVisible(find.text('دخول').last);
+    await tester.pumpAndSettle();
     await tester.tap(find.text('دخول').last);
     await tester.pumpAndSettle();
 
@@ -59,6 +62,8 @@ void main() {
 
     await tester.enterText(find.byType(EditableText).first, '0910000001');
     await tester.enterText(find.byType(EditableText).last, 'wrong');
+    await tester.ensureVisible(find.text('Log in'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Log in'));
     await tester.pumpAndSettle();
 

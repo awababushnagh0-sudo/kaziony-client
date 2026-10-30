@@ -13,6 +13,7 @@ class StellarColors {
     required this.accent,
     required this.onAccent,
     required this.primarySoft,
+    required this.cream,
     required this.background,
     required this.surface,
     required this.surfaceMuted,
@@ -45,6 +46,10 @@ class StellarColors {
 
   /// Hovered and selected rows, table headers, soft buttons.
   final Color primarySoft;
+
+  /// The logo's background: behind the brand's pictures (the sign-in
+  /// page's shop).
+  final Color cream;
   final Color background;
   final Color surface;
 

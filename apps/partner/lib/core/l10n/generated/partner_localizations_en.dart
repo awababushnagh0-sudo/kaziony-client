@@ -13,11 +13,11 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get appTitle => 'Offers for Stores';
 
   @override
-  String get loginTitle => 'Store login';
+  String get loginTitle => 'Welcome to your store';
 
   @override
   String get loginSubtitle =>
-      'Use the phone number and password you got from our team.';
+      'Log in with the phone number and password our team gave you.';
 
   @override
   String get phoneLabel => 'Phone number';
@@ -27,6 +27,10 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get loginButton => 'Log in';
+
+  @override
+  String get loginJoinHint =>
+      'Store not on Kaziony yet? Talk to us and we\'ll add it.';
 
   @override
   String get wrongCredentials => 'Wrong phone number or password.';

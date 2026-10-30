@@ -6,6 +6,7 @@ import '../components/card/s_card_renderer.dart';
 import '../components/deal/s_deal_renderer.dart';
 import '../components/dialog/s_dialog_renderer.dart';
 import '../components/icon/s_icon_renderer.dart';
+import '../components/illustration/s_illustration_renderer.dart';
 import '../components/image/s_image_renderer.dart';
 import '../components/input/s_input_renderer.dart';
 import '../components/list_page/s_list_page_renderer.dart';
@@ -36,6 +37,7 @@ class StellarKit {
     required this.input,
     required this.icon,
     required this.image,
+    required this.illustration,
     required this.text,
     required this.scaffold,
     required this.shell,
@@ -63,6 +65,7 @@ class StellarKit {
   final InputRenderer input;
   final IconRenderer icon;
   final ImageRenderer image;
+  final IllustrationRenderer illustration;
   final TextRenderer text;
   final ScaffoldRenderer scaffold;
   final ShellRenderer shell;

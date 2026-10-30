@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../foundation/s_kit.dart';
 import '../../foundation/s_tokens.dart';
@@ -51,7 +52,7 @@ class MaterialScaffoldRenderer implements ScaffoldRenderer {
     final openMenu = ShellScope.maybeOf(context)?.openMenu;
     final canPop = ModalRoute.of(context)?.impliesAppBarDismissal ?? false;
     final hasParent = spec.parent != null;
-    return Scaffold(
+    final scaffold = Scaffold(
       appBar: spec.showAppBar
           ? AppBar(
               automaticallyImplyLeading: !hasParent,
@@ -76,7 +77,7 @@ class MaterialScaffoldRenderer implements ScaffoldRenderer {
               actions: [...spec.actions, const Gap(Space.sm)],
             )
           : null,
-      body: SafeArea(child: body),
+      body: SafeArea(top: !spec.underStatusBar, child: body),
       bottomNavigationBar: spec.bottom == null
           ? null
           : SafeArea(
@@ -85,6 +86,15 @@ class MaterialScaffoldRenderer implements ScaffoldRenderer {
                 child: spec.bottom,
               ),
             ),
+    );
+    if (!spec.underStatusBar) return scaffold;
+    // Without an app bar to set them, the status bar's clock and icons
+    // take the page's colors.
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: context.colors.brightness == Brightness.light
+          ? SystemUiOverlayStyle.dark
+          : SystemUiOverlayStyle.light,
+      child: scaffold,
     );
   }
 }

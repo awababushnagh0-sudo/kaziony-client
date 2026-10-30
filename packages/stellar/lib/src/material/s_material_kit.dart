@@ -4,6 +4,7 @@ import '../components/card/s_card_material.dart';
 import '../components/deal/s_deal_material.dart';
 import '../components/dialog/s_dialog_material.dart';
 import '../components/icon/s_icon_material.dart';
+import '../components/illustration/s_illustration_material.dart';
 import '../components/image/s_image_material.dart';
 import '../components/input/s_input_material.dart';
 import '../components/list_page/s_list_page_material.dart';
@@ -32,6 +33,7 @@ const materialKit = StellarKit(
   input: MaterialInputRenderer(),
   icon: MaterialIconRenderer(),
   image: MaterialImageRenderer(),
+  illustration: MaterialIllustrationRenderer(),
   text: MaterialTextRenderer(),
   scaffold: MaterialScaffoldRenderer(),
   shell: MaterialShellRenderer(),

@@ -13,11 +13,11 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get appTitle => 'عروض للمتاجر';
 
   @override
-  String get loginTitle => 'دخول المتجر';
+  String get loginTitle => 'أهلًا بك في متجرك';
 
   @override
   String get loginSubtitle =>
-      'استخدم رقم الهاتف وكلمة المرور التي حصلت عليها من فريقنا.';
+      'ادخل برقم الهاتف وكلمة المرور اللي عطاهملك فريقنا.';
 
   @override
   String get phoneLabel => 'رقم الهاتف';
@@ -27,6 +27,9 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get loginButton => 'دخول';
+
+  @override
+  String get loginJoinHint => 'محلك مش في كزيوني؟ كلمنا ونضيفوه.';
 
   @override
   String get wrongCredentials => 'رقم الهاتف أو كلمة المرور غير صحيحة.';
