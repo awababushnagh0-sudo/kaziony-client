@@ -1,6 +1,7 @@
 import 'package:kernel/kernel.dart';
 import 'package:partner/features/auth/domain/auth_repository.dart';
 import 'package:partner/features/counter/domain/claim.dart';
+import 'package:partner/features/home/domain/store_stats.dart';
 import 'package:partner/features/offers/domain/offer.dart';
 import 'package:partner/features/products/domain/product.dart';
 import 'package:partner/features/store/domain/store.dart';
@@ -20,13 +21,14 @@ SessionUser user({
   memberships: memberships,
 );
 
-StoreMembership store(String id, {bool isOwner = true}) => StoreMembership(
-  storeId: id,
-  storeName: 'Store $id',
-  storeLogoUrl: null,
-  isOwner: isOwner,
-  branchId: null,
-);
+StoreMembership store(String id, {bool isOwner = true, String? branchId}) =>
+    StoreMembership(
+      storeId: id,
+      storeName: 'Store $id',
+      storeLogoUrl: null,
+      isOwner: isOwner,
+      branchId: branchId,
+    );
 
 class FakeAuthRepository implements AuthRepository {
   Result<SessionUser> loginResult = Ok(user());
@@ -334,9 +336,14 @@ Claim claim(
   bool canRedeem = true,
   DateTime? redeemedAt,
   String? customerName = 'Sara',
+  int quantity = 1,
+  String totalPrice = '4.500',
+  Duration heldFor = const Duration(minutes: 40),
 }) => Claim(
   id: 'c-$code',
   code: code,
+  quantity: quantity,
+  totalPrice: totalPrice,
   status: status,
   customerName: customerName,
   offer: const ClaimOffer(
@@ -346,8 +353,9 @@ Claim claim(
     originalPrice: '9.000',
     thumbUrl: null,
   ),
-  expiresAt: DateTime.now().add(const Duration(minutes: 40)),
+  expiresAt: DateTime.now().add(heldFor),
   redeemedAt: redeemedAt,
+  redeemedBranchId: redeemedAt == null ? null : 'b1',
   canRedeem: canRedeem,
 );
 
@@ -399,4 +407,33 @@ class FakeClaimRepository implements ClaimRepository {
     );
     return Ok(claims[index]);
   }
+}
+
+StoreStats stats({
+  int onTheWay = 3,
+  int redeemedToday = 9,
+  int claimsToday = 14,
+  int expiredToday = 2,
+}) => StoreStats(
+  liveOffers: 3,
+  onTheWay: onTheWay,
+  today: PeriodStats(
+    claims: claimsToday,
+    redeemed: redeemedToday,
+    expired: expiredToday,
+    redemptionRate: 0.8,
+  ),
+  last30Days: const PeriodStats(
+    claims: 300,
+    redeemed: 268,
+    expired: 30,
+    redemptionRate: 0.9,
+  ),
+);
+
+class FakeStatsRepository implements StatsRepository {
+  Result<StoreStats> result = Ok(stats());
+
+  @override
+  Future<Result<StoreStats>> get(String storeId) async => result;
 }

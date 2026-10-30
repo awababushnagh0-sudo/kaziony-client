@@ -157,8 +157,6 @@
   "claimsRedeemed": "Picked up",
   "claimsExpired": "Not picked up",
   "claimsCancelled": "Cancelled",
-  "viewsLabel": "Views",
-  "detailsSection": "Details",
   "holdValue": "{minutes} min",
   "@holdValue": {
     "placeholders": {
@@ -224,18 +222,175 @@
   "problemOther": "This code can't be picked up.",
   "claimNotFound": "No reservation with this code at your store.",
   "pickedUpTitle": "Picked up",
-  "pickedUpMessage": "Collect {price} from the customer.",
-  "@pickedUpMessage": {
+  "nextCustomer": "Next customer",
+  "counterBranch": "Your branch",
+  "chooseCounterBranch": "Which branch are you at?",
+  "chooseValue": "Choose",
+  "redeemWrongBranch": "This offer isn't valid at the branch picked on this phone.",
+  "refresh": "Refresh",
+  "piecesLabel": "Pieces",
+  "todayTitle": "Today",
+  "todayAtBranch": "Today at your branch",
+  "statPickedUp": "Picked up",
+  "statNotPickedUp": "Not picked up",
+  "statLiveOffers": "Live offers",
+  "soonestIn": "Soonest due in {time}",
+  "@soonestIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "ofClaimsToday": "{count, plural, =1{of 1 reserved today} other{of {count} reserved today}}",
+  "@ofClaimsToday": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "notPickedUpHint": "Their time ran out",
+  "almostGone": "{count, plural, =1{One almost gone} other{{count} almost gone}}",
+  "@almostGone": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesShort": "{minutes} min",
+  "@minutesShort": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} h",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "seeAll": "See all",
+  "seeAllOffers": "All offers",
+  "yourLiveOffers": "Your live offers",
+  "liveOffersTitle": "Live offers",
+  "nobodyOnTheWay": "No one is on their way right now.",
+  "noLiveOffers": "No live offers right now.",
+  "last30Days": "Last 30 days",
+  "pickupsCount": "{count, plural, =0{No pickups yet} =1{1 pickup} other{{count} pickups}}",
+  "@pickupsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pickupRate": "{percent}% picked up",
+  "@pickupRate": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "soonestFirst": "Soonest to end first",
+  "pickupsEndNote": "Reservations stay here until they're picked up or their time runs out.",
+  "collectFromCustomer": "Collect from the customer",
+  "piecesCount": "{count, plural, =1{1 piece} other{{count} pieces}}",
+  "@piecesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "claimReserved": "Reserved",
+  "claimRedeemed": "Picked up",
+  "claimExpired": "Expired",
+  "claimCancelled": "Cancelled",
+  "branchLabel": "Branch",
+  "heldUntilLeft": "{time} ({left} left)",
+  "@heldUntilLeft": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "left": {
+        "type": "String"
+      }
+    }
+  },
+  "problemRedeemedHint": "Don't hand it over again. If the customer says they didn't get it, check with your colleagues.",
+  "problemCancelledHint": "Don't hand it over. The customer can reserve again if the offer is still on.",
+  "problemExpiredHint": "Don't hand it over. The customer can reserve again if the offer is still on.",
+  "problemOtherBranchHint": "The customer can pick it up at a branch that has this offer.",
+  "checkCustomerTitle": "Is it the right customer?",
+  "checkCustomerMessage": "Make sure you handed {item} to {name} and collected {amount}.",
+  "@checkCustomerMessage": {
+    "placeholders": {
+      "item": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "checkCustomerConfirm": "Yes, picked up",
+  "perPiece": "{price} each",
+  "@perPiece": {
     "placeholders": {
       "price": {
         "type": "String"
       }
     }
   },
-  "nextCustomer": "Next customer",
-  "counterBranch": "Your branch",
-  "chooseCounterBranch": "Which branch are you at?",
-  "chooseValue": "Choose",
-  "redeemWrongBranch": "This offer isn't valid at the branch picked on this phone.",
-  "refresh": "Refresh"
+  "payInCash": "Paid in cash",
+  "figureViews": "Views",
+  "figureReserved": "Reservations",
+  "figurePickedUp": "Picked up",
+  "endsAt": "Ends {time}",
+  "@endsAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "dayToday": "Today",
+  "daysCount": "{count, plural, =1{1 day} other{{count} days}}",
+  "@daysCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursMinutesShort": "{hours} h {minutes} min",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "discountOff": "{percent}% off",
+  "@discountOff": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  }
 }

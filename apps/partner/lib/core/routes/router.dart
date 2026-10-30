@@ -85,7 +85,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.pickups, builder: (_, _) => const PickupsScreen()),
       GoRoute(
         path: Routes.claim(':code'),
-        builder: (_, state) => ClaimScreen(code: state.pathParameters['code']!),
+        builder: (_, state) => ClaimScreen(
+          code: state.pathParameters['code']!,
+          fromList: state.uri.queryParameters['from'] == 'list',
+        ),
       ),
       // Before the offer's page, so "new" isn't taken for an id.
       GoRoute(

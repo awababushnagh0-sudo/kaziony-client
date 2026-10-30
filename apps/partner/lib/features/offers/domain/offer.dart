@@ -72,7 +72,9 @@ class Offer {
   /// Null for unlimited offers.
   final int? totalQuantity;
   final int? remainingQuantity;
-  final int maxPerUser;
+
+  /// Pieces one customer can take in all; null for no limit.
+  final int? maxPerUser;
 
   /// How long a claim is held for the customer (limited offers).
   final int claimWindowMinutes;
@@ -81,6 +83,13 @@ class Offer {
   final List<String> branchIds;
   final int viewCount;
   final ClaimCounts claims;
+
+  /// A limited offer with a fifth of its pieces or fewer left.
+  bool get isRunningOut {
+    final total = totalQuantity;
+    final left = remainingQuantity;
+    return total != null && left != null && left * 5 <= total;
+  }
 
   bool get canPause => status == OfferStatus.active;
   bool get canResume => status == OfferStatus.paused;

@@ -4,6 +4,8 @@ import '../../features/auth/data/session_auth_repository.dart';
 import '../../features/auth/domain/auth_repository.dart';
 import '../../features/counter/data/api_claim_repository.dart';
 import '../../features/counter/domain/claim.dart';
+import '../../features/home/data/api_stats_repository.dart';
+import '../../features/home/domain/store_stats.dart';
 import '../../features/offers/data/api_offer_repository.dart';
 import '../../features/offers/domain/offer.dart';
 import '../../features/products/data/api_product_repository.dart';
@@ -24,5 +26,8 @@ final List<Override> dependencies = [
   ),
   productRepositoryProvider.overrideWith(
     (ref) => ApiProductRepository(ref.watch(apiProvider)),
+  ),
+  statsRepositoryProvider.overrideWith(
+    (ref) => ApiStatsRepository(ref.watch(apiProvider)),
   ),
 ];

@@ -30,6 +30,11 @@ abstract final class ClaimCode {
     final code = raw.toUpperCase().replaceAll(RegExp(r'[\s-]'), '');
     return _valid.hasMatch(code) ? code : null;
   }
+
+  /// [code] in two groups of four ("R3TW 8KQN"), as people read it out.
+  static String grouped(String code) => code.length == length
+      ? '${code.substring(0, length ~/ 2)} ${code.substring(length ~/ 2)}'
+      : code;
 }
 
 /// The offer a claim is for, as the counter needs it.
@@ -56,16 +61,25 @@ class Claim {
   const Claim({
     required this.id,
     required this.code,
+    required this.quantity,
+    required this.totalPrice,
     required this.status,
     required this.customerName,
     required this.offer,
     required this.expiresAt,
     required this.redeemedAt,
+    required this.redeemedBranchId,
     required this.canRedeem,
   });
 
   final String id;
   final String code;
+
+  /// Pieces to hand over.
+  final int quantity;
+
+  /// What to collect: the offer price × [quantity], LD with 3 decimals.
+  final String totalPrice;
 
   /// Null for a status added after this version of the app.
   final ClaimStatus? status;
@@ -76,8 +90,20 @@ class Claim {
   final DateTime expiresAt;
   final DateTime? redeemedAt;
 
+  /// Where it was picked up.
+  final String? redeemedBranchId;
+
   /// The server's answer: it can be picked up here, right now.
   final bool canRedeem;
+
+  /// Still held for the customer at [now].
+  bool isHeldAt(DateTime now) =>
+      status == ClaimStatus.reserved && expiresAt.isAfter(now);
+
+  /// Due within a quarter of an hour of [now]: the counter should have it
+  /// ready.
+  bool isDueSoonAt(DateTime now) =>
+      expiresAt.difference(now) <= const Duration(minutes: 15);
 
   /// Why it can't be picked up, in terms the counter can show; null when
   /// it can.

@@ -70,3 +70,14 @@ final counterBranchesProvider = Provider.autoDispose<CounterBranches>((ref) {
     branchId: branches.any((branch) => branch.id == chosen) ? chosen : null,
   );
 });
+
+/// A branch of the current store by its id, once the store has loaded: to
+/// name where a counter is, or where a code was picked up.
+final storeBranchProvider = Provider.autoDispose.family<Branch?, String>(
+  (ref, id) => ref
+      .watch(storeViewModel)
+      .value
+      ?.branches
+      .where((branch) => branch.id == id)
+      .firstOrNull,
+);

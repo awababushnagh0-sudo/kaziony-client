@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
+import '../../../core/widgets/offer_tile.dart';
 import '../../store/domain/current_store.dart';
 import '../domain/offer.dart';
 import 'offers_view_model.dart';
@@ -18,18 +19,21 @@ class OffersScreen extends AppView {
     final filter = ref.watch(offerFilterProvider);
     final filters = ref.read(offerFilterProvider.notifier);
     final isOwner = ref.watch(currentStoreProvider)?.isOwner ?? false;
+    final firstEmpty =
+        filter == null &&
+        (ref.watch(offersViewModel).value?.items.isEmpty ?? false);
     return SScaffold(
       title: s.offersTitle,
       // The rows run edge to edge; the filters keep the usual sides.
       padded: false,
-      actions: [
-        if (isOwner)
-          SButton.icon(
-            icon: SIcons.add,
-            tooltip: s.postOffer,
-            onPressed: () => context.push(Routes.chooseOfferProduct),
-          ),
-      ],
+      // The first empty list has its own button to post one.
+      floating: isOwner && !firstEmpty
+          ? SButton(
+              label: s.postOffer,
+              icon: SIcons.add,
+              onPressed: () => context.push(Routes.chooseOfferProduct),
+            )
+          : null,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -54,6 +58,7 @@ class OffersScreen extends AppView {
                     label: label,
                     selected: filter == status,
                     onTap: () => filters.show(status),
+                    activeColor: SColor.text,
                   ),
               ],
             ),
@@ -92,11 +97,15 @@ class _OfferList extends AppView {
           );
         }
         return SPagedList(
+          // The offers are cards, apart from each other.
+          divided: false,
           itemCount: page.items.length,
           itemBuilder: (context, index) {
             final offer = page.items[index];
             return OfferTile(
               offer: offer,
+              trailing: OfferStateBadge(state: offer.state),
+              bordered: true,
               onTap: () => context.push(Routes.offer(offer.id)),
             );
           },

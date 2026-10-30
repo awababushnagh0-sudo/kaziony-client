@@ -132,7 +132,7 @@ Offer _toOffer(api.PartnerOfferDto dto) => Offer(
   },
   totalQuantity: dto.totalQuantity?.toInt(),
   remainingQuantity: dto.remainingQuantity?.toInt(),
-  maxPerUser: dto.maxPerUser.toInt(),
+  maxPerUser: dto.maxPerUser?.toInt(),
   claimWindowMinutes: dto.claimWindowMinutes.toInt(),
   startsAt: dto.startsAt,
   endsAt: dto.endsAt,

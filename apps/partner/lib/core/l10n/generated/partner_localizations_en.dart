@@ -386,12 +386,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get claimsCancelled => 'Cancelled';
 
   @override
-  String get viewsLabel => 'Views';
-
-  @override
-  String get detailsSection => 'Details';
-
-  @override
   String holdValue(int minutes) {
     return '$minutes min';
   }
@@ -540,11 +534,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get pickedUpTitle => 'Picked up';
 
   @override
-  String pickedUpMessage(String price) {
-    return 'Collect $price from the customer.';
-  }
-
-  @override
   String get nextCustomer => 'Next customer';
 
   @override
@@ -562,4 +551,214 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get refresh => 'Refresh';
+
+  @override
+  String get piecesLabel => 'Pieces';
+
+  @override
+  String get todayTitle => 'Today';
+
+  @override
+  String get todayAtBranch => 'Today at your branch';
+
+  @override
+  String get statPickedUp => 'Picked up';
+
+  @override
+  String get statNotPickedUp => 'Not picked up';
+
+  @override
+  String get statLiveOffers => 'Live offers';
+
+  @override
+  String soonestIn(String time) {
+    return 'Soonest due in $time';
+  }
+
+  @override
+  String ofClaimsToday(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'of $count reserved today',
+      one: 'of 1 reserved today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get notPickedUpHint => 'Their time ran out';
+
+  @override
+  String almostGone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count almost gone',
+      one: 'One almost gone',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String minutesShort(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String hoursShort(int hours) {
+    return '$hours h';
+  }
+
+  @override
+  String get seeAll => 'See all';
+
+  @override
+  String get seeAllOffers => 'All offers';
+
+  @override
+  String get yourLiveOffers => 'Your live offers';
+
+  @override
+  String get liveOffersTitle => 'Live offers';
+
+  @override
+  String get nobodyOnTheWay => 'No one is on their way right now.';
+
+  @override
+  String get noLiveOffers => 'No live offers right now.';
+
+  @override
+  String get last30Days => 'Last 30 days';
+
+  @override
+  String pickupsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pickups',
+      one: '1 pickup',
+      zero: 'No pickups yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pickupRate(int percent) {
+    return '$percent% picked up';
+  }
+
+  @override
+  String get soonestFirst => 'Soonest to end first';
+
+  @override
+  String get pickupsEndNote =>
+      'Reservations stay here until they\'re picked up or their time runs out.';
+
+  @override
+  String get collectFromCustomer => 'Collect from the customer';
+
+  @override
+  String piecesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pieces',
+      one: '1 piece',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get claimReserved => 'Reserved';
+
+  @override
+  String get claimRedeemed => 'Picked up';
+
+  @override
+  String get claimExpired => 'Expired';
+
+  @override
+  String get claimCancelled => 'Cancelled';
+
+  @override
+  String get branchLabel => 'Branch';
+
+  @override
+  String heldUntilLeft(String time, String left) {
+    return '$time ($left left)';
+  }
+
+  @override
+  String get problemRedeemedHint =>
+      'Don\'t hand it over again. If the customer says they didn\'t get it, check with your colleagues.';
+
+  @override
+  String get problemCancelledHint =>
+      'Don\'t hand it over. The customer can reserve again if the offer is still on.';
+
+  @override
+  String get problemExpiredHint =>
+      'Don\'t hand it over. The customer can reserve again if the offer is still on.';
+
+  @override
+  String get problemOtherBranchHint =>
+      'The customer can pick it up at a branch that has this offer.';
+
+  @override
+  String get checkCustomerTitle => 'Is it the right customer?';
+
+  @override
+  String checkCustomerMessage(String item, String name, String amount) {
+    return 'Make sure you handed $item to $name and collected $amount.';
+  }
+
+  @override
+  String get checkCustomerConfirm => 'Yes, picked up';
+
+  @override
+  String perPiece(String price) {
+    return '$price each';
+  }
+
+  @override
+  String get payInCash => 'Paid in cash';
+
+  @override
+  String get figureViews => 'Views';
+
+  @override
+  String get figureReserved => 'Reservations';
+
+  @override
+  String get figurePickedUp => 'Picked up';
+
+  @override
+  String endsAt(String time) {
+    return 'Ends $time';
+  }
+
+  @override
+  String get dayToday => 'Today';
+
+  @override
+  String daysCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hoursMinutesShort(int hours, int minutes) {
+    return '$hours h $minutes min';
+  }
+
+  @override
+  String discountOff(int percent) {
+    return '$percent% off';
+  }
 }

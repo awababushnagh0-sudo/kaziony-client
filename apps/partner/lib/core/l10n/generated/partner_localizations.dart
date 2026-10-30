@@ -815,18 +815,6 @@ abstract class PartnerLocalizations {
   /// **'Cancelled'**
   String get claimsCancelled;
 
-  /// No description provided for @viewsLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Views'**
-  String get viewsLabel;
-
-  /// No description provided for @detailsSection.
-  ///
-  /// In en, this message translates to:
-  /// **'Details'**
-  String get detailsSection;
-
   /// No description provided for @holdValue.
   ///
   /// In en, this message translates to:
@@ -1091,12 +1079,6 @@ abstract class PartnerLocalizations {
   /// **'Picked up'**
   String get pickedUpTitle;
 
-  /// No description provided for @pickedUpMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Collect {price} from the customer.'**
-  String pickedUpMessage(String price);
-
   /// No description provided for @nextCustomer.
   ///
   /// In en, this message translates to:
@@ -1132,6 +1114,294 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Refresh'**
   String get refresh;
+
+  /// No description provided for @piecesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pieces'**
+  String get piecesLabel;
+
+  /// No description provided for @todayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get todayTitle;
+
+  /// No description provided for @todayAtBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Today at your branch'**
+  String get todayAtBranch;
+
+  /// No description provided for @statPickedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up'**
+  String get statPickedUp;
+
+  /// No description provided for @statNotPickedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Not picked up'**
+  String get statNotPickedUp;
+
+  /// No description provided for @statLiveOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'Live offers'**
+  String get statLiveOffers;
+
+  /// No description provided for @soonestIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Soonest due in {time}'**
+  String soonestIn(String time);
+
+  /// No description provided for @ofClaimsToday.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{of 1 reserved today} other{of {count} reserved today}}'**
+  String ofClaimsToday(int count);
+
+  /// No description provided for @notPickedUpHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Their time ran out'**
+  String get notPickedUpHint;
+
+  /// No description provided for @almostGone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{One almost gone} other{{count} almost gone}}'**
+  String almostGone(int count);
+
+  /// No description provided for @minutesShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String minutesShort(int minutes);
+
+  /// No description provided for @hoursShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h'**
+  String hoursShort(int hours);
+
+  /// No description provided for @seeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get seeAll;
+
+  /// No description provided for @seeAllOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'All offers'**
+  String get seeAllOffers;
+
+  /// No description provided for @yourLiveOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'Your live offers'**
+  String get yourLiveOffers;
+
+  /// No description provided for @liveOffersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Live offers'**
+  String get liveOffersTitle;
+
+  /// No description provided for @nobodyOnTheWay.
+  ///
+  /// In en, this message translates to:
+  /// **'No one is on their way right now.'**
+  String get nobodyOnTheWay;
+
+  /// No description provided for @noLiveOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'No live offers right now.'**
+  String get noLiveOffers;
+
+  /// No description provided for @last30Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 days'**
+  String get last30Days;
+
+  /// No description provided for @pickupsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No pickups yet} =1{1 pickup} other{{count} pickups}}'**
+  String pickupsCount(int count);
+
+  /// No description provided for @pickupRate.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% picked up'**
+  String pickupRate(int percent);
+
+  /// No description provided for @soonestFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Soonest to end first'**
+  String get soonestFirst;
+
+  /// No description provided for @pickupsEndNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservations stay here until they\'re picked up or their time runs out.'**
+  String get pickupsEndNote;
+
+  /// No description provided for @collectFromCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect from the customer'**
+  String get collectFromCustomer;
+
+  /// No description provided for @piecesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 piece} other{{count} pieces}}'**
+  String piecesCount(int count);
+
+  /// No description provided for @claimReserved.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserved'**
+  String get claimReserved;
+
+  /// No description provided for @claimRedeemed.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up'**
+  String get claimRedeemed;
+
+  /// No description provided for @claimExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get claimExpired;
+
+  /// No description provided for @claimCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get claimCancelled;
+
+  /// No description provided for @branchLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch'**
+  String get branchLabel;
+
+  /// No description provided for @heldUntilLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{time} ({left} left)'**
+  String heldUntilLeft(String time, String left);
+
+  /// No description provided for @problemRedeemedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t hand it over again. If the customer says they didn\'t get it, check with your colleagues.'**
+  String get problemRedeemedHint;
+
+  /// No description provided for @problemCancelledHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t hand it over. The customer can reserve again if the offer is still on.'**
+  String get problemCancelledHint;
+
+  /// No description provided for @problemExpiredHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t hand it over. The customer can reserve again if the offer is still on.'**
+  String get problemExpiredHint;
+
+  /// No description provided for @problemOtherBranchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The customer can pick it up at a branch that has this offer.'**
+  String get problemOtherBranchHint;
+
+  /// No description provided for @checkCustomerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Is it the right customer?'**
+  String get checkCustomerTitle;
+
+  /// No description provided for @checkCustomerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Make sure you handed {item} to {name} and collected {amount}.'**
+  String checkCustomerMessage(String item, String name, String amount);
+
+  /// No description provided for @checkCustomerConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, picked up'**
+  String get checkCustomerConfirm;
+
+  /// No description provided for @perPiece.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} each'**
+  String perPiece(String price);
+
+  /// No description provided for @payInCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid in cash'**
+  String get payInCash;
+
+  /// No description provided for @figureViews.
+  ///
+  /// In en, this message translates to:
+  /// **'Views'**
+  String get figureViews;
+
+  /// No description provided for @figureReserved.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservations'**
+  String get figureReserved;
+
+  /// No description provided for @figurePickedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up'**
+  String get figurePickedUp;
+
+  /// No description provided for @endsAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends {time}'**
+  String endsAt(String time);
+
+  /// No description provided for @dayToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get dayToday;
+
+  /// No description provided for @daysCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day} other{{count} days}}'**
+  String daysCount(int count);
+
+  /// No description provided for @hoursMinutesShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h {minutes} min'**
+  String hoursMinutesShort(int hours, int minutes);
+
+  /// No description provided for @discountOff.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% off'**
+  String discountOff(int percent);
 }
 
 class _PartnerLocalizationsDelegate

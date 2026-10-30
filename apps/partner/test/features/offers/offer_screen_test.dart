@@ -49,9 +49,13 @@ void main() {
   testWidgets('shows the claims and the details', (tester) async {
     await open(tester);
 
-    expect(find.text('Picked up'), findsOneWidget);
-    expect(find.text('5'), findsOneWidget);
+    // Picked up: in the figures at the top and in the reservations.
+    expect(find.text('Picked up'), findsNWidgets(2));
+    expect(find.text('5'), findsNWidgets(2));
+    // Reserved in all: still waiting and picked up.
+    expect(find.text('7'), findsOneWidget);
     expect(find.text('42'), findsOneWidget);
+    expect(find.text('3 of 10 left'), findsOneWidget);
     expect(find.text('60 min'), findsOneWidget);
     expect(find.text('1 branch'), findsOneWidget);
   });
@@ -86,19 +90,28 @@ void main() {
     expect(find.text('new offer page'), findsOneWidget);
   });
 
+  testWidgets('owners post a live offer again from its photo', (tester) async {
+    await open(tester);
+
+    await tester.tap(find.byTooltip('Post it again'));
+    await tester.pumpAndSettle();
+    expect(find.text('new offer page'), findsOneWidget);
+  });
+
   testWidgets('staff see it without the actions', (tester) async {
     await open(tester, isOwner: false);
 
-    expect(find.text('Picked up'), findsOneWidget);
+    expect(find.text('Picked up'), findsNWidgets(2));
     expect(find.text('Pause'), findsNothing);
     expect(find.text('End the offer'), findsNothing);
-    expect(find.byTooltip('Edit the offer'), findsNothing);
+    expect(find.text('Edit'), findsNothing);
+    expect(find.byTooltip('Post it again'), findsNothing);
   });
 
   testWidgets('the owner edits the title', (tester) async {
     await open(tester);
 
-    await tester.tap(find.byTooltip('Edit the offer'));
+    await tester.tap(find.text('Edit'));
     await tester.pumpAndSettle();
     await tester.enterText(
       find.widgetWithText(STextInput, 'Title'),

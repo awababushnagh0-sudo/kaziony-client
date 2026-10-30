@@ -31,7 +31,11 @@ abstract final class Routes {
   // The counter, over the Scan tab.
   static const typeCode = '$scan/type';
   static const pickups = '/pickups';
-  static String claim(String code) => '/claims/$code';
+
+  /// [fromList]: opened by tapping a name, not by the customer's code, so
+  /// the page asks before confirming.
+  static String claim(String code, {bool fromList = false}) =>
+      fromList ? '/claims/$code?from=list' : '/claims/$code';
 
   /// Pages staff can't open: the API refuses them anyway. Staff see
   /// offers, but don't post or change them.

@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kernel/kernel.dart';
+import 'package:partner/core/providers/clock.dart';
 import 'package:partner/core/routes/routes.dart';
 import 'package:partner/features/counter/domain/claim.dart';
 import 'package:partner/features/counter/presentation/claim_screen.dart';
@@ -18,15 +19,18 @@ void main() {
     Claim? shown,
     List<Branch>? branches,
     String? staffBranch,
+    bool fromList = false,
   }) async {
     claims = FakeClaimRepository([shown ?? claim('ABCD2345')]);
     final stores = FakeStoreRepository()
       ..getResult = Ok(storeDetails(branches: branches));
     await pumpPartnerPages(
       tester,
-      initial: Routes.claim(code),
+      initial: Routes.claim(code, fromList: fromList),
       overrides: [
         claimRepositoryProvider.overrideWithValue(claims),
+        // No ticking clock in tests: the page reads the time when it builds.
+        minuteClockProvider.overrideWith((ref) => const Stream.empty()),
         storeRepositoryProvider.overrideWithValue(stores),
         currentStoreProvider.overrideWithValue(
           StoreMembership(
@@ -41,8 +45,10 @@ void main() {
       routes: [
         GoRoute(
           path: Routes.claim(':code'),
-          builder: (_, state) =>
-              ClaimScreen(code: state.pathParameters['code']!),
+          builder: (_, state) => ClaimScreen(
+            code: state.pathParameters['code']!,
+            fromList: state.uri.queryParameters['from'] == 'list',
+          ),
         ),
       ],
     );
@@ -53,10 +59,17 @@ void main() {
   ) async {
     await open(tester);
 
-    expect(find.text('4.5 LD'), findsOneWidget);
-    expect(find.text('Regular price 9 LD'), findsOneWidget);
+    // The line and the total.
+    expect(find.text('4.5 LD'), findsNWidgets(2));
+    expect(find.text('4.5 LD each'), findsOneWidget);
+    expect(find.text('Paid in cash'), findsOneWidget);
+    // What it's paid, never what it would have cost.
+    expect(find.text('9 LD'), findsNothing);
+    expect(find.text('ABCD 2345'), findsOneWidget);
     expect(find.text('Sara'), findsOneWidget);
     expect(find.text('Caramel cake'), findsOneWidget);
+    // The store's only branch is where it's picked up.
+    expect(find.text('Branch'), findsOneWidget);
 
     await tester.tap(find.text('Confirm pickup'));
     await tester.pumpAndSettle();
@@ -64,7 +77,22 @@ void main() {
     // The store's only branch.
     expect(claims.redeems.single, ('ABCD2345', 'b1'));
     expect(find.text('Picked up'), findsOneWidget);
-    expect(find.text('Collect 4.5 LD from the customer.'), findsOneWidget);
+    expect(find.text('Collect from the customer'), findsOneWidget);
+    expect(find.text('4.5 LD'), findsOneWidget);
+  });
+
+  testWidgets('says how many pieces to hand over and what they come to', (
+    tester,
+  ) async {
+    await open(
+      tester,
+      shown: claim('ABCD2345', quantity: 3, totalPrice: '13.500'),
+    );
+
+    // On the line and as the total.
+    expect(find.text('13.5 LD'), findsNWidgets(2));
+    expect(find.text('4.5 LD each'), findsOneWidget);
+    expect(find.textContaining('×3'), findsOneWidget);
   });
 
   testWidgets('says why a code was already used', (tester) async {
@@ -79,6 +107,9 @@ void main() {
     );
 
     expect(find.textContaining('Already picked up: '), findsOneWidget);
+    expect(find.textContaining("Don't hand it over again."), findsOneWidget);
+    // No amount to collect for a used code.
+    expect(find.text('To collect'), findsNothing);
     expect(find.text('Confirm pickup'), findsNothing);
   });
 
@@ -139,5 +170,44 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(claims.redeems.single, ('ABCD2345', null));
+  });
+
+  testWidgets('asks before confirming a customer picked from the list', (
+    tester,
+  ) async {
+    await open(tester, fromList: true);
+
+    await tester.tap(find.text('Confirm pickup'));
+    await tester.pumpAndSettle();
+    expect(find.text('Is it the right customer?'), findsOneWidget);
+    expect(
+      find.text(
+        'Make sure you handed Caramel cake to Sara and collected 4.5 LD.',
+      ),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    expect(claims.redeems, isEmpty);
+
+    await tester.tap(find.text('Confirm pickup'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Yes, picked up'));
+    await tester.pumpAndSettle();
+    expect(claims.redeems.single, ('ABCD2345', 'b1'));
+    expect(find.text('Collect from the customer'), findsOneWidget);
+  });
+
+  testWidgets("doesn't ask after a scan: the code is the check", (
+    tester,
+  ) async {
+    await open(tester);
+
+    await tester.tap(find.text('Confirm pickup'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Is it the right customer?'), findsNothing);
+    expect(claims.redeems, hasLength(1));
   });
 }

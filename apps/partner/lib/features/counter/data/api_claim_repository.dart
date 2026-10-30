@@ -53,6 +53,8 @@ class ApiClaimRepository implements ClaimRepository {
 Claim _toClaim(api.PartnerClaimDto dto) => Claim(
   id: dto.id,
   code: dto.code,
+  quantity: dto.quantity.toInt(),
+  totalPrice: dto.totalPrice,
   status: switch (dto.status) {
     api.ClaimStatus.reserved => ClaimStatus.reserved,
     api.ClaimStatus.redeemed => ClaimStatus.redeemed,
@@ -70,5 +72,6 @@ Claim _toClaim(api.PartnerClaimDto dto) => Claim(
   ),
   expiresAt: dto.expiresAt,
   redeemedAt: dto.redeemedAt,
+  redeemedBranchId: dto.redeemedBranchId,
   canRedeem: dto.canRedeem,
 );

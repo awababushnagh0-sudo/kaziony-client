@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
+import '../../home/presentation/home_view_model.dart';
 import '../../products/domain/product.dart';
 import '../../products/presentation/product_form_view_model.dart';
 import '../../store/domain/current_store.dart';
@@ -175,7 +176,11 @@ class NewOfferViewModel extends ViewModel<NewOfferState> {
       branchIds: branchIds,
       failure: result.failureOrNull,
     );
-    if (result.isOk) ref.invalidate(offersViewModel);
+    if (result.isOk) {
+      ref
+        ..invalidate(offersViewModel)
+        ..invalidate(homeViewModel);
+    }
     return result.valueOrNull;
   }
 

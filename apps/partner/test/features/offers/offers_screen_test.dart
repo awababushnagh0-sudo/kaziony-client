@@ -32,15 +32,24 @@ void main() {
     );
   }
 
-  testWidgets('lists offers with prices, discount and state', (tester) async {
-    await open(tester);
+  testWidgets('lists offers with price, discount, state and what is left', (
+    tester,
+  ) async {
+    await open(
+      tester,
+      items: [
+        offer('o1'),
+        offer('o2', type: OfferType.unlimited),
+      ],
+    );
 
     expect(find.text('Offer o1'), findsOneWidget);
-    expect(find.text('4 LD'), findsOneWidget);
-    expect(find.text('8 LD'), findsOneWidget);
-    expect(find.textContaining('50%'), findsOneWidget);
-    expect(find.text('Live'), findsOneWidget);
-    expect(find.textContaining('3 of 10 left'), findsOneWidget);
+    expect(find.text('4 LD'), findsNWidgets(2));
+    expect(find.textContaining('50%'), findsNWidgets(2));
+    expect(find.text('Live'), findsNWidgets(2));
+    // Only the limited one has pieces to count; the rest is on its page.
+    expect(find.text('3 of 10 left'), findsOneWidget);
+    expect(find.text('8 LD'), findsNothing);
   });
 
   testWidgets('filters by status', (tester) async {
@@ -68,6 +77,14 @@ void main() {
     expect(find.text('offer page'), findsOneWidget);
   });
 
+  testWidgets('owners post from the button over the list', (tester) async {
+    await open(tester);
+
+    await tester.tap(find.text('Post an offer'));
+    await tester.pumpAndSettle();
+    expect(find.text('choose product page'), findsOneWidget);
+  });
+
   testWidgets('owners start posting from the first empty list', (tester) async {
     await open(tester, items: []);
 
@@ -82,6 +99,9 @@ void main() {
 
     expect(find.text('No offers yet'), findsOneWidget);
     expect(find.text('Post an offer'), findsNothing);
-    expect(find.byTooltip('Post an offer'), findsNothing);
+
+    await open(tester, isOwner: false);
+    expect(find.text('Offer o1'), findsOneWidget);
+    expect(find.text('Post an offer'), findsNothing);
   });
 }

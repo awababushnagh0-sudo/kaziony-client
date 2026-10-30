@@ -1,5 +1,6 @@
 import 'package:kernel/kernel.dart';
 
+import '../../home/presentation/home_view_model.dart';
 import '../../store/domain/current_store.dart';
 import '../domain/claim.dart';
 import 'pickups_view_model.dart';
@@ -58,7 +59,9 @@ class PickupViewModel extends ViewModel<PickupState> {
     switch (result) {
       case Ok(:final value):
         state = PickupState(done: value);
-        ref.invalidate(pickupsViewModel);
+        ref
+          ..invalidate(pickupsViewModel)
+          ..invalidate(homeViewModel);
         return null;
       case Err(failure: ConflictFailure()):
         // Picked up on another phone, cancelled or expired meanwhile.

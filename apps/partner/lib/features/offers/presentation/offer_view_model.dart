@@ -1,5 +1,6 @@
 import 'package:kernel/kernel.dart';
 
+import '../../home/presentation/home_view_model.dart';
 import '../../store/domain/current_store.dart';
 import '../domain/offer.dart';
 import 'offers_view_model.dart';
@@ -35,8 +36,10 @@ class OfferViewModel extends AsyncViewModel<Offer> {
   /// Shows the offer the server returned after a change.
   void replace(Offer offer) {
     state = AsyncData(offer);
-    // The list shows the state too.
-    ref.invalidate(offersViewModel);
+    // The lists show the state too.
+    ref
+      ..invalidate(offersViewModel)
+      ..invalidate(homeViewModel);
   }
 
   Future<AppFailure?> _change(

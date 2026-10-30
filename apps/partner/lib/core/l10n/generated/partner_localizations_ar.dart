@@ -382,12 +382,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get claimsCancelled => 'أُلغي';
 
   @override
-  String get viewsLabel => 'المشاهدات';
-
-  @override
-  String get detailsSection => 'التفاصيل';
-
-  @override
   String holdValue(int minutes) {
     return '$minutes دقيقة';
   }
@@ -536,11 +530,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get pickedUpTitle => 'تم الاستلام';
 
   @override
-  String pickedUpMessage(String price) {
-    return 'استلم $price من الزبون.';
-  }
-
-  @override
   String get nextCustomer => 'الزبون التالي';
 
   @override
@@ -558,4 +547,224 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get refresh => 'تحديث';
+
+  @override
+  String get piecesLabel => 'عدد القطع';
+
+  @override
+  String get todayTitle => 'اليوم';
+
+  @override
+  String get todayAtBranch => 'اليوم في فرعك';
+
+  @override
+  String get statPickedUp => 'تم الاستلام';
+
+  @override
+  String get statNotPickedUp => 'لم يُستلم';
+
+  @override
+  String get statLiveOffers => 'عروض متاحة';
+
+  @override
+  String soonestIn(String time) {
+    return 'أقربهم بعد $time';
+  }
+
+  @override
+  String ofClaimsToday(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'من $count حجز اليوم',
+      many: 'من $count حجزًا اليوم',
+      few: 'من $count حجوزات اليوم',
+      two: 'من حجزين اليوم',
+      one: 'من حجز واحد اليوم',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get notPickedUpHint => 'انتهت مدة حجزهم';
+
+  @override
+  String almostGone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count تكاد تنفد',
+      two: 'اثنان يكادان ينفدان',
+      one: 'واحد يكاد ينفد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String minutesShort(int minutes) {
+    return '$minutes د';
+  }
+
+  @override
+  String hoursShort(int hours) {
+    return '$hours س';
+  }
+
+  @override
+  String get seeAll => 'عرض الكل';
+
+  @override
+  String get seeAllOffers => 'كل العروض';
+
+  @override
+  String get yourLiveOffers => 'عروضك المتاحة';
+
+  @override
+  String get liveOffersTitle => 'العروض المتاحة';
+
+  @override
+  String get nobodyOnTheWay => 'لا أحد في الطريق الآن.';
+
+  @override
+  String get noLiveOffers => 'لا توجد عروض متاحة الآن.';
+
+  @override
+  String get last30Days => 'آخر 30 يومًا';
+
+  @override
+  String pickupsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count استلام',
+      many: '$count استلامًا',
+      few: '$count استلامات',
+      two: 'استلامان',
+      one: 'استلام واحد',
+      zero: 'لا استلام بعد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pickupRate(int percent) {
+    return 'نسبة الاستلام $percent٪';
+  }
+
+  @override
+  String get soonestFirst => 'أقرب انتهاء أولًا';
+
+  @override
+  String get pickupsEndNote => 'تبقى الحجوزات هنا حتى تُستلم أو تنتهي مدتها.';
+
+  @override
+  String get collectFromCustomer => 'استلم من الزبون';
+
+  @override
+  String piecesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count قطعة',
+      few: '$count قطع',
+      two: 'قطعتان',
+      one: 'قطعة واحدة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get claimReserved => 'محجوز';
+
+  @override
+  String get claimRedeemed => 'تم الاستلام';
+
+  @override
+  String get claimExpired => 'انتهى';
+
+  @override
+  String get claimCancelled => 'ملغي';
+
+  @override
+  String get branchLabel => 'الفرع';
+
+  @override
+  String heldUntilLeft(String time, String left) {
+    return '$time (باقي $left)';
+  }
+
+  @override
+  String get problemRedeemedHint =>
+      'لا تسلّم الطلب مرة أخرى. إذا قال الزبون إنه لم يستلمه، تحقّق مع زميلك.';
+
+  @override
+  String get problemCancelledHint =>
+      'لا تسلّم الطلب. يمكن للزبون أن يحجز من جديد إذا كان العرض ما زال متاحًا.';
+
+  @override
+  String get problemExpiredHint =>
+      'لا تسلّم الطلب. يمكن للزبون أن يحجز من جديد إذا كان العرض ما زال متاحًا.';
+
+  @override
+  String get problemOtherBranchHint =>
+      'يمكن للزبون أن يستلمه من فرع فيه هذا العرض.';
+
+  @override
+  String get checkCustomerTitle => 'هل هو الزبون الصحيح؟';
+
+  @override
+  String checkCustomerMessage(String item, String name, String amount) {
+    return 'تأكّد أنك سلّمت $item إلى $name واستلمت $amount.';
+  }
+
+  @override
+  String get checkCustomerConfirm => 'نعم، تم الاستلام';
+
+  @override
+  String perPiece(String price) {
+    return '$price للقطعة';
+  }
+
+  @override
+  String get payInCash => 'الدفع نقدًا';
+
+  @override
+  String get figureViews => 'مشاهدة';
+
+  @override
+  String get figureReserved => 'حُجزت';
+
+  @override
+  String get figurePickedUp => 'استُلمت';
+
+  @override
+  String endsAt(String time) {
+    return 'ينتهي $time';
+  }
+
+  @override
+  String get dayToday => 'اليوم';
+
+  @override
+  String daysCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count يومًا',
+      few: '$count أيام',
+      two: 'يومان',
+      one: 'يوم',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hoursMinutesShort(int hours, int minutes) {
+    return '$hours س $minutes د';
+  }
+
+  @override
+  String discountOff(int percent) {
+    return 'خصم $percent٪';
+  }
 }
