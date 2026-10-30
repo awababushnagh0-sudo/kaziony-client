@@ -82,10 +82,18 @@ class RadioTileSpec {
 
 @immutable
 class ListGroupSpec {
-  const ListGroupSpec({required this.children, this.title});
+  const ListGroupSpec({
+    required this.children,
+    this.title,
+    this.separated = false,
+  });
 
   final String? title;
   final List<Widget> children;
+
+  /// Each row its own bordered card, a little apart, instead of all in
+  /// one box.
+  final bool separated;
 }
 
 /// A setting and its value: the name quiet, the value in bold ([SFactTile]).

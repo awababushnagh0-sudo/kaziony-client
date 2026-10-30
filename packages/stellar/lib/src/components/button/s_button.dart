@@ -5,8 +5,8 @@ import '../icon/s_icon.dart';
 import 's_button_renderer.dart';
 
 /// A button with a label ([SButton], [SButton.secondary], [SButton.soft],
-/// [SButton.dangerSoft], [SButton.text]), one that opens a menu ([SButton.menu]) or just an icon
-/// ([SButton.icon]).
+/// [SButton.dangerSoft], [SButton.dangerSecondary], [SButton.text]), one
+/// that opens a menu ([SButton.menu]) or just an icon ([SButton.icon]).
 class SButton extends StatelessWidget {
   const SButton({
     required this.label,
@@ -52,6 +52,19 @@ class SButton extends StatelessWidget {
     this.icon,
     super.key,
   }) : variant = ButtonVariant.dangerSoft,
+       _iconOnly = false,
+       _smallIcon = false;
+
+  /// On the surface with red words and icon from the start, like a row:
+  /// for leaving (logging out).
+  const SButton.dangerSecondary({
+    required this.label,
+    required this.onPressed,
+    this.loading = false,
+    this.expand = false,
+    this.icon,
+    super.key,
+  }) : variant = ButtonVariant.dangerSecondary,
        _iconOnly = false,
        _smallIcon = false;
 

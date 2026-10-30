@@ -15,7 +15,8 @@ class MaterialButtonRenderer implements ButtonRenderer {
       ButtonVariant.primary => colors.onPrimary,
       ButtonVariant.danger => colors.onDanger,
       ButtonVariant.soft => colors.text,
-      ButtonVariant.dangerSoft => colors.danger,
+      ButtonVariant.dangerSoft ||
+      ButtonVariant.dangerSecondary => colors.danger,
       _ => colors.primary,
     };
     final Widget child = spec.loading
@@ -80,6 +81,24 @@ class MaterialButtonRenderer implements ButtonRenderer {
         iconAlignment: iconAlignment,
         child: child,
       ),
+      ButtonVariant.dangerSecondary => () {
+        // Laid out like a row of the page: the icon first, at the start.
+        final style = OutlinedButton.styleFrom(
+          backgroundColor: colors.surface,
+          foregroundColor: colors.danger,
+          side: BorderSide.none,
+          alignment: AlignmentDirectional.centerStart,
+          padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+        );
+        return icon == null
+            ? OutlinedButton(style: style, onPressed: onPressed, child: child)
+            : OutlinedButton.icon(
+                style: style,
+                onPressed: onPressed,
+                icon: icon,
+                label: child,
+              );
+      }(),
       ButtonVariant.text =>
         icon == null
             ? TextButton(onPressed: onPressed, child: child)

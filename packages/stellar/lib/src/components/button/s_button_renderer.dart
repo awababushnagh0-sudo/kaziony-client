@@ -14,6 +14,10 @@ enum ButtonVariant {
   /// Light red with red words: a for-good action that isn't the page's
   /// main one.
   dangerSoft,
+
+  /// Red words and icon on the surface, from the start like a page's row:
+  /// leaving (logging out), at the foot of a page.
+  dangerSecondary,
 }
 
 @immutable

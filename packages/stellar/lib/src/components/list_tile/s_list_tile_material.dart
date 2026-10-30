@@ -46,17 +46,16 @@ class MaterialListTileRenderer implements ListTileRenderer {
               ));
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: Space.lg),
+      // The icon alone, in the words' color: a box around it only adds
+      // noise to a list.
       leading:
           spec.leading ??
           (spec.icon == null
               ? null
-              : CircleAvatar(
-                  backgroundColor: colors.primarySoft,
-                  foregroundColor: colors.primary,
-                  child: Icon(
-                    materialIcon(spec.icon!),
-                    size: SIconSize.md.pixels,
-                  ),
+              : Icon(
+                  materialIcon(spec.icon!),
+                  size: SIconSize.md.pixels,
+                  color: colors.text,
                 )),
       title: Text(spec.title),
       subtitle: _subtitle(context, spec),
@@ -112,21 +111,39 @@ class MaterialListTileRenderer implements ListTileRenderer {
               ),
             ),
           ),
-        Card(
-          clipBehavior: Clip.antiAlias,
-          // Square rows: the box rounds the corners.
-          child: ListTileTheme.merge(
-            shape: const RoundedRectangleBorder(),
-            child: Column(
-              children: [
-                for (final (index, child) in spec.children.indexed) ...[
-                  if (index > 0) const Divider(indent: Space.lg),
-                  child,
+        if (spec.separated)
+          Column(
+            spacing: Space.sm,
+            children: [
+              for (final child in spec.children)
+                Card(
+                  margin: EdgeInsets.zero,
+                  clipBehavior: Clip.antiAlias,
+                  child: ListTileTheme.merge(
+                    shape: const RoundedRectangleBorder(),
+                    // A little taller than in a box: each is a card.
+                    minVerticalPadding: Space.md,
+                    child: child,
+                  ),
+                ),
+            ],
+          )
+        else
+          Card(
+            clipBehavior: Clip.antiAlias,
+            // Square rows: the box rounds the corners.
+            child: ListTileTheme.merge(
+              shape: const RoundedRectangleBorder(),
+              child: Column(
+                children: [
+                  for (final (index, child) in spec.children.indexed) ...[
+                    if (index > 0) const Divider(indent: Space.lg),
+                    child,
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
-        ),
       ],
     );
   }
