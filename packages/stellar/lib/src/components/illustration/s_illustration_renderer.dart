@@ -15,7 +15,21 @@ enum SIllustrations {
   /// A shop counter with the day's offers and a phone showing a pickup
   /// code, on the stores' sign-in page. Drawn at 400 by 300; shown a little
   /// smaller, so it leaves room for the form on big phones too.
-  signInHero('sign_in_hero', Size(340, 255));
+  signInHero('sign_in_hero', Size(340, 255)),
+
+  /// A shop's pin at the end of a dotted path, with a clock: customers on
+  /// their way. The four below are small, on a store's numbers
+  /// ([SStatTile]).
+  onTheWay('on_the_way', Size(52, 52)),
+
+  /// A bag with a check: picked up.
+  pickedUp('picked_up', Size(52, 52)),
+
+  /// A sleeping bag: reservations no one came for.
+  notPickedUp('not_picked_up', Size(52, 52)),
+
+  /// A price tag: offers customers can claim now.
+  liveOffers('live_offers', Size(52, 52));
 
   const SIllustrations(this.file, this.size, {this.arabicSize});
 

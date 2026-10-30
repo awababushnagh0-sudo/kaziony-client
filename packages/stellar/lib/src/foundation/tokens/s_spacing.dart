@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 
 /// Spacing scale. Use these for gaps and padding instead of raw numbers.
 abstract final class Space {
+  /// Between a figure and its caption.
+  static const xxs = 2.0;
   static const xs = 4.0;
   static const sm = 8.0;
   static const md = 12.0;

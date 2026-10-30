@@ -10,10 +10,15 @@ class StellarColors {
     required this.brightness,
     required this.primary,
     required this.onPrimary,
+    required this.onPrimaryMuted,
     required this.accent,
     required this.onAccent,
+    required this.accentSoft,
+    required this.accentWash,
+    required this.accentInk,
     required this.primarySoft,
     required this.cream,
+    required this.shadow,
     required this.background,
     required this.surface,
     required this.surfaceMuted,
@@ -39,10 +44,21 @@ class StellarColors {
   final Color primary;
   final Color onPrimary;
 
+  /// Quieter text on a [primary] background (labels on the amount to
+  /// collect).
+  final Color onPrimaryMuted;
+
   /// The brand's second color, for what should catch the eye: discount
   /// badges, highlights. Never for the main button.
   final Color accent;
   final Color onAccent;
+
+  /// A soft orange behind orange text ([accentInk]): what's running out.
+  final Color accentSoft;
+
+  /// Fainter still: a card about what's left, with [accentSoft] inside it.
+  final Color accentWash;
+  final Color accentInk;
 
   /// Hovered and selected rows, table headers, soft buttons.
   final Color primarySoft;
@@ -50,6 +66,9 @@ class StellarColors {
   /// The logo's background: behind the brand's pictures (the sign-in
   /// page's shop).
   final Color cream;
+
+  /// Under cards that float on the page (a store's numbers).
+  final Color shadow;
   final Color background;
   final Color surface;
 

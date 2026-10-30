@@ -22,6 +22,8 @@ enum SFontWeight {
 @immutable
 class TextSizes {
   const TextSizes({
+    required this.code,
+    required this.hero,
     required this.display,
     required this.title,
     required this.subtitle,
@@ -29,6 +31,12 @@ class TextSizes {
     required this.small,
     required this.tiny,
   });
+
+  /// A code held up across the counter to compare (a pickup code).
+  final double code;
+
+  /// Figures read from across a counter: the amount to collect.
+  final double hero;
 
   /// The big centered titles of the sign-in pages.
   final double display;

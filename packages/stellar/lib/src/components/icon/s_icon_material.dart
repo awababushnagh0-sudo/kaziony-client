@@ -137,6 +137,11 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // clock
+  SIcons.chart => const IconData(
+    0xe068,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // chart-no-axes-column
   SIcons.calendar => const IconData(
     0xe063,
     fontFamily: _f,

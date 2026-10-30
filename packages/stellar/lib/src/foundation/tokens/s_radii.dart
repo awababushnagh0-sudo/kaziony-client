@@ -6,5 +6,8 @@ abstract final class Radii {
 
   /// Choice cards ([SRadioTile]): rounder than fields, not pills.
   static const xl = 16.0;
+
+  /// Cards that float on the page ([SStatTile]).
+  static const xxl = 20.0;
   static const pill = 999.0;
 }

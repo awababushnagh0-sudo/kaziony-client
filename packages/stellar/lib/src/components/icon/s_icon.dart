@@ -29,6 +29,9 @@ enum SIcons {
 
   /// Customers on their way to pick up.
   pickups,
+
+  /// Numbers over time: a store's month.
+  chart,
   category,
   phone,
   key,

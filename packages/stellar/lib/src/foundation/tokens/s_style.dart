@@ -11,6 +11,8 @@ enum StellarStyle {
     controlHeight: 48,
     radius: Radii.lg,
     text: TextSizes(
+      code: 52,
+      hero: 44,
       display: 28,
       title: 22,
       subtitle: 17,
@@ -26,6 +28,8 @@ enum StellarStyle {
     controlHeight: 36,
     radius: Radii.md,
     text: TextSizes(
+      code: 40,
+      hero: 36,
       display: 26,
       title: 20,
       subtitle: 15,
