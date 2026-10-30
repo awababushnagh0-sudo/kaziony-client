@@ -49,6 +49,8 @@ void main() {
     expect(ok.map((v) => v * 2).valueOrNull, 4);
     expect(err.map((v) => v * 2).failureOrNull, isA<NotFoundFailure>());
     expect(ok.fold(ok: (v) => 'ok $v', err: (_) => 'err'), 'ok 2');
+    expect(ok.valueOrThrow, 2);
+    expect(() => err.valueOrThrow, throwsA(isA<NotFoundFailure>()));
   });
 
   test('formatDate writes the day in the given language', () async {
@@ -60,6 +62,16 @@ void main() {
       formatDateTime(day, languageCode: 'ar'),
       'الاثنين، 19 أكتوبر 12:00 م',
     );
+    expect(formatDay(day, languageCode: 'en'), 'Monday, October 19');
+    expect(formatDay(day, languageCode: 'ar'), 'الاثنين، 19 أكتوبر');
+    expect(formatShortDay(day, languageCode: 'en'), 'Mon, Oct 19');
+    expect(formatShortDay(day, languageCode: 'ar'), 'الاثنين، 19 أكتوبر');
+  });
+
+  test('isSameDay compares the day, not the time', () {
+    final morning = DateTime(2026, 10, 19, 0, 5);
+    expect(isSameDay(morning, DateTime(2026, 10, 19, 23, 55)), isTrue);
+    expect(isSameDay(morning, DateTime(2026, 10, 18, 23, 55)), isFalse);
   });
 
   test('formatWhen gives only the time on the same day', () async {

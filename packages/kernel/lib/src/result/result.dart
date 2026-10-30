@@ -19,6 +19,13 @@ sealed class Result<T> {
     Err() => null,
   };
 
+  /// The value, or its failure thrown: for a view model's `build`, where a
+  /// thrown failure becomes the page's error state.
+  T get valueOrThrow => switch (this) {
+    Ok(:final value) => value,
+    Err(:final failure) => throw failure,
+  };
+
   AppFailure? get failureOrNull => switch (this) {
     Ok() => null,
     Err(:final failure) => failure,
