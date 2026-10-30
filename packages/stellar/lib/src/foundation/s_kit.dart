@@ -20,6 +20,7 @@ import '../components/nav_bar/s_nav_bar_renderer.dart';
 import '../components/paged_list/s_paged_list_renderer.dart';
 import '../components/photo/s_photo_renderer.dart';
 import '../components/pill/s_pill_renderer.dart';
+import '../components/profile/s_profile_renderer.dart';
 import '../components/receipt/s_receipt_renderer.dart';
 import '../components/record_page/s_record_page_renderer.dart';
 import '../components/scaffold/s_scaffold_renderer.dart';
@@ -77,6 +78,7 @@ class StellarKit {
     required this.alert,
     required this.confirmation,
     required this.timeSpan,
+    required this.profile,
   });
 
   final ButtonRenderer button;
@@ -114,6 +116,7 @@ class StellarKit {
   final AlertRenderer alert;
   final ConfirmationRenderer confirmation;
   final TimeSpanRenderer timeSpan;
+  final ProfileRenderer profile;
 
   static StellarKit of(BuildContext context) => StellarScope.of(context).kit;
 }

@@ -78,5 +78,10 @@
     }
   },
   "torchOn": "Turn the light on",
-  "torchOff": "Turn the light off"
+  "torchOff": "Turn the light off",
+  "theme": "Theme",
+  "themeHint": "Choose how the app looks: light, dark, or like your phone.",
+  "themeSystem": "Automatic",
+  "themeLight": "Light",
+  "themeDark": "Dark"
 }

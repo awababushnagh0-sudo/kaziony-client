@@ -162,4 +162,19 @@ class StellarLocalizationsAr extends StellarLocalizations {
 
   @override
   String get torchOff => 'إطفاء الإضاءة';
+
+  @override
+  String get theme => 'المظهر';
+
+  @override
+  String get themeHint => 'اختر شكل التطبيق: فاتح أو داكن أو مثل هاتفك.';
+
+  @override
+  String get themeSystem => 'تلقائي';
+
+  @override
+  String get themeLight => 'فاتح';
+
+  @override
+  String get themeDark => 'داكن';
 }

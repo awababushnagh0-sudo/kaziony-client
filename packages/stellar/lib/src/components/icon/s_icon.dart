@@ -45,6 +45,9 @@ enum SIcons {
   /// About the app, more details.
   info,
 
+  /// A page of text: the terms and conditions.
+  document,
+
   /// The phone the app runs on (its version).
   device,
   show,

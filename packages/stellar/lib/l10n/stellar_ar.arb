@@ -47,5 +47,10 @@
   "validationWholeNumber": "أدخل رقمًا صحيحًا من {min} إلى {max}",
   "chooseDateTime": "اختر اليوم والوقت",
   "torchOn": "تشغيل الإضاءة",
-  "torchOff": "إطفاء الإضاءة"
+  "torchOff": "إطفاء الإضاءة",
+  "theme": "المظهر",
+  "themeHint": "اختر شكل التطبيق: فاتح أو داكن أو مثل هاتفك.",
+  "themeSystem": "تلقائي",
+  "themeLight": "فاتح",
+  "themeDark": "داكن"
 }

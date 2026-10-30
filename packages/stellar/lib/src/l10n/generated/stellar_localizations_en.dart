@@ -165,4 +165,20 @@ class StellarLocalizationsEn extends StellarLocalizations {
 
   @override
   String get torchOff => 'Turn the light off';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get themeHint =>
+      'Choose how the app looks: light, dark, or like your phone.';
+
+  @override
+  String get themeSystem => 'Automatic';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
 }

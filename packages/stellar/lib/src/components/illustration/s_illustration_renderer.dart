@@ -12,6 +12,10 @@ enum SIllustrations {
   /// Two speech bubbles, "ع" and "A": choosing the app's language.
   languages('languages', Size(140, 104)),
 
+  /// A light page with the sun and a dark one with the moon: choosing the
+  /// app's theme.
+  theme('theme', Size(140, 104)),
+
   /// A shop counter with the day's offers and a phone showing a pickup
   /// code, on the stores' sign-in page. Drawn at 400 by 300; shown a little
   /// smaller, so it leaves room for the form on big phones too.
@@ -29,7 +33,21 @@ enum SIllustrations {
   notPickedUp('not_picked_up', Size(52, 52)),
 
   /// A price tag: offers customers can claim now.
-  liveOffers('live_offers', Size(52, 52));
+  liveOffers('live_offers', Size(52, 52)),
+
+  /// A shop front with an "i" on its sign: the store's details. The three
+  /// below are on a profile's shortcuts ([SShortcuts]).
+  storeInfo('store_info', Size(56, 56)),
+
+  /// A folded map with two pins: the store's branches.
+  branches('branches', Size(56, 56)),
+
+  /// Two people, the owner in front: the store's team.
+  team('team', Size(56, 56)),
+
+  /// A person's outline in a circle: someone, or a store, without a
+  /// picture yet ([SProfileHeader]).
+  avatar('avatar', Size(72, 72));
 
   const SIllustrations(this.file, this.size, {this.arabicSize});
 

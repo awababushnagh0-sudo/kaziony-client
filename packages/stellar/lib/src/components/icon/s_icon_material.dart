@@ -92,6 +92,11 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // info
+  SIcons.document => const IconData(
+    0xe0cc,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // file-text
   SIcons.device => const IconData(
     0xe163,
     fontFamily: _f,
