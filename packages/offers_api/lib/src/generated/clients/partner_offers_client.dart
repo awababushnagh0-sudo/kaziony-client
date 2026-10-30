@@ -42,7 +42,9 @@ abstract class PartnerOffersClient {
     @Path('storeId') required String storeId,
   });
 
-  /// Edit the title, description or end time (owner)
+  /// Edit the title, description or end time (owner).
+  ///
+  /// Price, pieces and limits never change once posted. While customers hold a reservation, the title and description are locked too (409 `OfferHasReservations`; see `canEditDetails`). Shortening the end time doesn't shorten reservations already made.
   @PATCH('/api/v1/partner/stores/{storeId}/offers/{offerId}')
   Future<PartnerOfferDto> update({
     @Path('offerId') required String offerId,

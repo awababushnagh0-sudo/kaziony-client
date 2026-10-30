@@ -21,11 +21,15 @@ class _ClaimsClient implements ClaimsClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<CustomerClaimDto> claim({required String offerId}) async {
+  Future<CustomerClaimDto> claim({
+    required String offerId,
+    required CreateClaimDto body,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
     final _options = _setStreamType<CustomerClaimDto>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(

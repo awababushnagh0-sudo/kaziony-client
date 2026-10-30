@@ -17,6 +17,8 @@ class CustomerClaimDto {
     required this.status,
     required this.id,
     required this.code,
+    required this.quantity,
+    required this.totalPrice,
     required this.expiresAt,
     required this.redeemedAt,
     required this.cancelledAt,
@@ -35,6 +37,12 @@ class CustomerClaimDto {
 
   /// Show this as a QR code at the counter.
   final String code;
+
+  /// Pieces taken with this code.
+  final num quantity;
+
+  /// What to pay in cash: offerPrice × quantity, LD with 3 decimals.
+  final String totalPrice;
 
   /// Pick up and pay before this time.
   final DateTime expiresAt;

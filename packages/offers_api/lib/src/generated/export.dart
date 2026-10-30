@@ -93,6 +93,7 @@ export 'models/product_dto.dart';
 export 'models/product_list_dto.dart';
 export 'models/create_product_dto.dart';
 export 'models/update_product_dto.dart';
+export 'models/create_claim_dto.dart';
 export 'models/claim_status.dart';
 export 'models/customer_claim_offer_dto.dart';
 export 'models/customer_claim_store_dto.dart';

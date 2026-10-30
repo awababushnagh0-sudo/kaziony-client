@@ -22,7 +22,7 @@ PartnerOfferDto _$PartnerOfferDtoFromJson(Map<String, dynamic> json) =>
       discountPercent: json['discountPercent'] as num,
       totalQuantity: json['totalQuantity'] as num?,
       remainingQuantity: json['remainingQuantity'] as num?,
-      maxPerUser: json['maxPerUser'] as num,
+      maxPerUser: json['maxPerUser'] as num?,
       claimWindowMinutes: json['claimWindowMinutes'] as num,
       startsAt: DateTime.parse(json['startsAt'] as String),
       endsAt: DateTime.parse(json['endsAt'] as String),
@@ -31,6 +31,7 @@ PartnerOfferDto _$PartnerOfferDtoFromJson(Map<String, dynamic> json) =>
           .toList(),
       viewCount: json['viewCount'] as num,
       claims: ClaimCountsDto.fromJson(json['claims'] as Map<String, dynamic>),
+      canEditDetails: json['canEditDetails'] as bool,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
@@ -50,12 +51,13 @@ Map<String, dynamic> _$PartnerOfferDtoToJson(PartnerOfferDto instance) =>
       'discountPercent': instance.discountPercent,
       'totalQuantity': ?instance.totalQuantity,
       'remainingQuantity': ?instance.remainingQuantity,
-      'maxPerUser': instance.maxPerUser,
+      'maxPerUser': ?instance.maxPerUser,
       'claimWindowMinutes': instance.claimWindowMinutes,
       'startsAt': instance.startsAt.toIso8601String(),
       'endsAt': instance.endsAt.toIso8601String(),
       'branchIds': instance.branchIds,
       'viewCount': instance.viewCount,
       'claims': instance.claims,
+      'canEditDetails': instance.canEditDetails,
       'createdAt': instance.createdAt.toIso8601String(),
     };

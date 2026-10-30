@@ -35,6 +35,7 @@ class PartnerOfferDto {
     required this.branchIds,
     required this.viewCount,
     required this.claims,
+    required this.canEditDetails,
     required this.createdAt,
   });
   
@@ -62,13 +63,20 @@ class PartnerOfferDto {
   final num discountPercent;
   final num? totalQuantity;
   final num? remainingQuantity;
-  final num maxPerUser;
+
+  /// Pieces one customer can take in all; null for no limit.
+  final num? maxPerUser;
   final num claimWindowMinutes;
   final DateTime startsAt;
   final DateTime endsAt;
   final List<String> branchIds;
   final num viewCount;
   final ClaimCountsDto claims;
+
+  /// False while customers hold a reservation: the title and description stay.
+  /// as they reserved them (editing them returns 409 `OfferHasReservations`).
+  /// The end time can always change.
+  final bool canEditDetails;
   final DateTime createdAt;
 
   Map<String, Object?> toJson() => _$PartnerOfferDtoToJson(this);

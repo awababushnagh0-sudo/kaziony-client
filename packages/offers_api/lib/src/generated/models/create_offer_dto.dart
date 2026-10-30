@@ -37,7 +37,7 @@ class CreateOfferDto {
   /// Required for LIMITED offers, not allowed for UNLIMITED.
   final num? totalQuantity;
 
-  /// How many times one customer can claim it.
+  /// Pieces one customer can take in all. Leave out for no limit.
   final num? maxPerUser;
 
   /// How long a claim is held before it expires (LIMITED offers).

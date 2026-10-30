@@ -15,6 +15,8 @@ class PartnerClaimDto {
     required this.status,
     required this.id,
     required this.code,
+    required this.quantity,
+    required this.totalPrice,
     required this.customerName,
     required this.offer,
     required this.expiresAt,
@@ -30,6 +32,12 @@ class PartnerClaimDto {
   final ClaimStatus status;
   final String id;
   final String code;
+
+  /// Pieces to hand over.
+  final num quantity;
+
+  /// What to collect in cash: offerPrice × quantity, LD with 3 decimals.
+  final String totalPrice;
   final String? customerName;
   final ClaimOfferDto offer;
   final DateTime expiresAt;

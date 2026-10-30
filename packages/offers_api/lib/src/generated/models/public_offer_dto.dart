@@ -25,6 +25,7 @@ class PublicOfferDto {
     required this.offerPrice,
     required this.discountPercent,
     required this.remainingQuantity,
+    required this.maxPerUser,
     required this.claimWindowMinutes,
     required this.startsAt,
     required this.endsAt,
@@ -52,6 +53,9 @@ class PublicOfferDto {
 
   /// Pieces left (LIMITED offers only).
   final num? remainingQuantity;
+
+  /// Pieces one customer can take in all; null for no limit.
+  final num? maxPerUser;
 
   /// How long a reservation is held after claiming.
   final num claimWindowMinutes;

@@ -5,6 +5,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../models/create_claim_dto.dart';
 import '../models/customer_claim_dto.dart';
 import '../models/customer_claim_list_dto.dart';
 
@@ -16,10 +17,11 @@ abstract class ClaimsClient {
 
   /// Claim an offer.
   ///
-  /// LIMITED offers reserve one piece until `expiresAt` (the claim window). A customer can hold 3 reservations at once; every 3rd missed pickup blocks claiming for 7 days. UNLIMITED offers just give a code valid until the offer ends.
+  /// Takes `quantity` pieces (default 1) with one code, within the offer's `maxPerUser`. LIMITED offers hold them until `expiresAt` (the claim window). A customer can hold 3 reservations at once; every 3rd missed pickup blocks claiming for 7 days. UNLIMITED offers just give a code valid until the offer ends.
   @POST('/api/v1/offers/{offerId}/claim')
   Future<CustomerClaimDto> claim({
     @Path('offerId') required String offerId,
+    @Body() required CreateClaimDto body,
   });
 
   /// My claims (newest first, or active ones).
@@ -40,7 +42,7 @@ abstract class ClaimsClient {
 
   /// Cancel a reservation I can't pick up.
   ///
-  /// Gives the piece back. Cancelling in time is not a no-show.
+  /// Gives the pieces back. Cancelling in time is not a no-show.
   @POST('/api/v1/me/claims/{claimId}/cancel')
   Future<CustomerClaimDto> cancel({
     @Path('claimId') required String claimId,

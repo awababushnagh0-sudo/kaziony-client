@@ -22,6 +22,7 @@ export 'generated/models/claim_offer_dto.dart';
 export 'generated/models/claim_status.dart';
 export 'generated/models/create_branch_dto.dart';
 export 'generated/models/create_category_dto.dart';
+export 'generated/models/create_claim_dto.dart';
 export 'generated/models/create_dashboard_user_dto.dart';
 export 'generated/models/create_offer_dto.dart';
 export 'generated/models/create_product_dto.dart';
