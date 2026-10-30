@@ -5,7 +5,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../home/presentation/home_view_model.dart';
 import '../../products/domain/product.dart';
-import '../../products/presentation/product_form_view_model.dart';
+import '../../products/presentation/product_view_model.dart';
 import '../../store/domain/current_store.dart';
 import '../domain/offer.dart';
 import 'offer_form_checks.dart';

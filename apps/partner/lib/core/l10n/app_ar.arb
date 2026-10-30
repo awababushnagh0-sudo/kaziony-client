@@ -68,6 +68,7 @@
   "regularPriceLabel": "السعر العادي",
   "regularPriceHelper": "السعر المعتاد قبل أي عرض.",
   "archiveProduct": "أرشفة",
+  "archivedStatus": "مؤرشف",
   "restoreProduct": "استعادة",
   "productArchived": "تمت الأرشفة.",
   "productRestored": "تمت الاستعادة.",

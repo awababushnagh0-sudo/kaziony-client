@@ -20,6 +20,7 @@ abstract final class Routes {
   static const password = '/password';
   static const newProduct = '$products/new';
   static String product(String id) => '$products/$id';
+  static String editProduct(String id) => '${product(id)}/edit';
 
   /// Posting an offer starts with its product.
   static const chooseOfferProduct = '$offers/new';

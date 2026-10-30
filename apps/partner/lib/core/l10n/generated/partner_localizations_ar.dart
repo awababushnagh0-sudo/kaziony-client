@@ -218,6 +218,9 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get archiveProduct => 'أرشفة';
 
   @override
+  String get archivedStatus => 'مؤرشف';
+
+  @override
   String get restoreProduct => 'استعادة';
 
   @override

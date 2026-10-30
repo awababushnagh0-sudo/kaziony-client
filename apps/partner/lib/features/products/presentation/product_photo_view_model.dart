@@ -2,8 +2,7 @@ import 'package:kernel/kernel.dart';
 
 import '../../store/domain/current_store.dart';
 import '../domain/product.dart';
-import 'product_form_view_model.dart';
-import 'products_view_model.dart';
+import 'product_view_model.dart';
 
 class ProductPhotoState {
   const ProductPhotoState({this.photo, this.progress, this.failed = false});
@@ -71,7 +70,6 @@ class ProductPhotoViewModel extends ViewModel<ProductPhotoState> {
       switch (result) {
         case Ok(:final value):
           ref.read(productViewModel(productId).notifier).replace(value);
-          ref.invalidate(productsViewModel);
           state = const ProductPhotoState();
         case Err():
           state = ProductPhotoState(photo: photo, failed: true);

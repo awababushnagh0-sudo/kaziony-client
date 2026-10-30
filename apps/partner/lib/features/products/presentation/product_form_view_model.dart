@@ -3,42 +3,13 @@ import 'package:stellar/stellar.dart';
 
 import '../../store/domain/current_store.dart';
 import '../domain/product.dart';
+import 'product_view_model.dart';
 import 'products_view_model.dart';
 
-/// One product, for its edit page.
-class ProductViewModel extends AsyncViewModel<Product> {
-  ProductViewModel(this.productId);
-
-  final String productId;
-
-  @override
-  Future<Product> build() async {
-    final storeId = ref.watch(currentStoreProvider)?.storeId;
-    if (storeId == null) throw const NotFoundFailure();
-    return switch (await ref
-        .watch(productRepositoryProvider)
-        .get(storeId, productId)) {
-      Ok(:final value) => value,
-      Err(:final failure) => throw failure,
-    };
-  }
-
-  /// Shows the product the server returned after a change.
-  void replace(Product product) => state = AsyncData(product);
-}
-
-final productViewModel = AsyncNotifierProvider.autoDispose
-    .family<ProductViewModel, Product, String>(ProductViewModel.new);
-
 class ProductFormState {
-  const ProductFormState({
-    this.saving = false,
-    this.archiving = false,
-    this.failure,
-  });
+  const ProductFormState({this.saving = false, this.failure});
 
   final bool saving;
-  final bool archiving;
   final AppFailure? failure;
 }
 
@@ -77,7 +48,7 @@ class ProductFormViewModel extends ViewModel<ProductFormState> {
 
   /// Returns the saved product, or null when it wasn't saved.
   Future<Product?> save() async {
-    if (state.saving || state.archiving) return null;
+    if (state.saving) return null;
     if (form.invalid) {
       form.markAllAsTouched();
       return null;
@@ -99,35 +70,22 @@ class ProductFormViewModel extends ViewModel<ProductFormState> {
     final result = id == null
         ? await products.create(storeId, draft)
         : await products.update(storeId, id, draft);
-    return _done(result) ? result.valueOrNull : null;
-  }
-
-  /// Hides the product from the list, or brings it back. Returns true when
-  /// it worked.
-  Future<bool> setArchived({required bool archived}) async {
-    final id = productId;
-    final storeId = ref.read(currentStoreProvider)?.storeId;
-    if (id == null || storeId == null || state.saving || state.archiving) {
-      return false;
-    }
-    state = const ProductFormState(archiving: true);
-    final result = await ref
-        .read(productRepositoryProvider)
-        .setArchived(storeId, id, archived: archived);
-    return _done(result);
-  }
-
-  bool _done(Result<Product> result) {
-    if (!ref.mounted) return false;
+    if (!ref.mounted) return null;
     switch (result) {
-      case Ok():
-        // The list shows the change when the user goes back to it.
-        ref.invalidate(productsViewModel);
+      case Ok(:final value):
+        if (id == null) {
+          // The list shows it when the user goes back to it.
+          ref.invalidate(productsViewModel);
+        } else {
+          // Its page, under this one, and the list.
+          ref.read(productViewModel(id).notifier).replace(value);
+        }
         state = const ProductFormState();
+        return value;
       case Err(:final failure):
         state = ProductFormState(failure: failure);
+        return null;
     }
-    return result.isOk;
   }
 }
 

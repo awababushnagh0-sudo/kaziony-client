@@ -38,7 +38,7 @@ void main() {
           builder: (_, _) => const ProductFormScreen(),
         ),
         GoRoute(
-          path: Routes.product(':id'),
+          path: Routes.editProduct(':id'),
           builder: (_, state) =>
               ProductFormScreen(productId: state.pathParameters['id']),
         ),
@@ -68,7 +68,7 @@ void main() {
     expect(draft.title, 'Caramel cake');
     expect(draft.regularPrice, '4.500');
     expect(draft.description, isNull);
-    // On to its page, to add its photo.
+    // On to editing it, to add its photo.
     expect(find.text('Edit product'), findsOneWidget);
     expect(find.text('Add a photo'), findsOneWidget);
   });
@@ -88,7 +88,7 @@ void main() {
   });
 
   testWidgets('edits a product', (tester) async {
-    await open(tester, Routes.product('1'));
+    await open(tester, Routes.editProduct('1'));
 
     expect(find.text('Product 1'), findsOneWidget);
     expect(find.text('4.500'), findsOneWidget);
@@ -99,27 +99,6 @@ void main() {
     final (id, draft) = products.updated.single;
     expect(id, '1');
     expect(draft.regularPrice, '5.000');
-  });
-
-  testWidgets('archives a product', (tester) async {
-    await open(tester, Routes.product('1'));
-
-    await tester.ensureVisible(find.text('Archive'));
-    await tester.tap(find.text('Archive'));
-    await tester.pumpAndSettle();
-
-    expect(products.archived.single, ('1', true));
-    expect(find.text('products page'), findsOneWidget);
-  });
-
-  testWidgets('restores an archived product', (tester) async {
-    await open(tester, Routes.product('2'));
-
-    await tester.ensureVisible(find.text('Restore'));
-    await tester.tap(find.text('Restore'));
-    await tester.pumpAndSettle();
-
-    expect(products.archived.single, ('2', false));
   });
 
   group('photo', () {
@@ -140,7 +119,7 @@ void main() {
     }
 
     testWidgets('uploads the picked photo', (tester) async {
-      await open(tester, Routes.product('1'));
+      await open(tester, Routes.editProduct('1'));
       photos.next = ready;
 
       await pickFromGallery(tester);
@@ -153,7 +132,7 @@ void main() {
     });
 
     testWidgets('offers to try again when the upload fails', (tester) async {
-      await open(tester, Routes.product('1'));
+      await open(tester, Routes.editProduct('1'));
       photos.next = ready;
       products.failNextPhoto = const NoConnectionFailure();
 
@@ -172,7 +151,7 @@ void main() {
     });
 
     testWidgets('offers the settings when the camera is off', (tester) async {
-      await open(tester, Routes.product('1'));
+      await open(tester, Routes.editProduct('1'));
       photos.next = const PhotoAccessDenied();
 
       await tester.tap(find.text('Add a photo'));
@@ -188,7 +167,7 @@ void main() {
     });
 
     testWidgets('says when a photo can\'t be used', (tester) async {
-      await open(tester, Routes.product('1'));
+      await open(tester, Routes.editProduct('1'));
       photos.next = const PhotoFailed('unreadable');
 
       await pickFromGallery(tester);

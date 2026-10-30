@@ -5,8 +5,9 @@ import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
 import 'product_form_view_model.dart';
 import 'product_photo_view_model.dart';
+import 'product_view_model.dart';
 
-/// Adds a product ([productId] null), or edits and archives one.
+/// Adds a product ([productId] null), or edits one and its photo.
 class ProductFormScreen extends AppView {
   const ProductFormScreen({this.productId, super.key});
 
@@ -41,28 +42,16 @@ class _ProductForm extends AppView {
     final state = ref.watch(provider);
     final viewModel = ref.read(provider.notifier);
     final id = productId;
-    final archived =
-        id != null && ref.watch(productViewModel(id)).requireValue.isArchived;
 
     Future<void> save() async {
       final saved = await viewModel.save();
       if (saved == null || !context.mounted) return;
       if (id == null) {
-        // On to its page, where its photo can be added right away.
+        // On to editing it, where its photo can be added right away.
         SSnack.success(context, s.productAddedAddPhoto);
-        context.pushReplacement(Routes.product(saved.id));
+        context.pushReplacement(Routes.editProduct(saved.id));
       } else {
         SSnack.success(context, s.saved);
-        context.pop();
-      }
-    }
-
-    Future<void> setArchived() async {
-      if (await viewModel.setArchived(archived: !archived) && context.mounted) {
-        SSnack.success(
-          context,
-          archived ? s.productRestored : s.productArchived,
-        );
         context.pop();
       }
     }
@@ -98,19 +87,6 @@ class _ProductForm extends AppView {
             ),
             if (state.failure case final failure?)
               SText(failureMessage(context, failure), color: SColor.danger),
-            if (id != null && !archived)
-              SButton.secondary(
-                label: s.postOffer,
-                icon: SIcons.offers,
-                onPressed: () => context.push(Routes.newOffer(id)),
-              ),
-            if (id != null)
-              SButton.secondary(
-                label: archived ? s.restoreProduct : s.archiveProduct,
-                icon: archived ? SIcons.restore : SIcons.archive,
-                onPressed: setArchived,
-                loading: state.archiving,
-              ),
           ],
         ),
       ),

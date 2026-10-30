@@ -16,17 +16,21 @@ class ProductsScreen extends AppView {
     final s = PartnerLocalizations.of(context);
     final query = ref.watch(productQueryProvider);
     final queryController = ref.read(productQueryProvider.notifier);
+    final firstEmpty =
+        query == const ProductQuery() &&
+        (ref.watch(productsViewModel).value?.items.isEmpty ?? false);
     return SScaffold(
       title: s.productsTitle,
-      // The rows run edge to edge; the search keeps the usual sides.
+      // The cards keep their own sides; the search keeps the usual ones.
       padded: false,
-      actions: [
-        SButton.icon(
-          icon: SIcons.add,
-          tooltip: s.addProduct,
-          onPressed: () => context.push(Routes.newProduct),
-        ),
-      ],
+      // The first empty list has its own button to add one.
+      floating: firstEmpty
+          ? null
+          : SButton(
+              label: s.addProduct,
+              icon: SIcons.add,
+              onPressed: () => context.push(Routes.newProduct),
+            ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -53,11 +57,13 @@ class ProductsScreen extends AppView {
                       label: s.currentProducts,
                       selected: !query.archived,
                       onTap: () => queryController.setArchived(archived: false),
+                      activeColor: SColor.text,
                     ),
                     SPill(
                       label: s.archivedProducts,
                       selected: query.archived,
                       onTap: () => queryController.setArchived(archived: true),
+                      activeColor: SColor.text,
                     ),
                   ],
                 ),
@@ -85,6 +91,8 @@ class _ProductList extends AppView {
           return _Empty(query: ref.watch(productQueryProvider));
         }
         return SPagedList(
+          // The products are cards, apart from each other.
+          divided: false,
           itemCount: page.items.length,
           itemBuilder: (context, index) {
             final product = page.items[index];

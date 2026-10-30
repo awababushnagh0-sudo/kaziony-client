@@ -68,6 +68,7 @@
   "regularPriceLabel": "Regular price",
   "regularPriceHelper": "The usual price, before any offer.",
   "archiveProduct": "Archive",
+  "archivedStatus": "Archived",
   "restoreProduct": "Restore",
   "productArchived": "Archived.",
   "productRestored": "Restored.",

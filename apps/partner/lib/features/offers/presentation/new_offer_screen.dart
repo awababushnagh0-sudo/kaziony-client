@@ -3,7 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
-import '../../products/presentation/product_form_view_model.dart';
+import '../../products/presentation/product_view_model.dart';
 import '../../store/domain/store.dart';
 import '../../store/presentation/store_view_model.dart';
 import '../domain/offer.dart';

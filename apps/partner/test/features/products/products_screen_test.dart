@@ -71,6 +71,14 @@ void main() {
     expect(find.text('Product 2'), findsOneWidget);
   });
 
+  testWidgets('adds from the button over the list', (tester) async {
+    await open(tester, [product('1')]);
+
+    await tester.tap(find.text('Add product'));
+    await tester.pumpAndSettle();
+    expect(find.text('new product page'), findsOneWidget);
+  });
+
   testWidgets('invites to add the first product', (tester) async {
     await open(tester, []);
 

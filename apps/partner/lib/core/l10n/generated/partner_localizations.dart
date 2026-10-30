@@ -509,6 +509,12 @@ abstract class PartnerLocalizations {
   /// **'Archive'**
   String get archiveProduct;
 
+  /// No description provided for @archivedStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived'**
+  String get archivedStatus;
+
   /// No description provided for @restoreProduct.
   ///
   /// In en, this message translates to:

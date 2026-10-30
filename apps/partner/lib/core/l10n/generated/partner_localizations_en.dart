@@ -220,6 +220,9 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get archiveProduct => 'Archive';
 
   @override
+  String get archivedStatus => 'Archived';
+
+  @override
   String get restoreProduct => 'Restore';
 
   @override

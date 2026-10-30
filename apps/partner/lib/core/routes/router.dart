@@ -14,6 +14,7 @@ import '../../features/offers/presentation/new_offer_screen.dart';
 import '../../features/offers/presentation/offer_screen.dart';
 import '../../features/offers/presentation/offers_screen.dart';
 import '../../features/products/presentation/product_form_screen.dart';
+import '../../features/products/presentation/product_screen.dart';
 import '../../features/products/presentation/products_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/store/domain/current_store.dart';
@@ -119,6 +120,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: Routes.product(':productId'),
+        builder: (_, state) =>
+            ProductScreen(productId: state.pathParameters['productId']!),
+      ),
+      GoRoute(
+        path: Routes.editProduct(':productId'),
         builder: (_, state) =>
             ProductFormScreen(productId: state.pathParameters['productId']),
       ),
