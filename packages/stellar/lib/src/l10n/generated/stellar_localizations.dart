@@ -281,6 +281,12 @@ abstract class StellarLocalizations {
   /// **'Language'**
   String get language;
 
+  /// No description provided for @languageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the language the app shows in.'**
+  String get languageHint;
+
   /// No description provided for @validationPrice.
   ///
   /// In en, this message translates to:

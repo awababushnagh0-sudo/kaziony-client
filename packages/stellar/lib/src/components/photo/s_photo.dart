@@ -3,8 +3,9 @@ import 'package:kernel/kernel.dart' show PhotoSource;
 
 import '../../l10n/generated/stellar_localizations.dart';
 import '../dialog/s_dialog.dart';
+import '../icon/s_icon.dart';
+import '../list_tile/s_list_tile_renderer.dart';
 import '../sheet/s_sheet.dart';
-import '../sheet/s_sheet_renderer.dart';
 
 /// The questions around taking a photo, in every app's words.
 abstract final class SPhoto {
@@ -15,8 +16,16 @@ abstract final class SPhoto {
       context,
       title: s.photo,
       options: [
-        SheetOption(value: PhotoSource.camera, label: s.takePhoto),
-        SheetOption(value: PhotoSource.gallery, label: s.choosePhoto),
+        RadioOption(
+          value: PhotoSource.camera,
+          label: s.takePhoto,
+          icon: SIcons.camera,
+        ),
+        RadioOption(
+          value: PhotoSource.gallery,
+          label: s.choosePhoto,
+          icon: SIcons.image,
+        ),
       ],
     );
   }

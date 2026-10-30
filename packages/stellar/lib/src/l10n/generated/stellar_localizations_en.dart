@@ -108,6 +108,9 @@ class StellarLocalizationsEn extends StellarLocalizations {
   String get language => 'Language';
 
   @override
+  String get languageHint => 'Choose the language the app shows in.';
+
+  @override
   String get validationPrice => 'Enter a price above 0, e.g. 4.500';
 
   @override

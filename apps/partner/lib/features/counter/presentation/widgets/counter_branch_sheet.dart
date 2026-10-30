@@ -17,7 +17,7 @@ Future<String?> chooseCounterBranch(
     selected: branches.branchId,
     options: [
       for (final branch in branches.choices)
-        SheetOption(value: branch.id, label: branch.name),
+        RadioOption(value: branch.id, label: branch.name),
     ],
   );
   if (id != null) {

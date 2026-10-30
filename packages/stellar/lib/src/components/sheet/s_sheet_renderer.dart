@@ -1,13 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-/// One choice in a [ChoiceSheetSpec].
-@immutable
-class SheetOption<T> {
-  const SheetOption({required this.value, required this.label});
-
-  final T value;
-  final String label;
-}
+import '../illustration/s_illustration_renderer.dart';
+import '../list_tile/s_list_tile_renderer.dart';
 
 @immutable
 class ChoiceSheetSpec<T> {
@@ -15,13 +9,21 @@ class ChoiceSheetSpec<T> {
     required this.title,
     required this.options,
     required this.selected,
+    this.subtitle,
+    this.illustration,
   });
 
   final String title;
-  final List<SheetOption<T>> options;
+  final List<RadioOption<T>> options;
 
   /// The current choice, marked with a check.
   final T? selected;
+
+  /// A line under [title] on what the choice changes.
+  final String? subtitle;
+
+  /// One of the brand's pictures above [title].
+  final SIllustrations? illustration;
 }
 
 abstract interface class SheetRenderer {

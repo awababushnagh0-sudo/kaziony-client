@@ -114,7 +114,7 @@ class ProfileScreen extends AppView {
       title: PartnerLocalizations.of(context).switchStore,
       options: [
         for (final store in ref.read(myStoresProvider))
-          SheetOption(value: store.storeId, label: store.storeName),
+          RadioOption(value: store.storeId, label: store.storeName),
       ],
       selected: ref.read(currentStoreProvider)?.storeId,
     );

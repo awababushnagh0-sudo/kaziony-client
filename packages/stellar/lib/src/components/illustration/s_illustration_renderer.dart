@@ -9,6 +9,9 @@ enum SIllustrations {
   /// language (`partner_mark_ar.png`, `partner_mark_en.png`).
   partnerMark('partner_mark', Size(164, 71), arabicSize: Size(126, 75)),
 
+  /// Two speech bubbles, "ع" and "A": choosing the app's language.
+  languages('languages', Size(140, 104)),
+
   /// A shop counter with the day's offers and a phone showing a pickup
   /// code, on the stores' sign-in page. Drawn at 400 by 300; shown a little
   /// smaller, so it leaves room for the form on big phones too.

@@ -44,6 +44,7 @@
   "copy": "Copy",
   "copied": "Copied",
   "language": "Language",
+  "languageHint": "Choose the language the app shows in.",
   "validationPrice": "Enter a price above 0, e.g. 4.500",
   "currency": "LD",
   "photo": "Photo",
