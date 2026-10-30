@@ -16,7 +16,13 @@ class MaterialPagedListRenderer implements PagedListRenderer {
   @override
   Widget render(BuildContext context, PagedListSpec spec) {
     final c = context.colors;
-    final footer = spec.hasMore || spec.loadingMore || spec.moreFailure != null;
+    final loading =
+        spec.hasMore || spec.loadingMore || spec.moreFailure != null;
+    final endNote = spec.endNote;
+    final footer = loading || endNote != null;
+    final header = spec.header;
+    // Rows start after the header, if any.
+    final first = header == null ? 0 : 1;
     return RefreshIndicator(
       onRefresh: spec.onRefresh,
       color: c.primary,
@@ -34,14 +40,35 @@ class MaterialPagedListRenderer implements PagedListRenderer {
         child: ListView.separated(
           // Pulling down works even when the rows don't fill the screen.
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.only(bottom: Space.xl),
-          itemCount: spec.itemCount + (footer ? 1 : 0),
-          separatorBuilder: (_, index) => index < spec.itemCount - 1
-              ? const Divider(indent: Space.lg, endIndent: Space.lg)
+          // Plus the room a floating button asks for (SScaffold.floating).
+          padding: EdgeInsets.only(
+            bottom: Space.xl + MediaQuery.paddingOf(context).bottom,
+          ),
+          itemCount: first + spec.itemCount + (footer ? 1 : 0),
+          // Lines (or gaps, between cards) only between rows.
+          separatorBuilder: (_, index) =>
+              index >= first && index < first + spec.itemCount - 1
+              ? spec.divided
+                    ? const Divider(indent: Space.lg, endIndent: Space.lg)
+                    : const Gap(Space.sm)
               : const SizedBox.shrink(),
-          itemBuilder: (context, index) => index < spec.itemCount
-              ? spec.itemBuilder(context, index)
-              : _Footer(spec: spec),
+          itemBuilder: (context, index) {
+            if (header != null && index == 0) return header;
+            final row = index - first;
+            if (row < spec.itemCount) return spec.itemBuilder(context, row);
+            if (loading || endNote == null) return _Footer(spec: spec);
+            return Padding(
+              padding: const EdgeInsets.all(Space.lg),
+              child: Text(
+                endNote,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: context.style.text.tiny,
+                  color: c.textSubtle,
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

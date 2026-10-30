@@ -9,15 +9,7 @@ class MaterialBadgeRenderer implements BadgeRenderer {
 
   @override
   Widget render(BuildContext context, String label, BadgeTone tone) {
-    final c = context.colors;
-    final (fg, bg) = switch (tone) {
-      BadgeTone.success => (c.success, c.successSoft),
-      BadgeTone.warning => (c.warning, c.warningSoft),
-      BadgeTone.danger => (c.danger, c.dangerSoft),
-      // A shade darker than a hovered row, so it stays visible there.
-      BadgeTone.neutral => (c.textMuted, c.border),
-      BadgeTone.accent => (c.onAccent, c.accent),
-    };
+    final (fg, bg) = badgeColors(context.colors, tone);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
@@ -36,3 +28,13 @@ class MaterialBadgeRenderer implements BadgeRenderer {
     );
   }
 }
+
+/// A [tone]'s text and background colors.
+(Color, Color) badgeColors(StellarColors c, BadgeTone tone) => switch (tone) {
+  BadgeTone.success => (c.success, c.successSoft),
+  BadgeTone.warning => (c.warning, c.warningSoft),
+  BadgeTone.danger => (c.danger, c.dangerSoft),
+  // A shade darker than a hovered row, so it stays visible there.
+  BadgeTone.neutral => (c.textMuted, c.border),
+  BadgeTone.accent => (c.onAccent, c.accent),
+};

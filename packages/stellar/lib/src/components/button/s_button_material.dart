@@ -14,6 +14,8 @@ class MaterialButtonRenderer implements ButtonRenderer {
     final spinnerColor = switch (spec.variant) {
       ButtonVariant.primary => colors.onPrimary,
       ButtonVariant.danger => colors.onDanger,
+      ButtonVariant.soft => colors.text,
+      ButtonVariant.dangerSoft => colors.danger,
       _ => colors.primary,
     };
     final Widget child = spec.loading
@@ -62,6 +64,22 @@ class MaterialButtonRenderer implements ButtonRenderer {
                 iconAlignment: iconAlignment,
                 label: child,
               ),
+      ButtonVariant.soft => _filled(
+        background: colors.fieldFill,
+        foreground: colors.text,
+        onPressed: onPressed,
+        icon: icon,
+        iconAlignment: iconAlignment,
+        child: child,
+      ),
+      ButtonVariant.dangerSoft => _filled(
+        background: colors.dangerSoft,
+        foreground: colors.danger,
+        onPressed: onPressed,
+        icon: icon,
+        iconAlignment: iconAlignment,
+        child: child,
+      ),
       ButtonVariant.text =>
         icon == null
             ? TextButton(onPressed: onPressed, child: child)
@@ -79,6 +97,30 @@ class MaterialButtonRenderer implements ButtonRenderer {
     return spec.expand
         ? SizedBox(width: double.infinity, child: guarded)
         : guarded;
+  }
+
+  /// A filled button in quieter colors than the primary one.
+  static Widget _filled({
+    required Color background,
+    required Color foreground,
+    required VoidCallback? onPressed,
+    required Widget? icon,
+    required IconAlignment iconAlignment,
+    required Widget child,
+  }) {
+    final style = FilledButton.styleFrom(
+      backgroundColor: background,
+      foregroundColor: foreground,
+    );
+    return icon == null
+        ? FilledButton(style: style, onPressed: onPressed, child: child)
+        : FilledButton.icon(
+            style: style,
+            onPressed: onPressed,
+            icon: icon,
+            iconAlignment: iconAlignment,
+            label: child,
+          );
   }
 
   @override

@@ -10,6 +10,7 @@ class SListTile extends StatelessWidget {
   const SListTile({
     required this.title,
     this.subtitle,
+    this.code,
     this.icon,
     this.leading,
     this.value,
@@ -20,6 +21,10 @@ class SListTile extends StatelessWidget {
 
   final String title;
   final String? subtitle;
+
+  /// A code under [subtitle] (a pickup code), read left to right in
+  /// Arabic too.
+  final String? code;
   final SIcons? icon;
 
   /// Takes [icon]'s place, for a picture (`SImage`).
@@ -38,6 +43,7 @@ class SListTile extends StatelessWidget {
     ListTileSpec(
       title: title,
       subtitle: subtitle,
+      code: code,
       icon: icon,
       leading: leading,
       value: value,

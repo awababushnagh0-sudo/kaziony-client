@@ -10,7 +10,9 @@ class ScaffoldSpec {
     this.actions = const [],
     this.padded = true,
     this.scrollable = false,
+    this.onRefresh,
     this.bottom,
+    this.floating,
     this.showAppBar = true,
     this.maxWidth,
     this.centered = false,
@@ -34,8 +36,14 @@ class ScaffoldSpec {
   /// Wrap [body] in a scroll view (forms, so the keyboard never hides fields).
   final bool scrollable;
 
+  /// Pull down to reload a [scrollable] page (a dashboard of numbers).
+  final Future<void> Function()? onRefresh;
+
   /// Pinned to the bottom (e.g. a primary action).
   final Widget? bottom;
+
+  /// Floats over the end of the page, above the content.
+  final Widget? floating;
   final bool showAppBar;
 
   /// Keeps the content narrow on wide screens (forms on the web).

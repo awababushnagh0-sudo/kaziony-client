@@ -14,7 +14,9 @@ class SScaffold extends StatelessWidget {
     this.actions = const [],
     this.padded = true,
     this.scrollable = false,
+    this.onRefresh,
     this.bottom,
+    this.floating,
     this.showAppBar = true,
     this.maxWidth,
     this.centered = false,
@@ -29,7 +31,12 @@ class SScaffold extends StatelessWidget {
   final List<Widget> actions;
   final bool padded;
   final bool scrollable;
+  final Future<void> Function()? onRefresh;
   final Widget? bottom;
+
+  /// Floats over the end of the page, above the content: the page's main
+  /// action on a long list ("Post an offer").
+  final Widget? floating;
   final bool showAppBar;
   final double? maxWidth;
   final bool centered;
@@ -46,7 +53,9 @@ class SScaffold extends StatelessWidget {
       actions: actions,
       padded: padded,
       scrollable: scrollable,
+      onRefresh: onRefresh,
       bottom: bottom,
+      floating: floating,
       showAppBar: showAppBar,
       maxWidth: maxWidth,
       centered: centered,

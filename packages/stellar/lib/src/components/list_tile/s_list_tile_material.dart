@@ -10,6 +10,9 @@ const _radioHeight = 56.0;
 const _leadingSize = 40.0;
 const _checkSize = 22.0;
 
+// A little air between a code's characters, so it's easy to read out.
+const _codeSpacing = 0.6;
+
 class MaterialListTileRenderer implements ListTileRenderer {
   const MaterialListTileRenderer();
 
@@ -56,9 +59,33 @@ class MaterialListTileRenderer implements ListTileRenderer {
                   ),
                 )),
       title: Text(spec.title),
-      subtitle: spec.subtitle == null ? null : Text(spec.subtitle!),
+      subtitle: _subtitle(context, spec),
+      isThreeLine: spec.subtitle != null && spec.code != null,
       trailing: trailing,
       onTap: spec.onTap,
+    );
+  }
+
+  Widget? _subtitle(BuildContext context, ListTileSpec spec) {
+    final subtitle = spec.subtitle;
+    final code = spec.code;
+    if (code == null) return subtitle == null ? null : Text(subtitle);
+    final codeText = Text(
+      // Isolated left to right, so "R3TW 8KQN" keeps its order in Arabic.
+      '\u2066$code\u2069',
+      style: TextStyle(
+        fontSize: context.style.text.tiny,
+        fontWeight: SFontWeight.medium.value,
+        letterSpacing: _codeSpacing,
+        color: context.colors.textSubtle,
+      ),
+    );
+    if (subtitle == null) return codeText;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      spacing: Space.xxs,
+      children: [Text(subtitle), codeText],
     );
   }
 
@@ -101,6 +128,39 @@ class MaterialListTileRenderer implements ListTileRenderer {
           ),
         ),
       ],
+    );
+  }
+
+  @override
+  Widget fact(BuildContext context, FactTileSpec spec) {
+    final c = context.colors;
+    final body = context.style.text.body;
+    return MergeSemantics(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: Space.lg,
+          vertical: Space.md,
+        ),
+        child: Row(
+          spacing: Space.md,
+          children: [
+            Expanded(
+              child: Text(
+                spec.label,
+                style: TextStyle(fontSize: body, color: c.textMuted),
+              ),
+            ),
+            Text(
+              spec.value,
+              style: TextStyle(
+                fontSize: body,
+                fontWeight: SFontWeight.bold.value,
+                color: c.text,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

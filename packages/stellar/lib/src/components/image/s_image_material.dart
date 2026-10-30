@@ -16,7 +16,7 @@ class MaterialImageRenderer implements ImageRenderer {
     final url = spec.url;
     const placeholder = _Placeholder();
     return ClipRRect(
-      borderRadius: BorderRadius.circular(Radii.md),
+      borderRadius: BorderRadius.circular(spec.size.radius),
       child: SizedBox.square(
         dimension: side,
         child: url == null

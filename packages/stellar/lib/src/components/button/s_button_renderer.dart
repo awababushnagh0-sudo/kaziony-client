@@ -2,7 +2,19 @@ import 'package:flutter/widgets.dart';
 
 import '../icon/s_icon.dart';
 
-enum ButtonVariant { primary, secondary, text, danger }
+enum ButtonVariant {
+  primary,
+  secondary,
+  text,
+  danger,
+
+  /// Gray on the surface: the quieter one of two side by side.
+  soft,
+
+  /// Light red with red words: a for-good action that isn't the page's
+  /// main one.
+  dangerSoft,
+}
 
 @immutable
 class ButtonSpec {

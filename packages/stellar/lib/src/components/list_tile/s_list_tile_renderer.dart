@@ -7,6 +7,7 @@ class ListTileSpec {
   const ListTileSpec({
     required this.title,
     this.subtitle,
+    this.code,
     this.icon,
     this.leading,
     this.value,
@@ -16,6 +17,10 @@ class ListTileSpec {
 
   final String title;
   final String? subtitle;
+
+  /// A code under [subtitle] (a pickup code), read left to right in
+  /// Arabic too.
+  final String? code;
   final SIcons? icon;
 
   /// Takes [icon]'s place, for a picture (`SImage`).
@@ -83,6 +88,15 @@ class ListGroupSpec {
   final List<Widget> children;
 }
 
+/// A setting and its value: the name quiet, the value in bold ([SFactTile]).
+@immutable
+class FactTileSpec {
+  const FactTileSpec({required this.label, required this.value});
+
+  final String label;
+  final String value;
+}
+
 abstract interface class ListTileRenderer {
   Widget render(BuildContext context, ListTileSpec spec);
 
@@ -93,4 +107,6 @@ abstract interface class ListTileRenderer {
   /// One choice of a few, as a card with a check or an empty ring at the
   /// end ([SRadioTile]).
   Widget radio(BuildContext context, RadioTileSpec spec);
+
+  Widget fact(BuildContext context, FactTileSpec spec);
 }

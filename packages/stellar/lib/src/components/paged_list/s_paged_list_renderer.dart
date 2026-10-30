@@ -11,6 +11,9 @@ class PagedListSpec {
     required this.hasMore,
     required this.loadingMore,
     required this.moreFailure,
+    this.header,
+    this.endNote,
+    this.divided = true,
   });
 
   final int itemCount;
@@ -20,6 +23,11 @@ class PagedListSpec {
   final bool hasMore;
   final bool loadingMore;
   final AppFailure? moreFailure;
+  final Widget? header;
+  final String? endNote;
+
+  /// Lines between the rows; otherwise a gap, for rows that are cards.
+  final bool divided;
 }
 
 abstract interface class PagedListRenderer {

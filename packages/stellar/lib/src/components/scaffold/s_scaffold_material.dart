@@ -44,7 +44,22 @@ class MaterialScaffoldRenderer implements ScaffoldRenderer {
         ),
       );
     } else if (spec.scrollable) {
-      body = SingleChildScrollView(child: body);
+      final onRefresh = spec.onRefresh;
+      body = SingleChildScrollView(
+        // Short pages can still be pulled down to reload.
+        physics: onRefresh == null
+            ? null
+            : const AlwaysScrollableScrollPhysics(),
+        child: body,
+      );
+      if (onRefresh != null) {
+        body = RefreshIndicator(
+          onRefresh: onRefresh,
+          color: context.colors.primary,
+          backgroundColor: context.colors.surface,
+          child: body,
+        );
+      }
     }
 
     // Inside a narrow dashboard shell, top-level pages open the side menu.
@@ -77,7 +92,26 @@ class MaterialScaffoldRenderer implements ScaffoldRenderer {
               actions: [...spec.actions, const Gap(Space.sm)],
             )
           : null,
-      body: SafeArea(top: !spec.underStatusBar, child: body),
+      body: SafeArea(
+        top: !spec.underStatusBar,
+        child: spec.floating == null ? body : _RoomForFloating(child: body),
+      ),
+      floatingActionButton: spec.floating == null
+          ? null
+          : DecoratedBox(
+              // Lifted off the list it floats over.
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Radii.pill),
+                boxShadow: [
+                  BoxShadow(
+                    color: context.colors.shadow,
+                    blurRadius: 18,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              child: spec.floating,
+            ),
       bottomNavigationBar: spec.bottom == null
           ? null
           : SafeArea(
@@ -95,6 +129,27 @@ class MaterialScaffoldRenderer implements ScaffoldRenderer {
           ? SystemUiOverlayStyle.dark
           : SystemUiOverlayStyle.light,
       child: scaffold,
+    );
+  }
+}
+
+/// Asks lists for room at their end, so the floating button never hides
+/// the last row.
+class _RoomForFloating extends StatelessWidget {
+  const _RoomForFloating({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
+    return MediaQuery(
+      data: media.copyWith(
+        padding: media.padding.copyWith(
+          bottom: context.style.controlHeight + Space.lg,
+        ),
+      ),
+      child: child,
     );
   }
 }

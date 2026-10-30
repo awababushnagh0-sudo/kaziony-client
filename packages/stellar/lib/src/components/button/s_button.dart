@@ -4,8 +4,8 @@ import '../../foundation/s_kit.dart';
 import '../icon/s_icon.dart';
 import 's_button_renderer.dart';
 
-/// A button with a label ([SButton], [SButton.secondary],
-/// [SButton.text]), one that opens a menu ([SButton.menu]) or just an icon
+/// A button with a label ([SButton], [SButton.secondary], [SButton.soft],
+/// [SButton.dangerSoft], [SButton.text]), one that opens a menu ([SButton.menu]) or just an icon
 /// ([SButton.icon]).
 class SButton extends StatelessWidget {
   const SButton({
@@ -27,6 +27,31 @@ class SButton extends StatelessWidget {
     this.icon,
     super.key,
   }) : variant = ButtonVariant.secondary,
+       _iconOnly = false,
+       _smallIcon = false;
+
+  /// Gray, beside a primary one: the other choice, not the one to make.
+  const SButton.soft({
+    required this.label,
+    required this.onPressed,
+    this.loading = false,
+    this.expand = false,
+    this.icon,
+    super.key,
+  }) : variant = ButtonVariant.soft,
+       _iconOnly = false,
+       _smallIcon = false;
+
+  /// Light red, for an action that can't be undone ("End the offer") that
+  /// sits apart from the everyday ones.
+  const SButton.dangerSoft({
+    required this.label,
+    required this.onPressed,
+    this.loading = false,
+    this.expand = false,
+    this.icon,
+    super.key,
+  }) : variant = ButtonVariant.dangerSoft,
        _iconOnly = false,
        _smallIcon = false;
 

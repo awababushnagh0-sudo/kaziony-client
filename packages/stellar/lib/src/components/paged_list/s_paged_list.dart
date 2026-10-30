@@ -16,6 +16,9 @@ class SPagedList extends StatelessWidget {
     this.hasMore = false,
     this.loadingMore = false,
     this.moreFailure,
+    this.header,
+    this.endNote,
+    this.divided = true,
     super.key,
   });
 
@@ -34,6 +37,17 @@ class SPagedList extends StatelessWidget {
   /// Loading the next rows failed: the end of the list offers a retry.
   final AppFailure? moreFailure;
 
+  /// Above the rows, scrolling with them (a summary of the list).
+  final Widget? header;
+
+  /// Quiet text under the last row once everything has loaded (what the
+  /// list holds and for how long).
+  final String? endNote;
+
+  /// Lines between the rows; turn off for rows that are cards of their
+  /// own, which get a gap instead.
+  final bool divided;
+
   @override
   Widget build(BuildContext context) => StellarKit.of(context).pagedList.render(
     context,
@@ -45,6 +59,9 @@ class SPagedList extends StatelessWidget {
       hasMore: hasMore,
       loadingMore: loadingMore,
       moreFailure: moreFailure,
+      header: header,
+      endNote: endNote,
+      divided: divided,
     ),
   );
 }

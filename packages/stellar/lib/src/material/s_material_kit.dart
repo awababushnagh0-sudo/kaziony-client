@@ -1,12 +1,16 @@
+import '../components/alert/s_alert_material.dart';
 import '../components/badge/s_badge_material.dart';
 import '../components/button/s_button_material.dart';
 import '../components/card/s_card_material.dart';
+import '../components/code/s_code_material.dart';
+import '../components/confirmation/s_confirmation_material.dart';
 import '../components/deal/s_deal_material.dart';
 import '../components/dialog/s_dialog_material.dart';
 import '../components/icon/s_icon_material.dart';
 import '../components/illustration/s_illustration_material.dart';
 import '../components/image/s_image_material.dart';
 import '../components/input/s_input_material.dart';
+import '../components/item_summary/s_item_summary_material.dart';
 import '../components/list_page/s_list_page_material.dart';
 import '../components/list_tile/s_list_tile_material.dart';
 import '../components/menu/s_menu_material.dart';
@@ -14,16 +18,21 @@ import '../components/nav_bar/s_nav_bar_material.dart';
 import '../components/paged_list/s_paged_list_material.dart';
 import '../components/photo/s_photo_material.dart';
 import '../components/pill/s_pill_material.dart';
+import '../components/receipt/s_receipt_material.dart';
 import '../components/record_page/s_record_page_material.dart';
 import '../components/scaffold/s_scaffold_material.dart';
 import '../components/scanner/s_scanner_material.dart';
+import '../components/section/s_section_material.dart';
 import '../components/settings/s_settings_material.dart';
 import '../components/sheet/s_sheet_material.dart';
 import '../components/shell/s_shell_material.dart';
 import '../components/snack/s_snack_material.dart';
+import '../components/stat/s_stat_material.dart';
 import '../components/status/s_status_material.dart';
 import '../components/table/s_table_material.dart';
+import '../components/tag/s_tag_material.dart';
 import '../components/text/s_text_material.dart';
+import '../components/time_span/s_time_span_material.dart';
 import '../foundation/s_kit.dart';
 
 /// The default kit, built on Material widgets. Each renderer lives in its
@@ -55,4 +64,13 @@ const materialKit = StellarKit(
   menu: MaterialMenuRenderer(),
   settings: MaterialSettingsRenderer(),
   sheet: MaterialSheetRenderer(),
+  stat: MaterialStatRenderer(),
+  section: MaterialSectionRenderer(),
+  tag: MaterialTagRenderer(),
+  code: MaterialCodeRenderer(),
+  receipt: MaterialReceiptRenderer(),
+  itemSummary: MaterialItemSummaryRenderer(),
+  alert: MaterialAlertRenderer(),
+  confirmation: MaterialConfirmationRenderer(),
+  timeSpan: MaterialTimeSpanRenderer(),
 );

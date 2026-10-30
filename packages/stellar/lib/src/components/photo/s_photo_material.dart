@@ -28,7 +28,7 @@ class MaterialPhotoRenderer implements PhotoRenderer {
         : hasPhoto
         ? s.changePhoto
         : s.addPhoto;
-    final radius = BorderRadius.circular(Radii.lg);
+    final radius = BorderRadius.circular(size.radius);
 
     final picture = SizedBox.square(
       dimension: size.pixels,
