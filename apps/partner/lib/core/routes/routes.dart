@@ -18,6 +18,8 @@ abstract final class Routes {
   static const branches = '/branches';
   static const team = '/team';
   static const password = '/password';
+  static const about = '/about';
+  static const terms = '/terms';
   static const newProduct = '$products/new';
   static String product(String id) => '$products/$id';
   static String editProduct(String id) => '${product(id)}/edit';

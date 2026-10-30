@@ -6,8 +6,9 @@ import '../../../core/routes/routes.dart';
 import '../../auth/domain/auth_repository.dart';
 import '../../store/domain/current_store.dart';
 
-/// The store, the account and the app's settings, as rows that open their
-/// own pages.
+/// Who's signed in and where: the store with the member's role, name and
+/// phone; the store's pages as pictured cards; then the account and the
+/// app's settings, each row a card that opens its own page.
 class ProfileScreen extends AppView {
   const ProfileScreen({super.key});
 
@@ -19,60 +20,55 @@ class ProfileScreen extends AppView {
       SignedIn(:final user) => user,
       _ => null,
     };
-    final app = ref.watch(appInfoProvider);
     return SScaffold(
-      title: s.profileTitle,
+      // The header says whose profile it is; the tab says it's the profile.
+      showAppBar: false,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           spacing: Space.xl,
           children: [
             if (store != null)
-              SListGroup(
-                children: [
-                  SListTile(
-                    icon: SIcons.store,
-                    title: store.storeName,
-                    subtitle: store.isOwner ? s.ownerRole : s.staffRole,
-                  ),
-                ],
+              SProfileHeader(
+                title: store.storeName,
+                imageUrl: store.storeLogoUrl,
+                badge: store.isOwner ? s.ownerRole : s.staffRole,
+                badgeTone: store.isOwner
+                    ? BadgeTone.success
+                    : BadgeTone.neutral,
+                subtitle: user?.name,
+                phone: switch (user?.phone) {
+                  final phone? => formatLibyanPhone(phone),
+                  null => null,
+                },
               ),
+            // The store's own pages, the ones opened most.
+            SShortcuts([
+              Shortcut(
+                illustration: SIllustrations.storeInfo,
+                label: s.storeInfoTitle,
+                onTap: () => context.push(Routes.storeInfo),
+              ),
+              Shortcut(
+                illustration: SIllustrations.branches,
+                label: s.branchesTitle,
+                onTap: () => context.push(Routes.branches),
+              ),
+              Shortcut(
+                illustration: SIllustrations.team,
+                label: s.teamTitle,
+                onTap: () => context.push(Routes.team),
+              ),
+            ]),
             SListGroup(
-              title: s.storeSection,
+              title: s.accountSection,
+              separated: true,
               children: [
-                SListTile(
-                  icon: SIcons.info,
-                  title: s.storeInfoTitle,
-                  onTap: () => context.push(Routes.storeInfo),
-                ),
-                SListTile(
-                  icon: SIcons.location,
-                  title: s.branchesTitle,
-                  onTap: () => context.push(Routes.branches),
-                ),
-                SListTile(
-                  icon: SIcons.users,
-                  title: s.teamTitle,
-                  onTap: () => context.push(Routes.team),
-                ),
                 if (ref.watch(myStoresProvider).length > 1)
                   SListTile(
                     icon: SIcons.chevronUpDown,
                     title: s.switchStore,
                     onTap: () => _switchStore(context, ref),
-                  ),
-              ],
-            ),
-            SListGroup(
-              title: s.accountSection,
-              children: [
-                if (user != null)
-                  SListTile(
-                    icon: SIcons.user,
-                    title: user.name ?? s.notSet,
-                    subtitle: user.phone == null
-                        ? null
-                        : formatLibyanPhone(user.phone!),
                   ),
                 SListTile(
                   icon: SIcons.key,
@@ -83,6 +79,7 @@ class ProfileScreen extends AppView {
             ),
             SListGroup(
               title: s.appSection,
+              separated: true,
               children: [
                 SListTile(
                   icon: SIcons.language,
@@ -91,21 +88,47 @@ class ProfileScreen extends AppView {
                   onTap: () => chooseLanguage(context, ref),
                 ),
                 SListTile(
-                  icon: SIcons.device,
-                  title: s.versionLabel,
-                  value: '${app.version} (${app.buildNumber})',
+                  icon: SIcons.appearance,
+                  title: StellarLocalizations.of(context).theme,
+                  value: themeName(context, ref.watch(themeChoiceProvider)),
+                  onTap: () => chooseTheme(context, ref),
+                ),
+                SListTile(
+                  icon: SIcons.info,
+                  title: s.aboutTitle,
+                  onTap: () => context.push(Routes.about),
+                ),
+                SListTile(
+                  icon: SIcons.document,
+                  title: s.termsTitle,
+                  onTap: () => context.push(Routes.terms),
                 ),
               ],
             ),
-            SButton.secondary(
+            SButton.dangerSecondary(
               label: s.logout,
               icon: SIcons.logout,
-              onPressed: () => ref.read(authRepositoryProvider).logout(),
+              expand: true,
+              onPressed: () => _logout(context, ref),
             ),
           ],
         ),
       ),
     );
+  }
+
+  /// Asks first: signing back in needs the password, which a member at a
+  /// busy counter may not have at hand.
+  Future<void> _logout(BuildContext context, WidgetRef ref) async {
+    final s = PartnerLocalizations.of(context);
+    final confirmed = await SDialog.confirm(
+      context,
+      title: s.logoutTitle,
+      message: s.logoutMessage,
+      confirmLabel: s.logout,
+      destructive: true,
+    );
+    if (confirmed) await ref.read(authRepositoryProvider).logout();
   }
 
   Future<void> _switchStore(BuildContext context, WidgetRef ref) async {

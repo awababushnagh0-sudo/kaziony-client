@@ -221,6 +221,18 @@ abstract class PartnerLocalizations {
   /// **'Log out'**
   String get logout;
 
+  /// No description provided for @logoutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out?'**
+  String get logoutTitle;
+
+  /// No description provided for @logoutMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll need your phone number and password to sign in again.'**
+  String get logoutMessage;
+
   /// No description provided for @homeTitle.
   ///
   /// In en, this message translates to:
@@ -275,12 +287,6 @@ abstract class PartnerLocalizations {
   /// **'This account isn\'t linked to a store. Contact our team to set it up.'**
   String get noStoreMessage;
 
-  /// No description provided for @storeSection.
-  ///
-  /// In en, this message translates to:
-  /// **'Store'**
-  String get storeSection;
-
   /// No description provided for @storeInfoTitle.
   ///
   /// In en, this message translates to:
@@ -328,6 +334,36 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'App'**
   String get appSection;
+
+  /// No description provided for @aboutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About the app'**
+  String get aboutTitle;
+
+  /// No description provided for @aboutText.
+  ///
+  /// In en, this message translates to:
+  /// **'Post limited offers from your products in seconds, and hand them over at the counter with a pickup code.'**
+  String get aboutText;
+
+  /// No description provided for @termsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms and conditions'**
+  String get termsTitle;
+
+  /// No description provided for @termsSoonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get termsSoonTitle;
+
+  /// No description provided for @termsSoonMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The terms and conditions will be here before the app opens to everyone.'**
+  String get termsSoonMessage;
 
   /// No description provided for @versionLabel.
   ///

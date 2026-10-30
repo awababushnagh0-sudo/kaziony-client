@@ -16,7 +16,9 @@ import '../../features/offers/presentation/offers_screen.dart';
 import '../../features/products/presentation/product_form_screen.dart';
 import '../../features/products/presentation/product_screen.dart';
 import '../../features/products/presentation/products_screen.dart';
+import '../../features/profile/presentation/about_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
+import '../../features/profile/presentation/terms_screen.dart';
 import '../../features/store/domain/current_store.dart';
 import '../../features/store/presentation/branches_screen.dart';
 import '../../features/store/presentation/choose_store_screen.dart';
@@ -77,6 +79,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: Routes.branches, builder: (_, _) => const BranchesScreen()),
       GoRoute(path: Routes.team, builder: (_, _) => const TeamScreen()),
+      GoRoute(path: Routes.about, builder: (_, _) => const AboutScreen()),
+      GoRoute(path: Routes.terms, builder: (_, _) => const TermsScreen()),
       GoRoute(
         path: Routes.password,
         builder: (_, _) => const ChangePasswordScreen(temporary: false),

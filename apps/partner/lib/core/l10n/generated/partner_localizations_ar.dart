@@ -72,6 +72,13 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get logout => 'تسجيل الخروج';
 
   @override
+  String get logoutTitle => 'تسجيل الخروج؟';
+
+  @override
+  String get logoutMessage =>
+      'ستحتاج رقم هاتفك وكلمة المرور لتسجيل الدخول مرة أخرى.';
+
+  @override
   String get homeTitle => 'الرئيسية';
 
   @override
@@ -101,9 +108,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
       'هذا الحساب غير مرتبط بأي متجر. تواصل مع فريقنا لإعداده.';
 
   @override
-  String get storeSection => 'المتجر';
-
-  @override
   String get storeInfoTitle => 'معلومات المتجر';
 
   @override
@@ -126,6 +130,23 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get appSection => 'التطبيق';
+
+  @override
+  String get aboutTitle => 'عن التطبيق';
+
+  @override
+  String get aboutText =>
+      'انشر عروضًا محدودة من منتجاتك في ثوانٍ، وسلّمها عند الكاشير برمز الاستلام.';
+
+  @override
+  String get termsTitle => 'الشروط والأحكام';
+
+  @override
+  String get termsSoonTitle => 'قريبًا';
+
+  @override
+  String get termsSoonMessage =>
+      'ستكون الشروط والأحكام هنا قبل أن يُفتح التطبيق للجميع.';
 
   @override
   String get versionLabel => 'الإصدار';

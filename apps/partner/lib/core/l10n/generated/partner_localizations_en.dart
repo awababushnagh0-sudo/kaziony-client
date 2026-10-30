@@ -73,6 +73,13 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get logout => 'Log out';
 
   @override
+  String get logoutTitle => 'Log out?';
+
+  @override
+  String get logoutMessage =>
+      'You\'ll need your phone number and password to sign in again.';
+
+  @override
   String get homeTitle => 'Home';
 
   @override
@@ -102,9 +109,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
       'This account isn\'t linked to a store. Contact our team to set it up.';
 
   @override
-  String get storeSection => 'Store';
-
-  @override
   String get storeInfoTitle => 'Store info';
 
   @override
@@ -127,6 +131,23 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get appSection => 'App';
+
+  @override
+  String get aboutTitle => 'About the app';
+
+  @override
+  String get aboutText =>
+      'Post limited offers from your products in seconds, and hand them over at the counter with a pickup code.';
+
+  @override
+  String get termsTitle => 'Terms and conditions';
+
+  @override
+  String get termsSoonTitle => 'Coming soon';
+
+  @override
+  String get termsSoonMessage =>
+      'The terms and conditions will be here before the app opens to everyone.';
 
   @override
   String get versionLabel => 'Version';

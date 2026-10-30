@@ -3,7 +3,9 @@ import 'package:kernel/kernel.dart';
 import 'package:kernel/testing.dart';
 import 'package:partner/core/routes/routes.dart';
 import 'package:partner/features/auth/domain/auth_repository.dart';
+import 'package:partner/features/profile/presentation/about_screen.dart';
 import 'package:partner/features/profile/presentation/profile_screen.dart';
+import 'package:partner/features/profile/presentation/terms_screen.dart';
 import 'package:partner/features/store/domain/current_store.dart';
 
 import '../../fakes.dart';
@@ -31,6 +33,8 @@ void main() {
         GoRoute(path: Routes.profile, builder: (_, _) => const ProfileScreen()),
         stubPage(Routes.home, 'home page'),
         stubPage(Routes.storeInfo, 'store info page'),
+        GoRoute(path: Routes.about, builder: (_, _) => const AboutScreen()),
+        GoRoute(path: Routes.terms, builder: (_, _) => const TermsScreen()),
       ],
     );
   }
@@ -65,11 +69,51 @@ void main() {
     expect(settings.values['settings.locale'], 'en');
   });
 
-  testWidgets('logs out', (tester) async {
+  testWidgets('shows the theme and changes it', (tester) async {
+    await open(tester, stores: [store('a')]);
+
+    // Light until another is chosen.
+    expect(find.text('Light'), findsOneWidget);
+    await tap(tester, 'Theme');
+    await tap(tester, 'Dark');
+    expect(settings.values['settings.theme'], 'dark');
+    expect(find.text('Dark'), findsOneWidget);
+  });
+
+  testWidgets('about shows the version and opens the terms', (tester) async {
+    await open(tester, stores: [store('a')]);
+
+    await tap(tester, 'About the app');
+    expect(find.text('1.0.0 (1)'), findsOneWidget);
+    await tap(tester, 'Terms and conditions');
+    expect(find.text('Coming soon'), findsOneWidget);
+  });
+
+  testWidgets('opens the terms', (tester) async {
+    await open(tester, stores: [store('a')]);
+
+    await tap(tester, 'Terms and conditions');
+    expect(find.text('Coming soon'), findsOneWidget);
+  });
+
+  testWidgets('logs out once confirmed', (tester) async {
     await open(tester, stores: [store('a')]);
 
     await tap(tester, 'Log out');
+    expect(find.text('Log out?'), findsOneWidget);
+    expect(auth.logouts, 0);
+    // The dialog's button, over the page's.
+    await tester.tap(find.text('Log out').last);
+    await tester.pumpAndSettle();
     expect(auth.logouts, 1);
+  });
+
+  testWidgets("stays logged in when it's cancelled", (tester) async {
+    await open(tester, stores: [store('a')]);
+
+    await tap(tester, 'Log out');
+    await tap(tester, 'Cancel');
+    expect(auth.logouts, 0);
   });
 
   testWidgets('members of one store have nothing to switch', (tester) async {

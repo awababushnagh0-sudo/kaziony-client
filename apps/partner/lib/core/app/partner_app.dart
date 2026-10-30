@@ -11,6 +11,7 @@ class PartnerApp extends AppView {
   Widget build(BuildContext context, WidgetRef ref) => SApp(
     routerConfig: ref.watch(routerProvider),
     locale: ref.watch(localeProvider),
+    theme: ref.watch(themeChoiceProvider),
     onGenerateTitle: (context) => PartnerLocalizations.of(context).appTitle,
     localizationsDelegates: const [PartnerLocalizations.delegate],
   );
