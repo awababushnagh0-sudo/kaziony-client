@@ -77,6 +77,16 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // phone
+  SIcons.chat => const IconData(
+    0xe116,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // message-circle
+  SIcons.mail => const IconData(
+    0xe10f,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // mail
   SIcons.key => const IconData(
     0xe4a3,
     fontFamily: _f,

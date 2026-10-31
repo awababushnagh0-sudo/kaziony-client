@@ -26,6 +26,23 @@ class TextSpec {
   final int? maxLines;
 }
 
+/// A sentence ending in a tappable [link].
+@immutable
+class LinkTextSpec {
+  const LinkTextSpec({
+    required this.text,
+    required this.link,
+    required this.onTap,
+    this.align,
+  });
+
+  final String text;
+  final String link;
+  final VoidCallback onTap;
+  final TextAlign? align;
+}
+
 abstract interface class TextRenderer {
   Widget render(BuildContext context, TextSpec spec);
+  Widget link(BuildContext context, LinkTextSpec spec);
 }

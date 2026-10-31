@@ -40,6 +40,10 @@ enum SIcons {
   chart,
   category,
   phone,
+
+  /// A chat with our team (WhatsApp).
+  chat,
+  mail,
   key,
   settings,
 

@@ -107,6 +107,7 @@ export 'src/components/table/s_table.dart';
 export 'src/components/table/s_table_renderer.dart';
 export 'src/components/tag/s_tag.dart';
 export 'src/components/tag/s_tag_renderer.dart';
+export 'src/components/text/s_link_text.dart';
 export 'src/components/text/s_text.dart';
 export 'src/components/text/s_text_renderer.dart';
 export 'src/components/time_span/s_time_span.dart';
