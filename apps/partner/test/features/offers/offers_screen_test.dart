@@ -32,7 +32,7 @@ void main() {
     );
   }
 
-  testWidgets('lists offers with price, discount, state and what is left', (
+  testWidgets('lists offers with prices, state, time, stock and selling', (
     tester,
   ) async {
     await open(
@@ -47,9 +47,12 @@ void main() {
     expect(find.text('4 LD'), findsNWidgets(2));
     expect(find.textContaining('50%'), findsNWidgets(2));
     expect(find.text('Live'), findsNWidgets(2));
-    // Only the limited one has pieces to count; the rest is on its page.
+    expect(find.text('8 LD'), findsNWidgets(2));
+    expect(find.textContaining('Ends '), findsNWidgets(2));
+    // Only the limited one has pieces to count.
     expect(find.text('3 of 10 left'), findsOneWidget);
-    expect(find.text('8 LD'), findsNothing);
+    expect(find.text('Views'), findsNWidgets(2));
+    expect(find.text('42'), findsNWidgets(2));
   });
 
   testWidgets('filters by status', (tester) async {

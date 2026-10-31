@@ -4,25 +4,13 @@ import 'package:stellar/stellar.dart';
 import '../../features/offers/domain/offer.dart';
 import '../l10n/generated/partner_localizations.dart';
 
-/// The offer as a row, to find the one to open: photo with the discount,
-/// title, price, and how much of a limited offer is left. The rest is on
-/// its page.
+/// The offer as a row on home, to find the one to open: photo with the
+/// discount, title, price, and how much of a limited offer is left. The
+/// Offers tab shows more (`OfferCard`).
 class OfferTile extends StatelessWidget {
-  const OfferTile({
-    required this.offer,
-    this.trailing,
-    this.bordered = false,
-    this.onTap,
-    super.key,
-  });
+  const OfferTile({required this.offer, this.onTap, super.key});
 
   final Offer offer;
-
-  /// Beside the title: the offer's state, where offers of every state show.
-  final Widget? trailing;
-
-  /// A card of its own, where the list is only offers (the Offers tab).
-  final bool bordered;
   final VoidCallback? onTap;
 
   @override
@@ -36,8 +24,6 @@ class OfferTile extends StatelessWidget {
       discountPercent: offer.discountPercent,
       details: offerStockLabel(s, offer),
       hot: offer.state == OfferState.live && offer.isRunningOut,
-      trailing: trailing,
-      bordered: bordered,
       onTap: onTap,
     );
   }

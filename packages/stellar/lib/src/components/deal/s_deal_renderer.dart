@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../badge/s_badge_renderer.dart';
 import '../icon/s_icon.dart';
+import '../stat/s_stat_renderer.dart';
 
 @immutable
 class DealTileSpec {
@@ -98,10 +99,48 @@ class DealStockSpec {
   final double left;
 }
 
+/// An offer as a card of its own, for the store's list of its offers: its
+/// photo, title, prices and state, until when it runs, how much is left,
+/// and how it's selling.
+@immutable
+class DealCardSpec {
+  const DealCardSpec({
+    required this.title,
+    required this.price,
+    this.originalPrice,
+    this.discountPercent,
+    this.imageUrl,
+    this.status,
+    this.when,
+    this.stock,
+    this.figures = const [],
+    this.onTap,
+  });
+
+  final String title;
+  final String price;
+  final String? originalPrice;
+  final int? discountPercent;
+  final String? imageUrl;
+  final DealStatus? status;
+
+  /// Until when it runs, or when it starts or ended: "Ends 9:00 PM".
+  final String? when;
+
+  /// How much of a limited offer is left; null for unlimited ones.
+  final DealStockSpec? stock;
+
+  /// How it's selling, at the bottom: views, reservations, pickups.
+  final List<Figure> figures;
+  final VoidCallback? onTap;
+}
+
 abstract interface class DealRenderer {
   Widget tile(BuildContext context, DealTileSpec spec);
 
   Widget header(BuildContext context, DealHeaderSpec spec);
 
   Widget stock(BuildContext context, DealStockSpec spec);
+
+  Widget card(BuildContext context, DealCardSpec spec);
 }

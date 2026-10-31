@@ -3,11 +3,11 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
-import '../../../core/widgets/offer_tile.dart';
+import '../../../core/widgets/partner_illustrations.dart';
 import '../../store/domain/current_store.dart';
 import '../domain/offer.dart';
 import 'offers_view_model.dart';
-import 'widgets/offer_labels.dart';
+import 'widgets/offer_card.dart';
 
 /// The Offers tab: everyone in the store sees the offers; owners post them.
 class OffersScreen extends AppView {
@@ -58,7 +58,6 @@ class OffersScreen extends AppView {
                     label: label,
                     selected: filter == status,
                     onTap: () => filters.show(status),
-                    activeColor: SColor.text,
                   ),
               ],
             ),
@@ -85,10 +84,13 @@ class _OfferList extends AppView {
       builder: (context, page) {
         if (page.items.isEmpty) {
           if (ref.watch(offerFilterProvider) != null) {
-            return SEmptyView(icon: SIcons.offers, title: s.noOffersHere);
+            return SEmptyView(
+              illustration: PartnerIllustrations.noOffersHere,
+              title: s.noOffersHere,
+            );
           }
           return SEmptyView(
-            icon: SIcons.offers,
+            illustration: PartnerIllustrations.noOffers,
             title: s.noOffersTitle,
             message: isOwner ? s.noOffersMessage : null,
             actionLabel: isOwner ? s.postOffer : null,
@@ -102,10 +104,8 @@ class _OfferList extends AppView {
           itemCount: page.items.length,
           itemBuilder: (context, index) {
             final offer = page.items[index];
-            return OfferTile(
+            return OfferCard(
               offer: offer,
-              trailing: OfferStateBadge(state: offer.state),
-              bordered: true,
               onTap: () => context.push(Routes.offer(offer.id)),
             );
           },

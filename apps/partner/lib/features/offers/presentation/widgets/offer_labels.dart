@@ -1,4 +1,3 @@
-import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../../core/l10n/generated/partner_localizations.dart';
@@ -30,20 +29,6 @@ DealStatus? offerStatus(
   ),
   null => null,
 };
-
-/// What customers see of the offer right now, as a colored badge.
-class OfferStateBadge extends StatelessWidget {
-  const OfferStateBadge({required this.state, super.key});
-
-  final OfferState? state;
-
-  @override
-  Widget build(BuildContext context) {
-    final status = offerStatus(PartnerLocalizations.of(context), state);
-    if (status == null) return const SizedBox.shrink();
-    return SBadge(status.label, tone: status.tone);
-  }
-}
 
 /// How long an offer runs: "2 days", "9 h 30 min", "45 min".
 String offerLength(PartnerLocalizations s, Duration length) {

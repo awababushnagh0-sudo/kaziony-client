@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../../foundation/s_kit.dart';
+import '../stat/s_stat_renderer.dart';
 import 's_deal_renderer.dart';
 
 /// An offer in a list, at a glance: its photo with the discount in the
@@ -129,4 +130,50 @@ class SDealStock extends StatelessWidget {
   Widget build(BuildContext context) =>
       StellarKit.of(context).deal
           .stock(context, DealStockSpec(label: label, note: note, left: left));
+}
+
+/// An offer as a card of its own ([DealCardSpec]): more than [SDealTile]
+/// shows, for the store's list of its offers.
+class SDealCard extends StatelessWidget {
+  const SDealCard({
+    required this.title,
+    required this.price,
+    this.originalPrice,
+    this.discountPercent,
+    this.imageUrl,
+    this.status,
+    this.when,
+    this.stock,
+    this.figures = const [],
+    this.onTap,
+    super.key,
+  });
+
+  final String title;
+  final String price;
+  final String? originalPrice;
+  final int? discountPercent;
+  final String? imageUrl;
+  final DealStatus? status;
+  final String? when;
+  final DealStockSpec? stock;
+  final List<Figure> figures;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) => StellarKit.of(context).deal.card(
+    context,
+    DealCardSpec(
+      title: title,
+      price: price,
+      originalPrice: originalPrice,
+      discountPercent: discountPercent,
+      imageUrl: imageUrl,
+      status: status,
+      when: when,
+      stock: stock,
+      figures: figures,
+      onTap: onTap,
+    ),
+  );
 }
