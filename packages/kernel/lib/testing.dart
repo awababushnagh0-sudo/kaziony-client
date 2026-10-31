@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 
 import 'src/config/app_config.dart';
 import 'src/errors/error_reporter.dart';
+import 'src/links/links.dart';
 import 'src/photos/photos.dart';
 import 'src/scanner/qr_scanner.dart';
 import 'src/state/state.dart';
@@ -109,6 +110,21 @@ class _FakeCameraState extends State<_FakeCamera> {
 
   @override
   Widget build(BuildContext context) => const SizedBox.expand();
+}
+
+/// Keeps every link it's asked to open; [opens] says whether the phone
+/// could.
+class FakeLinkOpener implements LinkOpener {
+  FakeLinkOpener({this.opens = true});
+
+  final bool opens;
+  final opened = <Uri>[];
+
+  @override
+  Future<bool> open(Uri link) async {
+    opened.add(link);
+    return opens;
+  }
 }
 
 class RecordingErrorReporter implements ErrorReporter {
