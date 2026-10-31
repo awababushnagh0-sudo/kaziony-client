@@ -9,6 +9,9 @@ enum SImageSize {
   /// Offers in lists: room for the discount on the photo.
   deal(64, Radii.lg),
 
+  /// A store's logo on its page, over the cover photo: round.
+  logo(88, Radii.pill),
+
   /// A record's own photo, on its page (a product's).
   large(160, Radii.lg);
 

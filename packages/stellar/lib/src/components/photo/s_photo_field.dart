@@ -4,12 +4,15 @@ import 'package:flutter/widgets.dart';
 import '../../foundation/s_kit.dart';
 import 's_photo_renderer.dart';
 
-/// A record's photo on its page, with a camera badge to add or change it.
-/// While it uploads it shows [preview] (the new photo, from the phone) and
-/// the [progress]; if the upload [failed], tapping retries.
+/// A record's photo on its page, with a pill to add or change it. While it
+/// uploads it shows [preview] (the new photo, from the phone) and the
+/// [progress]; if the upload [failed], tapping retries.
 class SPhotoField extends StatelessWidget {
   const SPhotoField({
     required this.onTap,
+    this.shape = PhotoFieldShape.wide,
+    this.addLabel,
+    this.hint,
     this.url,
     this.preview,
     this.progress,
@@ -28,8 +31,16 @@ class SPhotoField extends StatelessWidget {
   final bool failed;
 
   /// Adds or changes the photo, or retries a failed upload. Ignored while
-  /// uploading.
-  final VoidCallback onTap;
+  /// uploading. Null shows the photo only, for those who can't change it.
+  final VoidCallback? onTap;
+  final PhotoFieldShape shape;
+
+  /// What adding a photo says, instead of "Add a photo" ("Add your logo").
+  final String? addLabel;
+
+  /// Under [addLabel] when there's no photo yet, instead of the default
+  /// tip. A round field has no room for it.
+  final String? hint;
 
   @override
   Widget build(BuildContext context) => StellarKit.of(context).photo.field(
@@ -40,6 +51,9 @@ class SPhotoField extends StatelessWidget {
       progress: progress,
       failed: failed,
       onTap: onTap,
+      shape: shape,
+      addLabel: addLabel,
+      hint: hint,
     ),
   );
 }

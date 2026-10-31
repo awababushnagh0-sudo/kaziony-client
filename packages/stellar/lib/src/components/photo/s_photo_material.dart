@@ -24,27 +24,39 @@ class MaterialPhotoRenderer implements PhotoRenderer {
     final preview = spec.preview;
     final url = spec.url;
     final hasPhoto = preview != null || url != null;
+    final onTap = spec.onTap;
+    final round = spec.shape == PhotoFieldShape.round;
     final label = uploading
         ? s.photoUploading((progress * 100).round())
         : spec.failed
         ? s.photoUploadFailed
         : hasPhoto
         ? s.changePhoto
-        : s.addPhoto;
-    const radius = BorderRadius.all(Radius.circular(Radii.xl));
+        : spec.addLabel ?? s.addPhoto;
+    final side = SImageSize.logo.pixels;
+    final height = round ? side : _fieldHeight;
 
     return Semantics(
-      button: true,
-      label: label,
+      button: onTap != null,
+      label: onTap == null ? null : label,
       excludeSemantics: true,
       child: Material(
         color: c.fieldFill,
-        borderRadius: radius,
+        // A round one sits on a cover photo: a ring of the page's color
+        // keeps it apart.
+        shape: round
+            ? CircleBorder(
+                side: BorderSide(color: c.surface, width: _ring),
+              )
+            : const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(Radii.xl)),
+              ),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: uploading ? null : spec.onTap,
+          onTap: uploading ? null : onTap,
           child: SizedBox(
-            height: _fieldHeight,
+            width: round ? side : null,
+            height: height,
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -55,20 +67,31 @@ class MaterialPhotoRenderer implements PhotoRenderer {
                     imageUrl: url,
                     fit: BoxFit.cover,
                     memCacheHeight:
-                        (_fieldHeight * MediaQuery.devicePixelRatioOf(context))
+                        (height * MediaQuery.devicePixelRatioOf(context))
                             .round(),
                     errorWidget: (_, _, _) => const SizedBox.shrink(),
                   ),
                 if (uploading || spec.failed)
-                  _Dimmed(progress: progress, label: label, failed: spec.failed)
-                else if (hasPhoto)
+                  _Dimmed(
+                    progress: progress,
+                    // No room for words in a logo.
+                    label: round ? null : label,
+                    failed: spec.failed,
+                  )
+                else if (onTap == null)
+                  const SizedBox.shrink()
+                else if (hasPhoto && !round)
                   PositionedDirectional(
                     end: Space.md,
                     bottom: Space.md,
                     child: _ChangeChip(label: label),
                   )
-                else
-                  _Empty(label: label, hint: s.addPhotoHint),
+                else if (!hasPhoto)
+                  _Empty(
+                    label: label,
+                    hint: round ? null : spec.hint ?? s.addPhotoHint,
+                    small: round,
+                  ),
               ],
             ),
           ),
@@ -78,41 +101,55 @@ class MaterialPhotoRenderer implements PhotoRenderer {
   }
 }
 
+const _ring = Space.xs;
+
 /// No photo yet: a camera, what to do and what makes a good one.
 class _Empty extends StatelessWidget {
-  const _Empty({required this.label, required this.hint});
+  const _Empty({required this.label, required this.hint, required this.small});
 
   final String label;
-  final String hint;
+  final String? hint;
+
+  /// In a logo: a smaller camera and label, no hint.
+  final bool small;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          materialIcon(SIcons.camera),
-          size: SIconSize.lg.pixels,
-          color: c.text,
-        ),
-        const Gap(Space.md),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: text.body,
-            fontWeight: SFontWeight.bold.value,
+    final hint = this.hint;
+    return Padding(
+      padding: const EdgeInsets.all(Space.sm),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            materialIcon(SIcons.camera),
+            size: (small ? SIconSize.md : SIconSize.lg).pixels,
             color: c.text,
           ),
-        ),
-        const Gap(Space.xxs),
-        Text(
-          hint,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: text.small, color: c.textMuted),
-        ),
-      ],
+          Gap(small ? Space.xs : Space.md),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            style: TextStyle(
+              fontSize: small ? text.tiny : text.body,
+              fontWeight: SFontWeight.bold.value,
+              color: c.text,
+              height: small ? 1.2 : null,
+            ),
+          ),
+          if (hint != null) ...[
+            const Gap(Space.xxs),
+            Text(
+              hint,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: text.small, color: c.textMuted),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }
@@ -171,13 +208,16 @@ class _Dimmed extends StatelessWidget {
   });
 
   final double? progress;
-  final String label;
+
+  /// Null in a logo: no room for it.
+  final String? label;
   final bool failed;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final onDim = c.onScrim;
+    final label = this.label;
     return ColoredBox(
       color: c.scrim,
       child: Padding(
@@ -198,15 +238,16 @@ class _Dimmed extends StatelessWidget {
                 color: onDim,
                 backgroundColor: onDim.withValues(alpha: 0.3),
               ),
-            Text(
-              label,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: context.style.text.small,
-                fontWeight: SFontWeight.semibold.value,
-                color: onDim,
+            if (label != null)
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: context.style.text.small,
+                  fontWeight: SFontWeight.semibold.value,
+                  color: onDim,
+                ),
               ),
-            ),
           ],
         ),
       ),

@@ -65,6 +65,7 @@ export 'src/components/nav_bar/s_nav_bar.dart';
 export 'src/components/nav_bar/s_nav_bar_renderer.dart';
 export 'src/components/paged_list/s_paged_list.dart';
 export 'src/components/paged_list/s_paged_list_renderer.dart';
+export 'src/components/photo/s_cover_with_logo.dart';
 export 'src/components/photo/s_photo.dart';
 export 'src/components/photo/s_photo_field.dart';
 export 'src/components/photo/s_photo_renderer.dart';
