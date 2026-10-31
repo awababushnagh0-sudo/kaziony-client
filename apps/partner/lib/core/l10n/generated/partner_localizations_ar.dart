@@ -120,6 +120,15 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get teamTitle => 'الفريق';
 
   @override
+  String get storeInfoShortcutHint => 'الاسم والوصف ووسائل التواصل';
+
+  @override
+  String get branchesShortcutHint => 'أماكن استلام الزبائن';
+
+  @override
+  String get teamShortcutHint => 'المالك والموظفون';
+
+  @override
   String get teamHint => 'لإضافة شخص أو إزالته، تواصل مع فريقنا.';
 
   @override
@@ -654,27 +663,15 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get noLiveOffers => 'لا توجد عروض متاحة الآن.';
 
   @override
-  String get last30Days => 'آخر 30 يومًا';
+  String get quietDayTitle => 'يوم هادئ حتى الآن';
 
   @override
-  String pickupsCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count استلام',
-      many: '$count استلامًا',
-      few: '$count استلامات',
-      two: 'استلامان',
-      one: 'استلام واحد',
-      zero: 'لا استلام بعد',
-    );
-    return '$_temp0';
-  }
+  String get quietDayOwnerMessage =>
+      'انشر عرضًا، وسيظهر هنا الزبائن الذين يحجزونه وهم في الطريق إليك.';
 
   @override
-  String pickupRate(int percent) {
-    return 'نسبة الاستلام $percent٪';
-  }
+  String get quietDayStaffMessage =>
+      'عندما ينشر متجرك عرضًا، سيظهر هنا الزبائن الذين يحجزونه.';
 
   @override
   String get soonestFirst => 'أقرب انتهاء أولًا';
@@ -765,6 +762,16 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   @override
   String endsAt(String time) {
     return 'ينتهي $time';
+  }
+
+  @override
+  String startsAt(String time) {
+    return 'يبدأ $time';
+  }
+
+  @override
+  String endedAt(String time) {
+    return 'انتهى $time';
   }
 
   @override

@@ -35,6 +35,9 @@
   "storeInfoHint": "Customers see this on your store's page.",
   "branchesTitle": "Branches",
   "teamTitle": "Team",
+  "storeInfoShortcutHint": "Name, description and contact",
+  "branchesShortcutHint": "Where customers pick up",
+  "teamShortcutHint": "The owner and staff",
   "teamHint": "To add or remove someone, contact our team.",
   "accountSection": "Account",
   "changePasswordAction": "Change password",
@@ -288,23 +291,9 @@
   "liveOffersTitle": "Live offers",
   "nobodyOnTheWay": "No one is on their way right now.",
   "noLiveOffers": "No live offers right now.",
-  "last30Days": "Last 30 days",
-  "pickupsCount": "{count, plural, =0{No pickups yet} =1{1 pickup} other{{count} pickups}}",
-  "@pickupsCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "pickupRate": "{percent}% picked up",
-  "@pickupRate": {
-    "placeholders": {
-      "percent": {
-        "type": "int"
-      }
-    }
-  },
+  "quietDayTitle": "A quiet day so far",
+  "quietDayOwnerMessage": "Post an offer, and customers who reserve it will show up here on their way.",
+  "quietDayStaffMessage": "When your store posts an offer, customers who reserve it will show up here.",
   "soonestFirst": "Soonest to end first",
   "pickupsEndNote": "Reservations stay here until they're picked up or their time runs out.",
   "collectFromCustomer": "Collect from the customer",
@@ -366,6 +355,22 @@
   "figurePickedUp": "Picked up",
   "endsAt": "Ends {time}",
   "@endsAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "startsAt": "Starts {time}",
+  "@startsAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "endedAt": "Ended {time}",
+  "@endedAt": {
     "placeholders": {
       "time": {
         "type": "String"

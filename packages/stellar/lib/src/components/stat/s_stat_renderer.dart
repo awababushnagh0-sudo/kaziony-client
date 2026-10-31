@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../../foundation/tokens/s_colors.dart';
 import '../icon/s_icon.dart';
 import '../illustration/s_illustration_renderer.dart';
 
@@ -19,12 +20,30 @@ class StatTileSpec {
 
   /// Already written for people (a count).
   final String value;
-  final SIllustrations illustration;
+  final Illustration illustration;
   final String? hint;
 
   /// Shows [hint] in orange: something to act on soon.
   final bool urgent;
   final VoidCallback? onTap;
+}
+
+/// [SStatTile]s on one panel ([SStatGrid]).
+@immutable
+class StatGridSpec {
+  const StatGridSpec({
+    required this.children,
+    this.title,
+    this.note,
+    this.color = SColor.fieldFill,
+  });
+
+  final String? title;
+  final String? note;
+
+  /// The panel behind the tiles.
+  final SColor color;
+  final List<Widget> children;
 }
 
 /// One number in an [FiguresSpec] row.
@@ -61,6 +80,10 @@ class FiguresSpec {
 
 abstract interface class StatRenderer {
   Widget tile(BuildContext context, StatTileSpec spec);
+
+  /// The tiles two to a row, each row as tall as its tallest tile, on a
+  /// gray panel that sets them apart from the page.
+  Widget grid(BuildContext context, StatGridSpec spec);
 
   Widget figures(BuildContext context, FiguresSpec spec);
 }

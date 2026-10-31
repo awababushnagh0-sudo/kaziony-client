@@ -68,7 +68,6 @@ void main() {
     expect(find.text('40 min'), findsOneWidget);
     expect(find.text('Offer o1'), findsOneWidget);
     expect(find.text('3 of 10 left'), findsOneWidget);
-    expect(find.text('268 pickups · 90% picked up'), findsOneWidget);
   });
 
   testWidgets('shows staff only their counter numbers', (tester) async {
@@ -104,11 +103,35 @@ void main() {
     expect(find.text('claim SOON2345'), findsOneWidget);
   });
 
-  testWidgets('says when no one is coming and nothing is live', (tester) async {
+  testWidgets('says once when no one is coming and nothing is live', (
+    tester,
+  ) async {
     await open(tester, claims: [], offers: []);
 
+    expect(find.text('A quiet day so far'), findsOneWidget);
+    expect(find.text('No one is on their way right now.'), findsNothing);
+    expect(find.text('No live offers right now.'), findsNothing);
+    expect(find.text('Post an offer'), findsOneWidget);
+  });
+
+  testWidgets("staff aren't offered to post", (tester) async {
+    await open(
+      tester,
+      member: store('a', isOwner: false, branchId: 'b1'),
+      claims: [],
+      offers: [],
+    );
+
+    expect(find.text('A quiet day so far'), findsOneWidget);
+    expect(find.text('Post an offer'), findsNothing);
+  });
+
+  testWidgets('says which list is empty when the other is not', (tester) async {
+    await open(tester, claims: []);
+
     expect(find.text('No one is on their way right now.'), findsOneWidget);
-    expect(find.text('No live offers right now.'), findsOneWidget);
+    expect(find.text('Offer o1'), findsOneWidget);
+    expect(find.text('A quiet day so far'), findsNothing);
   });
 
   testWidgets('offers to try again when the numbers fail to load', (

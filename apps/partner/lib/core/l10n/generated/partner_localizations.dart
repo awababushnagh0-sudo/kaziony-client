@@ -311,6 +311,24 @@ abstract class PartnerLocalizations {
   /// **'Team'**
   String get teamTitle;
 
+  /// No description provided for @storeInfoShortcutHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Name, description and contact'**
+  String get storeInfoShortcutHint;
+
+  /// No description provided for @branchesShortcutHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Where customers pick up'**
+  String get branchesShortcutHint;
+
+  /// No description provided for @teamShortcutHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The owner and staff'**
+  String get teamShortcutHint;
+
   /// No description provided for @teamHint.
   ///
   /// In en, this message translates to:
@@ -1265,23 +1283,23 @@ abstract class PartnerLocalizations {
   /// **'No live offers right now.'**
   String get noLiveOffers;
 
-  /// No description provided for @last30Days.
+  /// No description provided for @quietDayTitle.
   ///
   /// In en, this message translates to:
-  /// **'Last 30 days'**
-  String get last30Days;
+  /// **'A quiet day so far'**
+  String get quietDayTitle;
 
-  /// No description provided for @pickupsCount.
+  /// No description provided for @quietDayOwnerMessage.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =0{No pickups yet} =1{1 pickup} other{{count} pickups}}'**
-  String pickupsCount(int count);
+  /// **'Post an offer, and customers who reserve it will show up here on their way.'**
+  String get quietDayOwnerMessage;
 
-  /// No description provided for @pickupRate.
+  /// No description provided for @quietDayStaffMessage.
   ///
   /// In en, this message translates to:
-  /// **'{percent}% picked up'**
-  String pickupRate(int percent);
+  /// **'When your store posts an offer, customers who reserve it will show up here.'**
+  String get quietDayStaffMessage;
 
   /// No description provided for @soonestFirst.
   ///
@@ -1420,6 +1438,18 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Ends {time}'**
   String endsAt(String time);
+
+  /// No description provided for @startsAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts {time}'**
+  String startsAt(String time);
+
+  /// No description provided for @endedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended {time}'**
+  String endedAt(String time);
 
   /// No description provided for @dayToday.
   ///

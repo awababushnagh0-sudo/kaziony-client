@@ -1,32 +1,32 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_tokens.dart';
+import '../../foundation/s_kit.dart';
+import '../../foundation/tokens/s_colors.dart';
+import 's_stat_renderer.dart';
 
-/// [SStatTile]s two to a row, each row as tall as its tallest tile.
+/// A store's numbers ([SStatTile]s) together on one soft panel, two to a
+/// row, under a [title] and a [note] (the day they're for).
 class SStatGrid extends StatelessWidget {
-  const SStatGrid({required this.children, super.key});
+  const SStatGrid({
+    required this.children,
+    this.title,
+    this.note,
+    this.color = SColor.fieldFill,
+    super.key,
+  });
 
+  final String? title;
+
+  /// Under [title], quieter.
+  final String? note;
   final List<Widget> children;
 
+  /// The panel behind the tiles: a quiet gray unless set.
+  final SColor color;
+
   @override
-  Widget build(BuildContext context) => Column(
-    spacing: Space.sm,
-    children: [
-      for (var i = 0; i < children.length; i += 2)
-        IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            spacing: Space.sm,
-            children: [
-              Expanded(child: children[i]),
-              Expanded(
-                child: i + 1 < children.length
-                    ? children[i + 1]
-                    : const SizedBox(),
-              ),
-            ],
-          ),
-        ),
-    ],
+  Widget build(BuildContext context) => StellarKit.of(context).stat.grid(
+    context,
+    StatGridSpec(title: title, note: note, color: color, children: children),
   );
 }

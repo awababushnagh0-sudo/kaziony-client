@@ -17,88 +17,147 @@ class MaterialStatRenderer implements StatRenderer {
     final c = context.colors;
     final text = context.style.text;
     final hint = spec.hint;
-    final shape = RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(Radii.xxl),
-    );
-    return DecoratedBox(
-      decoration: ShapeDecoration(
-        shape: shape,
-        shadows: [
-          BoxShadow(
-            color: c.shadow,
-            blurRadius: 18,
-            offset: const Offset(0, 6),
-          ),
-        ],
+    // On the grid's panel, which sets it apart: no shadow or border.
+    return Material(
+      color: c.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Radii.xl),
       ),
-      child: Material(
-        color: c.surface,
-        shape: shape,
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: spec.onTap,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: _minHeight),
-            child: Padding(
-              // The picture has air of its own, so less room on its side.
-              padding: const EdgeInsetsDirectional.fromSTEB(
-                Space.md,
-                Space.md,
-                Space.sm,
-                Space.md,
-              ),
-              child: Row(
-                spacing: Space.xs,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: spec.onTap,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: _minHeight),
+          child: Padding(
+            // The picture has air of its own, so less room on its side.
+            padding: const EdgeInsetsDirectional.fromSTEB(
+              Space.md,
+              Space.md,
+              Space.sm,
+              Space.md,
+            ),
+            child: Row(
+              spacing: Space.xs,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        spec.label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: text.tiny,
+                          fontWeight: SFontWeight.semibold.value,
+                          color: c.textMuted,
+                        ),
+                      ),
+                      Text(
+                        spec.value,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontSize: text.display,
+                          fontWeight: SFontWeight.bold.value,
+                          height: 1.2,
+                          color: c.text,
+                        ),
+                      ),
+                      if (hint != null)
                         Text(
-                          spec.label,
+                          hint,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: text.tiny,
-                            fontWeight: SFontWeight.semibold.value,
-                            color: c.textMuted,
+                            fontWeight: spec.urgent
+                                ? SFontWeight.semibold.value
+                                : null,
+                            color: spec.urgent ? c.accentInk : c.textSubtle,
                           ),
                         ),
-                        Text(
-                          spec.value,
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontSize: text.display,
-                            fontWeight: SFontWeight.bold.value,
-                            height: 1.2,
-                            color: c.text,
-                          ),
-                        ),
-                        if (hint != null)
-                          Text(
-                            hint,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: text.tiny,
-                              fontWeight: spec.urgent
-                                  ? SFontWeight.semibold.value
-                                  : null,
-                              color: spec.urgent ? c.accentInk : c.textSubtle,
-                            ),
-                          ),
-                      ],
-                    ),
+                    ],
                   ),
-                  const MaterialIllustrationRenderer().render(
-                    context,
-                    IllustrationSpec(illustration: spec.illustration),
-                  ),
-                ],
-              ),
+                ),
+                const MaterialIllustrationRenderer().render(
+                  context,
+                  IllustrationSpec(illustration: spec.illustration),
+                ),
+              ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget grid(BuildContext context, StatGridSpec spec) {
+    final c = context.colors;
+    final text = context.style.text;
+    final title = spec.title;
+    final note = spec.note;
+    final tiles = spec.children;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: c.resolve(spec.color),
+        borderRadius: BorderRadius.circular(Radii.xxl),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(Space.sm),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: Space.sm,
+          children: [
+            if (title != null)
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(
+                  Space.sm,
+                  Space.xs,
+                  Space.sm,
+                  Space.xs,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: text.title,
+                        fontWeight: SFontWeight.bold.value,
+                        height: 1.3,
+                        color: c.text,
+                      ),
+                    ),
+                    if (note != null)
+                      Text(
+                        note,
+                        style: TextStyle(
+                          fontSize: text.small,
+                          fontWeight: SFontWeight.medium.value,
+                          color: c.textMuted,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            for (var i = 0; i < tiles.length; i += 2)
+              IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: Space.sm,
+                  children: [
+                    Expanded(child: tiles[i]),
+                    Expanded(
+                      child: i + 1 < tiles.length
+                          ? tiles[i + 1]
+                          : const SizedBox(),
+                    ),
+                  ],
+                ),
+              ),
+          ],
         ),
       ),
     );

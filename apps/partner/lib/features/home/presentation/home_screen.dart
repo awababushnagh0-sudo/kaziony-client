@@ -5,15 +5,15 @@ import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/providers/clock.dart';
 import '../../../core/routes/routes.dart';
 import '../../../core/widgets/offer_tile.dart';
+import '../../../core/widgets/partner_illustrations.dart';
 import '../../../core/widgets/reservation_row.dart';
 import '../../counter/domain/claim.dart';
 import '../../store/domain/current_store.dart';
-import '../domain/store_stats.dart';
 import 'home_view_model.dart';
 
 /// The day at a glance: today's numbers, the next customers to come and how
 /// the live offers sell. Staff see their branch's day, without the numbers
-/// only owners act on (no-shows, offers, the month).
+/// only owners act on (no-shows, offers).
 class HomeScreen extends AppView {
   const HomeScreen({super.key});
 
@@ -60,68 +60,52 @@ class _HomeBody extends AppView {
       children: [
         Padding(
           padding: const EdgeInsets.all(Space.lg),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            spacing: Space.md,
-            children: [
-              SSectionHeader(
-                store?.branchId == null ? s.todayTitle : s.todayAtBranch,
-                note: formatDay(
-                  now,
-                  languageCode: Localizations.localeOf(context).languageCode,
-                ),
-              ),
-              _TodayStats(
-                home: home,
-                soonest: onTheWay.firstOrNull,
-                now: now,
-                isOwner: isOwner,
-              ),
-            ],
+          child: _TodayStats(
+            home: home,
+            soonest: onTheWay.firstOrNull,
+            now: now,
+            isOwner: isOwner,
+            title: store?.branchId == null ? s.todayTitle : s.todayAtBranch,
           ),
         ),
-        _Header(
-          s.pickupsTitle,
-          actionLabel: s.seeAll,
-          onAction: () => context.push(Routes.pickups),
-        ),
-        if (onTheWay.isEmpty)
-          _Nothing(s.nobodyOnTheWay)
-        else
-          for (final claim in onTheWay) ReservationRow(claim, now: now),
-        const Gap(Space.lg),
-        _Header(
-          isOwner ? s.yourLiveOffers : s.liveOffersTitle,
-          actionLabel: s.seeAllOffers,
-          onAction: () => context.go(Routes.offers),
-        ),
-        if (offers.isEmpty)
-          _Nothing(s.noLiveOffers)
-        else
-          for (final offer in offers)
-            OfferTile(
-              offer: offer,
-              onTap: () => context.push(Routes.offer(offer.id)),
-            ),
-        if (isOwner) ...[
+        // Both lists empty: one picture for the page, not two empty lists.
+        if (onTheWay.isEmpty && offers.isEmpty)
+          SEmptyView(
+            illustration: PartnerIllustrations.noOffers,
+            title: s.quietDayTitle,
+            message: isOwner ? s.quietDayOwnerMessage : s.quietDayStaffMessage,
+            actionLabel: isOwner ? s.postOffer : null,
+            actionIcon: SIcons.add,
+            onAction: () => context.push(Routes.chooseOfferProduct),
+          )
+        else ...[
+          _Header(
+            s.pickupsTitle,
+            actionLabel: s.seeAll,
+            onAction: () => context.push(Routes.pickups),
+          ),
+          if (onTheWay.isEmpty)
+            _Nothing(s.nobodyOnTheWay)
+          else
+            for (final claim in onTheWay) ReservationRow(claim, now: now),
           const Gap(Space.lg),
-          SListTile(
-            icon: SIcons.chart,
-            title: s.last30Days,
-            subtitle: _month(s, home.stats.last30Days),
+          _Header(
+            isOwner ? s.yourLiveOffers : s.liveOffersTitle,
+            actionLabel: s.seeAllOffers,
+            onAction: () => context.go(Routes.offers),
           ),
+          if (offers.isEmpty)
+            _Nothing(s.noLiveOffers)
+          else
+            for (final offer in offers)
+              OfferTile(
+                offer: offer,
+                onTap: () => context.push(Routes.offer(offer.id)),
+              ),
         ],
         const Gap(Space.xl),
       ],
     );
-  }
-
-  static String _month(PartnerLocalizations s, PeriodStats month) {
-    final rate = month.redemptionRate;
-    return [
-      s.pickupsCount(month.redeemed),
-      if (rate != null) s.pickupRate((rate * 100).round()),
-    ].join(' · ');
   }
 }
 
@@ -131,9 +115,11 @@ class _TodayStats extends StatelessWidget {
     required this.soonest,
     required this.now,
     required this.isOwner,
+    required this.title,
   });
 
   final Home home;
+  final String title;
 
   /// The next customer due, if any.
   final Claim? soonest;
@@ -148,11 +134,17 @@ class _TodayStats extends StatelessWidget {
     final soonest = this.soonest;
     final runningOut = home.runningOut;
     return SStatGrid(
+      color: SColor.primaryTint,
+      title: title,
+      note: formatDay(
+        now,
+        languageCode: Localizations.localeOf(context).languageCode,
+      ),
       children: [
         SStatTile(
           label: s.pickupsTitle,
           value: '${stats.onTheWay}',
-          illustration: SIllustrations.onTheWay,
+          illustration: PartnerIllustrations.onTheWay,
           hint: soonest == null
               ? null
               : s.soonestIn(
@@ -164,20 +156,20 @@ class _TodayStats extends StatelessWidget {
         SStatTile(
           label: s.statPickedUp,
           value: '${today.redeemed}',
-          illustration: SIllustrations.pickedUp,
+          illustration: PartnerIllustrations.pickedUp,
           hint: today.claims == 0 ? null : s.ofClaimsToday(today.claims),
         ),
         if (isOwner) ...[
           SStatTile(
             label: s.statNotPickedUp,
             value: '${today.expired}',
-            illustration: SIllustrations.notPickedUp,
+            illustration: PartnerIllustrations.notPickedUp,
             hint: today.expired == 0 ? null : s.notPickedUpHint,
           ),
           SStatTile(
             label: s.statLiveOffers,
             value: '${stats.liveOffers}',
-            illustration: SIllustrations.liveOffers,
+            illustration: PartnerIllustrations.liveOffers,
             hint: runningOut == 0 ? null : s.almostGone(runningOut),
             onTap: () => context.go(Routes.offers),
           ),

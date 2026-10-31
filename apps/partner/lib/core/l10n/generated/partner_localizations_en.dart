@@ -121,6 +121,15 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get teamTitle => 'Team';
 
   @override
+  String get storeInfoShortcutHint => 'Name, description and contact';
+
+  @override
+  String get branchesShortcutHint => 'Where customers pick up';
+
+  @override
+  String get teamShortcutHint => 'The owner and staff';
+
+  @override
   String get teamHint => 'To add or remove someone, contact our team.';
 
   @override
@@ -654,24 +663,15 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get noLiveOffers => 'No live offers right now.';
 
   @override
-  String get last30Days => 'Last 30 days';
+  String get quietDayTitle => 'A quiet day so far';
 
   @override
-  String pickupsCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count pickups',
-      one: '1 pickup',
-      zero: 'No pickups yet',
-    );
-    return '$_temp0';
-  }
+  String get quietDayOwnerMessage =>
+      'Post an offer, and customers who reserve it will show up here on their way.';
 
   @override
-  String pickupRate(int percent) {
-    return '$percent% picked up';
-  }
+  String get quietDayStaffMessage =>
+      'When your store posts an offer, customers who reserve it will show up here.';
 
   @override
   String get soonestFirst => 'Soonest to end first';
@@ -761,6 +761,16 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   @override
   String endsAt(String time) {
     return 'Ends $time';
+  }
+
+  @override
+  String startsAt(String time) {
+    return 'Starts $time';
+  }
+
+  @override
+  String endedAt(String time) {
+    return 'Ended $time';
   }
 
   @override
