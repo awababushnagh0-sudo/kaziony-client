@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../foundation/s_kit.dart';
 import '../../foundation/s_tokens.dart';
+import '../button/s_button.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
+import '../illustration/s_illustration.dart';
 import 's_status_renderer.dart';
 
 class MaterialStatusRenderer implements StatusRenderer {
@@ -75,18 +77,25 @@ class MaterialStatusRenderer implements StatusRenderer {
     );
   }
 
+  /// The picture or icon, the title and message, and the action, in a
+  /// column a little narrower than the page.
   Widget _status(BuildContext context, StatusSpec spec, Color iconColor) {
-    final theme = Theme.of(context).textTheme;
     final colors = context.colors;
+    final text = context.style.text;
+    final message = spec.message;
+    final actionLabel = spec.actionLabel;
+    final onAction = spec.onAction;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(Space.xl),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (spec.icon != null)
+            if (spec.illustration case final illustration?)
+              SIllustration(illustration)
+            else if (spec.icon case final icon?)
               Icon(
-                materialIcon(spec.icon!),
+                materialIcon(icon),
                 size: SIconSize.xl.pixels,
                 color: iconColor,
               ),
@@ -94,25 +103,26 @@ class MaterialStatusRenderer implements StatusRenderer {
             Text(
               spec.title,
               textAlign: TextAlign.center,
-              style: theme.titleMedium?.copyWith(color: colors.text),
+              style: TextStyle(
+                fontSize: text.title,
+                fontWeight: SFontWeight.bold.value,
+                color: colors.text,
+              ),
             ),
-            if (spec.message != null) ...[
-              const Gap(Space.sm),
+            if (message != null) ...[
+              const Gap(Space.xs),
               Text(
-                spec.message!,
+                message,
                 textAlign: TextAlign.center,
-                style: theme.bodyMedium?.copyWith(color: colors.textMuted),
+                style: TextStyle(fontSize: text.body, color: colors.textMuted),
               ),
             ],
-            if (spec.actionLabel != null && spec.onAction != null) ...[
+            if (actionLabel != null && onAction != null) ...[
               const Gap(Space.xl),
-              OutlinedButton.icon(
-                onPressed: spec.onAction,
-                icon: Icon(
-                  materialIcon(spec.actionIcon),
-                  size: SIconSize.sm.pixels,
-                ),
-                label: Text(spec.actionLabel!),
+              SButton(
+                label: actionLabel,
+                icon: spec.actionIcon,
+                onPressed: onAction,
               ),
             ],
           ],

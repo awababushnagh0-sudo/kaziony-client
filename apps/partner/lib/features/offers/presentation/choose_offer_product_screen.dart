@@ -4,6 +4,7 @@ import 'package:stellar/stellar.dart';
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/list/paged_list_view_model.dart';
 import '../../../core/routes/routes.dart';
+import '../../../core/widgets/partner_illustrations.dart';
 import '../../products/domain/product.dart';
 import '../../products/presentation/products_view_model.dart';
 import '../../products/presentation/widgets/product_tile.dart';
@@ -64,12 +65,12 @@ class ChooseOfferProductScreen extends AppView {
                 if (page.items.isEmpty) {
                   if (ref.watch(offerProductQueryProvider).search.isNotEmpty) {
                     return SEmptyView(
-                      icon: SIcons.noResults,
+                      illustration: PartnerIllustrations.noResults,
                       title: s.noProductsMatch,
                     );
                   }
                   return SEmptyView(
-                    icon: SIcons.products,
+                    illustration: PartnerIllustrations.noProducts,
                     title: s.noProductsTitle,
                     message: s.noProductsForOffer,
                     actionLabel: s.addProduct,

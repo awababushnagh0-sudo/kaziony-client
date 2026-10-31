@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
+import '../../../core/widgets/partner_illustrations.dart';
 import 'products_view_model.dart';
 import 'widgets/product_tile.dart';
 
@@ -126,13 +127,19 @@ class _Empty extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = PartnerLocalizations.of(context);
     if (query.search.isNotEmpty) {
-      return SEmptyView(icon: SIcons.noResults, title: s.noProductsMatch);
+      return SEmptyView(
+        illustration: PartnerIllustrations.noResults,
+        title: s.noProductsMatch,
+      );
     }
     if (query.archived) {
-      return SEmptyView(icon: SIcons.archive, title: s.noArchivedProducts);
+      return SEmptyView(
+        illustration: PartnerIllustrations.noArchived,
+        title: s.noArchivedProducts,
+      );
     }
     return SEmptyView(
-      icon: SIcons.products,
+      illustration: PartnerIllustrations.noProducts,
       title: s.noProductsTitle,
       message: s.noProductsMessage,
       actionLabel: s.addProduct,

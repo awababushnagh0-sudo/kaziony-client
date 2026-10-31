@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../icon/s_icon.dart';
+import '../illustration/s_illustration_renderer.dart';
 
 @immutable
 class StatusSpec {
@@ -8,6 +9,7 @@ class StatusSpec {
     required this.title,
     this.message,
     this.icon,
+    this.illustration,
     this.actionLabel,
     this.actionIcon = SIcons.refresh,
     this.onAction,
@@ -16,6 +18,10 @@ class StatusSpec {
   final String title;
   final String? message;
   final SIcons? icon;
+
+  /// A picture in [icon]'s place, where the state deserves one (a list
+  /// that's empty because nothing was added yet).
+  final Illustration? illustration;
   final String? actionLabel;
 
   /// Refresh by default: most actions here are "Try again".

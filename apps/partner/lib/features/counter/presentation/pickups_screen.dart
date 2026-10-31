@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/providers/clock.dart';
+import '../../../core/widgets/partner_illustrations.dart';
 import '../../../core/widgets/reservation_row.dart';
 import 'pickups_view_model.dart';
 
@@ -32,7 +33,7 @@ class PickupsScreen extends AppView {
           ];
           if (held.isEmpty && !page.hasMore) {
             return SEmptyView(
-              icon: SIcons.pickups,
+              illustration: PartnerIllustrations.noPickups,
               title: s.noPickupsTitle,
               message: s.noPickupsMessage,
               actionLabel: s.refresh,
