@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kernel/kernel.dart';
+import 'package:kernel/testing.dart';
 import 'package:partner/core/routes/routes.dart';
 import 'package:partner/features/store/domain/current_store.dart';
 import 'package:partner/features/store/domain/store.dart';
@@ -12,6 +15,7 @@ import '../../support/pump_app.dart';
 
 void main() {
   late FakeStoreRepository stores;
+  late FakePhotoPicker photos;
 
   Future<void> open(
     WidgetTester tester, {
@@ -19,12 +23,14 @@ void main() {
     Result<Store>? loaded,
   }) async {
     stores = FakeStoreRepository();
+    photos = FakePhotoPicker();
     if (loaded != null) stores.getResult = loaded;
     await pumpPartnerPages(
       tester,
       initial: Routes.storeInfo,
       overrides: [
         storeRepositoryProvider.overrideWithValue(stores),
+        photoPickerProvider.overrideWithValue(photos),
         currentStoreProvider.overrideWithValue(store('a', isOwner: isOwner)),
       ],
       routes: [
@@ -55,6 +61,38 @@ void main() {
 
     expect(find.text('Fresh every morning'), findsOneWidget);
     expect(find.byTooltip('Edit'), findsNothing);
+    expect(find.text('Add your logo'), findsNothing);
+  });
+
+  testWidgets('the owner adds the logo, cropped round, and the cover, wide', (
+    tester,
+  ) async {
+    await open(tester);
+    photos.next = PhotoReady(
+      PreparedPhoto(
+        fullPath: 'full.jpg',
+        thumbPath: 'thumb.jpg',
+        // A real 1×1 picture, so the preview can be drawn.
+        preview: base64Decode(
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwAD'
+          'hgGAWjR9awAAAABJRU5ErkJggg==',
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('Add your logo'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Choose from gallery'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Add a cover photo'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Choose from gallery'));
+    await tester.pumpAndSettle();
+
+    expect(photos.shapes, [PhotoShape.round, PhotoShape.wide]);
+    expect(stores.images, [StoreImage.logo, StoreImage.cover]);
+    // The logo the server returned is shown: nothing left to add.
+    expect(find.text('Add your logo'), findsNothing);
   });
 
   testWidgets('the owner edits it and sees the saved info', (tester) async {

@@ -75,6 +75,8 @@ class Store {
     required this.name,
     required this.category,
     required this.profile,
+    required this.logoUrl,
+    required this.coverUrl,
     required this.isActive,
     required this.branches,
     required this.members,
@@ -85,17 +87,34 @@ class Store {
   final StoreCategory category;
   final StoreProfile profile;
 
+  /// Round, by the store's name wherever customers see it.
+  final String? logoUrl;
+
+  /// Wide, across the top of the store's page.
+  final String? coverUrl;
+
   /// Disabled stores can't post offers.
   final bool isActive;
   final List<Branch> branches;
   final List<StoreMember> members;
 }
 
+/// The store's two pictures.
+enum StoreImage { logo, cover }
+
 abstract interface class StoreRepository {
   Future<Result<Store>> getStore(String storeId);
 
   /// Owners only.
   Future<Result<Store>> updateProfile(String storeId, StoreProfile profile);
+
+  /// Owners only. Replaces [image] with [photo].
+  Future<Result<Store>> setImage(
+    String storeId,
+    StoreImage image,
+    PreparedPhoto photo, {
+    required void Function(double sent) onProgress,
+  });
 }
 
 /// Wired to the real implementation in `core/providers/dependencies.dart`.

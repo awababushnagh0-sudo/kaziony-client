@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:kernel/kernel.dart';
 import 'package:offers_api/partner.dart' hide City;
 import 'package:offers_api/partner.dart' as api show City;
@@ -36,6 +38,28 @@ class ApiStoreRepository implements StoreRepository {
     );
     return result.map(_toStore);
   }
+
+  @override
+  Future<Result<Store>> setImage(
+    String storeId,
+    StoreImage image,
+    PreparedPhoto photo, {
+    required void Function(double sent) onProgress,
+  }) async {
+    final result = await _api.upload(
+      PartnerStoreClient.new,
+      (stores) => stores.setImage(
+        storeId: storeId,
+        kind: switch (image) {
+          StoreImage.logo => 'logo',
+          StoreImage.cover => 'cover',
+        },
+        image: File(photo.fullPath),
+      ),
+      onProgress: onProgress,
+    );
+    return result.map(_toStore);
+  }
 }
 
 Store _toStore(StoreDetailDto dto) => Store(
@@ -52,6 +76,8 @@ Store _toStore(StoreDetailDto dto) => Store(
     facebookUrl: dto.facebookUrl,
     instagramUrl: dto.instagramUrl,
   ),
+  logoUrl: dto.logoUrl,
+  coverUrl: dto.coverUrl,
   isActive: dto.isActive,
   branches: [
     for (final branch in dto.branches)

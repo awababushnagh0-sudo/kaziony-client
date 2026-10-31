@@ -22,6 +22,8 @@ class _TwoBranches extends FakeStoreRepository {
         name: base.name,
         category: base.category,
         profile: base.profile,
+        logoUrl: null,
+        coverUrl: null,
         isActive: true,
         branches: [
           ...base.branches,

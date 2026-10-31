@@ -341,6 +341,42 @@ abstract class PartnerLocalizations {
   /// **'Store info'**
   String get storeInfoTitle;
 
+  /// No description provided for @storeLogo.
+  ///
+  /// In en, this message translates to:
+  /// **'Logo'**
+  String get storeLogo;
+
+  /// No description provided for @storeCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover photo'**
+  String get storeCover;
+
+  /// No description provided for @addLogo.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your logo'**
+  String get addLogo;
+
+  /// No description provided for @addCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a cover photo'**
+  String get addCover;
+
+  /// No description provided for @coverHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your shop front or what you sell'**
+  String get coverHint;
+
+  /// No description provided for @storeImagesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers see your logo by your name, and the cover across the top of your page.'**
+  String get storeImagesHint;
+
   /// No description provided for @storeInfoHint.
   ///
   /// In en, this message translates to:

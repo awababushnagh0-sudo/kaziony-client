@@ -51,7 +51,11 @@ class FakeAuthRepository implements AuthRepository {
   Future<void> logout() async => logouts++;
 }
 
-Store storeDetails({StoreProfile? profile, List<Branch>? branches}) => Store(
+Store storeDetails({
+  StoreProfile? profile,
+  List<Branch>? branches,
+  String? logoUrl,
+}) => Store(
   id: 'a',
   name: 'Store a',
   category: const StoreCategory(nameAr: 'حلويات', nameEn: 'Sweets'),
@@ -64,6 +68,8 @@ Store storeDetails({StoreProfile? profile, List<Branch>? branches}) => Store(
         facebookUrl: null,
         instagramUrl: null,
       ),
+  logoUrl: logoUrl,
+  coverUrl: null,
   isActive: true,
   branches: branches ?? [branch('b1', 'Andalus')],
   members: const [
@@ -110,6 +116,20 @@ class FakeStoreRepository implements StoreRepository {
   ) async {
     updates.add(profile);
     return Ok(storeDetails(profile: profile));
+  }
+
+  final images = <StoreImage>[];
+
+  @override
+  Future<Result<Store>> setImage(
+    String storeId,
+    StoreImage image,
+    PreparedPhoto photo, {
+    required void Function(double sent) onProgress,
+  }) async {
+    images.add(image);
+    onProgress(1);
+    return Ok(storeDetails(logoUrl: 'https://img.test/logo.jpg'));
   }
 }
 

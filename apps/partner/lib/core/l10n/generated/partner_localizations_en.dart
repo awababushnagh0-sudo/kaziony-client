@@ -136,6 +136,25 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get storeInfoTitle => 'Store info';
 
   @override
+  String get storeLogo => 'Logo';
+
+  @override
+  String get storeCover => 'Cover photo';
+
+  @override
+  String get addLogo => 'Add your logo';
+
+  @override
+  String get addCover => 'Add a cover photo';
+
+  @override
+  String get coverHint => 'Your shop front or what you sell';
+
+  @override
+  String get storeImagesHint =>
+      'Customers see your logo by your name, and the cover across the top of your page.';
+
+  @override
   String get storeInfoHint => 'Customers see this on your store\'s page.';
 
   @override

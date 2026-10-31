@@ -136,6 +136,25 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get storeInfoTitle => 'معلومات المتجر';
 
   @override
+  String get storeLogo => 'الشعار';
+
+  @override
+  String get storeCover => 'صورة الغلاف';
+
+  @override
+  String get addLogo => 'أضف شعارك';
+
+  @override
+  String get addCover => 'أضف صورة غلاف';
+
+  @override
+  String get coverHint => 'واجهة محلك أو ما تبيعه';
+
+  @override
+  String get storeImagesHint =>
+      'يرى الزبائن شعارك بجانب اسمك، وصورة الغلاف أعلى صفحة متجرك.';
+
+  @override
   String get storeInfoHint => 'يرى الزبائن هذه المعلومات في صفحة متجرك.';
 
   @override
