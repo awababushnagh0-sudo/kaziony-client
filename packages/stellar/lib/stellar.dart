@@ -20,6 +20,7 @@ export 'src/components/button/s_button_renderer.dart';
 export 'src/components/card/s_card.dart';
 export 'src/components/card/s_card_renderer.dart';
 export 'src/components/code/s_code_card.dart';
+export 'src/components/code/s_code_input.dart';
 export 'src/components/code/s_code_renderer.dart';
 export 'src/components/confirmation/s_confirmation_page.dart';
 export 'src/components/confirmation/s_confirmation_renderer.dart';

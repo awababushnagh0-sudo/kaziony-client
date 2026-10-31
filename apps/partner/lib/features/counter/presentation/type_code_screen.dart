@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
+import '../../../core/widgets/partner_illustrations.dart';
 import '../domain/claim.dart';
 
 /// For a QR code that won't scan (a cracked or dim screen): the customer
@@ -15,25 +18,28 @@ class TypeCodeScreen extends AppStatefulView {
 }
 
 class _TypeCodeScreenState extends AppViewState<TypeCodeScreen> {
-  final _form = FormGroup({
-    'code': FormControl<String>(
-      validators: [Validators.required, const _IsClaimCode()],
-    ),
-  });
+  final _form = FormGroup({'code': FormControl<String>()});
+  late final StreamSubscription<Object?> _typed;
+
+  /// Only characters a code can have get typed, so a full one is a code.
+  String? get _code =>
+      ClaimCode.read(_form.control('code').value as String? ?? '');
+
+  @override
+  void initState() {
+    super.initState();
+    _typed = _form.control('code').valueChanges.listen((_) => setState(() {}));
+  }
 
   @override
   void dispose() {
+    unawaited(_typed.cancel());
     _form.dispose();
     super.dispose();
   }
 
   void _check() {
-    if (_form.invalid) {
-      _form.markAllAsTouched();
-      return;
-    }
-    final code = ClaimCode.read(_form.control('code').value as String);
-    if (code != null) context.pushReplacement(Routes.claim(code));
+    if (_code case final code?) context.pushReplacement(Routes.claim(code));
   }
 
   @override
@@ -42,35 +48,37 @@ class _TypeCodeScreenState extends AppViewState<TypeCodeScreen> {
     return SScaffold(
       title: s.typeCode,
       scrollable: true,
-      bottom: SButton(label: s.checkCode, onPressed: _check, expand: true),
       body: SForm(
         form: _form,
-        child: STextInput(
-          controlName: 'code',
-          label: s.codeLabel,
-          kind: TextInputKind.code,
-          helper: s.codeHelper,
-          maxLength: ClaimCode.length,
-          autofocus: true,
-          isLast: true,
-          onSubmitted: _check,
-          validationMessages: {_IsClaimCode.key: (_) => s.codeInvalid},
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Gap(Space.xl),
+            const Center(child: SIllustration(PartnerIllustrations.typeCode)),
+            const Gap(Space.md),
+            SText(
+              s.codeHelper,
+              color: SColor.textMuted,
+              align: TextAlign.center,
+            ),
+            const Gap(Space.xl),
+            SCodeInput(
+              controlName: 'code',
+              label: s.codeLabel,
+              length: ClaimCode.length,
+              characters: ClaimCode.character,
+              autofocus: true,
+              onSubmitted: _check,
+            ),
+            const Gap(Space.xl),
+            SButton(
+              label: s.checkCode,
+              expand: true,
+              onPressed: _code == null ? null : _check,
+            ),
+          ],
         ),
       ),
     );
-  }
-}
-
-class _IsClaimCode extends Validator<dynamic> {
-  const _IsClaimCode();
-
-  static const key = 'claimCode';
-
-  @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
-    final value = control.value;
-    // An empty field is Validators.required's to report.
-    if (value is! String || value.isEmpty) return null;
-    return ClaimCode.read(value) == null ? {key: true} : null;
   }
 }

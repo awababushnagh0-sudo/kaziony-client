@@ -20,9 +20,10 @@ enum ClaimProblem { alreadyRedeemed, cancelled, expired, otherBranch, other }
 abstract final class ClaimCode {
   static const length = 8;
 
-  /// Capitals and digits without look-alikes (no 0, O, 1, I or L), as the
-  /// backend makes them.
-  static final _valid = RegExp('^[A-HJKMNP-Z2-9]{$length}\$');
+  /// One character of a code: capitals and digits without look-alikes
+  /// (no 0, O, 1, I or L), as the backend makes them.
+  static final character = RegExp('[A-HJKMNP-Z2-9]');
+  static final _valid = RegExp('^${character.pattern}{$length}\$');
 
   /// The code in [raw] (scanned or typed, with any case, spaces or dashes),
   /// or null when it isn't one.

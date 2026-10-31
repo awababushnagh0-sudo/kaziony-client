@@ -23,22 +23,31 @@ void main() {
     await open(tester);
 
     await tester.enterText(find.byType(EditableText), 'abcd2345');
+    await tester.pump();
+    for (final character in 'ABCD2345'.split('')) {
+      expect(find.text(character), findsOneWidget);
+    }
     await tester.tap(find.text('Check the code'));
     await tester.pumpAndSettle();
 
     expect(find.text('claim ABCD2345'), findsOneWidget);
   });
 
-  testWidgets('refuses what cannot be a code', (tester) async {
+  testWidgets('takes no look-alikes, and checks only a whole code', (
+    tester,
+  ) async {
     await open(tester);
 
-    await tester.enterText(find.byType(EditableText), 'ABCD0000');
+    await tester.enterText(find.byType(EditableText), 'AB-0O1I-CD');
+    await tester.pump();
+    expect(find.text('0'), findsNothing);
     await tester.tap(find.text('Check the code'));
     await tester.pumpAndSettle();
+    expect(find.byType(TypeCodeScreen), findsOneWidget);
 
-    expect(
-      find.text('A code is 8 letters and numbers, like ABCD2345.'),
-      findsOneWidget,
-    );
+    await tester.enterText(find.byType(EditableText), 'ABCD2345');
+    await tester.testTextInput.receiveAction(TextInputAction.go);
+    await tester.pumpAndSettle();
+    expect(find.text('claim ABCD2345'), findsOneWidget);
   });
 }

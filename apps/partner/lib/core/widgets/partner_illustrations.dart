@@ -37,6 +37,10 @@ enum PartnerIllustrations implements Illustration {
   /// Two people, the owner in front: the store's team.
   team('team', Size(56, 56)),
 
+  /// A phone showing a cracked QR code with its 8 characters under it,
+  /// and a speech bubble: the customer reads the code out.
+  typeCode('type_code', Size(140, 104)),
+
   /// A price tag beside an empty one drawn in dashes, and a plus: no
   /// offers yet. The three below are on empty pages (`SEmptyView`).
   noOffers('no_offers', Size(140, 104)),
