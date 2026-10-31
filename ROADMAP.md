@@ -140,8 +140,10 @@ Everything after this is scoped to one store (`/partner/stores/:storeId/...`).
 - [x] **new** stellar: `SListGroup` (rows in a rounded box under a title), rows with a
       value and an arrow, `chooseLanguage` / `languageName` shared with the globe, stellar's
       own back arrow
-- [ ] Contact us (call or WhatsApp our team): needs the support number
-- [ ] Logo and cover photo: the photo pieces from 2.4 are ready for them
+- [x] Contact us (call, WhatsApp, email, hours), from Profile, the login page (forgot
+      password, no store yet) and the no-store page; the details come from `/app-config`
+      (placeholders until the real ones are set); terms linked from the login page
+- [x] Logo (cropped round) and cover photo (16:9) on Store info, uploaded right away
 - [ ] Opening hours: needs a format agreed with the backend (`openingHours` is free-form
       JSON today), then a time picker
 
