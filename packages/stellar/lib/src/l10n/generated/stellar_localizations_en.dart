@@ -132,6 +132,9 @@ class StellarLocalizationsEn extends StellarLocalizations {
   String get changePhoto => 'Change the photo';
 
   @override
+  String get addPhotoHint => 'Clear, in good light';
+
+  @override
   String photoUploading(int percent) {
     return 'Uploading… $percent%';
   }

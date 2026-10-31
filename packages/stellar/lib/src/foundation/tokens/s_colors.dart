@@ -23,6 +23,8 @@ class StellarColors {
     required this.onDiscount,
     required this.cream,
     required this.shadow,
+    required this.scrim,
+    required this.onScrim,
     required this.background,
     required this.surface,
     required this.surfaceMuted,
@@ -83,6 +85,11 @@ class StellarColors {
 
   /// Under what floats over the page (the floating add button).
   final Color shadow;
+
+  /// Dims a photo while something happens over it (an upload), with
+  /// [onScrim] on it: dark, in both themes.
+  final Color scrim;
+  final Color onScrim;
   final Color background;
 
   /// Cards, sheets and dialogs. The same as [background]: a card's border

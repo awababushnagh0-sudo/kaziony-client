@@ -129,6 +129,9 @@ class StellarLocalizationsAr extends StellarLocalizations {
   String get changePhoto => 'تغيير الصورة';
 
   @override
+  String get addPhotoHint => 'واضحة وفي إضاءة جيدة';
+
+  @override
   String photoUploading(int percent) {
     return 'جارٍ الرفع… $percent%';
   }

@@ -329,6 +329,12 @@ abstract class StellarLocalizations {
   /// **'Change the photo'**
   String get changePhoto;
 
+  /// No description provided for @addPhotoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear, in good light'**
+  String get addPhotoHint;
+
   /// No description provided for @photoUploading.
   ///
   /// In en, this message translates to:

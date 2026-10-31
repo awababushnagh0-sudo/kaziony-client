@@ -52,6 +52,7 @@
   "choosePhoto": "Choose from gallery",
   "addPhoto": "Add a photo",
   "changePhoto": "Change the photo",
+  "addPhotoHint": "Clear, in good light",
   "photoUploading": "Uploading… {percent}%",
   "photoUploadFailed": "The photo didn't upload. Tap to try again.",
   "photoFailed": "Couldn't use this photo. Try another one.",

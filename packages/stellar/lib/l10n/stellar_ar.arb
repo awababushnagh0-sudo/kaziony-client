@@ -38,6 +38,7 @@
   "choosePhoto": "اختيار من المعرض",
   "addPhoto": "إضافة صورة",
   "changePhoto": "تغيير الصورة",
+  "addPhotoHint": "واضحة وفي إضاءة جيدة",
   "photoUploading": "جارٍ الرفع… {percent}%",
   "photoUploadFailed": "لم تُرفع الصورة. اضغط للمحاولة مرة أخرى.",
   "photoFailed": "تعذّر استخدام هذه الصورة. جرّب صورة أخرى.",
