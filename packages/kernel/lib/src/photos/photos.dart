@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 
 enum PhotoSource { camera, gallery }
 
-/// A photo ready to upload, square and small, as JPEG files: the full
+/// A photo ready to upload, cropped and small, as JPEG files: the full
 /// picture and its thumbnail for lists.
 @immutable
 class PreparedPhoto {
@@ -55,10 +55,26 @@ final class PhotoFailed extends PhotoPick {
 }
 
 /// Takes or picks photos for upload. Tests use a fake.
+/// How a photo is cropped.
+enum PhotoShape {
+  /// An item's photo.
+  square,
+
+  /// Square, cropped in a circle: a logo.
+  round,
+
+  /// 16 by 9: a cover photo across the top of a page.
+  wide,
+}
+
 abstract interface class PhotoPicker {
-  /// Takes or picks a photo, lets the user crop it square ([cropTitle] on
-  /// top), and makes it small enough to upload on a slow connection.
-  Future<PhotoPick> pick(PhotoSource source, {required String cropTitle});
+  /// Takes or picks a photo, lets the user crop it to [shape] ([cropTitle]
+  /// on top), and makes it small enough to upload on a slow connection.
+  Future<PhotoPick> pick(
+    PhotoSource source, {
+    required String cropTitle,
+    PhotoShape shape = PhotoShape.square,
+  });
 
   /// Opens the app's page in the phone's settings, where the camera can be
   /// allowed again.
@@ -79,7 +95,14 @@ class DevicePhotoPicker implements PhotoPicker {
   Future<PhotoPick> pick(
     PhotoSource source, {
     required String cropTitle,
+    PhotoShape shape = PhotoShape.square,
   }) async {
+    final wide = shape == PhotoShape.wide;
+    // A cover keeps the long side; its height follows.
+    final fullHeight = wide ? fullSide * 9 ~/ 16 : fullSide;
+    final cropStyle = shape == PhotoShape.round
+        ? CropStyle.circle
+        : CropStyle.rectangle;
     try {
       final picked = await ImagePicker().pickImage(
         source: switch (source) {
@@ -91,19 +114,23 @@ class DevicePhotoPicker implements PhotoPicker {
       if (picked == null) return const PhotoCancelled();
       final cropped = await ImageCropper().cropImage(
         sourcePath: picked.path,
-        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        aspectRatio: wide
+            ? const CropAspectRatio(ratioX: 16, ratioY: 9)
+            : const CropAspectRatio(ratioX: 1, ratioY: 1),
         maxWidth: fullSide,
-        maxHeight: fullSide,
+        maxHeight: fullHeight,
         // Kept sharp here: it's shrunk once, below.
         compressQuality: 100,
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: cropTitle,
+            cropStyle: cropStyle,
             lockAspectRatio: true,
             hideBottomControls: true,
           ),
           IOSUiSettings(
             title: cropTitle,
+            cropStyle: cropStyle,
             aspectRatioLockEnabled: true,
             resetAspectRatioEnabled: false,
             aspectRatioPickerButtonHidden: true,
@@ -111,8 +138,18 @@ class DevicePhotoPicker implements PhotoPicker {
         ],
       );
       if (cropped == null) return const PhotoCancelled();
-      final full = await _shrink(cropped.path, side: fullSide, name: 'full');
-      final thumb = await _shrink(cropped.path, side: thumbSide, name: 'thumb');
+      final full = await _shrink(
+        cropped.path,
+        width: fullSide,
+        height: fullHeight,
+        name: 'full',
+      );
+      final thumb = await _shrink(
+        cropped.path,
+        width: thumbSide,
+        height: thumbSide * fullHeight ~/ fullSide,
+        name: 'thumb',
+      );
       return PhotoReady(
         PreparedPhoto(
           fullPath: full.path,
@@ -131,11 +168,12 @@ class DevicePhotoPicker implements PhotoPicker {
     }
   }
 
-  /// A JPEG [side] pixels wide, under [maxBytes]: the quality drops until
+  /// A JPEG [width] by [height] pixels, under [maxBytes]: the quality drops until
   /// it fits.
   Future<XFile> _shrink(
     String path, {
-    required int side,
+    required int width,
+    required int height,
     required String name,
   }) async {
     final target = '$path-$name.jpg';
@@ -143,8 +181,8 @@ class DevicePhotoPicker implements PhotoPicker {
       final file = await FlutterImageCompress.compressAndGetFile(
         path,
         target,
-        minWidth: side,
-        minHeight: side,
+        minWidth: width,
+        minHeight: height,
         quality: quality,
       );
       if (file == null) break;

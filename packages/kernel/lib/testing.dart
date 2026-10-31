@@ -44,14 +44,17 @@ class FakePhotoPicker implements PhotoPicker {
 
   PhotoPick next;
   final picks = <PhotoSource>[];
+  final shapes = <PhotoShape>[];
   var settingsOpened = 0;
 
   @override
   Future<PhotoPick> pick(
     PhotoSource source, {
     required String cropTitle,
+    PhotoShape shape = PhotoShape.square,
   }) async {
     picks.add(source);
+    shapes.add(shape);
     return next;
   }
 
