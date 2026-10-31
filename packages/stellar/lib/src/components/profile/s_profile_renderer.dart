@@ -29,10 +29,14 @@ class Shortcut {
     required this.illustration,
     required this.label,
     required this.onTap,
+    this.hint,
   });
 
-  final SIllustrations illustration;
+  final Illustration illustration;
   final String label;
+
+  /// What's inside, under [label].
+  final String? hint;
   final VoidCallback onTap;
 }
 

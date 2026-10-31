@@ -42,8 +42,8 @@ class SProfileHeader extends StatelessWidget {
   );
 }
 
-/// The pages people open most, as cards side by side, each a picture over
-/// its label.
+/// The pages people open most, as rows bigger than settings rows: gray,
+/// each with its picture, its name, a line on what's inside and an arrow.
 class SShortcuts extends StatelessWidget {
   const SShortcuts(this.shortcuts, {super.key});
 

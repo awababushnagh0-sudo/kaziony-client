@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../../foundation/s_kit.dart';
 import '../../foundation/s_tokens.dart';
 import '../badge/s_badge_material.dart';
+import '../icon/s_icon.dart';
+import '../icon/s_icon_material.dart';
 import '../illustration/s_illustration_material.dart';
 import '../illustration/s_illustration_renderer.dart';
 import 's_profile_renderer.dart';
@@ -94,61 +96,83 @@ class MaterialProfileRenderer implements ProfileRenderer {
   }
 
   @override
-  Widget shortcuts(BuildContext context, List<Shortcut> shortcuts) {
+  Widget shortcuts(BuildContext context, List<Shortcut> shortcuts) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    spacing: Space.sm,
+    children: [for (final shortcut in shortcuts) _ShortcutRow(shortcut)],
+  );
+}
+
+/// A row bigger than a settings row, so it stands apart from them: gray
+/// instead of outlined, with a picture, a name in bold, what's inside and
+/// an arrow.
+class _ShortcutRow extends StatelessWidget {
+  const _ShortcutRow(this.shortcut);
+
+  final Shortcut shortcut;
+
+  @override
+  Widget build(BuildContext context) {
     final c = context.colors;
-    final shape = RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(Radii.xl),
-      side: BorderSide(color: c.border),
-    );
-    // Cards of one height, however the labels wrap.
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: Space.md,
-        children: [
-          for (final shortcut in shortcuts)
-            Expanded(
-              child: Material(
-                color: c.surface,
-                shape: shape,
-                clipBehavior: Clip.antiAlias,
-                child: InkWell(
-                  onTap: shortcut.onTap,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Space.sm,
-                      vertical: Space.lg,
-                    ),
-                    child: Column(
-                      spacing: Space.md,
-                      children: [
-                        // At its own size, so the row measures the cards by
-                        // their content.
-                        SizedBox.fromSize(
-                          size: shortcut.illustration.size,
-                          child: const MaterialIllustrationRenderer().render(
-                            context,
-                            IllustrationSpec(
-                              illustration: shortcut.illustration,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          shortcut.label,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: context.style.text.small,
-                            fontWeight: SFontWeight.semibold.value,
-                            color: c.text,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+    final text = context.style.text;
+    final hint = shortcut.hint;
+    return Material(
+      color: c.fieldFill,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Radii.xl),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: shortcut.onTap,
+        child: Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(
+            Space.md,
+            Space.md,
+            Space.lg,
+            Space.md,
+          ),
+          child: Row(
+            spacing: Space.md,
+            children: [
+              SizedBox.fromSize(
+                size: shortcut.illustration.size,
+                child: const MaterialIllustrationRenderer().render(
+                  context,
+                  IllustrationSpec(illustration: shortcut.illustration),
                 ),
               ),
-            ),
-        ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: Space.xxs,
+                  children: [
+                    Text(
+                      shortcut.label,
+                      style: TextStyle(
+                        fontSize: text.subtitle,
+                        fontWeight: SFontWeight.bold.value,
+                        color: c.text,
+                      ),
+                    ),
+                    if (hint != null)
+                      Text(
+                        hint,
+                        style: TextStyle(
+                          fontSize: text.small,
+                          color: c.textMuted,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              Icon(
+                materialIcon(SIcons.chevron),
+                size: SIconSize.sm.pixels,
+                color: c.textSubtle,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

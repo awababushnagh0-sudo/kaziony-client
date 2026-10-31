@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
+import '../../../core/widgets/partner_illustrations.dart';
 import '../../auth/domain/auth_repository.dart';
 import '../../store/domain/current_store.dart';
 
@@ -45,18 +46,21 @@ class ProfileScreen extends AppView {
             // The store's own pages, the ones opened most.
             SShortcuts([
               Shortcut(
-                illustration: SIllustrations.storeInfo,
+                illustration: PartnerIllustrations.storeInfo,
                 label: s.storeInfoTitle,
+                hint: s.storeInfoShortcutHint,
                 onTap: () => context.push(Routes.storeInfo),
               ),
               Shortcut(
-                illustration: SIllustrations.branches,
+                illustration: PartnerIllustrations.branches,
                 label: s.branchesTitle,
+                hint: s.branchesShortcutHint,
                 onTap: () => context.push(Routes.branches),
               ),
               Shortcut(
-                illustration: SIllustrations.team,
+                illustration: PartnerIllustrations.team,
                 label: s.teamTitle,
+                hint: s.teamShortcutHint,
                 onTap: () => context.push(Routes.team),
               ),
             ]),
