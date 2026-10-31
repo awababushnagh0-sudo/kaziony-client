@@ -17,6 +17,10 @@ class StellarColors {
     required this.accentWash,
     required this.accentInk,
     required this.primarySoft,
+    required this.primaryTint,
+    required this.discountFrom,
+    required this.discountTo,
+    required this.onDiscount,
     required this.cream,
     required this.shadow,
     required this.background,
@@ -63,19 +67,33 @@ class StellarColors {
   /// Hovered and selected rows, table headers, soft buttons.
   final Color primarySoft;
 
+  /// A soft green behind the brand's green: the track of how much of an
+  /// offer is left.
+  final Color primaryTint;
+
+  /// An offer's discount, its own color: a gradient from [discountFrom] to
+  /// [discountTo], with [onDiscount] on it.
+  final Color discountFrom;
+  final Color discountTo;
+  final Color onDiscount;
+
   /// The logo's background: behind the brand's pictures (the sign-in
   /// page's shop).
   final Color cream;
 
-  /// Under cards that float on the page (a store's numbers).
+  /// Under what floats over the page (the floating add button).
   final Color shadow;
   final Color background;
+
+  /// Cards, sheets and dialogs. The same as [background]: a card's border
+  /// sets it apart, not its color.
   final Color surface;
 
   /// The side menu.
   final Color surfaceMuted;
 
-  /// Text field background.
+  /// A quiet gray: behind text fields on the dashboard, the search field,
+  /// and the panel that groups a store's numbers.
   final Color fieldFill;
   final Color border;
   final Color text;
@@ -116,11 +134,18 @@ class StellarColors {
     SColor.danger => danger,
     SColor.onDanger => onDanger,
     SColor.link => link,
+    SColor.surface => surface,
+    SColor.surfaceMuted => surfaceMuted,
+    SColor.fieldFill => fieldFill,
+    SColor.primaryTint => primaryTint,
+    SColor.successSoft => successSoft,
+    SColor.accentSoft => accentSoft,
+    SColor.cream => cream,
   };
 }
 
-/// The colors text and icons can have. Each one is a [StellarColors] token,
-/// so apps can't pick a color of their own.
+/// The colors text, icons and panels can have. Each one is a
+/// [StellarColors] token, so apps can't pick a color of their own.
 enum SColor {
   text,
 
@@ -146,4 +171,19 @@ enum SColor {
   /// On a [danger] background.
   onDanger,
   link,
+
+  // Behind things: panels and cards (SStatGrid).
+  surface,
+  surfaceMuted,
+
+  /// A quiet gray.
+  fieldFill,
+
+  /// A soft green.
+  primaryTint,
+  successSoft,
+  accentSoft,
+
+  /// The brand's cream.
+  cream,
 }

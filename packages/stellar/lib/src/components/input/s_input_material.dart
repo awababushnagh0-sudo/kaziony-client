@@ -385,18 +385,29 @@ class _SearchFieldState extends State<_SearchField> {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
+    // A gray pill, unlike the form's fields: it searches the page, it
+    // doesn't ask for anything.
+    const shape = OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(Radii.pill)),
+      borderSide: BorderSide.none,
+    );
     return TextField(
       controller: _controller,
       onChanged: widget.spec.onChanged,
       style: TextStyle(fontSize: context.style.text.body),
       decoration: InputDecoration(
         hintText: widget.spec.hint,
+        fillColor: c.fieldFill,
+        border: shape,
+        enabledBorder: shape,
+        focusedBorder: shape,
         prefixIcon: Icon(
           materialIcon(SIcons.search),
           size: SIconSize.xs.pixels,
           color: c.textSubtle,
         ),
-        prefixIconConstraints: const BoxConstraints(minWidth: 36),
+        // Clear of the round end.
+        prefixIconConstraints: const BoxConstraints(minWidth: 44),
       ),
     );
   }

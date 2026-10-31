@@ -152,6 +152,11 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // calendar
+  SIcons.clock => const IconData(
+    0xe087,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // clock
   SIcons.pause => const IconData(
     0xe12e,
     fontFamily: _f,

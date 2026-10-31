@@ -68,6 +68,9 @@ enum SIcons {
   delete,
   archive,
   calendar,
+
+  /// Until when an offer runs.
+  clock,
   pause,
 
   /// Starts again (a paused offer).
