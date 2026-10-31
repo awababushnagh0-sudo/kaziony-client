@@ -2,6 +2,7 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
+import '../../../core/routes/routes.dart';
 import '../../auth/domain/auth_repository.dart';
 
 /// A store account that isn't linked to a store, e.g. staff who were
@@ -15,10 +16,21 @@ class NoStoreScreen extends AppView {
     return SAuthPage(
       title: s.noStoreTitle,
       subtitle: s.noStoreMessage,
-      child: SButton.secondary(
-        label: s.logout,
-        icon: SIcons.logout,
-        onPressed: () => ref.read(authRepositoryProvider).logout(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SButton(
+            label: s.contactUs,
+            icon: SIcons.chat,
+            onPressed: () => context.push(Routes.contact),
+          ),
+          const Gap(Space.md),
+          SButton.secondary(
+            label: s.logout,
+            icon: SIcons.logout,
+            onPressed: () => ref.read(authRepositoryProvider).logout(),
+          ),
+        ],
       ),
     );
   }

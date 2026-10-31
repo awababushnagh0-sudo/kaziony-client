@@ -30,6 +30,24 @@ void main() {
     expect(go(const SignedOut(), Routes.login), isNull);
   });
 
+  test('opens contact and the terms signed in or out', () {
+    final mustChange = SignedIn(
+      user(mustChangePassword: true, memberships: [store('a')]),
+    );
+    for (final session in [const SignedOut(), mustChange, inStore]) {
+      expect(go(session, Routes.contact), isNull);
+      expect(go(session, Routes.terms), isNull);
+    }
+    expect(
+      go(
+        const SignedOut(),
+        Routes.contact,
+        update: UpdateStatus.updateRequired,
+      ),
+      Routes.update,
+    );
+  });
+
   test('forces a temporary password to be changed first', () {
     final session = SignedIn(
       user(mustChangePassword: true, memberships: [store('a')]),

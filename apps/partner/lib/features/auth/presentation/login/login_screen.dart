@@ -2,6 +2,7 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../../core/l10n/generated/partner_localizations.dart';
+import '../../../../core/routes/routes.dart';
 import '../../../../core/widgets/partner_illustrations.dart';
 import 'login_view_model.dart';
 
@@ -35,7 +36,25 @@ class LoginScreen extends AppView {
         illustration: PartnerIllustrations.signInHero,
       ),
       actions: const [SLanguageButton()],
-      footer: [SText.caption(s.loginJoinHint, align: TextAlign.center)],
+      footer: [
+        Column(
+          children: [
+            SLinkText(
+              text: s.loginJoinHint,
+              link: s.contactUs,
+              onTap: () => context.push(Routes.contact),
+              align: TextAlign.center,
+            ),
+            const Gap(Space.sm),
+            SLinkText(
+              text: s.termsAgreement,
+              link: s.termsTitle,
+              onTap: () => context.push(Routes.terms),
+              align: TextAlign.center,
+            ),
+          ],
+        ),
+      ],
       child: SForm(
         form: viewModel.form,
         child: Column(
@@ -56,6 +75,14 @@ class LoginScreen extends AppView {
               autofillHints: const ['password'],
               isLast: true,
               onSubmitted: viewModel.submit,
+            ),
+            // Our team resets it: there's no code by SMS.
+            Align(
+              alignment: AlignmentDirectional.centerEnd,
+              child: SButton.text(
+                label: s.forgotPassword,
+                onPressed: () => context.push(Routes.contact),
+              ),
             ),
             if (error != null) ...[
               const Gap(Space.lg),

@@ -101,6 +101,11 @@ class ProfileScreen extends AppView {
                   onTap: () => chooseTheme(context, ref),
                 ),
                 SListTile(
+                  icon: SIcons.chat,
+                  title: s.contactUs,
+                  onTap: () => context.push(Routes.contact),
+                ),
+                SListTile(
                   icon: SIcons.info,
                   title: s.aboutTitle,
                   onTap: () => context.push(Routes.about),

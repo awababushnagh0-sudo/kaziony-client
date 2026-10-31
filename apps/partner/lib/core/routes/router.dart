@@ -27,6 +27,7 @@ import '../../features/store/presentation/edit_store_info_screen.dart';
 import '../../features/store/presentation/no_store_screen.dart';
 import '../../features/store/presentation/store_info_screen.dart';
 import '../../features/store/presentation/team_screen.dart';
+import '../../features/support/presentation/contact_screen.dart';
 import '../widgets/partner_shell.dart';
 import 'redirect.dart';
 import 'routes.dart';
@@ -82,6 +83,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.team, builder: (_, _) => const TeamScreen()),
       GoRoute(path: Routes.about, builder: (_, _) => const AboutScreen()),
       GoRoute(path: Routes.terms, builder: (_, _) => const TermsScreen()),
+      GoRoute(path: Routes.contact, builder: (_, _) => const ContactScreen()),
       GoRoute(
         path: Routes.password,
         builder: (_, _) => const ChangePasswordScreen(temporary: false),

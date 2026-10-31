@@ -29,8 +29,32 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get loginButton => 'Log in';
 
   @override
-  String get loginJoinHint =>
-      'Store not on Kaziony yet? Talk to us and we\'ll add it.';
+  String get loginJoinHint => 'Store not on Kaziony yet?';
+
+  @override
+  String get forgotPassword => 'Forgot your password?';
+
+  @override
+  String get contactUs => 'Contact us';
+
+  @override
+  String get termsAgreement => 'By signing in, you agree to the';
+
+  @override
+  String get contactMessage =>
+      'Forgot your password, want to add your store or need a hand? Our team is here to help.';
+
+  @override
+  String get callUs => 'Call';
+
+  @override
+  String get whatsappUs => 'WhatsApp';
+
+  @override
+  String get supportHours => 'When we answer';
+
+  @override
+  String get linkNotOpened => 'Couldn\'t open it on this phone.';
 
   @override
   String get wrongCredentials => 'Wrong phone number or password.';

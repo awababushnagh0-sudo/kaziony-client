@@ -2,11 +2,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kernel/kernel.dart';
 import 'package:kernel/testing.dart';
 import 'package:partner/core/l10n/generated/partner_localizations.dart';
+import 'package:partner/core/routes/routes.dart';
 import 'package:partner/features/auth/domain/auth_repository.dart';
 import 'package:partner/features/auth/presentation/login/login_screen.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../fakes.dart';
+import '../../support/pump_app.dart';
 
 Widget harness(FakeAuthRepository auth, {Locale locale = const Locale('ar')}) =>
     AppScope(
@@ -16,7 +18,11 @@ Widget harness(FakeAuthRepository auth, {Locale locale = const Locale('ar')}) =>
       ],
       child: SApp(
         routerConfig: GoRouter(
-          routes: [GoRoute(path: '/', builder: (_, _) => const LoginScreen())],
+          routes: [
+            GoRoute(path: '/', builder: (_, _) => const LoginScreen()),
+            stubPage(Routes.contact, 'contact page'),
+            stubPage(Routes.terms, 'terms page'),
+          ],
         ),
         locale: locale,
         onGenerateTitle: (_) => 'test',
@@ -68,5 +74,36 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Wrong phone number or password.'), findsOneWidget);
+  });
+
+  testWidgets('a forgotten password leads to our team', (tester) async {
+    await tester.pumpWidget(harness(FakeAuthRepository()));
+    await tester.pumpAndSettle();
+
+    await tester.ensureVisible(find.text('نسيت كلمة المرور؟'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('نسيت كلمة المرور؟'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('contact page'), findsOneWidget);
+  });
+
+  testWidgets('links to contact us and the terms at the bottom', (
+    tester,
+  ) async {
+    await tester.pumpWidget(harness(FakeAuthRepository()));
+    await tester.pumpAndSettle();
+
+    await tester.ensureVisible(find.textContaining('الشروط والأحكام'));
+    await tester.pumpAndSettle();
+    await tester.tapOnText(find.textRange.ofSubstring('الشروط والأحكام'));
+    await tester.pumpAndSettle();
+    expect(find.text('terms page'), findsOneWidget);
+
+    GoRouter.of(tester.element(find.text('terms page'))).pop();
+    await tester.pumpAndSettle();
+    await tester.tapOnText(find.textRange.ofSubstring('تواصل معنا'));
+    await tester.pumpAndSettle();
+    expect(find.text('contact page'), findsOneWidget);
   });
 }

@@ -13,6 +13,10 @@ const _entryScreens = {
   Routes.noStore,
 };
 
+/// Pages anyone can open, signed in or not: the way to our team (a
+/// forgotten password) and the terms.
+const _openToAll = {Routes.contact, Routes.terms};
+
 /// Where the user must be, given the session, the store picked on this
 /// device and the version check. Null means "stay where you are".
 String? redirectFor({
@@ -21,6 +25,11 @@ String? redirectFor({
   required UpdateStatus update,
   required String location,
 }) {
+  if (_openToAll.contains(location) &&
+      update != UpdateStatus.updateRequired &&
+      session is! SessionRestoring) {
+    return null;
+  }
   final target = switch ((update, session)) {
     (UpdateStatus.updateRequired, _) => Routes.update,
     (_, SessionRestoring()) => Routes.splash,

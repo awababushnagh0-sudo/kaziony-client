@@ -140,8 +140,56 @@ abstract class PartnerLocalizations {
   /// No description provided for @loginJoinHint.
   ///
   /// In en, this message translates to:
-  /// **'Store not on Kaziony yet? Talk to us and we\'ll add it.'**
+  /// **'Store not on Kaziony yet?'**
   String get loginJoinHint;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your password?'**
+  String get forgotPassword;
+
+  /// No description provided for @contactUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact us'**
+  String get contactUs;
+
+  /// No description provided for @termsAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'By signing in, you agree to the'**
+  String get termsAgreement;
+
+  /// No description provided for @contactMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your password, want to add your store or need a hand? Our team is here to help.'**
+  String get contactMessage;
+
+  /// No description provided for @callUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get callUs;
+
+  /// No description provided for @whatsappUs.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get whatsappUs;
+
+  /// No description provided for @supportHours.
+  ///
+  /// In en, this message translates to:
+  /// **'When we answer'**
+  String get supportHours;
+
+  /// No description provided for @linkNotOpened.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open it on this phone.'**
+  String get linkNotOpened;
 
   /// No description provided for @wrongCredentials.
   ///

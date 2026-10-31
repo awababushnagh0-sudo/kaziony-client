@@ -29,7 +29,32 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get loginButton => 'دخول';
 
   @override
-  String get loginJoinHint => 'محلك مش في كزيوني؟ كلمنا ونضيفوه.';
+  String get loginJoinHint => 'محلك مش في كزيوني؟';
+
+  @override
+  String get forgotPassword => 'نسيت كلمة المرور؟';
+
+  @override
+  String get contactUs => 'تواصل معنا';
+
+  @override
+  String get termsAgreement => 'بتسجيل الدخول فأنت توافق على';
+
+  @override
+  String get contactMessage =>
+      'نسيت كلمة المرور، أو تريد إضافة متجرك، أو تحتاج مساعدة؟ فريقنا هنا لمساعدتك.';
+
+  @override
+  String get callUs => 'اتصال';
+
+  @override
+  String get whatsappUs => 'واتساب';
+
+  @override
+  String get supportHours => 'أوقات الرد';
+
+  @override
+  String get linkNotOpened => 'تعذّر فتحه على هذا الهاتف.';
 
   @override
   String get wrongCredentials => 'رقم الهاتف أو كلمة المرور غير صحيحة.';

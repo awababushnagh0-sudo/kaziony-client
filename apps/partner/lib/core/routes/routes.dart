@@ -20,6 +20,9 @@ abstract final class Routes {
   static const password = '/password';
   static const about = '/about';
   static const terms = '/terms';
+
+  /// Open signed in or out, like [terms].
+  static const contact = '/contact';
   static const newProduct = '$products/new';
   static String product(String id) => '$products/$id';
   static String editProduct(String id) => '${product(id)}/edit';

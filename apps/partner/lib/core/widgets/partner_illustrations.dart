@@ -37,6 +37,10 @@ enum PartnerIllustrations implements Illustration {
   /// Two people, the owner in front: the store's team.
   team('team', Size(56, 56)),
 
+  /// A green speech bubble with a phone, and an orange one with a check:
+  /// our team answers.
+  contact('contact', Size(140, 104)),
+
   /// A phone showing a cracked QR code with its 8 characters under it,
   /// and a speech bubble: the customer reads the code out.
   typeCode('type_code', Size(140, 104)),
