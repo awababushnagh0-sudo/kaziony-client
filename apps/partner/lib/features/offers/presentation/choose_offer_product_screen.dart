@@ -79,6 +79,8 @@ class ChooseOfferProductScreen extends AppView {
                   );
                 }
                 return SPagedList(
+                  // The products are cards, apart from each other.
+                  divided: false,
                   itemCount: page.items.length,
                   itemBuilder: (context, index) {
                     final product = page.items[index];
