@@ -3,8 +3,9 @@ import 'package:flutter/widgets.dart';
 import '../../foundation/s_kit.dart';
 import 's_scanner_renderer.dart';
 
-/// A camera filling the area, dimmed around a square to aim at, with [hint]
-/// under it and a button for the phone's light.
+/// A camera filling the page, up to the status bar, dimmed around a square
+/// to aim at with [hint] under it. Over its top: the [place] and the
+/// phone's light; under the square: the [actions].
 class SScannerView extends StatelessWidget {
   const SScannerView({
     required this.camera,
@@ -13,6 +14,8 @@ class SScannerView extends StatelessWidget {
     this.torchOn = false,
     this.onTorch,
     this.cover,
+    this.place,
+    this.actions = const [],
     super.key,
   });
 
@@ -29,8 +32,14 @@ class SScannerView extends StatelessWidget {
 
   /// Shown on the page's background instead of the camera, e.g. when the
   /// camera is off. The camera stays underneath, so it opens again by
-  /// itself once allowed.
+  /// itself once allowed. The [place] and [actions] stay.
   final Widget? cover;
+
+  /// Where the phone scans; null hides the button (nothing to change).
+  final ScannerPlace? place;
+
+  /// The first is the main one, drawn solid; the rest are quieter.
+  final List<ScannerAction> actions;
 
   @override
   Widget build(BuildContext context) => StellarKit.of(context).scanner.view(
@@ -42,6 +51,8 @@ class SScannerView extends StatelessWidget {
       torchOn: torchOn,
       onTorch: onTorch,
       cover: cover,
+      place: place,
+      actions: actions,
     ),
   );
 }

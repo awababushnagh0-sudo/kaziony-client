@@ -47,6 +47,10 @@ const lightColors = StellarColors(
   link: Color(0xFF0C7A57),
   cameraBackdrop: Color(0xFF000000),
   onCamera: Color(0xFFFFFFFF),
+  cameraDim: Color(0x73000000),
+  cameraGlass: Color(0x29FFFFFF),
+  scanLine: Color(0xFF6EE7B7),
+  scanGlow: Color(0xFF34D399),
 );
 
 /// The same colors at night: dark grays, the brand's green and orange
@@ -91,6 +95,10 @@ const darkColors = StellarColors(
   link: Color(0xFF52C79A),
   cameraBackdrop: Color(0xFF000000),
   onCamera: Color(0xFFFFFFFF),
+  cameraDim: Color(0x73000000),
+  cameraGlass: Color(0x29FFFFFF),
+  scanLine: Color(0xFF6EE7B7),
+  scanGlow: Color(0xFF34D399),
 );
 
 /// The red, yellow and green dots of a Mac window, in the small window

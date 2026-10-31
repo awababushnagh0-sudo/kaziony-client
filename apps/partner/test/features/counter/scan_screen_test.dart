@@ -3,6 +3,7 @@ import 'package:kernel/kernel.dart';
 import 'package:kernel/testing.dart';
 import 'package:partner/core/routes/routes.dart';
 import 'package:partner/features/counter/presentation/scan_screen.dart';
+import 'package:partner/features/home/domain/store_stats.dart';
 import 'package:partner/features/store/domain/current_store.dart';
 import 'package:partner/features/store/domain/store.dart';
 import 'package:stellar/stellar.dart';
@@ -14,13 +15,19 @@ void main() {
   late FakeQrScanner scanner;
   late FakeStoreRepository stores;
   late MemorySettingsStore settings;
+  late FakeStatsRepository statsRepository;
 
   Future<void> open(
     WidgetTester tester, {
     ScannerState camera = const ScannerState(ScannerStatus.scanning),
     List<Branch>? branches,
   }) async {
+    // The line sweeping the square stands still, so the page can settle.
+    tester.platformDispatcher.accessibilityFeaturesTestValue =
+        const FakeAccessibilityFeatures(disableAnimations: true);
+    addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
     scanner = FakeQrScanner(camera);
+    statsRepository = FakeStatsRepository();
     stores = FakeStoreRepository()
       ..getResult = Ok(storeDetails(branches: branches));
     settings = MemorySettingsStore();
@@ -31,6 +38,7 @@ void main() {
       overrides: [
         qrScannerProvider.overrideWithValue(scanner),
         storeRepositoryProvider.overrideWithValue(stores),
+        statsRepositoryProvider.overrideWithValue(statsRepository),
         currentStoreProvider.overrideWithValue(store('a')),
       ],
       routes: [
@@ -115,14 +123,24 @@ void main() {
     expect(find.text('type code page'), findsOneWidget);
   });
 
+  testWidgets('opens the customers on their way, counting them', (
+    tester,
+  ) async {
+    await open(tester);
+
+    expect(find.text('3'), findsOneWidget);
+    await tester.tap(find.text('On their way'));
+    await tester.pumpAndSettle();
+    expect(find.text('pickups page'), findsOneWidget);
+  });
+
   testWidgets('picks the branch once in a store with several', (tester) async {
     await open(
       tester,
       branches: [branch('b1', 'Andalus'), branch('b2', 'Gargaresh')],
     );
 
-    expect(find.text('Your branch'), findsOneWidget);
-    await tester.tap(find.text('Choose'));
+    await tester.tap(find.text('Which branch are you at?'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Gargaresh'));
     await tester.pumpAndSettle();
@@ -134,6 +152,6 @@ void main() {
   testWidgets('has nothing to pick in a store with one branch', (tester) async {
     await open(tester);
 
-    expect(find.text('Your branch'), findsNothing);
+    expect(find.text('Which branch are you at?'), findsNothing);
   });
 }

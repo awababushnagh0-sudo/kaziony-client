@@ -232,7 +232,6 @@
   "typeCode": "Type the code",
   "codeLabel": "Code",
   "codeHelper": "The 8 letters and numbers under the customer's QR code.",
-  "codeInvalid": "A code is 8 letters and numbers, like ABCD2345.",
   "checkCode": "Check the code",
   "notAClaimCode": "This QR code isn't a reservation.",
   "cameraOffScanMessage": "Allow the camera for this app in Settings to scan codes, or type the code.",
@@ -267,6 +266,14 @@
   "counterBranch": "Your branch",
   "chooseCounterBranch": "Which branch are you at?",
   "chooseValue": "Choose",
+  "counterBranchIs": "Your branch: {name}",
+  "@counterBranchIs": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "redeemWrongBranch": "This offer isn't valid at the branch picked on this phone.",
   "refresh": "Refresh",
   "piecesLabel": "Pieces",

@@ -46,6 +46,10 @@ class StellarColors {
     required this.link,
     required this.cameraBackdrop,
     required this.onCamera,
+    required this.cameraDim,
+    required this.cameraGlass,
+    required this.scanLine,
+    required this.scanGlow,
   });
 
   /// Whether these are light colors (dark text) or dark ones.
@@ -136,6 +140,16 @@ class StellarColors {
 
   /// Text and marks over a camera's picture.
   final Color onCamera;
+
+  /// Darkens the picture around what to aim at.
+  final Color cameraDim;
+
+  /// Buttons over a camera's picture: frosted, letting it show through.
+  final Color cameraGlass;
+
+  /// The line sweeping a scanner's square, and the light around it.
+  final Color scanLine;
+  final Color scanGlow;
 
   /// The token behind [color].
   Color resolve(SColor color) => switch (color) {

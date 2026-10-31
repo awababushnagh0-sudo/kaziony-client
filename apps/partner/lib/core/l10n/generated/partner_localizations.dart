@@ -1139,12 +1139,6 @@ abstract class PartnerLocalizations {
   /// **'The 8 letters and numbers under the customer\'s QR code.'**
   String get codeHelper;
 
-  /// No description provided for @codeInvalid.
-  ///
-  /// In en, this message translates to:
-  /// **'A code is 8 letters and numbers, like ABCD2345.'**
-  String get codeInvalid;
-
   /// No description provided for @checkCode.
   ///
   /// In en, this message translates to:
@@ -1306,6 +1300,12 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Choose'**
   String get chooseValue;
+
+  /// No description provided for @counterBranchIs.
+  ///
+  /// In en, this message translates to:
+  /// **'Your branch: {name}'**
+  String counterBranchIs(String name);
 
   /// No description provided for @redeemWrongBranch.
   ///

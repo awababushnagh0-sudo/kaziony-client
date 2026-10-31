@@ -566,9 +566,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get codeHelper => 'الأحرف والأرقام الثمانية تحت رمز QR عند الزبون.';
 
   @override
-  String get codeInvalid => 'الرمز 8 أحرف وأرقام، مثل ABCD2345.';
-
-  @override
   String get checkCode => 'تحقق من الرمز';
 
   @override
@@ -651,6 +648,11 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get chooseValue => 'اختر';
+
+  @override
+  String counterBranchIs(String name) {
+    return 'فرعك: $name';
+  }
 
   @override
   String get redeemWrongBranch =>

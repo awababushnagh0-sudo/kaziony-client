@@ -5,6 +5,7 @@ import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
 import '../domain/claim.dart';
 import 'counter_branch_view_model.dart';
+import 'scan_view_model.dart';
 import 'widgets/counter_branch_sheet.dart';
 
 /// The Scan tab: the camera opens right away, reading the customer's code;
@@ -58,6 +59,8 @@ class _ScanScreenState extends AppViewState<ScanScreen> {
     await context.push(location);
     _away = false;
     _backAt = DateTime.now();
+    // A pickup may have just been handed over.
+    if (mounted) ref.invalidate(onTheWayCountProvider);
   }
 
   @override
@@ -66,67 +69,60 @@ class _ScanScreenState extends AppViewState<ScanScreen> {
     final stellar = StellarLocalizations.of(context);
     final scanner = ref.watch(qrScannerProvider);
     final branches = ref.watch(counterBranchesProvider);
+    final branch = branches.current;
     return SScaffold(
-      title: s.scanTitle,
+      showAppBar: false,
+      underStatusBar: true,
       padded: false,
-      actions: [
-        SButton.icon(
-          icon: SIcons.pickups,
-          tooltip: s.pickupsTitle,
-          onPressed: () => _open(Routes.pickups),
+      body: SScannerView(
+        camera: scanner.view(
+          onCode: _read,
+          onState: (state) => setState(() => _camera = state),
+          torch: _torch,
         ),
-      ],
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (branches.choices.isNotEmpty)
-            SListTile(
-              icon: SIcons.store,
-              title: s.counterBranch,
-              value: branches.current?.name ?? s.chooseValue,
-              onTap: () => chooseCounterBranch(context, ref, branches),
-            ),
-          Expanded(
-            child: SScannerView(
-              camera: scanner.view(
-                onCode: _read,
-                onState: (state) => setState(() => _camera = state),
-                torch: _torch,
+        hint: s.scanHint,
+        starting: _camera.status == ScannerStatus.starting,
+        torchOn: _torch,
+        onTorch: _camera.hasTorch
+            ? () => setState(() => _torch = !_torch)
+            : null,
+        place: branches.choices.isEmpty
+            ? null
+            : ScannerPlace(
+                label: branch?.name ?? s.chooseCounterBranch,
+                semanticLabel: branch == null
+                    ? s.chooseCounterBranch
+                    : s.counterBranchIs(branch.name),
+                onTap: () => chooseCounterBranch(context, ref, branches),
               ),
-              hint: s.scanHint,
-              starting: _camera.status == ScannerStatus.starting,
-              torchOn: _torch,
-              onTorch: _camera.hasTorch
-                  ? () => setState(() => _torch = !_torch)
-                  : null,
-              cover: switch (_camera.status) {
-                ScannerStatus.denied => SEmptyView(
-                  icon: SIcons.camera,
-                  title: stellar.cameraOffTitle,
-                  message: s.cameraOffScanMessage,
-                  actionLabel: stellar.openSettings,
-                  actionIcon: SIcons.settings,
-                  onAction: scanner.openSettings,
-                ),
-                ScannerStatus.failed => SEmptyView(
-                  icon: SIcons.camera,
-                  title: s.cameraFailedTitle,
-                  message: s.cameraFailedMessage,
-                ),
-                ScannerStatus.starting || ScannerStatus.scanning => null,
-              },
-            ),
+        actions: [
+          ScannerAction(
+            label: s.typeCode,
+            icon: SIcons.keyboard,
+            onPressed: () => _open(Routes.typeCode),
           ),
-          Padding(
-            padding: const EdgeInsets.all(Space.lg),
-            child: SButton.secondary(
-              label: s.typeCode,
-              icon: SIcons.keyboard,
-              expand: true,
-              onPressed: () => _open(Routes.typeCode),
-            ),
+          ScannerAction(
+            label: s.pickupsTitle,
+            count: ref.watch(onTheWayCountProvider).value,
+            onPressed: () => _open(Routes.pickups),
           ),
         ],
+        cover: switch (_camera.status) {
+          ScannerStatus.denied => SEmptyView(
+            icon: SIcons.camera,
+            title: stellar.cameraOffTitle,
+            message: s.cameraOffScanMessage,
+            actionLabel: stellar.openSettings,
+            actionIcon: SIcons.settings,
+            onAction: scanner.openSettings,
+          ),
+          ScannerStatus.failed => SEmptyView(
+            icon: SIcons.camera,
+            title: s.cameraFailedTitle,
+            message: s.cameraFailedMessage,
+          ),
+          ScannerStatus.starting || ScannerStatus.scanning => null,
+        },
       ),
     );
   }

@@ -571,9 +571,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
       'The 8 letters and numbers under the customer\'s QR code.';
 
   @override
-  String get codeInvalid => 'A code is 8 letters and numbers, like ABCD2345.';
-
-  @override
   String get checkCode => 'Check the code';
 
   @override
@@ -657,6 +654,11 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get chooseValue => 'Choose';
+
+  @override
+  String counterBranchIs(String name) {
+    return 'Your branch: $name';
+  }
 
   @override
   String get redeemWrongBranch =>
