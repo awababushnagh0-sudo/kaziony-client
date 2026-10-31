@@ -2,6 +2,7 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../../core/l10n/generated/partner_localizations.dart';
+import '../../../../core/widgets/partner_illustrations.dart';
 import 'login_view_model.dart';
 
 class LoginScreen extends AppView {
@@ -30,8 +31,8 @@ class LoginScreen extends AppView {
       title: s.loginTitle,
       subtitle: s.loginSubtitle,
       hero: const SAuthHero(
-        mark: SIllustrations.partnerMark,
-        illustration: SIllustrations.signInHero,
+        mark: PartnerIllustrations.partnerMark,
+        illustration: PartnerIllustrations.signInHero,
       ),
       actions: const [SLanguageButton()],
       footer: [SText.caption(s.loginJoinHint, align: TextAlign.center)],

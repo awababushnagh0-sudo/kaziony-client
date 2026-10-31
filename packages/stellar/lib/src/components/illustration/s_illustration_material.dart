@@ -21,7 +21,7 @@ class MaterialIllustrationRenderer implements IllustrationRenderer {
           aspectRatio: size.aspectRatio,
           child: Image.asset(
             'assets/illustrations/$file.png',
-            package: 'stellar',
+            package: picture.package,
             fit: BoxFit.contain,
             excludeFromSemantics: true,
           ),

@@ -174,9 +174,9 @@ class SAuthPage extends StatelessWidget {
 class SAuthHero {
   const SAuthHero({required this.mark, required this.illustration});
 
-  /// The app's logo and name, at the top ([SIllustrations.partnerMark]).
-  final SIllustrations mark;
-  final SIllustrations illustration;
+  /// The app's logo and name, at the top.
+  final Illustration mark;
+  final Illustration illustration;
 }
 
 class _HeroBand extends StatelessWidget {

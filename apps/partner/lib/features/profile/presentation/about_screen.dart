@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
+import '../../../core/widgets/partner_illustrations.dart';
 
 /// What the app is, its version, and its terms.
 class AboutScreen extends AppView {
@@ -19,7 +20,7 @@ class AboutScreen extends AppView {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Gap(Space.lg),
-            const SIllustration(SIllustrations.partnerMark),
+            const SIllustration(PartnerIllustrations.partnerMark),
             const Gap(Space.lg),
             SText(
               s.aboutText,

@@ -18,7 +18,7 @@ abstract final class SSheet {
     required List<RadioOption<T>> options,
     T? selected,
     String? subtitle,
-    SIllustrations? illustration,
+    Illustration? illustration,
   }) => StellarKit.of(context).sheet.choose(
     context,
     ChoiceSheetSpec(

@@ -23,7 +23,7 @@ class ChoiceSheetSpec<T> {
   final String? subtitle;
 
   /// One of the brand's pictures above [title].
-  final SIllustrations? illustration;
+  final Illustration? illustration;
 }
 
 abstract interface class SheetRenderer {

@@ -21,7 +21,7 @@ class SStatTile extends StatelessWidget {
 
   /// Already written for people (a count).
   final String value;
-  final SIllustrations illustration;
+  final Illustration illustration;
   final String? hint;
 
   /// Shows [hint] in orange: something to act on soon.
