@@ -11,6 +11,8 @@ class Product {
     required this.imageUrl,
     required this.thumbUrl,
     required this.isArchived,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   final String id;
@@ -24,6 +26,8 @@ class Product {
 
   /// Hidden from the list; its past offers stay.
   final bool isArchived;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 }
 
 /// What the owner types to add or edit a product.

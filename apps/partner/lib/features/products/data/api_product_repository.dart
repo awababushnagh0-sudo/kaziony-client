@@ -123,4 +123,6 @@ Product _toProduct(ProductDto dto) => Product(
   imageUrl: dto.imageUrl,
   thumbUrl: dto.thumbUrl,
   isArchived: dto.isArchived,
+  createdAt: dto.createdAt,
+  updatedAt: dto.updatedAt,
 );

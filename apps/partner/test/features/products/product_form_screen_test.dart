@@ -113,6 +113,11 @@ void main() {
     );
 
     Future<void> pickFromGallery(WidgetTester tester) async {
+      // Done typing: the keyboard goes, then the photo is scrolled back to.
+      FocusManager.instance.primaryFocus?.unfocus();
+      await tester.pump();
+      await tester.ensureVisible(find.text('Add a photo'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Add a photo'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Choose from gallery'));

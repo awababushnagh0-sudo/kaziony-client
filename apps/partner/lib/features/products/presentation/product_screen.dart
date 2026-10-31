@@ -37,10 +37,12 @@ class ProductScreen extends AppView {
                 padding: const EdgeInsets.all(Space.lg),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  spacing: Space.lg,
+                  spacing: Space.xl,
                   children: [
-                    if (product.description case final description?)
-                      SText(description, color: SColor.textMuted),
+                    if (product.thumbUrl == null && !product.isArchived)
+                      _PhotoTip(product: product),
+                    _About(product: product),
+                    _Details(product: product),
                     if (!product.isArchived) _Archive(product: product),
                   ],
                 ),
@@ -100,20 +102,114 @@ Future<void> _setArchived(
   }
 }
 
-/// Archiving only hides it from the list, so it stays soft, below the
-/// details.
+/// No photo yet: a nudge to add one, as it's the first thing customers
+/// see on its offers.
+class _PhotoTip extends StatelessWidget {
+  const _PhotoTip({required this.product});
+
+  final Product product;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = PartnerLocalizations.of(context);
+    return SListGroup(
+      children: [
+        SListTile(
+          icon: SIcons.camera,
+          title: s.productPhotoTipTitle,
+          subtitle: s.productPhotoTipMessage,
+          onTap: () => context.push(Routes.editProduct(product.id)),
+        ),
+      ],
+    );
+  }
+}
+
+/// What the product is, as customers read it on its offers.
+class _About extends StatelessWidget {
+  const _About({required this.product});
+
+  final Product product;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = PartnerLocalizations.of(context);
+    final description = product.description;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: Space.sm,
+      children: [
+        SSectionHeader(
+          s.descriptionLabel,
+          actionLabel: description == null ? s.add : s.edit,
+          onAction: () => context.push(Routes.editProduct(product.id)),
+        ),
+        if (description == null)
+          SText(s.noDescription, color: SColor.textSubtle)
+        else
+          SText(description),
+      ],
+    );
+  }
+}
+
+/// Its regular price, and when it was added and last changed.
+class _Details extends StatelessWidget {
+  const _Details({required this.product});
+
+  final Product product;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = PartnerLocalizations.of(context);
+    final language = Localizations.localeOf(context).languageCode;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: Space.sm,
+      children: [
+        SSectionHeader(s.productDetailsTitle),
+        SListGroup(
+          children: [
+            SFactTile(
+              label: s.regularPriceLabel,
+              value: formatPrice(product.regularPrice, languageCode: language),
+            ),
+            SFactTile(
+              label: s.productAddedOn,
+              value: formatDate(product.createdAt, languageCode: language),
+            ),
+            SFactTile(
+              label: s.productEditedOn,
+              value: formatDate(product.updatedAt, languageCode: language),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+/// Archiving only hides it from the list, so it's a quiet row at the end,
+/// saying what it does.
 class _Archive extends AppView {
   const _Archive({required this.product});
 
   final Product product;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => SButton.soft(
-    label: PartnerLocalizations.of(context).archiveProduct,
-    icon: SIcons.archive,
-    expand: true,
-    onPressed: () => _setArchived(context, ref, product),
-  );
+  Widget build(BuildContext context, WidgetRef ref) {
+    final s = PartnerLocalizations.of(context);
+    return SListGroup(
+      children: [
+        SListTile(
+          icon: SIcons.archive,
+          title: s.archiveProduct,
+          subtitle: s.archiveProductHint,
+          onTap: () => _setArchived(context, ref, product),
+        ),
+      ],
+    );
+  }
 }
 
 /// What the product is for: posting an offer from it; or, archived,

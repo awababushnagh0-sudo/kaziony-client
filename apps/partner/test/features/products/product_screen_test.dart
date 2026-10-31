@@ -47,7 +47,8 @@ void main() {
     await open(tester, '1');
 
     expect(find.text('Product 1'), findsOneWidget);
-    expect(find.text('4.5 LD'), findsOneWidget);
+    // Under the name and in the details.
+    expect(find.text('4.5 LD'), findsNWidgets(2));
     await tester.tap(find.text('Post an offer'));
     await tester.pumpAndSettle();
     expect(find.text('new offer page'), findsOneWidget);
@@ -66,12 +67,13 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(products.updated.single.$1, '1');
-    expect(find.text('5 LD'), findsOneWidget);
+    expect(find.text('5 LD'), findsNWidgets(2));
   });
 
   testWidgets('archives a product', (tester) async {
     await open(tester, '1');
 
+    await tester.ensureVisible(find.text('Archive'));
     await tester.tap(find.text('Archive'));
     await tester.pumpAndSettle();
 

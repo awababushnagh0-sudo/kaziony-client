@@ -122,6 +122,8 @@ Product product(String id, {String price = '8.000', bool isArchived = false}) =>
       imageUrl: null,
       thumbUrl: null,
       isArchived: isArchived,
+      createdAt: DateTime.utc(2026, 10, 1),
+      updatedAt: DateTime.utc(2026, 10, 20),
     );
 
 /// Serves [products] a page at a time, filtered like the API.
@@ -224,6 +226,8 @@ class FakeProductRepository implements ProductRepository {
         imageUrl: 'http://test.invalid/$productId.jpg',
         thumbUrl: 'http://test.invalid/$productId-thumb.jpg',
         isArchived: false,
+        createdAt: DateTime.utc(2026, 10, 1),
+        updatedAt: DateTime.utc(2026, 10, 20),
       ),
     );
   }

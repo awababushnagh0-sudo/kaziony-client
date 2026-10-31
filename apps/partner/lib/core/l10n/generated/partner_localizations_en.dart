@@ -250,6 +250,48 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get archiveProduct => 'Archive';
 
   @override
+  String get productPhotoTipTitle => 'Add a photo';
+
+  @override
+  String get productPhotoTipMessage =>
+      'Customers see it first on every offer from this product.';
+
+  @override
+  String get noDescription => 'No description yet.';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get productDetailsTitle => 'Details';
+
+  @override
+  String get productAddedOn => 'Added';
+
+  @override
+  String get productEditedOn => 'Last edited';
+
+  @override
+  String get archiveProductHint =>
+      'Hidden from your products. Its past offers stay.';
+
+  @override
+  String get productBasicsSection => 'What you sell';
+
+  @override
+  String get productBasicsNote =>
+      'Customers see its name and description on every offer.';
+
+  @override
+  String get priceSection => 'Price';
+
+  @override
+  String get productTitleHint => 'e.g. Butter croissant';
+
+  @override
+  String get descriptionHint => 'What\'s in it, its size, how it\'s made';
+
+  @override
   String get archivedStatus => 'Archived';
 
   @override

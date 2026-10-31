@@ -248,6 +248,46 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get archiveProduct => 'أرشفة';
 
   @override
+  String get productPhotoTipTitle => 'أضف صورة';
+
+  @override
+  String get productPhotoTipMessage =>
+      'يراها الزبائن أولاً في كل عرض من هذا المنتج.';
+
+  @override
+  String get noDescription => 'لا يوجد وصف بعد.';
+
+  @override
+  String get add => 'إضافة';
+
+  @override
+  String get productDetailsTitle => 'التفاصيل';
+
+  @override
+  String get productAddedOn => 'تاريخ الإضافة';
+
+  @override
+  String get productEditedOn => 'آخر تعديل';
+
+  @override
+  String get archiveProductHint => 'يُخفى من منتجاتك، وتبقى عروضه السابقة.';
+
+  @override
+  String get productBasicsSection => 'ما الذي تبيعه';
+
+  @override
+  String get productBasicsNote => 'يرى الزبائن اسمه ووصفه في كل عرض.';
+
+  @override
+  String get priceSection => 'السعر';
+
+  @override
+  String get productTitleHint => 'مثلاً: كرواسون بالزبدة';
+
+  @override
+  String get descriptionHint => 'مكوناته، حجمه، وطريقة تحضيره';
+
+  @override
   String get archivedStatus => 'مؤرشف';
 
   @override

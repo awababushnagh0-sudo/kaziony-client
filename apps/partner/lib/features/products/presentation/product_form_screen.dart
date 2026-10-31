@@ -86,18 +86,36 @@ class _ProductForm extends AppView {
             // Retrying a new product's photo saves it again, then goes
             // on to its page.
             _Photo(productId: id, onRetry: id == null ? save : null),
-            STextInput(controlName: 'title', label: s.productTitleLabel),
-            STextInput(
-              controlName: 'price',
-              label: s.regularPriceLabel,
-              kind: TextInputKind.price,
-              helper: s.regularPriceHelper,
+            SFormSection(
+              title: s.productBasicsSection,
+              note: s.productBasicsNote,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: Space.lg,
+                children: [
+                  STextInput(
+                    controlName: 'title',
+                    label: s.productTitleLabel,
+                    hint: s.productTitleHint,
+                  ),
+                  STextInput(
+                    controlName: 'description',
+                    label: s.descriptionLabel,
+                    hint: s.descriptionHint,
+                    kind: TextInputKind.multiline,
+                    maxLength: 1000,
+                  ),
+                ],
+              ),
             ),
-            STextInput(
-              controlName: 'description',
-              label: s.descriptionLabel,
-              kind: TextInputKind.multiline,
-              maxLength: 1000,
+            SFormSection(
+              title: s.priceSection,
+              note: s.regularPriceHelper,
+              child: STextInput(
+                controlName: 'price',
+                label: s.regularPriceLabel,
+                kind: TextInputKind.price,
+              ),
             ),
             if (state.failure case final failure?)
               SText(failureMessage(context, failure), color: SColor.danger),
@@ -148,14 +166,12 @@ class _Photo extends AppView {
       }
     }
 
-    return Center(
-      child: SPhotoField(
-        url: url,
-        preview: state.photo?.preview,
-        progress: state.progress,
-        failed: state.failed,
-        onTap: state.failed ? onRetry ?? viewModel.retry : choose,
-      ),
+    return SPhotoField(
+      url: url,
+      preview: state.photo?.preview,
+      progress: state.progress,
+      failed: state.failed,
+      onTap: state.failed ? onRetry ?? viewModel.retry : choose,
     );
   }
 }

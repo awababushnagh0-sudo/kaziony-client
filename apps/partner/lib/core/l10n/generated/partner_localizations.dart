@@ -563,6 +563,84 @@ abstract class PartnerLocalizations {
   /// **'Archive'**
   String get archiveProduct;
 
+  /// No description provided for @productPhotoTipTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a photo'**
+  String get productPhotoTipTitle;
+
+  /// No description provided for @productPhotoTipMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers see it first on every offer from this product.'**
+  String get productPhotoTipMessage;
+
+  /// No description provided for @noDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'No description yet.'**
+  String get noDescription;
+
+  /// No description provided for @add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// No description provided for @productDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get productDetailsTitle;
+
+  /// No description provided for @productAddedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Added'**
+  String get productAddedOn;
+
+  /// No description provided for @productEditedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Last edited'**
+  String get productEditedOn;
+
+  /// No description provided for @archiveProductHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden from your products. Its past offers stay.'**
+  String get archiveProductHint;
+
+  /// No description provided for @productBasicsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'What you sell'**
+  String get productBasicsSection;
+
+  /// No description provided for @productBasicsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers see its name and description on every offer.'**
+  String get productBasicsNote;
+
+  /// No description provided for @priceSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get priceSection;
+
+  /// No description provided for @productTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Butter croissant'**
+  String get productTitleHint;
+
+  /// No description provided for @descriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s in it, its size, how it\'s made'**
+  String get descriptionHint;
+
   /// No description provided for @archivedStatus.
   ///
   /// In en, this message translates to:
