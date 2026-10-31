@@ -36,6 +36,7 @@ export 'models/update_profile_dto.dart';
 export 'models/change_password_dto.dart';
 export 'models/dev_customer_login_dto.dart';
 export 'models/app_version_dto.dart';
+export 'models/support_contact_dto.dart';
 export 'models/app_config_dto.dart';
 export 'models/category_dto.dart';
 export 'models/create_category_dto.dart';

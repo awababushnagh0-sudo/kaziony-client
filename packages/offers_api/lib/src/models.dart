@@ -80,6 +80,7 @@ export 'generated/models/store_list_item_dto.dart';
 export 'generated/models/store_member_dto.dart';
 export 'generated/models/store_member_role.dart';
 export 'generated/models/store_stats_dto.dart';
+export 'generated/models/support_contact_dto.dart';
 export 'generated/models/team_role.dart';
 export 'generated/models/top_offer_dto.dart';
 export 'generated/models/update_branch_dto.dart';

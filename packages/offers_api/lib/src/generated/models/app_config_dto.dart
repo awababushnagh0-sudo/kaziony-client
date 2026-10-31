@@ -5,6 +5,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'app_version_dto.dart';
+import 'support_contact_dto.dart';
 
 part 'app_config_dto.g.dart';
 
@@ -14,6 +15,7 @@ class AppConfigDto {
     required this.partner,
     required this.customer,
     required this.admin,
+    required this.support,
   });
   
   factory AppConfigDto.fromJson(Map<String, Object?> json) => _$AppConfigDtoFromJson(json);
@@ -21,6 +23,9 @@ class AppConfigDto {
   final AppVersionDto partner;
   final AppVersionDto customer;
   final AppVersionDto admin;
+
+  /// How to reach our team (forgotten passwords, adding a store, help).
+  final SupportContactDto support;
 
   Map<String, Object?> toJson() => _$AppConfigDtoToJson(this);
 }
