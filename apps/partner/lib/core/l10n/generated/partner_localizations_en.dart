@@ -10,7 +10,7 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   PartnerLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Offers for Stores';
+  String get appTitle => 'Kaziony for Stores';
 
   @override
   String get loginTitle => 'Welcome to your store';

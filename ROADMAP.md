@@ -228,7 +228,7 @@ The screen staff use all day, so it must be fast and work on a weak connection.
 
 ### 3.3 Ready for the pilot
 
-- [ ] App name كزيوني (store-facing name), icon and splash screen
+- [x] App name كزيوني للمتاجر, icon (the bag in reverse: cream on green) and splash screen
 - [ ] Test on a real Android phone on a slow connection: timeouts, retry, "no connection"
 - [ ] Crash reporting (`ErrorReporter` → Sentry or Crashlytics)
 - [ ] Builds: Android APK/AAB and iOS TestFlight for the first stores

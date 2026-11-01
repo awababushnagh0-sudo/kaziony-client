@@ -10,7 +10,7 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   PartnerLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get appTitle => 'عروض للمتاجر';
+  String get appTitle => 'كزيوني للمتاجر';
 
   @override
   String get loginTitle => 'أهلًا بك في متجرك';

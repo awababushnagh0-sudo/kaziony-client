@@ -104,7 +104,7 @@ abstract class PartnerLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'Offers for Stores'**
+  /// **'Kaziony for Stores'**
   String get appTitle;
 
   /// No description provided for @loginTitle.
