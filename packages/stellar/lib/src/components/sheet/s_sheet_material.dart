@@ -12,15 +12,25 @@ import 's_sheet.dart';
 const _sheetRadius = 20.0;
 
 /// The grabber, as on iOS: a short thin bar at the top, a quiet gray.
-const _grabberSize = Size(36, 5);
+const _grabberWidth = 36.0;
+const _grabberHeight = 5.0;
+const _grabberTop = Space.md;
 const _grabberOpacity = 0.5;
+
+/// Where the content starts: a clear gap under the grabber, so the title
+/// doesn't crowd it.
+const _contentTop = _grabberTop + _grabberHeight + Space.xl;
 
 /// The close button's gray circle, as on iOS; it's tapped in a box of
 /// [kMinInteractiveDimension].
 const _closeSize = 30.0;
 
-/// From the sheet's top and end edges to the close button's tap box.
+/// From the sheet's end edge to the close button's tap box.
 const _closeInset = Space.sm;
+
+/// The close button sits at the top beside the grabber: its circle's top
+/// level with the grabber's (its tap box reaches above it).
+const _closeTop = _grabberTop - (kMinInteractiveDimension - _closeSize) / 2;
 
 /// How far the title keeps from each side so a long one never runs under
 /// the close button (on both sides, so it stays centered).
@@ -107,17 +117,17 @@ class _Frame extends StatelessWidget {
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: Space.lg),
+          padding: const EdgeInsets.only(top: _contentTop),
           child: child,
         ),
         PositionedDirectional(
-          top: Space.sm,
+          top: _grabberTop,
           start: 0,
           end: 0,
           child: Center(
             child: Container(
-              width: _grabberSize.width,
-              height: _grabberSize.height,
+              width: _grabberWidth,
+              height: _grabberHeight,
               decoration: BoxDecoration(
                 color: c.textSubtle.withValues(alpha: _grabberOpacity),
                 borderRadius: BorderRadius.circular(Radii.pill),
@@ -126,7 +136,7 @@ class _Frame extends StatelessWidget {
           ),
         ),
         const PositionedDirectional(
-          top: _closeInset,
+          top: _closeTop,
           end: _closeInset,
           child: _CloseButton(),
         ),

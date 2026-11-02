@@ -2,26 +2,17 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/customer_localizations.dart';
-import '../../../core/widgets/no_offers_view.dart';
 import '../domain/offer.dart';
 import 'home_view_model.dart';
 import 'offers_view_model.dart';
-import 'widgets/offer_poster.dart';
+import 'widgets/offers_list.dart';
 
-/// Every offer around, searched, sorted and filtered by kind of store:
-/// "See all" from the home page ([initial] its sort), and the Search tab
-/// ([searching]).
-class OffersScreen extends AppView {
-  const OffersScreen({
-    this.initial = const OffersFilter(),
-    this.searching = false,
-    super.key,
-  });
+/// The Search tab: every offer around, searched, sorted and filtered by
+/// kind of store.
+class SearchScreen extends AppView {
+  const SearchScreen({super.key});
 
-  final OffersFilter initial;
-
-  /// Opens the keyboard at once, for the Search tab.
-  final bool searching;
+  static const initial = OffersFilter();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,7 +35,7 @@ class OffersScreen extends AppView {
     }
 
     return SScaffold(
-      title: searching ? s.searchTitle : s.offersTitle,
+      title: s.searchTitle,
       padded: false,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -59,7 +50,7 @@ class OffersScreen extends AppView {
             child: SSearchField(
               hint: s.searchHint,
               initialValue: filter.search,
-              autofocus: searching,
+              autofocus: true,
               onChanged: controller.setSearch,
             ),
           ),
@@ -91,7 +82,7 @@ class OffersScreen extends AppView {
             ),
           ),
           const Gap(Space.md),
-          Expanded(child: _List(initial: initial)),
+          const Expanded(child: OffersList(initial: initial)),
         ],
       ),
     );
@@ -104,51 +95,3 @@ String sortName(CustomerLocalizations s, OfferSort sort) => switch (sort) {
   OfferSort.newest => s.sortNewest,
   OfferSort.biggestDiscount => s.sortBiggestDiscount,
 };
-
-class _List extends AppView {
-  const _List({required this.initial});
-
-  final OffersFilter initial;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final s = CustomerLocalizations.of(context);
-    final provider = offersViewModel(initial);
-    final viewModel = ref.read(provider.notifier);
-    return SAsyncView(
-      value: ref.watch(provider),
-      onRetry: () => ref.invalidate(provider),
-      builder: (context, page) {
-        if (page.items.isEmpty) {
-          // Nothing for the words typed, or nothing around at all.
-          return ref.watch(offersFilterProvider(initial)).search.isEmpty
-              ? const NoOffersView()
-              : SEmptyView(
-                  icon: SIcons.noResults,
-                  title: s.noResultsTitle,
-                  message: s.noResultsMessage,
-                );
-        }
-        return SPagedList(
-          // The offers are cards, apart from each other.
-          divided: false,
-          itemCount: page.items.length,
-          itemBuilder: (context, index) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
-            child: OfferPoster(page.items[index]),
-          ),
-          onRefresh: () async {
-            final failure = await viewModel.refresh();
-            if (failure != null && context.mounted) {
-              SSnack.error(context, failureMessage(context, failure));
-            }
-          },
-          onLoadMore: viewModel.loadMore,
-          hasMore: page.hasMore,
-          loadingMore: page.loadingMore,
-          moreFailure: page.moreFailure,
-        );
-      },
-    );
-  }
-}

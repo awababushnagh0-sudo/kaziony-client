@@ -563,12 +563,6 @@ abstract class CustomerLocalizations {
   /// **'{km} km'**
   String distanceKm(String km);
 
-  /// No description provided for @offersTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Offers'**
-  String get offersTitle;
-
   /// No description provided for @sortNearest.
   ///
   /// In en, this message translates to:

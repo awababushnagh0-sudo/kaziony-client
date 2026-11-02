@@ -275,9 +275,6 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   }
 
   @override
-  String get offersTitle => 'Offers';
-
-  @override
   String get sortNearest => 'Nearest';
 
   @override

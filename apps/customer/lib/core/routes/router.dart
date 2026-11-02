@@ -12,8 +12,8 @@ import '../../features/location/presentation/map_picker_screen.dart';
 import '../../features/offers/domain/offer.dart';
 import '../../features/offers/presentation/home_screen.dart';
 import '../../features/offers/presentation/offer_screen.dart';
-import '../../features/offers/presentation/offers_screen.dart';
-import '../../features/offers/presentation/offers_view_model.dart';
+import '../../features/offers/presentation/search_screen.dart';
+import '../../features/offers/presentation/section_offers_screen.dart';
 import '../../features/welcome/presentation/welcome_screen.dart';
 import '../l10n/generated/customer_localizations.dart';
 import '../widgets/coming_soon_screen.dart';
@@ -64,14 +64,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.signIn, builder: (_, _) => const SignInScreen()),
       GoRoute(
         path: Routes.offers,
-        builder: (_, state) => OffersScreen(
-          initial: OffersFilter(
-            sort:
-                OfferSort.values
-                    .asNameMap()[state.uri.queryParameters['sort']] ??
-                OfferSort.nearest,
-            categoryId: state.uri.queryParameters['category'],
-          ),
+        builder: (_, state) => SectionOffersScreen(
+          sort:
+              OfferSort.values.asNameMap()[state.uri.queryParameters['sort']] ??
+              OfferSort.nearest,
+          categoryId: state.uri.queryParameters['category'],
         ),
       ),
       GoRoute(
@@ -98,7 +95,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, _, shell) => CustomerShell(shell: shell),
         branches: [
           _tab(Routes.home, (_) => const HomeScreen()),
-          _tab(Routes.search, (_) => const OffersScreen(searching: true)),
+          _tab(Routes.search, (_) => const SearchScreen()),
           _tab(Routes.bookings, (_) => const BookingsScreen()),
           _tab(
             Routes.favorites,

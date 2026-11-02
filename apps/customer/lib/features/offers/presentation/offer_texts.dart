@@ -5,6 +5,14 @@ import '../domain/offer.dart';
 
 /// How offers are put into words, the same on every page.
 extension OfferTexts on CustomerLocalizations {
+  /// A home row's name, and its "See all" page's.
+  String section(OfferSort sort) => switch (sort) {
+    OfferSort.endingSoon => sectionEndingSoon,
+    OfferSort.nearest => sectionNearby,
+    OfferSort.biggestDiscount => sectionBiggestDiscount,
+    OfferSort.newest => sortNewest,
+  };
+
   String price(BuildContext context, String amount) => formatPrice(
     amount,
     languageCode: Localizations.localeOf(context).languageCode,

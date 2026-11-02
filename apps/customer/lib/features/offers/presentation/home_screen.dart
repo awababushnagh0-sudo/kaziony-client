@@ -8,6 +8,7 @@ import '../../../core/widgets/no_offers_view.dart';
 import '../../location/domain/browse_location.dart';
 import '../domain/offer.dart';
 import 'home_view_model.dart';
+import 'offer_texts.dart';
 import 'widgets/offer_poster.dart';
 
 /// The Home tab: where offers are shown from, search, the kinds of store,
@@ -81,19 +82,16 @@ class HomeScreen extends AppView {
                     spacing: Space.xl,
                     children: [
                       _Row(
-                        title: s.sectionEndingSoon,
                         sort: OfferSort.endingSoon,
                         categoryId: categoryId,
                         offers: feed.endingSoon,
                       ),
                       _Row(
-                        title: s.sectionNearby,
                         sort: OfferSort.nearest,
                         categoryId: categoryId,
                         offers: feed.nearby,
                       ),
                       _Row(
-                        title: s.sectionBiggestDiscount,
                         sort: OfferSort.biggestDiscount,
                         categoryId: categoryId,
                         offers: feed.biggestDiscount,
@@ -151,13 +149,11 @@ class _Categories extends AppView {
 /// all of them.
 class _Row extends StatelessWidget {
   const _Row({
-    required this.title,
     required this.sort,
     required this.categoryId,
     required this.offers,
   });
 
-  final String title;
   final OfferSort sort;
   final String? categoryId;
   final List<Offer> offers;
@@ -173,7 +169,7 @@ class _Row extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: Space.lg),
           child: SSectionHeader(
-            title,
+            s.section(sort),
             actionLabel: s.seeAll,
             onAction: () => context.push(
               Routes.offersQuery(sort: sort.name, categoryId: categoryId),
