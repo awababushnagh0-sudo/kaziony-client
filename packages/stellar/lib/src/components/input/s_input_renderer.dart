@@ -86,18 +86,40 @@ class SelectInputSpec<T> {
   final bool required;
 }
 
-/// A search box that is not part of a form (above lists).
+/// A search box that is not part of a form (above lists). With [onTap]
+/// instead of [onChanged], it only opens the search elsewhere.
 @immutable
 class SearchFieldSpec {
   const SearchFieldSpec({
     required this.hint,
-    required this.onChanged,
+    this.onChanged,
+    this.onTap,
     this.initialValue = '',
+    this.autofocus = false,
   });
 
   final String hint;
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
+  final VoidCallback? onTap;
   final String initialValue;
+  final bool autofocus;
+}
+
+/// How many of something: the number between a minus and a plus, kept
+/// from [min] to [max].
+@immutable
+class QuantityInputSpec {
+  const QuantityInputSpec({
+    required this.value,
+    required this.min,
+    required this.max,
+    required this.onChanged,
+  });
+
+  final int value;
+  final int min;
+  final int max;
+  final ValueChanged<int> onChanged;
 }
 
 /// Draws every kind of input: text fields, dropdowns and search boxes.
@@ -153,6 +175,7 @@ abstract interface class InputRenderer {
   Widget text(BuildContext context, TextInputSpec spec);
   Widget select<T>(BuildContext context, SelectInputSpec<T> spec);
   Widget search(BuildContext context, SearchFieldSpec spec);
+  Widget quantity(BuildContext context, QuantityInputSpec spec);
   Widget choice<T>(BuildContext context, ChoiceInputSpec<T> spec);
   Widget dateTime(BuildContext context, DateTimeInputSpec spec);
 }

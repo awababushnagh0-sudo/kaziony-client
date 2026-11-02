@@ -40,7 +40,19 @@ class CodeInputSpec {
   final VoidCallback? onSubmitted;
 }
 
+/// A QR code a counter scans.
+@immutable
+class QrCodeSpec {
+  const QrCodeSpec({required this.data, required this.label});
+
+  final String data;
+
+  /// Read out for screen readers.
+  final String label;
+}
+
 abstract interface class CodeRenderer {
   Widget card(BuildContext context, CodeCardSpec spec);
+  Widget qr(BuildContext context, QrCodeSpec spec);
   Widget input(BuildContext context, CodeInputSpec spec);
 }

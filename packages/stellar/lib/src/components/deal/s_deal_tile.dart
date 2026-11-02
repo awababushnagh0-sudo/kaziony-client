@@ -167,3 +167,88 @@ class SDealCard extends StatelessWidget {
     ),
   );
 }
+
+/// An offer as customers browse it ([DealPosterSpec]): the photo big, with
+/// the discount, the store's logo and how much is left on it; the title
+/// and prices under it, then [details] ("Ends in 45 min · 0.8 km").
+/// [inRow] gives it a fixed width, for a row that scrolls sideways.
+class SDealPoster extends StatelessWidget {
+  const SDealPoster({
+    required this.title,
+    required this.price,
+    required this.storeName,
+    this.originalPrice,
+    this.discountLabel,
+    this.imageUrl,
+    this.storeLogoUrl,
+    this.stockLabel,
+    this.stockHot = false,
+    this.details = const [],
+    this.inRow = false,
+    this.onTap,
+    super.key,
+  });
+
+  final String title;
+
+  /// Both already written for people (`formatPrice`).
+  final String price;
+  final String? originalPrice;
+  final String storeName;
+
+  /// "44% off".
+  final String? discountLabel;
+  final String? imageUrl;
+  final String? storeLogoUrl;
+
+  /// "3 left"; null for what isn't counted.
+  final String? stockLabel;
+  final bool stockHot;
+  final List<String> details;
+  final bool inRow;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) => StellarKit.of(context).deal.poster(
+    context,
+    DealPosterSpec(
+      title: title,
+      price: price,
+      storeName: storeName,
+      originalPrice: originalPrice,
+      discountLabel: discountLabel,
+      imageUrl: imageUrl,
+      storeLogoUrl: storeLogoUrl,
+      stockLabel: stockLabel,
+      stockHot: stockHot,
+      details: details,
+      inRow: inRow,
+      onTap: onTap,
+    ),
+  );
+}
+
+/// The bottom of an offer's page, pinned under it (`SScaffold.bottom`):
+/// the [price] in big figures with the regular one crossed out above it,
+/// and the [action] beside it.
+class SDealFooter extends StatelessWidget {
+  const SDealFooter({
+    required this.price,
+    required this.action,
+    this.originalPrice,
+    super.key,
+  });
+
+  /// Both already written for people (`formatPrice`).
+  final String price;
+  final String? originalPrice;
+
+  /// The main button (an `SButton`).
+  final Widget action;
+
+  @override
+  Widget build(BuildContext context) => StellarKit.of(context).deal.footer(
+    context,
+    DealFooterSpec(price: price, originalPrice: originalPrice, action: action),
+  );
+}

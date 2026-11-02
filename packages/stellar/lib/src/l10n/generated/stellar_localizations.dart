@@ -436,6 +436,18 @@ abstract class StellarLocalizations {
   /// In en, this message translates to:
   /// **'Continue with Apple'**
   String get continueWithApple;
+
+  /// No description provided for @quantityFewer.
+  ///
+  /// In en, this message translates to:
+  /// **'Fewer'**
+  String get quantityFewer;
+
+  /// No description provided for @quantityMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get quantityMore;
 }
 
 class _StellarLocalizationsDelegate

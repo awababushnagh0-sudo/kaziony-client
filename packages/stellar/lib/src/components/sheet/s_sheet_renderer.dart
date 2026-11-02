@@ -60,6 +60,22 @@ class ActionSheetSpec<T> {
   final String? subtitle;
 }
 
+/// A sheet with its own content under a title (a form of a few fields).
+@immutable
+class ContentSheetSpec {
+  const ContentSheetSpec({
+    required this.title,
+    required this.builder,
+    this.subtitle,
+  });
+
+  final String title;
+  final String? subtitle;
+
+  /// Built in the sheet's context, so it can close the sheet.
+  final WidgetBuilder builder;
+}
+
 abstract interface class SheetRenderer {
   /// Shows the choices from the bottom of the screen. Completes with the
   /// one tapped, or null when the sheet is closed without a choice.
@@ -68,4 +84,8 @@ abstract interface class SheetRenderer {
   /// Shows the ways forward from the bottom of the screen, as big rows.
   /// Completes with the one tapped, or null when the sheet is closed.
   Future<T?> actions<T>(BuildContext context, ActionSheetSpec<T> spec);
+
+  /// Shows [ContentSheetSpec.builder]'s content from the bottom of the
+  /// screen. Completes with what it closes the sheet with.
+  Future<T?> content<T>(BuildContext context, ContentSheetSpec spec);
 }

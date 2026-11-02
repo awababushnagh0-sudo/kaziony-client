@@ -155,6 +155,68 @@ class DealCardSpec {
   final VoidCallback? onTap;
 }
 
+/// An offer as customers browse it: its photo big, with the discount and
+/// the store's logo on it, then the title, prices and what to know at a
+/// glance (when it ends, how far).
+@immutable
+class DealPosterSpec {
+  const DealPosterSpec({
+    required this.title,
+    required this.price,
+    required this.storeName,
+    this.originalPrice,
+    this.discountLabel,
+    this.imageUrl,
+    this.storeLogoUrl,
+    this.stockLabel,
+    this.stockHot = false,
+    this.details = const [],
+    this.inRow = false,
+    this.onTap,
+  });
+
+  final String title;
+  final String price;
+  final String storeName;
+  final String? originalPrice;
+
+  /// "44% off".
+  final String? discountLabel;
+  final String? imageUrl;
+  final String? storeLogoUrl;
+
+  /// "3 left", on the photo; null for what isn't counted.
+  final String? stockLabel;
+
+  /// Almost gone: the count turns orange.
+  final bool stockHot;
+
+  /// Short facts under the title, in this order ("Ends in 45 min",
+  /// "0.8 km").
+  final List<String> details;
+
+  /// One of a row that scrolls sideways: a fixed width, so the next card
+  /// peeks in.
+  final bool inRow;
+  final VoidCallback? onTap;
+}
+
+/// The bottom of an offer's page: its price and the way to take it.
+@immutable
+class DealFooterSpec {
+  const DealFooterSpec({
+    required this.price,
+    required this.action,
+    this.originalPrice,
+  });
+
+  final String price;
+  final String? originalPrice;
+
+  /// The main button (an `SButton`).
+  final Widget action;
+}
+
 abstract interface class DealRenderer {
   Widget tile(BuildContext context, DealTileSpec spec);
 
@@ -163,4 +225,8 @@ abstract interface class DealRenderer {
   Widget stock(BuildContext context, DealStockSpec spec);
 
   Widget card(BuildContext context, DealCardSpec spec);
+
+  Widget poster(BuildContext context, DealPosterSpec spec);
+
+  Widget footer(BuildContext context, DealFooterSpec spec);
 }

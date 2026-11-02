@@ -25,6 +25,10 @@ class MaterialSheetRenderer implements SheetRenderer {
   Future<T?> actions<T>(BuildContext context, ActionSheetSpec<T> spec) =>
       _show(context, (_) => _ActionSheet(spec: spec));
 
+  @override
+  Future<T?> content<T>(BuildContext context, ContentSheetSpec spec) =>
+      _show(context, (_) => _ContentSheet(spec: spec));
+
   Future<T?> _show<T>(BuildContext context, WidgetBuilder builder) =>
       showModalBottomSheet<T>(
         context: context,
@@ -218,6 +222,30 @@ class _ChoiceSheet<T> extends StatelessWidget {
               onChanged: (value) => Navigator.of(context).pop(value),
             ),
           ),
+        ),
+      ],
+    ),
+  );
+}
+
+class _ContentSheet extends StatelessWidget {
+  const _ContentSheet({required this.spec});
+
+  final ContentSheetSpec spec;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    // Above the keyboard when the content has a field.
+    padding: _sheetPadding(context)
+        .add(EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom)),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _Heading(title: spec.title, subtitle: spec.subtitle),
+        const Gap(Space.xl),
+        Flexible(
+          child: SingleChildScrollView(child: Builder(builder: spec.builder)),
         ),
       ],
     ),

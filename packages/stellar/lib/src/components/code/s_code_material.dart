@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:reactive_forms/reactive_forms.dart'
     show ReactiveTextField, ReactiveValueListenableBuilder;
 
@@ -14,6 +15,40 @@ class MaterialCodeRenderer implements CodeRenderer {
 
   // Air between the letters, so look-alikes stay apart when read out.
   static const _letterSpacing = 3.0;
+
+  static const _qrSize = 200.0;
+
+  @override
+  Widget qr(BuildContext context, QrCodeSpec spec) {
+    final c = context.colors;
+    // Dark on white in both themes: some scanners can't read light on
+    // dark.
+    return Semantics(
+      label: spec.label,
+      image: true,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: c.codePaper,
+          borderRadius: BorderRadius.circular(Radii.xl),
+          border: Border.all(color: c.border),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(Space.lg),
+          child: QrImageView(
+            data: spec.data,
+            size: _qrSize,
+            padding: EdgeInsets.zero,
+            backgroundColor: c.codePaper,
+            eyeStyle: QrEyeStyle(eyeShape: QrEyeShape.square, color: c.codeInk),
+            dataModuleStyle: QrDataModuleStyle(
+              dataModuleShape: QrDataModuleShape.square,
+              color: c.codeInk,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget card(BuildContext context, CodeCardSpec spec) {

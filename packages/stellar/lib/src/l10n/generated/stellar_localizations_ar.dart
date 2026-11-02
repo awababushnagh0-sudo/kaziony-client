@@ -186,4 +186,10 @@ class StellarLocalizationsAr extends StellarLocalizations {
 
   @override
   String get continueWithApple => 'المتابعة مع Apple';
+
+  @override
+  String get quantityFewer => 'أقل';
+
+  @override
+  String get quantityMore => 'أكثر';
 }

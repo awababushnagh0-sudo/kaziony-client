@@ -18,6 +18,10 @@ class MaterialDealRenderer implements DealRenderer {
   static const _barHeight = 10.0;
   static const _cardBarHeight = 6.0;
   static const _photoHeight = 220.0;
+  static const _posterWidth = 288.0;
+  static const _posterPhoto = 150.0;
+  static const _posterPhotoWide = 180.0;
+  static const _posterLogo = 40.0;
 
   @override
   Widget tile(BuildContext context, DealTileSpec spec) {
@@ -407,6 +411,323 @@ class MaterialDealRenderer implements DealRenderer {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget poster(BuildContext context, DealPosterSpec spec) {
+    final c = context.colors;
+    final text = context.style.text;
+    final url = spec.imageUrl;
+    final logo = spec.storeLogoUrl;
+    final discount = spec.discountLabel;
+    final stock = spec.stockLabel;
+    final originalPrice = spec.originalPrice;
+    final photoHeight = spec.inRow ? _posterPhoto : _posterPhotoWide;
+    final placeholder = ColoredBox(
+      color: c.cream,
+      child: Center(
+        child: Icon(
+          materialIcon(SIcons.offers),
+          size: SIconSize.xl.pixels,
+          color: c.textSubtle,
+        ),
+      ),
+    );
+    final card = Material(
+      color: c.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Radii.xl),
+        side: BorderSide(color: c.border),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: spec.onTap,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              height: photoHeight,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  if (url == null)
+                    placeholder
+                  else
+                    CachedNetworkImage(
+                      imageUrl: url,
+                      fit: BoxFit.cover,
+                      memCacheHeight:
+                          (photoHeight * MediaQuery.devicePixelRatioOf(context))
+                              .round(),
+                      placeholder: (_, _) => placeholder,
+                      errorWidget: (_, _, _) => placeholder,
+                    ),
+                  if (discount != null)
+                    PositionedDirectional(
+                      top: Space.md,
+                      start: Space.md,
+                      child: _DiscountPill(discount),
+                    ),
+                  PositionedDirectional(
+                    bottom: Space.md,
+                    start: Space.md,
+                    child: _Logo(url: logo, size: _posterLogo),
+                  ),
+                  if (stock != null)
+                    PositionedDirectional(
+                      bottom: Space.md,
+                      end: Space.md,
+                      child: _OnPhotoPill(
+                        label: stock,
+                        color: spec.stockHot ? c.accentInk : c.text,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(Space.md),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                spacing: Space.md,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: Space.xxs,
+                      children: [
+                        Text(
+                          spec.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: text.body,
+                            fontWeight: SFontWeight.bold.value,
+                            color: c.text,
+                          ),
+                        ),
+                        Text(
+                          spec.storeName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: text.small,
+                            color: c.textMuted,
+                          ),
+                        ),
+                        if (spec.details.isNotEmpty)
+                          Row(
+                            spacing: Space.xs,
+                            children: [
+                              Icon(
+                                materialIcon(SIcons.clock),
+                                size: SIconSize.xs.pixels,
+                                color: c.textSubtle,
+                              ),
+                              Flexible(
+                                child: Text(
+                                  spec.details.join(' · '),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: text.small,
+                                    color: c.textMuted,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      if (originalPrice != null)
+                        Text(
+                          originalPrice,
+                          style: TextStyle(
+                            fontSize: text.small,
+                            color: c.textSubtle,
+                            decoration: TextDecoration.lineThrough,
+                            decorationColor: c.textSubtle,
+                          ),
+                        ),
+                      Text(
+                        spec.price,
+                        style: TextStyle(
+                          fontSize: text.title,
+                          fontWeight: SFontWeight.bold.value,
+                          color: c.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    return spec.inRow ? SizedBox(width: _posterWidth, child: card) : card;
+  }
+
+  @override
+  Widget footer(BuildContext context, DealFooterSpec spec) {
+    final c = context.colors;
+    final text = context.style.text;
+    final originalPrice = spec.originalPrice;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: c.surface,
+        border: Border(top: BorderSide(color: c.border)),
+      ),
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.all(Space.lg),
+          child: Row(
+            spacing: Space.lg,
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (originalPrice != null)
+                    Text(
+                      originalPrice,
+                      style: TextStyle(
+                        fontSize: text.small,
+                        color: c.textSubtle,
+                        decoration: TextDecoration.lineThrough,
+                        decorationColor: c.textSubtle,
+                      ),
+                    ),
+                  Text(
+                    spec.price,
+                    style: TextStyle(
+                      fontSize: text.display,
+                      fontWeight: SFontWeight.bold.value,
+                      height: 1.2,
+                      color: c.primary,
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(child: spec.action),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The discount on a big photo: "44% off" in the discount's colors.
+class _DiscountPill extends StatelessWidget {
+  const _DiscountPill(this.label);
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: discountGradient(c),
+        borderRadius: BorderRadius.circular(Radii.pill),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: Space.md,
+          vertical: Space.xs,
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: context.style.text.small,
+            fontWeight: SFontWeight.bold.value,
+            color: c.onDiscount,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A short word in a white pill, so it reads on any photo ("3 left").
+class _OnPhotoPill extends StatelessWidget {
+  const _OnPhotoPill({required this.label, required this.color});
+
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: BoxDecoration(
+      color: context.colors.surface,
+      borderRadius: BorderRadius.circular(Radii.pill),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: Space.md,
+        vertical: Space.xs,
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: context.style.text.small,
+          fontWeight: SFontWeight.bold.value,
+          color: color,
+        ),
+      ),
+    ),
+  );
+}
+
+/// A store's logo in a white ring, so it stands off the photo; the store
+/// icon when it has none.
+class _Logo extends StatelessWidget {
+  const _Logo({required this.url, required this.size});
+
+  final String? url;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final url = this.url;
+    final fallback = ColoredBox(
+      color: c.primarySoft,
+      child: Icon(
+        materialIcon(SIcons.store),
+        size: SIconSize.sm.pixels,
+        color: c.primary,
+      ),
+    );
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: c.surface, width: 2),
+        boxShadow: [BoxShadow(color: c.shadow, blurRadius: 8)],
+      ),
+      child: ClipOval(
+        child: SizedBox.square(
+          dimension: size,
+          child: url == null
+              ? fallback
+              : CachedNetworkImage(
+                  imageUrl: url,
+                  fit: BoxFit.cover,
+                  memCacheWidth: (size * MediaQuery.devicePixelRatioOf(context))
+                      .round(),
+                  placeholder: (_, _) => fallback,
+                  errorWidget: (_, _, _) => fallback,
+                ),
         ),
       ),
     );

@@ -31,6 +31,9 @@ class _LibreMapEngineState extends State<LibreMapEngine> {
   late LatLng _center = _latLng(widget.spec.target);
   var _moving = false;
 
+  /// Counts the style's loads, so a draw for an older one stops.
+  var _draws = 0;
+
   static LatLng _latLng(GeoPoint point) =>
       LatLng(point.latitude, point.longitude);
 
@@ -45,28 +48,43 @@ class _LibreMapEngineState extends State<LibreMapEngine> {
   }
 
   /// MapLibre draws no circles in km: each area is a ring of points.
+  ///
+  /// The style can load again while a draw is under way (iOS reloads it,
+  /// say coming back from the background); MapLibre then drops what's drawn
+  /// and the managers drawing it, and calls this again. So an older draw
+  /// stops rather than draw twice, and a manager gone mid-draw is left to
+  /// the newer call.
   Future<void> _drawAreas() async {
     final controller = _controller;
     if (controller == null) return;
+    final draw = ++_draws;
+    bool current() => mounted && draw == _draws;
     final spec = widget.spec;
     final color = _hex(spec.areaColor);
-    for (final area in spec.areas) {
-      final edge = _circle(area.center, area.radiusKm.toDouble());
-      await controller.addFill(
-        FillOptions(
-          geometry: [edge],
-          fillColor: color,
-          fillOpacity: mapAreaFillOpacity,
-        ),
-      );
-      await controller.addLine(
-        LineOptions(
-          geometry: edge,
-          lineColor: color,
-          lineOpacity: mapAreaLineOpacity,
-          lineWidth: mapAreaLineWidth,
-        ),
-      );
+    try {
+      for (final area in spec.areas) {
+        final edge = _circle(area.center, area.radiusKm.toDouble());
+        if (!current()) return;
+        await controller.addFill(
+          FillOptions(
+            geometry: [edge],
+            fillColor: color,
+            fillOpacity: mapAreaFillOpacity,
+          ),
+        );
+        if (!current()) return;
+        await controller.addLine(
+          LineOptions(
+            geometry: edge,
+            lineColor: color,
+            lineOpacity: mapAreaLineOpacity,
+            lineWidth: mapAreaLineWidth,
+          ),
+        );
+      }
+    } on Exception {
+      // A manager dropped mid-draw: the style is loading again, and its
+      // own call draws the areas.
     }
   }
 

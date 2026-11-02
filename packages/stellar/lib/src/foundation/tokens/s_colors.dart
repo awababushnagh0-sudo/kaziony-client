@@ -28,6 +28,8 @@ class StellarColors {
     required this.shadow,
     required this.scrim,
     required this.onScrim,
+    required this.codeInk,
+    required this.codePaper,
     required this.background,
     required this.surface,
     required this.surfaceMuted,
@@ -104,6 +106,11 @@ class StellarColors {
   /// [onScrim] on it: dark, in both themes.
   final Color scrim;
   final Color onScrim;
+
+  /// A QR code's dark squares and the white around them: the same in both
+  /// themes, so every scanner reads it.
+  final Color codeInk;
+  final Color codePaper;
   final Color background;
 
   /// Cards, sheets and dialogs. The same as [background]: a card's border
@@ -171,6 +178,7 @@ class StellarColors {
     SColor.primaryTint => primaryTint,
     SColor.successSoft => successSoft,
     SColor.accentSoft => accentSoft,
+    SColor.accentInk => accentInk,
     SColor.cream => cream,
   };
 }
@@ -195,6 +203,10 @@ enum SColor {
 
   /// On an [accent] background.
   onAccent,
+
+  /// The brand's orange deep enough for text on white: what's running out
+  /// (time left to pick up).
+  accentInk,
   success,
   warning,
   danger,

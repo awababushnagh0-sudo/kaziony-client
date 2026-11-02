@@ -38,11 +38,14 @@ class SDialog extends StatelessWidget {
           .show<T>(context, builder, dismissible: dismissible);
 
   /// Asks the user to confirm an action. Returns true if they did.
+  /// [cancelLabel] names the way back when "Cancel" would read like the
+  /// action itself ("Keep it" beside "Cancel reservation").
   static Future<bool> confirm(
     BuildContext context, {
     required String title,
     required String message,
     required String confirmLabel,
+    String? cancelLabel,
     bool destructive = false,
   }) => StellarKit.of(context).dialog.confirm(
     context,
@@ -50,7 +53,7 @@ class SDialog extends StatelessWidget {
       title: title,
       message: message,
       confirmLabel: confirmLabel,
-      cancelLabel: StellarLocalizations.of(context).cancel,
+      cancelLabel: cancelLabel ?? StellarLocalizations.of(context).cancel,
       destructive: destructive,
     ),
   );

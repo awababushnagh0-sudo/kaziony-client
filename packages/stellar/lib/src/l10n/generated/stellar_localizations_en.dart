@@ -190,4 +190,10 @@ class StellarLocalizationsEn extends StellarLocalizations {
 
   @override
   String get continueWithApple => 'Continue with Apple';
+
+  @override
+  String get quantityFewer => 'Fewer';
+
+  @override
+  String get quantityMore => 'More';
 }

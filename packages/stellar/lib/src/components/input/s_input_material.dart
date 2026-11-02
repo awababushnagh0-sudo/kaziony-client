@@ -34,6 +34,52 @@ class MaterialInputRenderer implements InputRenderer {
       _SearchField(spec: spec);
 
   @override
+  Widget quantity(BuildContext context, QuantityInputSpec spec) {
+    final c = context.colors;
+    final s = StellarLocalizations.of(context);
+    Widget step(SIcons icon, String tooltip, int? to) => IconButton.outlined(
+      tooltip: tooltip,
+      onPressed: to == null ? null : () => spec.onChanged(to),
+      style: IconButton.styleFrom(
+        side: BorderSide(color: c.border),
+        foregroundColor: c.text,
+      ),
+      icon: Icon(materialIcon(icon), size: SIconSize.md.pixels),
+    );
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      spacing: Space.xl,
+      children: [
+        step(
+          SIcons.minus,
+          s.quantityFewer,
+          spec.value > spec.min ? spec.value - 1 : null,
+        ),
+        SizedBox(
+          width: _quantityWidth,
+          child: Text(
+            '${spec.value}',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: context.style.text.display,
+              fontWeight: SFontWeight.bold.value,
+              color: c.text,
+            ),
+          ),
+        ),
+        step(
+          SIcons.add,
+          s.quantityMore,
+          spec.value < spec.max ? spec.value + 1 : null,
+        ),
+      ],
+    );
+  }
+
+  /// Room for two figures, so the buttons don't move as the number grows.
+  static const _quantityWidth = 48.0;
+
+  @override
   Widget choice<T>(BuildContext context, ChoiceInputSpec<T> spec) => _labelled(
     context,
     label: spec.label,
@@ -391,9 +437,15 @@ class _SearchFieldState extends State<_SearchField> {
       borderRadius: BorderRadius.all(Radius.circular(Radii.pill)),
       borderSide: BorderSide.none,
     );
+    final onTap = widget.spec.onTap;
     return TextField(
       controller: _controller,
       onChanged: widget.spec.onChanged,
+      autofocus: widget.spec.autofocus,
+      // As a button: no cursor, no keyboard, only the tap.
+      readOnly: onTap != null,
+      canRequestFocus: onTap == null,
+      onTap: onTap,
       style: TextStyle(fontSize: context.style.text.body),
       decoration: InputDecoration(
         hintText: widget.spec.hint,

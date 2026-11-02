@@ -55,5 +55,7 @@
   "themeLight": "فاتح",
   "themeDark": "داكن",
   "continueWithGoogle": "المتابعة مع Google",
-  "continueWithApple": "المتابعة مع Apple"
+  "continueWithApple": "المتابعة مع Apple",
+  "quantityFewer": "أقل",
+  "quantityMore": "أكثر"
 }

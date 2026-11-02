@@ -192,6 +192,7 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // hand-coins
+  SIcons.hourglass => const IconData(0xe296, fontFamily: _f, fontPackage: _p),
   SIcons.chart => const IconData(
     0xe068,
     fontFamily: _f,
@@ -249,6 +250,7 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontPackage: _p,
   ), // eye-off
   SIcons.add => const IconData(0xe13d, fontFamily: _f, fontPackage: _p), // plus
+  SIcons.minus => const IconData(0xe11c, fontFamily: _f, fontPackage: _p),
   SIcons.edit => const IconData(
     0xe1f9,
     fontFamily: _f,

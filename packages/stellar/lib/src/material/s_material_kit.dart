@@ -1,5 +1,6 @@
 import '../components/alert/s_alert_material.dart';
 import '../components/badge/s_badge_material.dart';
+import '../components/browse/s_browse_material.dart';
 import '../components/button/s_button_material.dart';
 import '../components/card/s_card_material.dart';
 import '../components/code/s_code_material.dart';
@@ -79,4 +80,5 @@ const materialKit = StellarKit(
   profile: MaterialProfileRenderer(),
   welcome: MaterialWelcomeRenderer(),
   map: MaterialMapRenderer(),
+  browse: MaterialBrowseRenderer(),
 );

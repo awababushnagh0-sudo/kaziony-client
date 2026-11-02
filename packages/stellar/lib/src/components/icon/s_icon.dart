@@ -54,6 +54,9 @@ enum SIcons {
   /// Paying cash at the counter.
   cash,
 
+  /// How long a reservation is held.
+  hourglass,
+
   /// Numbers over time: a store's month.
   chart,
   category,
@@ -82,6 +85,9 @@ enum SIcons {
   hide,
   // Actions.
   add,
+
+  /// One fewer (a quantity).
+  minus,
   edit,
   copy,
   close,

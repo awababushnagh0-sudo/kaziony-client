@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../components/alert/s_alert_renderer.dart';
 import '../components/badge/s_badge_renderer.dart';
+import '../components/browse/s_browse_renderer.dart';
 import '../components/button/s_button_renderer.dart';
 import '../components/card/s_card_renderer.dart';
 import '../components/code/s_code_renderer.dart';
@@ -83,6 +84,7 @@ class StellarKit {
     required this.profile,
     required this.welcome,
     required this.map,
+    required this.browse,
   });
 
   final ButtonRenderer button;
@@ -123,6 +125,7 @@ class StellarKit {
   final ProfileRenderer profile;
   final WelcomeRenderer welcome;
   final MapRenderer map;
+  final BrowseRenderer browse;
 
   static StellarKit of(BuildContext context) => StellarScope.of(context).kit;
 }
