@@ -235,8 +235,28 @@ The screen staff use all day, so it must be fast and work on a weak connection.
 
 ## Step 4: Customer app
 
-- [ ] Sign in with Google / Apple (`kernel` wraps both) — needs the client IDs
-- [ ] Browse: nearby (location permission), categories, search, sort
+- [x] App set up: name كزيوني, icon (the bag on cream), splash screen, the five tabs
+- [x] First launch: three welcome pages (who we are, why, how it works), then where to show
+      offers from (the phone's location, or a place set on a Google map), then the sign-in
+      page with "Continue as guest". The place is saved on the phone; until there is one,
+      every route leads to the welcome pages
+- [x] One sign-in page for every way in (Apple, Google; SMS maybe later), opened from
+      Account and Bookings (booking an offer next); browsing stays open to guests
+- [x] Sign in with Google (`kernel` wraps it). Client IDs in `config/*.json`, the iOS URL
+      scheme in `Info.plist`
+- [x] Account: change the place offers are shown around
+- [x] Only inside our service areas (Tripoli for now): a location outside them is refused
+      with where we work, and the map draws the areas and only confirms a pin inside.
+      `SMapPicker` in stellar draws it with OpenFreeMap (MapLibre, free, no key) or Google
+      Maps, picked by `MAP_PROVIDER` in `config/*.json`
+- [ ] If we switch to Google Maps: a key restricted to the release app (Android SHA-1 and
+      iOS bundle ID), the paid Maps APIs capped at 0, and drop the engine we don't use
+- [ ] Sign in with Apple — the button is there and says "coming soon"; needs the Apple
+      Developer account (and is required on iOS alongside Google)
+- [ ] Before release: an Android OAuth client for the release key and for Play's
+      app-signing key (their SHA-1s), and the Google consent screen published
+- [ ] Browse: offers around the saved place (the backend caps the radius), categories,
+      search, sort
 - [ ] Offer page, store page, follow
 - [ ] Claim → reservation with QR code and countdown, my claims, cancel
 - [ ] Profile: name, contact phone, language
@@ -256,6 +276,9 @@ The screen staff use all day, so it must be fast and work on a weak connection.
 - [x] Reloading or opening a link to a page lands back on it after signing in
 - [x] Settings (account menu): theme (automatic, light, dark) and language, saved on the
       device, in the MIA portal's settings dialog
+- [x] Platform settings: how far around a customer offers are shown (1 to 100 km; admins
+      edit it, editors see it)
+- [x] Platform: service areas (name, center, radius, on/off), where customers can browse
 - [x] Stores: store page with its fields edited in place (Not saved / Save), disable, delete
 - [ ] Stores: branches, staff, reset owner password
 - [x] Users (admins only): our team with search and a role filter; add an admin or editor,
