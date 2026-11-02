@@ -581,4 +581,98 @@ class AdminLocalizationsAr extends AdminLocalizations {
 
   @override
   String get languageEnglish => 'English';
+
+  @override
+  String get navPlatform => 'إعدادات المنصة';
+
+  @override
+  String get platformSettingsTitle => 'إعدادات المنصة';
+
+  @override
+  String get platformBrowseSection => 'تصفح العروض';
+
+  @override
+  String get browseRadiusLabel => 'نطاق العروض (كم)';
+
+  @override
+  String browseRadiusHint(int min, int max) {
+    return 'يرى الزبون عروض الفروع القريبة منه ضمن هذه المسافة، من $min إلى $max كم. يسري فورًا.';
+  }
+
+  @override
+  String get browseRadiusEditorHint =>
+      'يرى الزبون عروض الفروع القريبة منه ضمن هذه المسافة. يغيّرها المدير فقط.';
+
+  @override
+  String get platformAreasSection => 'مناطق الخدمة';
+
+  @override
+  String get serviceAreasHelp =>
+      'الزبائن يتصفحون العروض من داخل هذه الدوائر فقط، والتطبيق يرسمها على الخريطة.';
+
+  @override
+  String get addServiceArea => 'إضافة منطقة';
+
+  @override
+  String get addServiceAreaTitle => 'منطقة خدمة جديدة';
+
+  @override
+  String get editServiceAreaTitle => 'تعديل منطقة الخدمة';
+
+  @override
+  String get serviceAreaNameAr => 'الاسم بالعربي';
+
+  @override
+  String get serviceAreaNameEn => 'الاسم بالإنجليزي';
+
+  @override
+  String get serviceAreaCenter => 'المركز';
+
+  @override
+  String get serviceAreaCenterHelp =>
+      'من خرائط Google: اضغط على مركز المدينة وانسخ الإحداثيات.';
+
+  @override
+  String get invalidCoordinates =>
+      'اكتب خط العرض ثم خط الطول، مثل 32.85, 13.18';
+
+  @override
+  String get serviceAreaRadius => 'نصف القطر (كم)';
+
+  @override
+  String serviceAreaRadiusHint(int min, int max) {
+    return 'من $min إلى $max كم حول المركز.';
+  }
+
+  @override
+  String get serviceAreaOn => 'مفعّلة';
+
+  @override
+  String get serviceAreaOff => 'متوقفة';
+
+  @override
+  String serviceAreasTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count منطقة',
+      few: '$count مناطق',
+      two: 'منطقتان',
+      one: 'منطقة واحدة',
+      zero: 'لا مناطق',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deleteServiceArea => 'حذف المنطقة';
+
+  @override
+  String deleteServiceAreaTitle(String area) {
+    return 'حذف $area؟';
+  }
+
+  @override
+  String get deleteServiceAreaMessage =>
+      'الزبائن داخلها لن يقدروا يتصفحوا العروض. لإيقافها مؤقتًا اجعلها متوقفة بدل الحذف.';
 }

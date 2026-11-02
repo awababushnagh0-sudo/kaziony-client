@@ -16,8 +16,8 @@ class RecordScreen<T> extends AppView {
   const RecordScreen({
     required this.record,
     required this.form,
-    required this.parent,
     required this.title,
+    this.parent,
     required this.builder,
     this.status,
     this.actions,
@@ -27,8 +27,9 @@ class RecordScreen<T> extends AppView {
   final AsyncNotifierProvider<AsyncViewModel<T>, T> record;
   final NotifierProvider<RecordForm<T>, RecordFormState> form;
 
-  /// The list the record belongs to, e.g. "Stores".
-  final ScaffoldParent parent;
+  /// The list the record belongs to, e.g. "Stores". None for a page of its
+  /// own, such as the platform settings.
+  final ScaffoldParent? parent;
   final String Function(T record) title;
 
   /// Its fields, usually an SRecordPage; they're inside the form.

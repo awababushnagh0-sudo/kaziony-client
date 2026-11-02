@@ -1,5 +1,7 @@
 import 'package:admin/features/auth/domain/auth_repository.dart';
 import 'package:admin/features/dashboard/domain/dashboard_stats.dart';
+import 'package:admin/features/platform/domain/platform_settings.dart';
+import 'package:admin/features/platform/domain/service_area.dart';
 import 'package:admin/features/stores/domain/location.dart';
 import 'package:admin/features/stores/domain/store.dart';
 import 'package:admin/features/users/domain/dashboard_user.dart';
@@ -309,6 +311,76 @@ class FakeDashboardUserRepository implements DashboardUserRepository {
           ),
         );
   }
+}
+
+class FakePlatformSettingsRepository implements PlatformSettingsRepository {
+  PlatformSettings saved = const PlatformSettings(browseRadiusKm: 25);
+  final updates = <PlatformSettings>[];
+
+  @override
+  Future<Result<PlatformSettings>> get() async => Ok(saved);
+
+  @override
+  Future<Result<PlatformSettings>> update(PlatformSettings settings) async {
+    updates.add(settings);
+    return Ok(saved = settings);
+  }
+}
+
+const tripoliArea = ServiceArea(
+  id: 'a1',
+  nameAr: 'طرابلس',
+  nameEn: 'Tripoli',
+  latitude: 32.85,
+  longitude: 13.18,
+  radiusKm: 30,
+  isActive: true,
+);
+
+class FakeServiceAreaRepository implements ServiceAreaRepository {
+  var areas = <ServiceArea>[tripoliArea];
+  final created = <ServiceAreaDraft>[];
+  final updated = <(String, ServiceAreaDraft)>[];
+  final deleted = <String>[];
+
+  @override
+  Future<Result<List<ServiceArea>>> list() async => Ok(areas);
+
+  @override
+  Future<Result<ServiceArea>> create(ServiceAreaDraft draft) async {
+    created.add(draft);
+    final area = _area('a${areas.length + 1}', draft);
+    areas = [...areas, area];
+    return Ok(area);
+  }
+
+  @override
+  Future<Result<ServiceArea>> update(String id, ServiceAreaDraft draft) async {
+    updated.add((id, draft));
+    final area = _area(id, draft);
+    areas = [for (final a in areas) a.id == id ? area : a];
+    return Ok(area);
+  }
+
+  @override
+  Future<Result<void>> delete(String id) async {
+    deleted.add(id);
+    areas = [
+      for (final a in areas)
+        if (a.id != id) a,
+    ];
+    return const Ok(null);
+  }
+
+  static ServiceArea _area(String id, ServiceAreaDraft draft) => ServiceArea(
+    id: id,
+    nameAr: draft.nameAr,
+    nameEn: draft.nameEn,
+    latitude: draft.latitude,
+    longitude: draft.longitude,
+    radiusKm: draft.radiusKm,
+    isActive: draft.isActive,
+  );
 }
 
 /// The app language, fixed to English so it matches the screens under test.

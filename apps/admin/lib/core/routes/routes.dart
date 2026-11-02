@@ -11,6 +11,7 @@ abstract final class Routes {
   static String user(String id) => '$users/$id';
   static const offers = '/offers';
   static const categories = '/categories';
+  static const platform = '/platform';
 
   /// Pages only admins open, not editors.
   static const adminOnly = {users};

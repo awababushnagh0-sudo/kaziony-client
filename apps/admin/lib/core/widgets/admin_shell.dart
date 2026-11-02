@@ -39,6 +39,7 @@ class AdminShell extends AppView {
           item(Routes.users, s.navUsers, SIcons.users),
         item(Routes.offers, s.navOffers, SIcons.offers),
         item(Routes.categories, s.navCategories, SIcons.category),
+        item(Routes.platform, s.navPlatform, SIcons.location),
       ],
       userName: user?.name ?? user?.email,
       userDetail: user?.name == null ? null : user?.email,

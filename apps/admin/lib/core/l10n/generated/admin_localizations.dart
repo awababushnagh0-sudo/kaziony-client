@@ -1111,6 +1111,150 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'English'**
   String get languageEnglish;
+
+  /// No description provided for @navPlatform.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform settings'**
+  String get navPlatform;
+
+  /// No description provided for @platformSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform settings'**
+  String get platformSettingsTitle;
+
+  /// No description provided for @platformBrowseSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Browsing offers'**
+  String get platformBrowseSection;
+
+  /// No description provided for @browseRadiusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer radius (km)'**
+  String get browseRadiusLabel;
+
+  /// No description provided for @browseRadiusHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers see offers from branches within this distance of them, {min} to {max} km. Takes effect right away.'**
+  String browseRadiusHint(int min, int max);
+
+  /// No description provided for @browseRadiusEditorHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers see offers from branches within this distance of them. Only admins change it.'**
+  String get browseRadiusEditorHint;
+
+  /// No description provided for @platformAreasSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Service areas'**
+  String get platformAreasSection;
+
+  /// No description provided for @serviceAreasHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers can only browse offers from inside these circles; the app draws them on its map.'**
+  String get serviceAreasHelp;
+
+  /// No description provided for @addServiceArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Add area'**
+  String get addServiceArea;
+
+  /// No description provided for @addServiceAreaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New service area'**
+  String get addServiceAreaTitle;
+
+  /// No description provided for @editServiceAreaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit service area'**
+  String get editServiceAreaTitle;
+
+  /// No description provided for @serviceAreaNameAr.
+  ///
+  /// In en, this message translates to:
+  /// **'Name in Arabic'**
+  String get serviceAreaNameAr;
+
+  /// No description provided for @serviceAreaNameEn.
+  ///
+  /// In en, this message translates to:
+  /// **'Name in English'**
+  String get serviceAreaNameEn;
+
+  /// No description provided for @serviceAreaCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Center'**
+  String get serviceAreaCenter;
+
+  /// No description provided for @serviceAreaCenterHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'From Google Maps: click the city\'s center and copy its coordinates.'**
+  String get serviceAreaCenterHelp;
+
+  /// No description provided for @invalidCoordinates.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter latitude then longitude, like 32.85, 13.18'**
+  String get invalidCoordinates;
+
+  /// No description provided for @serviceAreaRadius.
+  ///
+  /// In en, this message translates to:
+  /// **'Radius (km)'**
+  String get serviceAreaRadius;
+
+  /// No description provided for @serviceAreaRadiusHint.
+  ///
+  /// In en, this message translates to:
+  /// **'{min} to {max} km around the center.'**
+  String serviceAreaRadiusHint(int min, int max);
+
+  /// No description provided for @serviceAreaOn.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get serviceAreaOn;
+
+  /// No description provided for @serviceAreaOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get serviceAreaOff;
+
+  /// No description provided for @serviceAreasTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 area} other{{count} areas}}'**
+  String serviceAreasTotal(int count);
+
+  /// No description provided for @deleteServiceArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete area'**
+  String get deleteServiceArea;
+
+  /// No description provided for @deleteServiceAreaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {area}?'**
+  String deleteServiceAreaTitle(String area);
+
+  /// No description provided for @deleteServiceAreaMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers there won\'t be able to browse offers. To pause it, turn it off instead.'**
+  String get deleteServiceAreaMessage;
 }
 
 class _AdminLocalizationsDelegate

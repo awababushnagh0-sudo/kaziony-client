@@ -580,4 +580,95 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get languageEnglish => 'English';
+
+  @override
+  String get navPlatform => 'Platform settings';
+
+  @override
+  String get platformSettingsTitle => 'Platform settings';
+
+  @override
+  String get platformBrowseSection => 'Browsing offers';
+
+  @override
+  String get browseRadiusLabel => 'Offer radius (km)';
+
+  @override
+  String browseRadiusHint(int min, int max) {
+    return 'Customers see offers from branches within this distance of them, $min to $max km. Takes effect right away.';
+  }
+
+  @override
+  String get browseRadiusEditorHint =>
+      'Customers see offers from branches within this distance of them. Only admins change it.';
+
+  @override
+  String get platformAreasSection => 'Service areas';
+
+  @override
+  String get serviceAreasHelp =>
+      'Customers can only browse offers from inside these circles; the app draws them on its map.';
+
+  @override
+  String get addServiceArea => 'Add area';
+
+  @override
+  String get addServiceAreaTitle => 'New service area';
+
+  @override
+  String get editServiceAreaTitle => 'Edit service area';
+
+  @override
+  String get serviceAreaNameAr => 'Name in Arabic';
+
+  @override
+  String get serviceAreaNameEn => 'Name in English';
+
+  @override
+  String get serviceAreaCenter => 'Center';
+
+  @override
+  String get serviceAreaCenterHelp =>
+      'From Google Maps: click the city\'s center and copy its coordinates.';
+
+  @override
+  String get invalidCoordinates =>
+      'Enter latitude then longitude, like 32.85, 13.18';
+
+  @override
+  String get serviceAreaRadius => 'Radius (km)';
+
+  @override
+  String serviceAreaRadiusHint(int min, int max) {
+    return '$min to $max km around the center.';
+  }
+
+  @override
+  String get serviceAreaOn => 'On';
+
+  @override
+  String get serviceAreaOff => 'Off';
+
+  @override
+  String serviceAreasTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count areas',
+      one: '1 area',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deleteServiceArea => 'Delete area';
+
+  @override
+  String deleteServiceAreaTitle(String area) {
+    return 'Delete $area?';
+  }
+
+  @override
+  String get deleteServiceAreaMessage =>
+      'Customers there won\'t be able to browse offers. To pause it, turn it off instead.';
 }

@@ -286,5 +286,64 @@
   "settingsLanguage": "Language",
   "settingsLanguageHint": "The dashboard's language on this device. Arabic reads right to left.",
   "languageArabic": "العربية",
-  "languageEnglish": "English"
+  "languageEnglish": "English",
+  "navPlatform": "Platform settings",
+  "platformSettingsTitle": "Platform settings",
+  "platformBrowseSection": "Browsing offers",
+  "browseRadiusLabel": "Offer radius (km)",
+  "browseRadiusHint": "Customers see offers from branches within this distance of them, {min} to {max} km. Takes effect right away.",
+  "@browseRadiusHint": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "browseRadiusEditorHint": "Customers see offers from branches within this distance of them. Only admins change it.",
+  "platformAreasSection": "Service areas",
+  "serviceAreasHelp": "Customers can only browse offers from inside these circles; the app draws them on its map.",
+  "addServiceArea": "Add area",
+  "addServiceAreaTitle": "New service area",
+  "editServiceAreaTitle": "Edit service area",
+  "serviceAreaNameAr": "Name in Arabic",
+  "serviceAreaNameEn": "Name in English",
+  "serviceAreaCenter": "Center",
+  "serviceAreaCenterHelp": "From Google Maps: click the city's center and copy its coordinates.",
+  "invalidCoordinates": "Enter latitude then longitude, like 32.85, 13.18",
+  "serviceAreaRadius": "Radius (km)",
+  "serviceAreaRadiusHint": "{min} to {max} km around the center.",
+  "@serviceAreaRadiusHint": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "serviceAreaOn": "On",
+  "serviceAreaOff": "Off",
+  "serviceAreasTotal": "{count, plural, =1{1 area} other{{count} areas}}",
+  "@serviceAreasTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteServiceArea": "Delete area",
+  "deleteServiceAreaTitle": "Delete {area}?",
+  "@deleteServiceAreaTitle": {
+    "placeholders": {
+      "area": {
+        "type": "String",
+        "example": "Tripoli"
+      }
+    }
+  },
+  "deleteServiceAreaMessage": "Customers there won't be able to browse offers. To pause it, turn it off instead."
 }
