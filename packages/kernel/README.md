@@ -16,7 +16,8 @@ Riverpod, Dio, go_router or storage plugins.
   running only while on screen and the app is in front; `ScannerStatus.denied` when the
   camera is off
 - **Session:** `sessionProvider` (restoring / signed in / signed out), login, change password,
-  logout; works offline with the cached user
+  customer sign-in with Google (`signInWithGoogle`, through `googleAuthProvider`), logout;
+  works offline with the cached user
 - **Also:** config (`--dart-define=API_BASE_URL`), locale (Arabic default), version check,
   error reporting interface, navigation (go_router), Libyan phone and price helpers
   (`parsePrice`, `dirhamsOf`, `discountPercent`), dates (`formatDate`, `formatDateTime`,

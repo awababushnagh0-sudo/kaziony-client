@@ -9,6 +9,7 @@ import '../network/api.dart';
 import '../result/failure.dart';
 import '../result/result.dart';
 import '../storage/storage.dart';
+import 'google_auth.dart';
 import 'session_user.dart';
 import 'token_store.dart';
 
@@ -71,6 +72,36 @@ class SessionController extends Notifier<SessionState> {
       Ok(:final value) => _start(value),
       Err(:final failure) => Err(failure),
     };
+  }
+
+  /// Customer sign-in: Google's account sheet, then our backend, which
+  /// finds or makes the customer. Ok(null) when the user closed the sheet.
+  Future<Result<SessionUser?>> signInWithGoogle() async {
+    final google = ref.read(googleAuthProvider);
+    final String idToken;
+    switch (await google.signIn()) {
+      case GoogleSignedIn(idToken: final token):
+        idToken = token;
+      case GoogleCancelled():
+        return const Ok(null);
+      case GoogleFailed(:final error):
+        ref.read(errorReporterProvider).report(error, StackTrace.current);
+        return Err(UnknownFailure(error));
+    }
+
+    final publicApi = ref.read(publicApiProvider);
+    final auth = publicApi.client(api.AuthClient.new);
+    final result = await publicApi.guard(
+      () => auth.google(body: api.GoogleSignInDto(idToken: idToken)),
+    );
+    switch (result) {
+      case Ok(:final value):
+        return _start(value);
+      case Err(:final failure):
+        // Our backend said no: the next try should ask for an account again.
+        await google.signOut();
+        return Err(failure);
+    }
   }
 
   /// Replaces a temporary (or old) password. Other devices are logged out.
@@ -152,6 +183,8 @@ class SessionController extends Notifier<SessionState> {
             auth.logout(body: api.RefreshTokenDto(refreshToken: refreshToken)),
       );
     }
+    // So the next sign-in asks which Google account, not the same one.
+    await ref.read(googleAuthProvider).signOut();
     await _end();
   }
 

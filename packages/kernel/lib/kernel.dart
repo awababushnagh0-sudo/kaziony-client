@@ -19,6 +19,7 @@ export 'package:flutter/widgets.dart'
         TextStyle;
 
 export 'src/appearance/theme_choice.dart';
+export 'src/auth/google_auth.dart' hide DeviceGoogleAuth;
 export 'src/auth/session.dart'
     show
         SessionController,
@@ -36,6 +37,7 @@ export 'src/errors/error_reporter.dart';
 export 'src/links/links.dart' hide DeviceLinkOpener;
 export 'src/list/page_result.dart';
 export 'src/locale/locale.dart';
+export 'src/location/location.dart' hide DeviceLocationFinder;
 export 'src/navigation/leave_guard.dart';
 export 'src/navigation/navigation.dart';
 export 'src/network/api.dart';
