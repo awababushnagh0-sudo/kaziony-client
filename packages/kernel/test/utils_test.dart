@@ -66,6 +66,10 @@ void main() {
     expect(formatDay(day, languageCode: 'ar'), 'الاثنين، 19 أكتوبر');
     expect(formatShortDay(day, languageCode: 'en'), 'Mon, Oct 19');
     expect(formatShortDay(day, languageCode: 'ar'), 'الاثنين، 19 أكتوبر');
+    expect(formatWeekday(day, languageCode: 'en'), 'Monday');
+    expect(formatWeekday(day, languageCode: 'ar'), 'الاثنين');
+    expect(formatDayMonth(day, languageCode: 'en'), 'Oct 19');
+    expect(formatDayMonth(day, languageCode: 'ar'), '19 أكتوبر');
   });
 
   test('isSameDay compares the day, not the time', () {

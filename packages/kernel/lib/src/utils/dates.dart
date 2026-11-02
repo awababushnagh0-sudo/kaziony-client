@@ -10,6 +10,16 @@ String formatDate(DateTime date, {required String languageCode}) =>
 String formatDay(DateTime date, {required String languageCode}) =>
     _western(DateFormat.MMMMEEEEd(languageCode)).format(date.toLocal());
 
+/// A weekday by its name, for a day in the coming week: "Thursday" or
+/// "الخميس". Shown in the device's time zone.
+String formatWeekday(DateTime date, {required String languageCode}) =>
+    _western(DateFormat.EEEE(languageCode)).format(date.toLocal());
+
+/// A day of the year without its weekday: "Nov 9" or "9 نوفمبر". Shown in
+/// the device's time zone.
+String formatDayMonth(DateTime date, {required String languageCode}) =>
+    _western(DateFormat.MMMd(languageCode)).format(date.toLocal());
+
 /// A day in a few words, for under a time: "Sat, Oct 31" or
 /// "السبت، 31 أكتوبر". Shown in the device's time zone.
 String formatShortDay(DateTime date, {required String languageCode}) =>
