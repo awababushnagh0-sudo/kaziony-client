@@ -1,18 +1,30 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../../material/s_dashed_line.dart';
-import 's_receipt_renderer.dart';
+import 's_receipt.dart';
 
-class MaterialReceiptRenderer implements ReceiptRenderer {
-  const MaterialReceiptRenderer();
+/// [SReceipt] on a bordered surface with rounded corners.
+class SReceiptMaterial extends StatelessWidget implements SReceipt {
+  const SReceiptMaterial({
+    required this.lines,
+    required this.totalLabel,
+    required this.total,
+    this.note,
+    super.key,
+  });
+
+  final List<ReceiptLine> lines;
+  final String totalLabel;
+  final String total;
+  final String? note;
 
   @override
-  Widget render(BuildContext context, ReceiptSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final note = spec.note;
+    final note = this.note;
     return DecoratedBox(
       decoration: BoxDecoration(
         color: c.surface,
@@ -25,7 +37,7 @@ class MaterialReceiptRenderer implements ReceiptRenderer {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           spacing: Space.md,
           children: [
-            for (final line in spec.lines) _Line(line),
+            for (final line in lines) _Line(line),
             DashedLine(color: c.border),
             Row(
               crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -36,7 +48,7 @@ class MaterialReceiptRenderer implements ReceiptRenderer {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        spec.totalLabel,
+                        totalLabel,
                         style: TextStyle(
                           fontSize: text.subtitle,
                           fontWeight: SFontWeight.bold.value,
@@ -55,7 +67,7 @@ class MaterialReceiptRenderer implements ReceiptRenderer {
                   ),
                 ),
                 Text(
-                  spec.total,
+                  total,
                   style: TextStyle(
                     fontSize: text.display,
                     fontWeight: SFontWeight.bold.value,

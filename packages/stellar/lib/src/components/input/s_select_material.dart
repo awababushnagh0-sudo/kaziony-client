@@ -1,30 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
+import '../../l10n/generated/stellar_localizations.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import '../menu/s_menu_material.dart';
-import 's_input_renderer.dart';
+import 's_input_material.dart';
+import 's_select_input.dart';
 
 /// Taller lists scroll inside the menu.
 const _maxMenuHeight = 280.0;
 
-/// A select in ERPNext's style: a gray field like the text fields, with the
-/// up-and-down chevrons, that opens the same menu as an "Actions" button,
-/// as wide as the field, with a check by the chosen option. Arrow keys,
-/// Enter and Escape work in the menu.
-class SelectField<T> extends StatefulWidget {
-  const SelectField({required this.spec, super.key});
+/// [SSelectInput] in ERPNext's style: a gray field like the text fields,
+/// with the up-and-down chevrons, that opens the same menu as an "Actions"
+/// button, as wide as the field, with a check by the chosen option. Arrow
+/// keys, Enter and Escape work in the menu.
+class SSelectInputMaterial<T> extends StatelessWidget
+    implements SSelectInput<T> {
+  const SSelectInputMaterial({
+    required this.controlName,
+    required this.label,
+    required this.options,
+    this.hint,
+    this.required = false,
+    super.key,
+  });
 
-  final SelectInputSpec<T> spec;
+  final String controlName;
+  final String label;
+  final List<SelectOption<T>> options;
+  final String? hint;
+  final bool required;
 
   @override
-  State<SelectField<T>> createState() => _SelectFieldState<T>();
+  Widget build(BuildContext context) => labelledInput(
+    context,
+    label: label,
+    required: required,
+    child: _SelectField<T>(input: this),
+  );
 }
 
-class _SelectFieldState<T> extends State<SelectField<T>> {
+class _SelectField<T> extends StatefulWidget {
+  const _SelectField({required this.input});
+
+  final SSelectInputMaterial<T> input;
+
+  @override
+  State<_SelectField<T>> createState() => _SelectFieldState<T>();
+}
+
+class _SelectFieldState<T> extends State<_SelectField<T>> {
   final _menu = MenuController();
   final _focus = FocusNode();
   var _open = false;
@@ -44,15 +72,18 @@ class _SelectFieldState<T> extends State<SelectField<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final spec = widget.spec;
+    final input = widget.input;
     final c = context.colors;
     final text = Theme.of(context).textTheme.bodyLarge;
+    final strings = StellarLocalizations.of(context);
     return ReactiveFormField<T, T>(
-      formControlName: spec.controlName,
-      validationMessages: spec.validationMessages,
+      formControlName: input.controlName,
+      validationMessages: {
+        ValidationMessage.required: (_) => strings.validationRequired,
+      },
       builder: (field) {
         final value = field.value;
-        final chosen = spec.options
+        final chosen = input.options
             .where((option) => option.value == value)
             .firstOrNull;
         final enabled = field.control.enabled;
@@ -83,7 +114,7 @@ class _SelectFieldState<T> extends State<SelectField<T>> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          for (final (i, option) in spec.options.indexed)
+                          for (final (i, option) in input.options.indexed)
                             MenuItemButton(
                               // The keys start from the chosen option, or
                               // the first one.
@@ -124,7 +155,7 @@ class _SelectFieldState<T> extends State<SelectField<T>> {
                 isFocused: _open || _focus.hasFocus,
                 isEmpty: chosen == null,
                 decoration: InputDecoration(
-                  hintText: spec.hint,
+                  hintText: input.hint,
                   errorText: field.errorText,
                   enabled: enabled,
                 ),

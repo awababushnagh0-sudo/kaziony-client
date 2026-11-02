@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
-import 's_table_renderer.dart';
+import 's_table.dart';
 
-/// ERPNext-style tables: a pinned header in a rounded gray box, rows that
-/// light up on hover, and the total at the end of the header.
-class MaterialTableRenderer implements TableRenderer {
-  const MaterialTableRenderer();
+/// [SCellText] as a Material [Text].
+class SCellTextMaterial extends StatelessWidget implements SCellText {
+  const SCellTextMaterial(
+    this.text, {
+    this.strong = false,
+    this.ltr = false,
+    super.key,
+  });
+
+  final String text;
+  final bool strong;
+  final bool ltr;
 
   @override
-  Widget render<T>(BuildContext context, TableSpec<T> spec) =>
-      _Table<T>(spec: spec);
-
-  @override
-  Widget cellText(
-    BuildContext context,
-    String text, {
-    bool strong = false,
-    bool ltr = false,
-  }) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final rtl = Directionality.of(context) == TextDirection.rtl;
     return Text(
@@ -42,10 +41,25 @@ class MaterialTableRenderer implements TableRenderer {
   }
 }
 
-class _Table<T> extends StatelessWidget {
-  const _Table({required this.spec});
+/// ERPNext-style [STable]: a pinned header in a rounded gray box, rows that
+/// light up on hover, and the total at the end of the header.
+class STableMaterial<T> extends StatelessWidget implements STable<T> {
+  const STableMaterial({
+    required this.rows,
+    required this.columns,
+    required this.totalLabel,
+    this.onOpen,
+    super.key,
+  });
 
-  final TableSpec<T> spec;
+  final List<T> rows;
+  final List<TableColumn<T>> columns;
+
+  /// Shown at the end of the header ("12 stores"), as in ERPNext.
+  final String totalLabel;
+
+  /// Rows are clickable when set.
+  final ValueChanged<T>? onOpen;
 
   /// Space between the table and the page edge, and between a box's edge
   /// and its text.
@@ -65,7 +79,7 @@ class _Table<T> extends StatelessWidget {
     return SliverLayoutBuilder(
       builder: (context, constraints) {
         final visible = [
-          for (final column in spec.columns)
+          for (final column in columns)
             if (constraints.crossAxisExtent >= column.minWidth) column,
         ];
         Widget row(
@@ -112,7 +126,7 @@ class _Table<T> extends StatelessWidget {
           ),
           dividers: true,
           end: Text(
-            spec.totalLabel,
+            totalLabel,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.end,
@@ -144,17 +158,17 @@ class _Table<T> extends StatelessWidget {
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(_outer, 0, _outer, 8),
               sliver: SliverList.separated(
-                itemCount: spec.rows.length,
+                itemCount: rows.length,
                 separatorBuilder: (_, _) =>
                     Divider(indent: _inner, endIndent: _inner, color: c.border),
                 itemBuilder: (context, index) {
-                  final item = spec.rows[index];
+                  final item = rows[index];
                   final content = Container(
                     height: 44,
                     padding: const EdgeInsets.symmetric(horizontal: _inner),
                     child: row((column) => column.cell(item)),
                   );
-                  final onOpen = spec.onOpen;
+                  final onOpen = this.onOpen;
                   if (onOpen == null) return content;
                   // Hover and press fill the same rounded box as the header.
                   return InkWell(

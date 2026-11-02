@@ -1,9 +1,27 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
-import '../illustration/s_illustration_renderer.dart';
-import '../list_tile/s_list_tile_renderer.dart';
-import 's_sheet_renderer.dart';
+import '../icon/s_icon.dart';
+import '../illustration/s_illustration.dart';
+import '../list_tile/s_radio_group.dart';
+import 's_sheet_material.dart';
+
+/// One of the ways forward [SSheet.actions] offers.
+@immutable
+class SheetAction<T> {
+  const SheetAction({
+    required this.value,
+    required this.icon,
+    required this.label,
+    this.hint,
+  });
+
+  final T value;
+  final SIcons icon;
+  final String label;
+
+  /// What it leads to, under [label].
+  final String? hint;
+}
 
 /// Sheets that slide up from the bottom of the screen.
 abstract final class SSheet {
@@ -19,15 +37,13 @@ abstract final class SSheet {
     T? selected,
     String? subtitle,
     Illustration? illustration,
-  }) => StellarKit.of(context).sheet.choose(
+  }) => SSheetMaterial.choose(
     context,
-    ChoiceSheetSpec(
-      title: title,
-      options: options,
-      selected: selected,
-      subtitle: subtitle,
-      illustration: illustration,
-    ),
+    title: title,
+    options: options,
+    selected: selected,
+    subtitle: subtitle,
+    illustration: illustration,
   );
 
   /// Asks which way to go on ("from a product, or something new?"), each
@@ -39,9 +55,11 @@ abstract final class SSheet {
     required String title,
     required List<SheetAction<T>> actions,
     String? subtitle,
-  }) => StellarKit.of(context).sheet.actions(
+  }) => SSheetMaterial.actions(
     context,
-    ActionSheetSpec(title: title, actions: actions, subtitle: subtitle),
+    title: title,
+    actions: actions,
+    subtitle: subtitle,
   );
 
   /// Shows what [builder] makes under a [title], from the bottom of the
@@ -52,8 +70,10 @@ abstract final class SSheet {
     required String title,
     required WidgetBuilder builder,
     String? subtitle,
-  }) => StellarKit.of(context).sheet.content<T>(
+  }) => SSheetMaterial.show<T>(
     context,
-    ContentSheetSpec(title: title, subtitle: subtitle, builder: builder),
+    title: title,
+    builder: builder,
+    subtitle: subtitle,
   );
 }

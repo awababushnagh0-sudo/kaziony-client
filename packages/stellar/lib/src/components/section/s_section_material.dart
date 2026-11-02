@@ -1,18 +1,33 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
-import 's_section_renderer.dart';
+import 's_section_header.dart';
 
-class MaterialSectionRenderer implements SectionRenderer {
-  const MaterialSectionRenderer();
+/// [SSectionHeader], with a Material [TextButton] for its link.
+class SSectionHeaderMaterial extends StatelessWidget implements SSectionHeader {
+  const SSectionHeaderMaterial(
+    this.title, {
+    this.note,
+    this.actionLabel,
+    this.onAction,
+    super.key,
+  }) : assert(
+         (actionLabel == null) == (onAction == null),
+         'A link needs both its label and what it opens.',
+       );
+
+  final String title;
+  final String? note;
+  final String? actionLabel;
+  final VoidCallback? onAction;
 
   @override
-  Widget header(BuildContext context, SectionHeaderSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final note = spec.note;
-    final actionLabel = spec.actionLabel;
+    final note = this.note;
+    final actionLabel = this.actionLabel;
     return Row(
       spacing: Space.md,
       children: [
@@ -20,7 +35,7 @@ class MaterialSectionRenderer implements SectionRenderer {
           child: Semantics(
             header: true,
             child: Text(
-              spec.title,
+              title,
               style: TextStyle(
                 fontSize: text.subtitle,
                 fontWeight: SFontWeight.bold.value,
@@ -31,7 +46,7 @@ class MaterialSectionRenderer implements SectionRenderer {
         ),
         if (actionLabel != null)
           TextButton(
-            onPressed: spec.onAction,
+            onPressed: onAction,
             style: TextButton.styleFrom(
               foregroundColor: c.link,
               padding: const EdgeInsets.symmetric(horizontal: Space.sm),

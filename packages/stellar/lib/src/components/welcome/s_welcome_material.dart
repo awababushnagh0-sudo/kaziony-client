@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
-import 's_welcome_renderer.dart';
+import 's_welcome.dart';
 
 /// The two shapes in the top corners, as in the design: a big green one
 /// on the end side and a smaller orange one on the start side, both
@@ -35,11 +35,36 @@ class _Body extends StatelessWidget {
   );
 }
 
-class MaterialWelcomeRenderer implements WelcomeRenderer {
-  const MaterialWelcomeRenderer();
+/// [SWelcomePage], on a Material [Scaffold] in the brand's cream.
+class SWelcomePageMaterial extends StatelessWidget implements SWelcomePage {
+  const SWelcomePageMaterial({
+    required Widget this.child,
+    this.actions = const [],
+    this.top = const [],
+    super.key,
+  }) : pages = const [],
+       controller = null,
+       onPageChanged = null;
+
+  const SWelcomePageMaterial.swipe({
+    required this.pages,
+    this.controller,
+    this.onPageChanged,
+    this.actions = const [],
+    this.top = const [],
+    super.key,
+  }) : child = null;
+
+  /// Null on a page that swipes through [pages].
+  final Widget? child;
+  final List<Widget> pages;
+  final PageController? controller;
+  final ValueChanged<int>? onPageChanged;
+  final List<Widget> actions;
+  final List<Widget> top;
 
   @override
-  Widget page(BuildContext context, WelcomePageSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     return Scaffold(
       backgroundColor: c.cream,
@@ -59,23 +84,23 @@ class MaterialWelcomeRenderer implements WelcomeRenderer {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (spec.top.isNotEmpty)
+                if (top.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: Space.sm),
-                    child: Row(children: spec.top),
+                    child: Row(children: top),
                   ),
                 Expanded(
-                  child: spec.child == null
+                  child: child == null
                       ? PageView(
-                          controller: spec.controller,
-                          onPageChanged: spec.onPageChanged,
+                          controller: controller,
+                          onPageChanged: onPageChanged,
                           children: [
-                            for (final page in spec.pages) _Body(child: page),
+                            for (final page in pages) _Body(child: page),
                           ],
                         )
-                      : _Body(child: spec.child!),
+                      : _Body(child: child!),
                 ),
-                if (spec.actions.isNotEmpty)
+                if (actions.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.fromLTRB(
                       Space.lg,
@@ -86,7 +111,7 @@ class MaterialWelcomeRenderer implements WelcomeRenderer {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       spacing: Space.sm,
-                      children: spec.actions,
+                      children: actions,
                     ),
                   ),
               ],
@@ -96,23 +121,35 @@ class MaterialWelcomeRenderer implements WelcomeRenderer {
       ),
     );
   }
+}
+
+/// [SPageDots]: the showing page's dot is a short bar, the others dots.
+class SPageDotsMaterial extends StatelessWidget implements SPageDots {
+  const SPageDotsMaterial({
+    required this.count,
+    required this.index,
+    super.key,
+  });
+
+  final int count;
+  final int index;
 
   @override
-  Widget dots(BuildContext context, PageDotsSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     return Semantics(
-      label: '${spec.index + 1} / ${spec.count}',
+      label: '${index + 1} / $count',
       child: Row(
         mainAxisSize: MainAxisSize.min,
         spacing: Space.xs,
         children: [
-          for (var i = 0; i < spec.count; i++)
+          for (var i = 0; i < count; i++)
             AnimatedContainer(
               duration: _dotsDuration,
-              width: i == spec.index ? _activeDotWidth : _dotSize,
+              width: i == index ? _activeDotWidth : _dotSize,
               height: _dotSize,
               decoration: BoxDecoration(
-                color: i == spec.index ? c.primary : c.border,
+                color: i == index ? c.primary : c.border,
                 borderRadius: BorderRadius.circular(Radii.pill),
               ),
             ),
@@ -120,16 +157,28 @@ class MaterialWelcomeRenderer implements WelcomeRenderer {
       ),
     );
   }
+}
+
+/// [SBrandTitle]: the name as text, the tagline on a pill.
+class SBrandTitleMaterial extends StatelessWidget implements SBrandTitle {
+  const SBrandTitleMaterial({
+    required this.name,
+    required this.tagline,
+    super.key,
+  });
+
+  final String name;
+  final String tagline;
 
   @override
-  Widget brand(BuildContext context, BrandSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          spec.name,
+          name,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: text.hero,
@@ -150,7 +199,7 @@ class MaterialWelcomeRenderer implements WelcomeRenderer {
               vertical: Space.xs,
             ),
             child: Text(
-              spec.tagline,
+              tagline,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: text.subtitle,

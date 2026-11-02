@@ -1,138 +1,92 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
 import '../icon/s_icon.dart';
-import 's_button_renderer.dart';
+import 's_button_material.dart';
 
 /// A button with a label ([SButton], [SButton.secondary], [SButton.soft],
 /// [SButton.dangerSoft], [SButton.dangerSecondary], [SButton.text]), one
 /// that opens a menu ([SButton.menu]) or just an icon ([SButton.icon]).
-class SButton extends StatelessWidget {
-  const SButton({
-    required this.label,
-    required this.onPressed,
-    this.variant = ButtonVariant.primary,
-    this.loading = false,
-    this.expand = false,
-    this.icon,
-    super.key,
-  }) : _iconOnly = false,
-       _smallIcon = false;
+///
+/// Every button takes [onPressed] (null disables it). The ones with a label
+/// can show a spinner and ignore taps while [loading], so a form can't be
+/// sent twice, [expand] to the available width, and an [icon] after the
+/// label, on the same side for every button (the left in Arabic).
+abstract interface class SButton implements Widget {
+  /// The page's main action.
+  const factory SButton({
+    required String label,
+    required VoidCallback? onPressed,
+    bool loading,
+    bool expand,
+    SIcons? icon,
+    Key? key,
+  }) = SButtonMaterial;
 
-  const SButton.secondary({
-    required this.label,
-    required this.onPressed,
-    this.loading = false,
-    this.expand = false,
-    this.icon,
-    super.key,
-  }) : variant = ButtonVariant.secondary,
-       _iconOnly = false,
-       _smallIcon = false;
+  /// Outlined: a second action beside the main one.
+  const factory SButton.secondary({
+    required String label,
+    required VoidCallback? onPressed,
+    bool loading,
+    bool expand,
+    SIcons? icon,
+    Key? key,
+  }) = SButtonMaterial.secondary;
 
   /// Gray, beside a primary one: the other choice, not the one to make.
-  const SButton.soft({
-    required this.label,
-    required this.onPressed,
-    this.loading = false,
-    this.expand = false,
-    this.icon,
-    super.key,
-  }) : variant = ButtonVariant.soft,
-       _iconOnly = false,
-       _smallIcon = false;
+  const factory SButton.soft({
+    required String label,
+    required VoidCallback? onPressed,
+    bool loading,
+    bool expand,
+    SIcons? icon,
+    Key? key,
+  }) = SButtonMaterial.soft;
 
   /// Light red, for an action that can't be undone ("End the offer") that
   /// sits apart from the everyday ones.
-  const SButton.dangerSoft({
-    required this.label,
-    required this.onPressed,
-    this.loading = false,
-    this.expand = false,
-    this.icon,
-    super.key,
-  }) : variant = ButtonVariant.dangerSoft,
-       _iconOnly = false,
-       _smallIcon = false;
+  const factory SButton.dangerSoft({
+    required String label,
+    required VoidCallback? onPressed,
+    bool loading,
+    bool expand,
+    SIcons? icon,
+    Key? key,
+  }) = SButtonMaterial.dangerSoft;
 
   /// On the surface with red words and icon from the start, like a row:
   /// for leaving (logging out).
-  const SButton.dangerSecondary({
-    required this.label,
-    required this.onPressed,
-    this.loading = false,
-    this.expand = false,
-    this.icon,
-    super.key,
-  }) : variant = ButtonVariant.dangerSecondary,
-       _iconOnly = false,
-       _smallIcon = false;
+  const factory SButton.dangerSecondary({
+    required String label,
+    required VoidCallback? onPressed,
+    bool loading,
+    bool expand,
+    SIcons? icon,
+    Key? key,
+  }) = SButtonMaterial.dangerSecondary;
 
-  const SButton.text({
-    required this.label,
-    required this.onPressed,
-    this.icon,
-    super.key,
-  }) : variant = ButtonVariant.text,
-       loading = false,
-       expand = false,
-       _iconOnly = false,
-       _smallIcon = false;
+  /// Just words: the least of the actions.
+  const factory SButton.text({
+    required String label,
+    required VoidCallback? onPressed,
+    SIcons? icon,
+    Key? key,
+  }) = SButtonMaterial.text;
 
   /// Opens a menu, as ERPNext's "Actions": a primary button with
-  /// up-and-down chevrons after the label. Use it as an SMenuButton's builder.
-  const SButton.menu({required this.label, required this.onPressed, super.key})
-    : variant = ButtonVariant.primary,
-      icon = SIcons.chevronUpDown,
-      loading = false,
-      expand = false,
-      _iconOnly = false,
-      _smallIcon = true;
+  /// up-and-down chevrons after the label. Use it as an SMenuButton's
+  /// builder.
+  const factory SButton.menu({
+    required String label,
+    required VoidCallback? onPressed,
+    Key? key,
+  }) = SButtonMaterial.menu;
 
   /// Just an icon (toolbars). [tooltip] is required so the button always
   /// has a name for screen readers.
-  const SButton.icon({
-    required SIcons this.icon,
+  const factory SButton.icon({
+    required SIcons icon,
     required String tooltip,
-    required this.onPressed,
-    super.key,
-  }) : label = tooltip,
-       variant = ButtonVariant.text,
-       loading = false,
-       expand = false,
-       _iconOnly = true,
-       _smallIcon = false;
-
-  /// The text on the button; the tooltip of an icon button.
-  final String label;
-  final VoidCallback? onPressed;
-  final ButtonVariant variant;
-  final bool loading;
-  final bool expand;
-  final SIcons? icon;
-  final bool _iconOnly;
-  final bool _smallIcon;
-
-  @override
-  Widget build(BuildContext context) {
-    final renderer = StellarKit.of(context).button;
-    if (_iconOnly) {
-      return renderer.icon(
-        context,
-        IconButtonSpec(icon: icon!, tooltip: label, onPressed: onPressed),
-      );
-    }
-    return renderer.render(
-      context,
-      ButtonSpec(
-        label: label,
-        onPressed: onPressed,
-        variant: variant,
-        loading: loading,
-        expand: expand,
-        icon: icon,
-        smallIcon: _smallIcon,
-      ),
-    );
-  }
+    required VoidCallback? onPressed,
+    Key? key,
+  }) = SIconButtonMaterial;
 }

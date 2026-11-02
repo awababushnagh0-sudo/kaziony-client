@@ -1,32 +1,27 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
-import 's_nav_bar_renderer.dart';
+import '../icon/s_icon.dart';
+import 's_nav_bar_material.dart';
 
 /// The phone apps' frame: the open tab's page above a bottom navigation
 /// bar. The dashboard's frame is SShell.
-class SNavBar extends StatelessWidget {
-  const SNavBar({
-    required this.items,
-    required this.selected,
-    required this.onSelect,
-    required this.body,
-    super.key,
-  });
+abstract interface class SNavBar implements Widget {
+  /// [selected] is the index of the open tab in [items]; [body] is its
+  /// page, usually an SScaffold.
+  const factory SNavBar({
+    required List<NavBarItem> items,
+    required int selected,
+    required ValueChanged<int> onSelect,
+    required Widget body,
+    Key? key,
+  }) = SNavBarMaterial;
+}
 
-  final List<NavBarItem> items;
-  final int selected;
-  final ValueChanged<int> onSelect;
-  final Widget body;
+/// One tab of the bottom navigation bar.
+@immutable
+class NavBarItem {
+  const NavBarItem({required this.label, required this.icon});
 
-  @override
-  Widget build(BuildContext context) => StellarKit.of(context).navBar.render(
-    context,
-    NavBarSpec(
-      items: items,
-      selected: selected,
-      onSelect: onSelect,
-      body: body,
-    ),
-  );
+  final String label;
+  final SIcons icon;
 }

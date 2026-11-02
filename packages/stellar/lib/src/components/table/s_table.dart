@@ -1,52 +1,42 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
-import 's_table_renderer.dart';
+import 's_table_material.dart';
+
+/// One column of an [STable] showing rows of [T].
+@immutable
+class TableColumn<T> {
+  const TableColumn({
+    required this.label,
+    required this.cell,
+    this.flex = 2,
+    this.minWidth = 0,
+  });
+
+  final String label;
+  final Widget Function(T row) cell;
+  final int flex;
+
+  /// The column is hidden when the table is narrower than this.
+  final double minWidth;
+}
 
 /// The rows of a list, with a pinned header that ends with [totalLabel].
 /// Made of slivers: put it in an SListPage.
-class STable<T> extends StatelessWidget {
-  const STable({
-    required this.rows,
-    required this.columns,
-    required this.totalLabel,
-    this.onOpen,
-    super.key,
-  });
-
-  final List<T> rows;
-  final List<TableColumn<T>> columns;
-  final String totalLabel;
-  final ValueChanged<T>? onOpen;
-
-  @override
-  Widget build(BuildContext context) => StellarKit.of(context).table.render<T>(
-    context,
-    TableSpec<T>(
-      rows: rows,
-      columns: columns,
-      totalLabel: totalLabel,
-      onOpen: onOpen,
-    ),
-  );
+abstract interface class STable<T> implements Widget {
+  /// [totalLabel] is shown at the end of the header ("12 stores"), as in
+  /// ERPNext. Rows are clickable when [onOpen] is set.
+  const factory STable({
+    required List<T> rows,
+    required List<TableColumn<T>> columns,
+    required String totalLabel,
+    ValueChanged<T>? onOpen,
+    Key? key,
+  }) = STableMaterial<T>;
 }
 
-/// A table cell's text. [strong] for the column that names the row, [ltr]
-/// for numbers, phones and emails.
-class SCellText extends StatelessWidget {
-  const SCellText(
-    this.text, {
-    this.strong = false,
-    this.ltr = false,
-    super.key,
-  });
-
-  final String text;
-  final bool strong;
-  final bool ltr;
-
-  @override
-  Widget build(BuildContext context) =>
-      StellarKit.of(context).table
-          .cellText(context, text, strong: strong, ltr: ltr);
+/// A table cell's text: muted, one line. [strong] for the column that names
+/// the row, [ltr] for numbers, phones and emails.
+abstract interface class SCellText implements Widget {
+  const factory SCellText(String text, {bool strong, bool ltr, Key? key}) =
+      SCellTextMaterial;
 }

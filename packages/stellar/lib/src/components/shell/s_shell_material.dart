@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon_material.dart';
+import '../menu/s_menu_button.dart';
 import '../menu/s_menu_material.dart';
-import '../menu/s_menu_renderer.dart';
-import 's_shell_renderer.dart';
+import 's_shell.dart';
 
 /// Wider than this, the side menu stays open next to the page.
 const shellBreakpoint = 900.0;
@@ -26,27 +26,34 @@ class ShellScope extends InheritedWidget {
       (openMenu == null) != (oldWidget.openMenu == null);
 }
 
-/// The ERPNext-style frame: a side menu on the start side (the right, in
-/// Arabic) and the page on the other. Below [shellBreakpoint] the menu
-/// moves into a drawer.
-class MaterialShellRenderer implements ShellRenderer {
-  const MaterialShellRenderer();
+/// [SShell], the ERPNext-style frame: a side menu on the start side (the
+/// right, in Arabic) and the page on the other. Below [shellBreakpoint] the
+/// menu moves into a drawer.
+class SShellMaterial extends StatefulWidget implements SShell {
+  const SShellMaterial({
+    required this.title,
+    required this.items,
+    required this.body,
+    this.subtitle,
+    this.userName,
+    this.userDetail,
+    this.userActions = const [],
+    super.key,
+  });
+
+  final String title;
+  final String? subtitle;
+  final List<NavItemSpec> items;
+  final Widget body;
+  final String? userName;
+  final String? userDetail;
+  final List<ShellMenuAction> userActions;
 
   @override
-  Widget render(BuildContext context, ShellSpec spec) =>
-      _MaterialShell(spec: spec);
+  State<SShellMaterial> createState() => _SShellMaterialState();
 }
 
-class _MaterialShell extends StatefulWidget {
-  const _MaterialShell({required this.spec});
-
-  final ShellSpec spec;
-
-  @override
-  State<_MaterialShell> createState() => _MaterialShellState();
-}
-
-class _MaterialShellState extends State<_MaterialShell> {
+class _SShellMaterialState extends State<SShellMaterial> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -54,7 +61,7 @@ class _MaterialShellState extends State<_MaterialShell> {
     final colors = context.colors;
     final wide = MediaQuery.sizeOf(context).width >= shellBreakpoint;
     final menu = _SideMenu(
-      spec: widget.spec,
+      shell: widget,
       inDrawer: !wide,
       // In the drawer, picking a page also closes the menu.
       beforeNavigate: wide
@@ -75,10 +82,7 @@ class _MaterialShellState extends State<_MaterialShell> {
             ],
             // Keyed so the page keeps its state when the window is resized
             // across the breakpoint.
-            Expanded(
-              key: const ValueKey('shell-body'),
-              child: widget.spec.body,
-            ),
+            Expanded(key: const ValueKey('shell-body'), child: widget.body),
           ],
         ),
       ),
@@ -88,12 +92,12 @@ class _MaterialShellState extends State<_MaterialShell> {
 
 class _SideMenu extends StatelessWidget {
   const _SideMenu({
-    required this.spec,
+    required this.shell,
     required this.inDrawer,
     this.beforeNavigate,
   });
 
-  final ShellSpec spec;
+  final SShellMaterial shell;
   final bool inDrawer;
   final VoidCallback? beforeNavigate;
 
@@ -114,16 +118,16 @@ class _SideMenu extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    spec.title,
+                    shell.title,
                     style: TextStyle(
                       fontSize: context.style.text.body,
                       fontWeight: SFontWeight.semibold.value,
                       color: c.text,
                     ),
                   ),
-                  if (spec.subtitle != null)
+                  if (shell.subtitle != null)
                     Text(
-                      spec.subtitle!,
+                      shell.subtitle!,
                       style: TextStyle(
                         fontSize: context.style.text.tiny,
                         color: c.textSubtle,
@@ -137,7 +141,7 @@ class _SideMenu extends StatelessWidget {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
-                  for (final item in spec.items)
+                  for (final item in shell.items)
                     _NavItem(
                       item: item,
                       onTap: () {
@@ -148,8 +152,8 @@ class _SideMenu extends StatelessWidget {
                 ],
               ),
             ),
-            if (spec.userName != null)
-              _AccountButton(spec: spec, beforeAction: beforeNavigate),
+            if (shell.userName != null)
+              _AccountButton(shell: shell, beforeAction: beforeNavigate),
           ],
         ),
       ),
@@ -223,21 +227,21 @@ class _NavItem extends StatelessWidget {
 }
 
 /// The signed-in user at the bottom of the side menu: initials, name and
-/// detail. Opens a menu (above it) with [ShellSpec.userActions].
+/// detail. Opens a menu (above it) with [SShellMaterial.userActions].
 class _AccountButton extends StatelessWidget {
-  const _AccountButton({required this.spec, this.beforeAction});
+  const _AccountButton({required this.shell, this.beforeAction});
 
-  final ShellSpec spec;
+  final SShellMaterial shell;
   final VoidCallback? beforeAction;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final name = spec.userName!;
+    final name = shell.userName!;
     return menuAnchor(
       opensUp: true,
       entries: [
-        for (final action in spec.userActions)
+        for (final action in shell.userActions)
           MenuEntry(
             label: action.label,
             icon: action.icon,
@@ -272,9 +276,9 @@ class _AccountButton extends StatelessWidget {
                         color: c.text,
                       ),
                     ),
-                    if (spec.userDetail != null)
+                    if (shell.userDetail != null)
                       Text(
-                        spec.userDetail!,
+                        shell.userDetail!,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

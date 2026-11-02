@@ -8,9 +8,9 @@ import 'package:partner/core/routes/routes.dart';
 import 'package:partner/features/products/domain/product.dart';
 import 'package:partner/features/products/presentation/product_form_screen.dart';
 import 'package:partner/features/store/domain/current_store.dart';
-import 'package:stellar/stellar.dart';
 
 import '../../fakes.dart';
+import '../../support/finders.dart';
 import '../../support/pump_app.dart';
 
 void main() {
@@ -53,7 +53,7 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  Finder field(String label) => find.widgetWithText(STextInput, label);
+  Finder field(String label) => textField(label);
 
   testWidgets('adds a product, writing the price as the API wants', (
     tester,

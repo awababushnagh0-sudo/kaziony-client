@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
-import 's_list_tile_renderer.dart';
+import 's_fact_tile.dart';
+import 's_list_group.dart';
+import 's_list_tile.dart';
+import 's_radio_tile.dart';
 
 const _radioHeight = 56.0;
 const _leadingSize = 40.0;
@@ -13,16 +16,46 @@ const _checkSize = 22.0;
 // A little air between a code's characters, so it's easy to read out.
 const _codeSpacing = 0.6;
 
-class MaterialListTileRenderer implements ListTileRenderer {
-  const MaterialListTileRenderer();
+/// [SListTile], drawn with Material's [ListTile].
+class SListTileMaterial extends StatelessWidget implements SListTile {
+  const SListTileMaterial({
+    required this.title,
+    this.subtitle,
+    this.code,
+    this.icon,
+    this.leading,
+    this.value,
+    this.trailing,
+    this.onTap,
+    super.key,
+  });
+
+  final String title;
+  final String? subtitle;
+
+  /// A code under [subtitle] (a pickup code), read left to right in
+  /// Arabic too.
+  final String? code;
+  final SIcons? icon;
+
+  /// Takes [icon]'s place, for a picture (`SImage`).
+  final Widget? leading;
+
+  /// A short value at the end of the row (the current language).
+  final String? value;
+
+  /// Replaces the arrow tappable rows get.
+  final Widget? trailing;
+  final VoidCallback? onTap;
 
   @override
-  Widget render(BuildContext context, ListTileSpec spec) {
+  Widget build(BuildContext context) {
     final colors = context.colors;
-    final value = spec.value;
+    final value = this.value;
+    final icon = this.icon;
     final trailing =
-        spec.trailing ??
-        (value == null && spec.onTap == null
+        this.trailing ??
+        (value == null && onTap == null
             ? null
             : Row(
                 mainAxisSize: MainAxisSize.min,
@@ -36,7 +69,7 @@ class MaterialListTileRenderer implements ListTileRenderer {
                         fontSize: context.style.text.small,
                       ),
                     ),
-                  if (spec.onTap != null)
+                  if (onTap != null)
                     Icon(
                       materialIcon(SIcons.chevron),
                       size: SIconSize.sm.pixels,
@@ -49,25 +82,25 @@ class MaterialListTileRenderer implements ListTileRenderer {
       // The icon alone, in the words' color: a box around it only adds
       // noise to a list.
       leading:
-          spec.leading ??
-          (spec.icon == null
+          leading ??
+          (icon == null
               ? null
               : Icon(
-                  materialIcon(spec.icon!),
+                  materialIcon(icon),
                   size: SIconSize.md.pixels,
                   color: colors.text,
                 )),
-      title: Text(spec.title),
-      subtitle: _subtitle(context, spec),
-      isThreeLine: spec.subtitle != null && spec.code != null,
+      title: Text(title),
+      subtitle: _subtitle(context),
+      isThreeLine: subtitle != null && code != null,
       trailing: trailing,
-      onTap: spec.onTap,
+      onTap: onTap,
     );
   }
 
-  Widget? _subtitle(BuildContext context, ListTileSpec spec) {
-    final subtitle = spec.subtitle;
-    final code = spec.code;
+  Widget? _subtitle(BuildContext context) {
+    final subtitle = this.subtitle;
+    final code = this.code;
     if (code == null) return subtitle == null ? null : Text(subtitle);
     final codeText = Text(
       // Isolated left to right, so "R3TW 8KQN" keeps its order in Arabic.
@@ -87,11 +120,28 @@ class MaterialListTileRenderer implements ListTileRenderer {
       children: [Text(subtitle), codeText],
     );
   }
+}
+
+/// [SListGroup]: the rows in a Material [Card], or a card each.
+class SListGroupMaterial extends StatelessWidget implements SListGroup {
+  const SListGroupMaterial({
+    required this.children,
+    this.title,
+    this.separated = false,
+    super.key,
+  });
+
+  final String? title;
+  final List<Widget> children;
+
+  /// Each row its own bordered card, a little apart, instead of all in
+  /// one box.
+  final bool separated;
 
   @override
-  Widget group(BuildContext context, ListGroupSpec spec) {
+  Widget build(BuildContext context) {
     final colors = context.colors;
-    final title = spec.title;
+    final title = this.title;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -111,11 +161,11 @@ class MaterialListTileRenderer implements ListTileRenderer {
               ),
             ),
           ),
-        if (spec.separated)
+        if (separated)
           Column(
             spacing: Space.sm,
             children: [
-              for (final child in spec.children)
+              for (final child in children)
                 Card(
                   margin: EdgeInsets.zero,
                   clipBehavior: Clip.antiAlias,
@@ -136,7 +186,7 @@ class MaterialListTileRenderer implements ListTileRenderer {
               shape: const RoundedRectangleBorder(),
               child: Column(
                 children: [
-                  for (final (index, child) in spec.children.indexed) ...[
+                  for (final (index, child) in children.indexed) ...[
                     if (index > 0) const Divider(indent: Space.lg),
                     child,
                   ],
@@ -147,9 +197,21 @@ class MaterialListTileRenderer implements ListTileRenderer {
       ],
     );
   }
+}
+
+/// [SFactTile]: the name and the value on one row.
+class SFactTileMaterial extends StatelessWidget implements SFactTile {
+  const SFactTileMaterial({
+    required this.label,
+    required this.value,
+    super.key,
+  });
+
+  final String label;
+  final String value;
 
   @override
-  Widget fact(BuildContext context, FactTileSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final body = context.style.text.body;
     return MergeSemantics(
@@ -163,12 +225,12 @@ class MaterialListTileRenderer implements ListTileRenderer {
           children: [
             Expanded(
               child: Text(
-                spec.label,
+                label,
                 style: TextStyle(fontSize: body, color: c.textMuted),
               ),
             ),
             Text(
-              spec.value,
+              value,
               style: TextStyle(
                 fontSize: body,
                 fontWeight: SFontWeight.bold.value,
@@ -180,25 +242,37 @@ class MaterialListTileRenderer implements ListTileRenderer {
       ),
     );
   }
-
-  @override
-  Widget radio(BuildContext context, RadioTileSpec spec) =>
-      _RadioCard(spec: spec);
 }
 
-/// A white card per choice: the chosen one outlined in the brand's green,
-/// with a filled check; the others with an empty ring, so each reads as one
-/// of a set.
-class _RadioCard extends StatelessWidget {
-  const _RadioCard({required this.spec});
+/// [SRadioTile] as a white card per choice: the chosen one outlined in the
+/// brand's green, with a filled check; the others with an empty ring, so
+/// each reads as one of a set.
+class SRadioTileMaterial extends StatelessWidget implements SRadioTile {
+  const SRadioTileMaterial({
+    required this.title,
+    required this.selected,
+    required this.onTap,
+    this.subtitle,
+    this.icon,
+    this.mark,
+    super.key,
+  }) : assert(icon == null || mark == null, 'An icon or a mark, not both');
 
-  final RadioTileSpec spec;
+  final String title;
+  final String? subtitle;
+  final SIcons? icon;
+
+  /// A letter or two in the circle instead of an icon ("ع", "En").
+  final String? mark;
+
+  /// The chosen one of its group: outlined, with a check.
+  final bool selected;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final selected = spec.selected;
     final shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(Radii.xl),
       side: selected
@@ -216,15 +290,15 @@ class _RadioCard extends StatelessWidget {
           shape: shape,
           child: InkWell(
             customBorder: shape,
-            onTap: spec.onTap,
+            onTap: onTap,
             child: ConstrainedBox(
               constraints: const BoxConstraints(minHeight: _radioHeight),
               child: Padding(
                 padding: const EdgeInsets.all(Space.md),
                 child: Row(
                   children: [
-                    if (spec.icon != null || spec.mark != null) ...[
-                      _RadioLeading(spec: spec),
+                    if (icon != null || mark != null) ...[
+                      _RadioLeading(icon: icon, mark: mark, selected: selected),
                       const Gap(Space.md),
                     ],
                     Expanded(
@@ -232,14 +306,14 @@ class _RadioCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            spec.title,
+                            title,
                             style: TextStyle(
                               fontSize: text.body,
                               fontWeight: SFontWeight.semibold.value,
                               color: c.text,
                             ),
                           ),
-                          if (spec.subtitle case final subtitle?)
+                          if (subtitle case final subtitle?)
                             Text(
                               subtitle,
                               style: TextStyle(
@@ -265,38 +339,40 @@ class _RadioCard extends StatelessWidget {
 
 /// The choice's icon or mark in a circle, green when it's the chosen one.
 class _RadioLeading extends StatelessWidget {
-  const _RadioLeading({required this.spec});
+  const _RadioLeading({
+    required this.icon,
+    required this.mark,
+    required this.selected,
+  });
 
-  final RadioTileSpec spec;
+  final SIcons? icon;
+  final String? mark;
+  final bool selected;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final color = spec.selected ? c.onPrimary : c.text;
+    final color = selected ? c.onPrimary : c.text;
+    final icon = this.icon;
     return Container(
       width: _leadingSize,
       height: _leadingSize,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: spec.selected ? c.primary : c.fieldFill,
+        color: selected ? c.primary : c.fieldFill,
         shape: BoxShape.circle,
       ),
-      child: switch (spec) {
-        RadioTileSpec(:final icon?) => Icon(
-          materialIcon(icon),
-          size: SIconSize.md.pixels,
-          color: color,
-        ),
-        _ => Text(
-          spec.mark ?? '',
-          maxLines: 1,
-          style: TextStyle(
-            fontSize: context.style.text.body,
-            fontWeight: SFontWeight.bold.value,
-            color: color,
-          ),
-        ),
-      },
+      child: icon != null
+          ? Icon(materialIcon(icon), size: SIconSize.md.pixels, color: color)
+          : Text(
+              mark ?? '',
+              maxLines: 1,
+              style: TextStyle(
+                fontSize: context.style.text.body,
+                fontWeight: SFontWeight.bold.value,
+                color: color,
+              ),
+            ),
     );
   }
 }

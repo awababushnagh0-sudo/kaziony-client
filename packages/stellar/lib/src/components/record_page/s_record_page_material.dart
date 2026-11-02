@@ -1,36 +1,46 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
-import 's_record_page_renderer.dart';
+import 's_record_page.dart';
 
 /// Narrower than this, the side panel moves above the tabs.
 const _sidePanelBreakpoint = 760.0;
 const _sidePanelWidth = 260.0;
 const _pictureSize = 88.0;
 
-class MaterialRecordPageRenderer implements RecordPageRenderer {
-  const MaterialRecordPageRenderer();
+/// [SRecordProfile]: the picture with rounded corners over the centered
+/// name.
+class SRecordProfileMaterial extends StatelessWidget implements SRecordProfile {
+  const SRecordProfileMaterial({
+    required this.title,
+    this.subtitle,
+    this.imageUrl,
+    super.key,
+  });
+
+  final String title;
+  final String? subtitle;
+
+  /// Without one (or when it fails to load), the title's first letter.
+  final String? imageUrl;
 
   @override
-  Widget render(BuildContext context, RecordPageSpec spec) =>
-      _RecordPage(spec: spec);
-
-  @override
-  Widget profile(BuildContext context, RecordProfileSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = Theme.of(context).textTheme;
-    final initial = _Initial(title: spec.title);
+    final initial = _Initial(title: title);
+    final imageUrl = this.imageUrl;
     return Column(
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(Radii.lg),
           child: SizedBox.square(
             dimension: _pictureSize,
-            child: spec.imageUrl == null
+            child: imageUrl == null
                 ? initial
                 : Image.network(
-                    spec.imageUrl!,
+                    imageUrl,
                     fit: BoxFit.cover,
                     // Uploaded pictures live on another host; let the
                     // browser show them when it won't hand over the bytes.
@@ -41,13 +51,13 @@ class MaterialRecordPageRenderer implements RecordPageRenderer {
         ),
         const Gap(Space.md),
         Text(
-          spec.title,
+          title,
           textAlign: TextAlign.center,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: text.titleMedium,
         ),
-        if (spec.subtitle case final subtitle?)
+        if (subtitle case final subtitle?)
           Text(
             subtitle,
             textAlign: TextAlign.center,
@@ -80,28 +90,39 @@ class _Initial extends StatelessWidget {
   }
 }
 
-class _RecordPage extends StatefulWidget {
-  const _RecordPage({required this.spec});
+/// [SRecordPage] as ERPNext's form view: tabs of fields, and a side panel
+/// with the record's picture and key facts.
+class SRecordPageMaterial extends StatefulWidget implements SRecordPage {
+  const SRecordPageMaterial({
+    required this.tabs,
+    this.sidebar = const [],
+    super.key,
+  });
 
-  final RecordPageSpec spec;
+  /// The bar is hidden when there is only one.
+  final List<RecordTab> tabs;
+
+  /// Sections of the side panel, separated by lines.
+  final List<Widget> sidebar;
 
   @override
-  State<_RecordPage> createState() => _RecordPageState();
+  State<SRecordPageMaterial> createState() => _RecordPageState();
 }
 
-class _RecordPageState extends State<_RecordPage> {
+class _RecordPageState extends State<SRecordPageMaterial> {
   var _selected = 0;
 
   @override
   Widget build(BuildContext context) {
-    final spec = widget.spec;
+    final tabs = widget.tabs;
+    final sidebar = widget.sidebar;
     final c = context.colors;
     // The tabs can change between builds (data reloaded); stay in range.
-    final selected = _selected.clamp(0, spec.tabs.length - 1);
-    final tabBar = spec.tabs.length < 2
+    final selected = _selected.clamp(0, tabs.length - 1);
+    final tabBar = tabs.length < 2
         ? null
         : _TabBar(
-            labels: [for (final tab in spec.tabs) tab.label],
+            labels: [for (final tab in tabs) tab.label],
             selected: selected,
             onSelect: (index) => setState(() => _selected = index),
           );
@@ -109,14 +130,9 @@ class _RecordPageState extends State<_RecordPage> {
       padding: const EdgeInsets.all(Space.xl),
       // A fresh subtree per tab: fields in the same spot on two tabs must not
       // share their state (a text field would keep the other one's text).
-      child: KeyedSubtree(
-        key: ValueKey(selected),
-        child: spec.tabs[selected].child,
-      ),
+      child: KeyedSubtree(key: ValueKey(selected), child: tabs[selected].child),
     );
-    final sidePanel = spec.sidebar.isEmpty
-        ? null
-        : _SidePanel(sections: spec.sidebar);
+    final sidePanel = sidebar.isEmpty ? null : _SidePanel(sections: sidebar);
 
     return LayoutBuilder(
       builder: (context, constraints) {

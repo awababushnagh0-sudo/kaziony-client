@@ -1,16 +1,15 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
-import 's_card_renderer.dart';
+import 's_card_material.dart';
 
-class SCard extends StatelessWidget {
-  const SCard({required this.child, this.onTap, this.padded = true, super.key});
-
-  final Widget child;
-  final VoidCallback? onTap;
-  final bool padded;
-
-  @override
-  Widget build(BuildContext context) => StellarKit.of(context).card
-      .render(context, CardSpec(child: child, onTap: onTap, padded: padded));
+/// A raised surface that holds a group of things together.
+abstract interface class SCard implements Widget {
+  /// [onTap] makes the whole card tappable; [padded] puts the standard
+  /// space around [child] (false for content that runs to the edges).
+  const factory SCard({
+    required Widget child,
+    VoidCallback? onTap,
+    bool padded,
+    Key? key,
+  }) = SCardMaterial;
 }

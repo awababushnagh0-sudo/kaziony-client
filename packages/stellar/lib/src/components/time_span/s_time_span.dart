@@ -1,25 +1,29 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
-import 's_time_span_renderer.dart';
+import 's_time_span_material.dart';
+
+/// One end of an [STimeSpan]: "Starts / 11:30 AM / Today".
+@immutable
+class TimePoint {
+  const TimePoint({required this.label, required this.time, this.note});
+
+  final String label;
+
+  /// Already written for people (`formatTime`).
+  final String time;
+
+  /// Under [time]: the day.
+  final String? note;
+}
 
 /// When something runs, read across: the [start] in big figures, a dashed
 /// line with how [length] it lasts, and the [end].
-class STimeSpan extends StatelessWidget {
-  const STimeSpan({
-    required this.start,
-    required this.end,
-    this.length,
-    super.key,
-  });
-
-  final TimePoint start;
-  final TimePoint end;
-
-  /// Over the line: "9 h 30 min".
-  final String? length;
-
-  @override
-  Widget build(BuildContext context) => StellarKit.of(context).timeSpan
-      .render(context, TimeSpanSpec(start: start, end: end, length: length));
+abstract interface class STimeSpan implements Widget {
+  /// [length] goes over the line: "9 h 30 min".
+  const factory STimeSpan({
+    required TimePoint start,
+    required TimePoint end,
+    String? length,
+    Key? key,
+  }) = STimeSpanMaterial;
 }

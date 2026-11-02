@@ -1,9 +1,8 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../text/s_text.dart';
-import '../text/s_text_renderer.dart';
 
 /// A titled group of fields. In the phone apps it's a gray panel, so a
 /// form reads as a few short steps; on the dashboard, a part separated

@@ -1,23 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
-import 's_confirmation_renderer.dart';
+import 's_confirmation_page.dart';
 
-class MaterialConfirmationRenderer implements ConfirmationRenderer {
-  const MaterialConfirmationRenderer();
+/// [SConfirmationPage], drawn with Material.
+class SConfirmationPageMaterial extends StatelessWidget
+    implements SConfirmationPage {
+  const SConfirmationPageMaterial({
+    required this.title,
+    required this.actionLabel,
+    required this.onAction,
+    this.label,
+    this.amount,
+    this.note,
+    this.actionIcon,
+    super.key,
+  });
+
+  final String title;
+
+  /// Over [amount] ("Collect from the customer").
+  final String? label;
+
+  /// Already written for people (`formatPrice`).
+  final String? amount;
+
+  /// A quiet line at the end (what and who).
+  final String? note;
+  final String actionLabel;
+  final SIcons? actionIcon;
+  final VoidCallback onAction;
 
   @override
-  Widget page(BuildContext context, ConfirmationSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final label = spec.label;
-    final amount = spec.amount;
-    final note = spec.note;
-    final icon = spec.actionIcon;
+    final label = this.label;
+    final amount = this.amount;
+    final note = this.note;
+    final icon = actionIcon;
     final onGreen = c.brightness == Brightness.light
         ? SystemUiOverlayStyle.light
         : SystemUiOverlayStyle.dark;
@@ -42,7 +67,7 @@ class MaterialConfirmationRenderer implements ConfirmationRenderer {
                             header: true,
                             liveRegion: true,
                             child: Text(
-                              spec.title,
+                              title,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: text.display,
@@ -89,7 +114,7 @@ class MaterialConfirmationRenderer implements ConfirmationRenderer {
                   ),
                 ),
                 FilledButton.icon(
-                  onPressed: spec.onAction,
+                  onPressed: onAction,
                   // The light button of the green page.
                   style: FilledButton.styleFrom(
                     backgroundColor: c.onPrimary,
@@ -98,7 +123,7 @@ class MaterialConfirmationRenderer implements ConfirmationRenderer {
                   icon: icon == null
                       ? null
                       : Icon(materialIcon(icon), size: SIconSize.md.pixels),
-                  label: Text(spec.actionLabel),
+                  label: Text(actionLabel),
                 ),
               ],
             ),

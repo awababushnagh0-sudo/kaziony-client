@@ -6,25 +6,31 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:reactive_forms/reactive_forms.dart'
     show ReactiveTextField, ReactiveValueListenableBuilder;
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
-import 's_code_renderer.dart';
+import 's_code_card.dart';
+import 's_code_input.dart';
+import 's_qr_code.dart';
 
-class MaterialCodeRenderer implements CodeRenderer {
-  const MaterialCodeRenderer();
+// Air between the letters, so look-alikes stay apart when read out.
+const _letterSpacing = 3.0;
 
-  // Air between the letters, so look-alikes stay apart when read out.
-  static const _letterSpacing = 3.0;
+const _qrSize = 200.0;
 
-  static const _qrSize = 200.0;
+/// [SQrCode], drawn with qr_flutter.
+class SQrCodeMaterial extends StatelessWidget implements SQrCode {
+  const SQrCodeMaterial(this.data, {required this.label, super.key});
+
+  final String data;
+  final String label;
 
   @override
-  Widget qr(BuildContext context, QrCodeSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     // Dark on white in both themes: some scanners can't read light on
     // dark.
     return Semantics(
-      label: spec.label,
+      label: label,
       image: true,
       child: DecoratedBox(
         decoration: BoxDecoration(
@@ -35,7 +41,7 @@ class MaterialCodeRenderer implements CodeRenderer {
         child: Padding(
           padding: const EdgeInsets.all(Space.lg),
           child: QrImageView(
-            data: spec.data,
+            data: data,
             size: _qrSize,
             padding: EdgeInsets.zero,
             backgroundColor: c.codePaper,
@@ -49,9 +55,17 @@ class MaterialCodeRenderer implements CodeRenderer {
       ),
     );
   }
+}
+
+/// [SCodeCard], on the brand color.
+class SCodeCardMaterial extends StatelessWidget implements SCodeCard {
+  const SCodeCardMaterial({required this.label, required this.code, super.key});
+
+  final String label;
+  final String code;
 
   @override
-  Widget card(BuildContext context, CodeCardSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
     return Semantics(
@@ -67,13 +81,13 @@ class MaterialCodeRenderer implements CodeRenderer {
             spacing: Space.xxs,
             children: [
               Text(
-                spec.label,
+                label,
                 style: TextStyle(fontSize: text.small, color: c.onPrimaryMuted),
               ),
               FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  spec.code,
+                  code,
                   textDirection: TextDirection.ltr,
                   maxLines: 1,
                   style: TextStyle(
@@ -91,21 +105,34 @@ class MaterialCodeRenderer implements CodeRenderer {
       ),
     );
   }
-
-  @override
-  Widget input(BuildContext context, CodeInputSpec spec) => _CodeInput(spec);
 }
 
-class _CodeInput extends StatefulWidget {
-  const _CodeInput(this.spec);
+/// [SCodeInput]: a hidden Material [TextField] under boxes it draws.
+class SCodeInputMaterial extends StatefulWidget implements SCodeInput {
+  const SCodeInputMaterial({
+    required this.controlName,
+    required this.label,
+    required this.length,
+    required this.characters,
+    this.groupOf = 4,
+    this.autofocus = false,
+    this.onSubmitted,
+    super.key,
+  });
 
-  final CodeInputSpec spec;
+  final String controlName;
+  final String label;
+  final int length;
+  final RegExp characters;
+  final int groupOf;
+  final bool autofocus;
+  final VoidCallback? onSubmitted;
 
   @override
-  State<_CodeInput> createState() => _CodeInputState();
+  State<SCodeInputMaterial> createState() => _SCodeInputMaterialState();
 }
 
-class _CodeInputState extends State<_CodeInput> {
+class _SCodeInputMaterialState extends State<SCodeInputMaterial> {
   // Watched, so the box being typed in shows only while typing.
   final _focus = FocusNode();
 
@@ -126,55 +153,53 @@ class _CodeInputState extends State<_CodeInput> {
   void _refresh() => setState(() {});
 
   @override
-  Widget build(BuildContext context) {
-    final spec = widget.spec;
-    return ReactiveValueListenableBuilder<String>(
-      formControlName: spec.controlName,
-      builder: (context, control, _) => Stack(
-        children: [
-          // The field that takes the typing, unseen under the boxes:
-          // tapping them lands on it.
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0,
-              alwaysIncludeSemantics: true,
-              child: Semantics(
-                label: spec.label,
-                child: ReactiveTextField<String>(
-                  formControlName: spec.controlName,
-                  focusNode: _focus,
-                  autofocus: spec.autofocus,
-                  maxLength: spec.length,
-                  showErrors: (_) => false,
-                  showCursor: false,
-                  inputFormatters: [
-                    _capitals,
-                    FilteringTextInputFormatter.allow(spec.characters),
-                  ],
-                  textCapitalization: TextCapitalization.characters,
-                  autocorrect: false,
-                  enableSuggestions: false,
-                  // Letters and digits on one keyboard.
-                  keyboardType: TextInputType.visiblePassword,
-                  textInputAction: TextInputAction.go,
-                  onSubmitted: (_) => spec.onSubmitted?.call(),
-                  decoration: const InputDecoration.collapsed(hintText: null)
-                      .copyWith(counterText: ''),
-                ),
+  Widget build(BuildContext context) => ReactiveValueListenableBuilder<String>(
+    formControlName: widget.controlName,
+    builder: (context, control, _) => Stack(
+      children: [
+        // The field that takes the typing, unseen under the boxes:
+        // tapping them lands on it.
+        Positioned.fill(
+          child: Opacity(
+            opacity: 0,
+            alwaysIncludeSemantics: true,
+            child: Semantics(
+              label: widget.label,
+              child: ReactiveTextField<String>(
+                formControlName: widget.controlName,
+                focusNode: _focus,
+                autofocus: widget.autofocus,
+                maxLength: widget.length,
+                showErrors: (_) => false,
+                showCursor: false,
+                inputFormatters: [
+                  _capitals,
+                  FilteringTextInputFormatter.allow(widget.characters),
+                ],
+                textCapitalization: TextCapitalization.characters,
+                autocorrect: false,
+                enableSuggestions: false,
+                // Letters and digits on one keyboard.
+                keyboardType: TextInputType.visiblePassword,
+                textInputAction: TextInputAction.go,
+                onSubmitted: (_) => widget.onSubmitted?.call(),
+                decoration: const InputDecoration.collapsed(hintText: null)
+                    .copyWith(counterText: ''),
               ),
             ),
           ),
-          IgnorePointer(
-            child: _Boxes(
-              spec: spec,
-              value: control.value ?? '',
-              typing: _focus.hasFocus,
-            ),
+        ),
+        IgnorePointer(
+          child: _Boxes(
+            length: widget.length,
+            groupOf: widget.groupOf,
+            value: control.value ?? '',
+            typing: _focus.hasFocus,
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
 }
 
 /// Codes are in capitals, whatever the keyboard sends.
@@ -184,9 +209,17 @@ final _capitals = TextInputFormatter.withFunction(
 
 /// One box per character, the next one to type marked.
 class _Boxes extends StatelessWidget {
-  const _Boxes({required this.spec, required this.value, required this.typing});
+  const _Boxes({
+    required this.length,
+    required this.groupOf,
+    required this.value,
+    required this.typing,
+  });
 
-  final CodeInputSpec spec;
+  final int length;
+
+  /// A wider gap after every this many boxes, as the code is read out.
+  final int groupOf;
   final String value;
   final bool typing;
 
@@ -201,8 +234,7 @@ class _Boxes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final length = spec.length;
-    final groupGaps = (length - 1) ~/ spec.groupOf;
+    final groupGaps = (length - 1) ~/ groupOf;
     return LayoutBuilder(
       builder: (context, constraints) {
         final room =
@@ -217,8 +249,7 @@ class _Boxes extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               for (var i = 0; i < length; i++) ...[
-                if (i > 0)
-                  SizedBox(width: i % spec.groupOf == 0 ? _groupGap : _gap),
+                if (i > 0) SizedBox(width: i % groupOf == 0 ? _groupGap : _gap),
                 _Box(
                   width: width,
                   height: width * _tall,

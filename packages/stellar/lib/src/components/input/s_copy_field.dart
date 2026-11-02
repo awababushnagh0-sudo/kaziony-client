@@ -1,14 +1,13 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../../l10n/generated/stellar_localizations.dart';
 import '../button/s_button.dart';
 import '../icon/s_icon.dart';
 import '../snack/s_snack.dart';
 import '../text/s_text.dart';
-import '../text/s_text_renderer.dart';
 
 /// A value to hand over (a temporary password), with a copy button.
 /// Read-only; [ltr] keeps codes and numbers left to right in Arabic.

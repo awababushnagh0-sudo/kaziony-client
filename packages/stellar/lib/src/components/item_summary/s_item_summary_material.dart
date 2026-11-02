@@ -1,30 +1,42 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
-import '../image/s_image_material.dart';
-import '../image/s_image_renderer.dart';
-import 's_item_summary_renderer.dart';
+import '../image/s_image.dart';
+import 's_item_summary.dart';
 
-class MaterialItemSummaryRenderer implements ItemSummaryRenderer {
-  const MaterialItemSummaryRenderer();
+/// [SItemSummary]: the thumbnail, then the name over its state.
+class SItemSummaryMaterial extends StatelessWidget implements SItemSummary {
+  const SItemSummaryMaterial({
+    required this.title,
+    this.imageUrl,
+    this.badge,
+    this.note,
+    this.dimmed = false,
+    super.key,
+  });
 
   static const _dimmedOpacity = 0.5;
 
+  final String title;
+  final String? imageUrl;
+  final Widget? badge;
+  final String? note;
+
+  /// Grayed: nothing to hand over.
+  final bool dimmed;
+
   @override
-  Widget render(BuildContext context, ItemSummarySpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final badge = spec.badge;
-    final note = spec.note;
-    final picture = const MaterialImageRenderer().render(
-      context,
-      ImageSpec(url: spec.imageUrl, size: SImageSize.thumb),
-    );
+    final badge = this.badge;
+    final note = this.note;
+    final picture = SImage(imageUrl, size: SImageSize.thumb);
     return Row(
       spacing: Space.md,
       children: [
-        if (spec.dimmed)
+        if (dimmed)
           Opacity(opacity: _dimmedOpacity, child: picture)
         else
           picture,
@@ -34,11 +46,11 @@ class MaterialItemSummaryRenderer implements ItemSummaryRenderer {
             spacing: Space.xs,
             children: [
               Text(
-                spec.title,
+                title,
                 style: TextStyle(
                   fontSize: text.subtitle,
                   fontWeight: SFontWeight.bold.value,
-                  color: spec.dimmed ? c.textMuted : c.text,
+                  color: dimmed ? c.textMuted : c.text,
                 ),
               ),
               if (badge != null || note != null)

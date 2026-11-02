@@ -1,9 +1,7 @@
 import 'package:kernel/kernel.dart';
 
-import '../../foundation/s_kit.dart';
 import '../../l10n/generated/stellar_localizations.dart';
-import '../icon/s_icon.dart';
-import 's_status_renderer.dart';
+import 's_status_material.dart';
 
 /// A short, translated message for a failure, for snacks and form errors.
 String failureMessage(BuildContext context, AppFailure failure) {
@@ -26,27 +24,11 @@ String failureMessage(BuildContext context, AppFailure failure) {
 }
 
 /// A full-screen error with a retry button.
-class SErrorView extends StatelessWidget {
-  const SErrorView({required this.failure, this.onRetry, super.key});
-
-  final AppFailure failure;
-  final VoidCallback? onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    final s = StellarLocalizations.of(context);
-    final offline = failure is NoConnectionFailure;
-    return StellarKit.of(context).status.error(
-      context,
-      StatusSpec(
-        title: offline
-            ? s.errorNoConnectionTitle
-            : failureMessage(context, failure),
-        message: offline ? s.errorNoConnectionMessage : null,
-        icon: offline ? SIcons.noConnection : SIcons.error,
-        actionLabel: onRetry == null ? null : s.retry,
-        onAction: onRetry,
-      ),
-    );
-  }
+abstract interface class SErrorView implements Widget {
+  /// Without [onRetry] there's no button.
+  const factory SErrorView({
+    required AppFailure failure,
+    VoidCallback? onRetry,
+    Key? key,
+  }) = SErrorViewMaterial;
 }

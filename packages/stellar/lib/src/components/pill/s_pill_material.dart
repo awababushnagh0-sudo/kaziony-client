@@ -1,17 +1,32 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
+import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
-import 's_pill_renderer.dart';
+import 's_pill.dart';
 
-class MaterialPillRenderer implements PillRenderer {
-  const MaterialPillRenderer();
+/// [SPill], drawn as an outlined or filled pill with an [InkWell].
+class SPillMaterial extends StatelessWidget implements SPill {
+  const SPillMaterial({
+    required this.label,
+    required this.selected,
+    this.onTap,
+    this.icon,
+    this.activeColor = SColor.primary,
+    super.key,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback? onTap;
+  final SIcons? icon;
+  final SColor activeColor;
 
   @override
-  Widget render(BuildContext context, PillSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
-    final active = c.resolve(spec.activeColor);
+    final active = c.resolve(activeColor);
     // Light words on a dark fill, dark words on a light one, in either
     // theme.
     final (light, dark) = c.brightness == Brightness.light
@@ -21,45 +36,42 @@ class MaterialPillRenderer implements PillRenderer {
         ThemeData.estimateBrightnessForColor(active) == Brightness.dark
         ? light
         : dark;
-    final fg = spec.selected ? onActive : c.textMuted;
+    final fg = selected ? onActive : c.textMuted;
+    final icon = this.icon;
     final content = Container(
       height: 36,
       padding: const EdgeInsets.symmetric(horizontal: Space.md),
       // Outlined on the page's surface; the chosen one filled.
       decoration: BoxDecoration(
-        color: spec.selected ? active : c.surface,
-        border: Border.all(color: spec.selected ? active : c.border),
+        color: selected ? active : c.surface,
+        border: Border.all(color: selected ? active : c.border),
         borderRadius: BorderRadius.circular(Radii.pill),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            spec.label,
+            label,
             style: TextStyle(
               color: fg,
               fontSize: context.style.text.small,
               fontWeight: SFontWeight.semibold.value,
             ),
           ),
-          if (spec.icon != null) ...[
+          if (icon != null) ...[
             const Gap(Space.xs),
-            Icon(
-              materialIcon(spec.icon!),
-              size: SIconSize.xs.pixels,
-              color: fg,
-            ),
+            Icon(materialIcon(icon), size: SIconSize.xs.pixels, color: fg),
           ],
         ],
       ),
     );
-    if (spec.onTap == null) return content;
+    if (onTap == null) return content;
     return Semantics(
       button: true,
-      selected: spec.selected,
+      selected: selected,
       child: InkWell(
         borderRadius: BorderRadius.circular(Radii.pill),
-        onTap: spec.onTap,
+        onTap: onTap,
         child: content,
       ),
     );

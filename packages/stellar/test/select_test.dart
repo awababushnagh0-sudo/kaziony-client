@@ -55,13 +55,13 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  Finder select() => find.byType(SSelectInput<String>);
+  Finder select() => find.bySubtype<SSelectInput<String>>();
 
   testWidgets('is as tall as a text field', (tester) async {
     await show(tester);
     expect(
       tester.getSize(select()).height,
-      tester.getSize(find.byType(STextInput)).height,
+      tester.getSize(find.bySubtype<STextInput>()).height,
     );
   });
 

@@ -3,8 +3,8 @@ import 'package:kernel/kernel.dart'
     show WidgetRef, localeProvider, supportedLocales;
 
 import '../../l10n/generated/stellar_localizations.dart';
-import '../illustration/s_illustration_renderer.dart';
-import '../list_tile/s_list_tile_renderer.dart';
+import '../illustration/s_illustration.dart';
+import '../list_tile/s_radio_group.dart';
 import '../sheet/s_sheet.dart';
 
 /// Each language by its own name, so anyone can find theirs.

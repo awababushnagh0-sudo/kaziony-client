@@ -1,38 +1,59 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../../l10n/generated/stellar_localizations.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
-import 's_photo_renderer.dart';
+import 's_photo_field.dart';
 
 // As wide as the page and nearly as tall as the photo on the item's page,
 // so the owner sees it about as customers will.
 const _fieldHeight = 200.0;
 
-class MaterialPhotoRenderer implements PhotoRenderer {
-  const MaterialPhotoRenderer();
+/// [SPhotoField], drawn with Material's [InkWell].
+class SPhotoFieldMaterial extends StatelessWidget implements SPhotoField {
+  const SPhotoFieldMaterial({
+    required this.onTap,
+    this.shape = PhotoFieldShape.wide,
+    this.addLabel,
+    this.hint,
+    this.url,
+    this.preview,
+    this.progress,
+    this.failed = false,
+    super.key,
+  });
+
+  final String? url;
+  final Uint8List? preview;
+  final double? progress;
+  final bool failed;
+  final VoidCallback? onTap;
+  final PhotoFieldShape shape;
+  final String? addLabel;
+  final String? hint;
 
   @override
-  Widget field(BuildContext context, PhotoFieldSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final s = StellarLocalizations.of(context);
-    final progress = spec.progress;
+    final progress = this.progress;
     final uploading = progress != null;
-    final preview = spec.preview;
-    final url = spec.url;
+    final preview = this.preview;
+    final url = this.url;
     final hasPhoto = preview != null || url != null;
-    final onTap = spec.onTap;
-    final round = spec.shape == PhotoFieldShape.round;
+    final onTap = this.onTap;
+    final round = shape == PhotoFieldShape.round;
     final label = uploading
         ? s.photoUploading((progress * 100).round())
-        : spec.failed
+        : failed
         ? s.photoUploadFailed
         : hasPhoto
         ? s.changePhoto
-        : spec.addLabel ?? s.addPhoto;
+        : addLabel ?? s.addPhoto;
     final side = SImageSize.logo.pixels;
     final height = round ? side : _fieldHeight;
 
@@ -71,12 +92,12 @@ class MaterialPhotoRenderer implements PhotoRenderer {
                             .round(),
                     errorWidget: (_, _, _) => const SizedBox.shrink(),
                   ),
-                if (uploading || spec.failed)
+                if (uploading || failed)
                   _Dimmed(
                     progress: progress,
                     // No room for words in a logo.
                     label: round ? null : label,
-                    failed: spec.failed,
+                    failed: failed,
                   )
                 else if (onTap == null)
                   const SizedBox.shrink()
@@ -89,7 +110,7 @@ class MaterialPhotoRenderer implements PhotoRenderer {
                 else if (!hasPhoto)
                   _Empty(
                     label: label,
-                    hint: round ? null : spec.hint ?? s.addPhotoHint,
+                    hint: round ? null : hint ?? s.addPhotoHint,
                     small: round,
                   ),
               ],

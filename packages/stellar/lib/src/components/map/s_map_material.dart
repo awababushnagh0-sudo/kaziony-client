@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:kernel/kernel.dart' show GeoPoint;
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import 's_map_engine.dart';
 import 's_map_google.dart';
 import 's_map_libre.dart';
+import 's_map_page.dart';
+import 's_map_picker.dart';
 import 's_map_provider.dart';
-import 's_map_renderer.dart';
 
 const _pinSize = Size(48, 60);
 
@@ -21,22 +23,31 @@ const _shadowSize = Size(10, 4);
 const _shadowBlur = 18.0;
 const _shadowDrop = 6.0;
 
-class MaterialMapRenderer implements MapRenderer {
-  const MaterialMapRenderer();
+/// [SMapPage], drawn with Material's [Scaffold].
+class SMapPageMaterial extends StatelessWidget implements SMapPage {
+  const SMapPageMaterial({
+    required this.map,
+    required this.panel,
+    this.onBack,
+    this.action,
+    super.key,
+  });
+
+  final Widget map;
+  final Widget panel;
+  final VoidCallback? onBack;
+  final Widget? action;
 
   @override
-  Widget picker(BuildContext context, MapPickerSpec spec) => _MapPicker(spec);
-
-  @override
-  Widget page(BuildContext context, MapPageSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
-    final onBack = spec.onBack;
-    final action = spec.action;
+    final onBack = this.onBack;
+    final action = this.action;
     return Scaffold(
       backgroundColor: c.surface,
       body: Stack(
         children: [
-          Positioned.fill(child: spec.map),
+          Positioned.fill(child: map),
           // Only the controls take touches; the rest goes to the map.
           SafeArea(
             child: Padding(
@@ -73,7 +84,7 @@ class MaterialMapRenderer implements MapRenderer {
                     radius: Radii.xl,
                     child: Padding(
                       padding: const EdgeInsets.all(Space.lg),
-                      child: spec.panel,
+                      child: panel,
                     ),
                   ),
                 ],
@@ -115,29 +126,37 @@ class _Floating extends StatelessWidget {
   }
 }
 
-class _MapPicker extends StatefulWidget {
-  const _MapPicker(this.spec);
+/// [SMapPicker], with the map drawn by the build's [MapProvider].
+class SMapPickerMaterial extends StatefulWidget implements SMapPicker {
+  const SMapPickerMaterial({
+    required this.target,
+    required this.onMoved,
+    this.areas = const [],
+    super.key,
+  });
 
-  final MapPickerSpec spec;
+  final GeoPoint target;
+  final ValueChanged<GeoPoint> onMoved;
+  final List<SMapArea> areas;
 
   @override
-  State<_MapPicker> createState() => _MapPickerState();
+  State<SMapPickerMaterial> createState() => _SMapPickerMaterialState();
 }
 
-class _MapPickerState extends State<_MapPicker> {
+class _SMapPickerMaterialState extends State<SMapPickerMaterial> {
   var _moving = false;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final engine = MapEngineSpec(
-      target: widget.spec.target,
-      areas: widget.spec.areas,
+      target: widget.target,
+      areas: widget.areas,
       areaColor: c.primary,
       onMoveStarted: () => setState(() => _moving = true),
       onMoved: (point) {
         setState(() => _moving = false);
-        widget.spec.onMoved(point);
+        widget.onMoved(point);
       },
     );
     return Stack(

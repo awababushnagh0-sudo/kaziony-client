@@ -1,25 +1,120 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
+import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
-import 's_button_renderer.dart';
+import 's_button.dart';
 
-class MaterialButtonRenderer implements ButtonRenderer {
-  const MaterialButtonRenderer();
+enum _Variant {
+  primary,
+  secondary,
+  text,
+
+  /// Gray on the surface: the quieter one of two side by side.
+  soft,
+
+  /// Light red with red words: a for-good action that isn't the page's
+  /// main one.
+  dangerSoft,
+
+  /// Red words and icon on the surface, from the start like a page's row:
+  /// leaving (logging out), at the foot of a page.
+  dangerSecondary,
+}
+
+/// [SButton] with a label, drawn with Material's buttons.
+class SButtonMaterial extends StatelessWidget implements SButton {
+  const SButtonMaterial({
+    required this.label,
+    required this.onPressed,
+    this.loading = false,
+    this.expand = false,
+    this.icon,
+    super.key,
+  }) : _variant = _Variant.primary,
+       _smallIcon = false;
+
+  const SButtonMaterial.secondary({
+    required this.label,
+    required this.onPressed,
+    this.loading = false,
+    this.expand = false,
+    this.icon,
+    super.key,
+  }) : _variant = _Variant.secondary,
+       _smallIcon = false;
+
+  const SButtonMaterial.soft({
+    required this.label,
+    required this.onPressed,
+    this.loading = false,
+    this.expand = false,
+    this.icon,
+    super.key,
+  }) : _variant = _Variant.soft,
+       _smallIcon = false;
+
+  const SButtonMaterial.dangerSoft({
+    required this.label,
+    required this.onPressed,
+    this.loading = false,
+    this.expand = false,
+    this.icon,
+    super.key,
+  }) : _variant = _Variant.dangerSoft,
+       _smallIcon = false;
+
+  const SButtonMaterial.dangerSecondary({
+    required this.label,
+    required this.onPressed,
+    this.loading = false,
+    this.expand = false,
+    this.icon,
+    super.key,
+  }) : _variant = _Variant.dangerSecondary,
+       _smallIcon = false;
+
+  const SButtonMaterial.text({
+    required this.label,
+    required this.onPressed,
+    this.icon,
+    super.key,
+  }) : _variant = _Variant.text,
+       loading = false,
+       expand = false,
+       _smallIcon = false;
+
+  const SButtonMaterial.menu({
+    required this.label,
+    required this.onPressed,
+    super.key,
+  }) : _variant = _Variant.primary,
+       icon = SIcons.chevronUpDown,
+       loading = false,
+       expand = false,
+       _smallIcon = true;
+
+  final String label;
+  final VoidCallback? onPressed;
+  final bool loading;
+  final bool expand;
+  final SIcons? icon;
+  final _Variant _variant;
+
+  /// A smaller icon: a menu button's chevron.
+  final bool _smallIcon;
 
   @override
-  Widget render(BuildContext context, ButtonSpec spec) {
+  Widget build(BuildContext context) {
     final colors = context.colors;
-    final spinnerColor = switch (spec.variant) {
-      ButtonVariant.primary => colors.onPrimary,
-      ButtonVariant.danger => colors.onDanger,
-      ButtonVariant.soft => colors.text,
-      ButtonVariant.dangerSoft ||
-      ButtonVariant.dangerSecondary => colors.danger,
+    final spinnerColor = switch (_variant) {
+      _Variant.primary => colors.onPrimary,
+      _Variant.soft => colors.text,
+      _Variant.dangerSoft || _Variant.dangerSecondary => colors.danger,
       _ => colors.primary,
     };
-    final Widget child = spec.loading
+    final Widget child = loading
         ? SizedBox.square(
             dimension: 22,
             child: CircularProgressIndicator(
@@ -27,61 +122,54 @@ class MaterialButtonRenderer implements ButtonRenderer {
               color: spinnerColor,
             ),
           )
-        : Text(spec.label);
-    final icon = spec.icon == null || spec.loading
+        : Text(label);
+    final icon = this.icon;
+    final iconWidget = icon == null || loading
         ? null
         : Icon(
-            materialIcon(spec.icon!),
-            size: (spec.smallIcon ? SIconSize.xs : SIconSize.md).pixels,
+            materialIcon(icon),
+            size: (_smallIcon ? SIconSize.xs : SIconSize.md).pixels,
           );
     const iconAlignment = IconAlignment.end;
     // While loading the button keeps its look but ignores taps.
-    final onPressed = spec.loading ? () {} : spec.onPressed;
+    final onPressed = loading ? () {} : this.onPressed;
 
-    final Widget button = switch (spec.variant) {
-      ButtonVariant.primary =>
-        icon == null
+    final Widget button = switch (_variant) {
+      _Variant.primary =>
+        iconWidget == null
             ? FilledButton(onPressed: onPressed, child: child)
             : FilledButton.icon(
                 onPressed: onPressed,
-                icon: icon,
+                icon: iconWidget,
                 iconAlignment: iconAlignment,
                 label: child,
               ),
-      ButtonVariant.danger => FilledButton(
-        style: FilledButton.styleFrom(
-          backgroundColor: colors.danger,
-          foregroundColor: colors.onDanger,
-        ),
-        onPressed: onPressed,
-        child: child,
-      ),
-      ButtonVariant.secondary =>
-        icon == null
+      _Variant.secondary =>
+        iconWidget == null
             ? OutlinedButton(onPressed: onPressed, child: child)
             : OutlinedButton.icon(
                 onPressed: onPressed,
-                icon: icon,
+                icon: iconWidget,
                 iconAlignment: iconAlignment,
                 label: child,
               ),
-      ButtonVariant.soft => _filled(
+      _Variant.soft => _filled(
         background: colors.fieldFill,
         foreground: colors.text,
         onPressed: onPressed,
-        icon: icon,
+        icon: iconWidget,
         iconAlignment: iconAlignment,
         child: child,
       ),
-      ButtonVariant.dangerSoft => _filled(
+      _Variant.dangerSoft => _filled(
         background: colors.dangerSoft,
         foreground: colors.danger,
         onPressed: onPressed,
-        icon: icon,
+        icon: iconWidget,
         iconAlignment: iconAlignment,
         child: child,
       ),
-      ButtonVariant.dangerSecondary => () {
+      _Variant.dangerSecondary => () {
         // Laid out like a row of the page: the icon first, at the start.
         final style = OutlinedButton.styleFrom(
           backgroundColor: colors.surface,
@@ -90,32 +178,27 @@ class MaterialButtonRenderer implements ButtonRenderer {
           alignment: AlignmentDirectional.centerStart,
           padding: const EdgeInsets.symmetric(horizontal: Space.lg),
         );
-        return icon == null
+        return iconWidget == null
             ? OutlinedButton(style: style, onPressed: onPressed, child: child)
             : OutlinedButton.icon(
                 style: style,
                 onPressed: onPressed,
-                icon: icon,
+                icon: iconWidget,
                 label: child,
               );
       }(),
-      ButtonVariant.text =>
-        icon == null
+      _Variant.text =>
+        iconWidget == null
             ? TextButton(onPressed: onPressed, child: child)
             : TextButton.icon(
                 onPressed: onPressed,
-                icon: icon,
+                icon: iconWidget,
                 iconAlignment: iconAlignment,
                 label: child,
               ),
     };
-    final Widget guarded = AbsorbPointer(
-      absorbing: spec.loading,
-      child: button,
-    );
-    return spec.expand
-        ? SizedBox(width: double.infinity, child: guarded)
-        : guarded;
+    final Widget guarded = AbsorbPointer(absorbing: loading, child: button);
+    return expand ? SizedBox(width: double.infinity, child: guarded) : guarded;
   }
 
   /// A filled button in quieter colors than the primary one.
@@ -141,73 +224,27 @@ class MaterialButtonRenderer implements ButtonRenderer {
             label: child,
           );
   }
+}
+
+/// [SButton.icon], drawn with Material's [IconButton].
+class SIconButtonMaterial extends StatelessWidget implements SButton {
+  const SIconButtonMaterial({
+    required this.icon,
+    required this.tooltip,
+    required this.onPressed,
+    super.key,
+  });
+
+  final SIcons icon;
+
+  /// Also what screen readers say.
+  final String tooltip;
+  final VoidCallback? onPressed;
 
   @override
-  Widget signIn(BuildContext context, SignInButtonSpec spec) {
-    final colors = context.colors;
-    // Each company's rules: Apple's is solid, dark on a light screen and
-    // light on a dark one, its mark in the words' color; Google's is plain
-    // with a border, its mark in color.
-    final (
-      background,
-      foreground,
-      border,
-      mark,
-      tint,
-    ) = switch (spec.provider) {
-      SignInProvider.apple => (
-        colors.text,
-        colors.surface,
-        BorderSide.none,
-        'apple',
-        colors.surface,
-      ),
-      SignInProvider.google => (
-        colors.surface,
-        colors.text,
-        BorderSide(color: colors.border),
-        'google',
-        null,
-      ),
-    };
-    final icon = spec.loading
-        ? SizedBox.square(
-            dimension: SIconSize.md.pixels,
-            child: CircularProgressIndicator(
-              strokeWidth: 2.5,
-              color: foreground,
-            ),
-          )
-        : Image.asset(
-            'assets/brands/$mark.png',
-            package: 'stellar',
-            width: SIconSize.md.pixels,
-            height: SIconSize.md.pixels,
-            color: tint,
-            excludeFromSemantics: true,
-          );
-    return SizedBox(
-      width: double.infinity,
-      child: AbsorbPointer(
-        absorbing: spec.loading,
-        child: OutlinedButton.icon(
-          style: OutlinedButton.styleFrom(
-            backgroundColor: background,
-            foregroundColor: foreground,
-            side: border,
-          ),
-          onPressed: spec.loading ? () {} : spec.onPressed,
-          icon: icon,
-          label: Text(spec.label),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget icon(BuildContext context, IconButtonSpec spec) => IconButton(
-    tooltip: spec.tooltip,
-    onPressed: spec.onPressed,
-    icon: Icon(materialIcon(spec.icon), size: SIconSize.md.pixels),
+  Widget build(BuildContext context) => IconButton(
+    tooltip: tooltip,
+    onPressed: onPressed,
+    icon: Icon(materialIcon(icon), size: SIconSize.md.pixels),
   );
 }

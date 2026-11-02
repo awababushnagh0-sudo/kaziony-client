@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:kernel/kernel.dart' show GeoPoint;
 
-import 's_map_renderer.dart';
+import 's_map_picker.dart';
 
 /// What the picker asks of the map underneath, whoever draws it.
 @immutable

@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
 
 import '../../foundation/s_tokens.dart';
-import 's_card_renderer.dart';
+import 's_card.dart';
 
-class MaterialCardRenderer implements CardRenderer {
-  const MaterialCardRenderer();
+/// [SCard], drawn with Material's [Card].
+class SCardMaterial extends StatelessWidget implements SCard {
+  const SCardMaterial({
+    required this.child,
+    this.onTap,
+    this.padded = true,
+    super.key,
+  });
+
+  final Widget child;
+  final VoidCallback? onTap;
+  final bool padded;
 
   @override
-  Widget render(BuildContext context, CardSpec spec) {
-    final content = spec.padded
-        ? Padding(padding: const EdgeInsets.all(Space.lg), child: spec.child)
-        : spec.child;
+  Widget build(BuildContext context) {
+    final content = padded
+        ? Padding(padding: const EdgeInsets.all(Space.lg), child: child)
+        : child;
     return Card(
       clipBehavior: Clip.antiAlias,
-      child: spec.onTap == null
-          ? content
-          : InkWell(onTap: spec.onTap, child: content),
+      child: onTap == null ? content : InkWell(onTap: onTap, child: content),
     );
   }
 }

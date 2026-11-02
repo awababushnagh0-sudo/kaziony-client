@@ -9,6 +9,7 @@ import 'package:kernel/testing.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../fakes.dart';
+import '../../support/finders.dart';
 
 /// The stores list with a store's page on top of it, as in the app.
 Widget harness(
@@ -206,9 +207,7 @@ void main() {
   });
 
   Finder field(String label) => find.descendant(
-    of: find.byWidgetPredicate(
-      (widget) => widget is STextInput && widget.label == label,
-    ),
+    of: textField(label),
     matching: find.byType(EditableText),
   );
 

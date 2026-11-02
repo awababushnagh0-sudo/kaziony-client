@@ -9,6 +9,7 @@ import 'package:kernel/testing.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../fakes.dart';
+import '../../support/finders.dart';
 
 /// The users list with a user's page on top of it, as in the app, signed
 /// in as [signedInAs].
@@ -55,12 +56,8 @@ void setWindow(WidgetTester tester) {
   addTearDown(tester.view.reset);
 }
 
-Finder field(String label) => find.descendant(
-  of: find.byWidgetPredicate(
-    (widget) => widget is STextInput && widget.label == label,
-  ),
-  matching: find.byType(EditableText),
-);
+Finder field(String label) =>
+    find.descendant(of: textField(label), matching: find.byType(EditableText));
 
 Future<void> chooseAction(WidgetTester tester, String action) async {
   await tester.tap(find.text('Actions'));
@@ -138,7 +135,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.enterText(field('Name'), 'Sara');
-    await tester.tap(find.byType(SSelectInput<DashboardRole>));
+    await tester.tap(find.bySubtype<SSelectInput<DashboardRole>>());
     await tester.pumpAndSettle();
     await tester.tap(find.text('Admin').last);
     await tester.pumpAndSettle();
@@ -173,7 +170,7 @@ void main() {
         find.ancestor(of: field('Email'), matching: find.byType(TextField)),
       );
       expect(email.enabled, isFalse);
-      await tester.tap(find.byType(SSelectInput<DashboardRole>));
+      await tester.tap(find.bySubtype<SSelectInput<DashboardRole>>());
       await tester.pumpAndSettle();
       expect(find.text('Editor'), findsNothing, reason: 'no menu opened');
     },

@@ -1,13 +1,16 @@
 import 'package:flutter/widgets.dart';
 
-import 's_illustration_renderer.dart';
+import 's_illustration.dart';
 
-class MaterialIllustrationRenderer implements IllustrationRenderer {
-  const MaterialIllustrationRenderer();
+/// [SIllustration], drawn from the picture's PNG assets.
+class SIllustrationMaterial extends StatelessWidget implements SIllustration {
+  const SIllustrationMaterial(this.illustration, {super.key});
+
+  final Illustration illustration;
 
   @override
-  Widget render(BuildContext context, IllustrationSpec spec) {
-    final picture = spec.illustration;
+  Widget build(BuildContext context) {
+    final picture = illustration;
     final arabic = Localizations.localeOf(context).languageCode == 'ar';
     final (file, size) = switch (picture.arabicSize) {
       null => (picture.file, picture.size),

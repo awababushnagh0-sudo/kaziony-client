@@ -1,8 +1,33 @@
 import 'package:flutter/widgets.dart';
 
 import '../../foundation/s_tokens.dart';
-import 's_list_tile_renderer.dart';
+import '../icon/s_icon.dart';
 import 's_radio_tile.dart';
+
+/// One choice of an [SRadioGroup] or a choice sheet (`SSheet.choose`).
+@immutable
+class RadioOption<T> {
+  const RadioOption({
+    required this.value,
+    required this.label,
+    this.subtitle,
+    this.icon,
+    this.mark,
+  }) : assert(icon == null || mark == null, 'An icon or a mark, not both');
+
+  final T value;
+  final String label;
+
+  /// A quieter line under [label] (a branch's address).
+  final String? subtitle;
+
+  /// At the start of the row, in a circle.
+  final SIcons? icon;
+
+  /// A letter or two in the circle instead of an icon, where no icon fits
+  /// ("ع" and "En" for the languages).
+  final String? mark;
+}
 
 /// Pick one of [options]: an [SRadioTile] each, the one whose value is
 /// [value] chosen. Tapping another calls [onChanged] with its value; the

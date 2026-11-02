@@ -1,30 +1,43 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
-import '../illustration/s_illustration_material.dart';
-import '../illustration/s_illustration_renderer.dart';
-import 's_profile_renderer.dart';
+import '../illustration/s_illustration.dart';
+import 's_profile_header.dart';
 
-class MaterialProfileRenderer implements ProfileRenderer {
-  const MaterialProfileRenderer();
+/// [SProfileHeader], drawn with Material.
+class SProfileHeaderMaterial extends StatelessWidget implements SProfileHeader {
+  const SProfileHeaderMaterial({
+    required this.title,
+    this.subtitle,
+    this.role,
+    this.phone,
+    this.imageUrl,
+    super.key,
+  });
+
+  final String title;
+  final String? subtitle;
+  final ProfileRole? role;
+
+  /// Already written for people (`formatLibyanPhone`); read left to right
+  /// in Arabic too.
+  final String? phone;
+  final String? imageUrl;
 
   @override
-  Widget header(BuildContext context, ProfileHeaderSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final subtitle = spec.subtitle;
-    final role = spec.role;
-    final phone = spec.phone;
-    final url = spec.imageUrl;
+    final subtitle = this.subtitle;
+    final role = this.role;
+    final phone = this.phone;
+    final url = imageUrl;
     const avatar = SIllustrations.avatar;
-    final placeholder = const MaterialIllustrationRenderer().render(
-      context,
-      const IllustrationSpec(illustration: avatar),
-    );
+    const placeholder = SIllustration(avatar);
     return Row(
       spacing: Space.lg,
       children: [
@@ -50,7 +63,7 @@ class MaterialProfileRenderer implements ProfileRenderer {
             spacing: Space.xs,
             children: [
               Text(
-                spec.title,
+                title,
                 style: TextStyle(
                   fontSize: text.title,
                   fontWeight: SFontWeight.bold.value,
@@ -88,9 +101,16 @@ class MaterialProfileRenderer implements ProfileRenderer {
       ],
     );
   }
+}
+
+/// [SShortcuts], drawn with Material.
+class SShortcutsMaterial extends StatelessWidget implements SShortcuts {
+  const SShortcutsMaterial(this.shortcuts, {super.key});
+
+  final List<Shortcut> shortcuts;
 
   @override
-  Widget shortcuts(BuildContext context, List<Shortcut> shortcuts) => Column(
+  Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     spacing: Space.sm,
     children: [for (final shortcut in shortcuts) _ShortcutRow(shortcut)],
@@ -130,10 +150,7 @@ class _ShortcutRow extends StatelessWidget {
             children: [
               SizedBox.fromSize(
                 size: shortcut.illustration.size,
-                child: const MaterialIllustrationRenderer().render(
-                  context,
-                  IllustrationSpec(illustration: shortcut.illustration),
-                ),
+                child: SIllustration(shortcut.illustration),
               ),
               Expanded(
                 child: Column(

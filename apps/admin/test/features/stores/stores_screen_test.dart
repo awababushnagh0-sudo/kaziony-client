@@ -58,7 +58,7 @@ Future<void> type(WidgetTester tester, Field field, String text) =>
     tester.enterText(
       find
           .descendant(
-            of: find.byType(SDialog),
+            of: find.bySubtype<SDialog>(),
             matching: find.byType(EditableText),
           )
           .at(field.index),
@@ -139,7 +139,7 @@ void main() {
     expect(stores.created, isEmpty);
 
     await type(tester, Field.name, 'حلويات الساحل');
-    await tester.tap(find.byType(SSelectInput<String>));
+    await tester.tap(find.bySubtype<SSelectInput<String>>());
     await tester.pumpAndSettle();
     await tester.tap(find.text('Sweets').last);
     await tester.pumpAndSettle();
@@ -197,7 +197,7 @@ void main() {
     await tester.tap(find.text('Add store'));
     await tester.pumpAndSettle();
     await type(tester, Field.name, 'Cafe');
-    await tester.tap(find.byType(SSelectInput<String>));
+    await tester.tap(find.bySubtype<SSelectInput<String>>());
     await tester.pumpAndSettle();
     await tester.tap(find.text('Sweets').last);
     await tester.pumpAndSettle();

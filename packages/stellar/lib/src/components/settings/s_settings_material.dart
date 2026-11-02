@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
-import 's_settings_renderer.dart';
+import 's_option_card.dart';
+import 's_settings_dialog.dart';
 
 /// Below this width the page list shows only icons.
 const _compactBreakpoint = 720.0;
@@ -18,163 +19,29 @@ const _oneCardBreakpoint = 520.0;
 const _previewHeight = 104.0;
 const _cardRadius = 10.0;
 
-/// Settings in the style of ERPNext's, as in the MIA portal.
-class MaterialSettingsRenderer implements SettingsRenderer {
-  const MaterialSettingsRenderer();
+/// [SSettingsDialog] in the style of ERPNext's, as in the MIA portal.
+class SSettingsDialogMaterial extends StatefulWidget
+    implements SSettingsDialog {
+  const SSettingsDialogMaterial({
+    required this.title,
+    required this.pages,
+    super.key,
+  });
+
+  /// Above the page list ("Settings").
+  final String title;
+  final List<SettingsPage> pages;
 
   @override
-  Widget dialog(BuildContext context, SettingsDialogSpec spec) =>
-      _SettingsDialog(spec: spec);
-
-  @override
-  Widget group(BuildContext context, SettingsGroupSpec spec) {
-    final c = context.colors;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          spec.title,
-          style: TextStyle(
-            fontSize: context.style.text.subtitle,
-            fontWeight: SFontWeight.semibold.value,
-            color: c.text,
-          ),
-        ),
-        const Gap(2),
-        Text(
-          spec.hint,
-          style: TextStyle(
-            fontSize: context.style.text.small,
-            color: c.textMuted,
-          ),
-        ),
-        const Gap(Space.md),
-        spec.child,
-      ],
-    );
-  }
-
-  @override
-  Widget optionGrid(BuildContext context, List<Widget> cards) => LayoutBuilder(
-    builder: (context, constraints) {
-      final width = constraints.maxWidth;
-      final perRow = width < _oneCardBreakpoint ? 1 : 3;
-      final cardWidth = (width - Space.lg * (perRow - 1)) / perRow;
-      return Wrap(
-        spacing: Space.lg,
-        runSpacing: Space.lg,
-        children: [
-          for (final card in cards) SizedBox(width: cardWidth, child: card),
-        ],
-      );
-    },
-  );
-
-  @override
-  Widget optionCard(BuildContext context, OptionCardSpec spec) {
-    final c = context.colors;
-    final radius = BorderRadius.circular(_cardRadius);
-    return Semantics(
-      selected: spec.selected,
-      button: true,
-      label: spec.label,
-      excludeSemantics: true,
-      child: Material(
-        color: c.surface,
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-          borderRadius: radius,
-          side: BorderSide(
-            color: spec.selected ? c.text : c.border,
-            width: spec.selected ? 1.5 : 1,
-          ),
-        ),
-        child: InkWell(
-          onTap: spec.onTap,
-          hoverColor: c.primarySoft.withValues(alpha: 0.5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                height: _previewHeight,
-                color: c.primarySoft,
-                child: Directionality(
-                  textDirection: spec.direction ?? Directionality.of(context),
-                  // The window runs past the card's end and bottom edges.
-                  child: Stack(
-                    children: [
-                      PositionedDirectional(
-                        start: Space.lg,
-                        top: 14,
-                        end: -1,
-                        bottom: -1,
-                        child: switch (spec.preview) {
-                          WindowPreview.light => const _Window(lightColors),
-                          WindowPreview.dark => const _Window(darkColors),
-                          WindowPreview.lightAndDark => const Row(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            spacing: Space.sm,
-                            children: [
-                              Expanded(child: _Window(lightColors)),
-                              Expanded(child: _Window(darkColors)),
-                            ],
-                          ),
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Divider(height: 1, color: c.border),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: Space.md,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        spec.label,
-                        style: TextStyle(
-                          fontSize: context.style.text.body,
-                          color: c.text,
-                        ),
-                      ),
-                    ),
-                    Icon(
-                      materialIcon(
-                        spec.selected ? SIcons.selected : SIcons.unselected,
-                      ),
-                      size: SIconSize.sm.pixels,
-                      color: spec.selected ? c.text : c.textSubtle,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  State<SSettingsDialogMaterial> createState() =>
+      _SettingsDialogMaterialState();
 }
 
-class _SettingsDialog extends StatefulWidget {
-  const _SettingsDialog({required this.spec});
-
-  final SettingsDialogSpec spec;
-
-  @override
-  State<_SettingsDialog> createState() => _SettingsDialogState();
-}
-
-class _SettingsDialogState extends State<_SettingsDialog> {
+class _SettingsDialogMaterialState extends State<SSettingsDialogMaterial> {
   var _open = 0;
 
   @override
   Widget build(BuildContext context) {
-    final spec = widget.spec;
     final c = context.colors;
     final screen = MediaQuery.sizeOf(context);
     final compact = screen.width < _compactBreakpoint;
@@ -208,14 +75,14 @@ class _SettingsDialogState extends State<_SettingsDialog> {
                         Space.sm,
                       ),
                       child: Text(
-                        spec.title,
+                        widget.title,
                         style: TextStyle(
                           fontSize: context.style.text.small,
                           color: c.textSubtle,
                         ),
                       ),
                     ),
-                  for (final (i, page) in spec.pages.indexed)
+                  for (final (i, page) in widget.pages.indexed)
                     _PageItem(
                       page: page,
                       compact: compact,
@@ -231,11 +98,186 @@ class _SettingsDialogState extends State<_SettingsDialog> {
               child: IndexedStack(
                 index: _open,
                 children: [
-                  for (final page in spec.pages) _PageBody(page: page),
+                  for (final page in widget.pages) _PageBody(page: page),
                 ],
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// [SSettingsGroup], drawn with Material.
+class SSettingsGroupMaterial extends StatelessWidget implements SSettingsGroup {
+  const SSettingsGroupMaterial({
+    required this.title,
+    required this.hint,
+    required this.child,
+    super.key,
+  });
+
+  final String title;
+  final String hint;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: context.style.text.subtitle,
+            fontWeight: SFontWeight.semibold.value,
+            color: c.text,
+          ),
+        ),
+        const Gap(2),
+        Text(
+          hint,
+          style: TextStyle(
+            fontSize: context.style.text.small,
+            color: c.textMuted,
+          ),
+        ),
+        const Gap(Space.md),
+        child,
+      ],
+    );
+  }
+}
+
+/// [SOptionGrid], drawn with Material.
+class SOptionGridMaterial extends StatelessWidget implements SOptionGrid {
+  const SOptionGridMaterial({required this.children, super.key});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final width = constraints.maxWidth;
+      final perRow = width < _oneCardBreakpoint ? 1 : 3;
+      final cardWidth = (width - Space.lg * (perRow - 1)) / perRow;
+      return Wrap(
+        spacing: Space.lg,
+        runSpacing: Space.lg,
+        children: [
+          for (final card in children) SizedBox(width: cardWidth, child: card),
+        ],
+      );
+    },
+  );
+}
+
+/// [SOptionCard], drawn with Material.
+class SOptionCardMaterial extends StatelessWidget implements SOptionCard {
+  const SOptionCardMaterial({
+    required this.label,
+    required this.preview,
+    required this.selected,
+    required this.onTap,
+    this.direction,
+    super.key,
+  });
+
+  final String label;
+  final WindowPreview preview;
+  final bool selected;
+  final VoidCallback onTap;
+
+  /// Lays the preview out in this direction, not the page's: a language's
+  /// card shows its side menu on its own side.
+  final TextDirection? direction;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final radius = BorderRadius.circular(_cardRadius);
+    return Semantics(
+      selected: selected,
+      button: true,
+      label: label,
+      excludeSemantics: true,
+      child: Material(
+        color: c.surface,
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: radius,
+          side: BorderSide(
+            color: selected ? c.text : c.border,
+            width: selected ? 1.5 : 1,
+          ),
+        ),
+        child: InkWell(
+          onTap: onTap,
+          hoverColor: c.primarySoft.withValues(alpha: 0.5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                height: _previewHeight,
+                color: c.primarySoft,
+                child: Directionality(
+                  textDirection: direction ?? Directionality.of(context),
+                  // The window runs past the card's end and bottom edges.
+                  child: Stack(
+                    children: [
+                      PositionedDirectional(
+                        start: Space.lg,
+                        top: 14,
+                        end: -1,
+                        bottom: -1,
+                        child: switch (preview) {
+                          WindowPreview.light => const _Window(lightColors),
+                          WindowPreview.dark => const _Window(darkColors),
+                          WindowPreview.lightAndDark => const Row(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            spacing: Space.sm,
+                            children: [
+                              Expanded(child: _Window(lightColors)),
+                              Expanded(child: _Window(darkColors)),
+                            ],
+                          ),
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Divider(height: 1, color: c.border),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: Space.md,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        label,
+                        style: TextStyle(
+                          fontSize: context.style.text.body,
+                          color: c.text,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      materialIcon(
+                        selected ? SIcons.selected : SIcons.unselected,
+                      ),
+                      size: SIconSize.sm.pixels,
+                      color: selected ? c.text : c.textSubtle,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

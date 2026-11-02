@@ -1,35 +1,59 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import '../illustration/s_illustration.dart';
 import '../list_tile/s_radio_group.dart';
-import 's_sheet_renderer.dart';
+import 's_sheet.dart';
 
 const _sheetRadius = 20.0;
 
-/// A white sheet with rounded top corners and a handle: an optional
-/// picture, the title and a line on what the choice changes, then the
-/// choices as an [SRadioGroup], or the ways forward as outlined rows.
+/// [SSheet]: a white sheet with rounded top corners and a handle: an
+/// optional picture, the title and a line on what the choice changes, then
+/// the choices as an [SRadioGroup], or the ways forward as outlined rows.
 /// Tapping one closes the sheet with it.
-class MaterialSheetRenderer implements SheetRenderer {
-  const MaterialSheetRenderer();
+abstract final class SSheetMaterial {
+  static Future<T?> choose<T>(
+    BuildContext context, {
+    required String title,
+    required List<RadioOption<T>> options,
+    T? selected,
+    String? subtitle,
+    Illustration? illustration,
+  }) => _show(
+    context,
+    (_) => _ChoiceSheet(
+      title: title,
+      options: options,
+      selected: selected,
+      subtitle: subtitle,
+      illustration: illustration,
+    ),
+  );
 
-  @override
-  Future<T?> choose<T>(BuildContext context, ChoiceSheetSpec<T> spec) =>
-      _show(context, (_) => _ChoiceSheet(spec: spec));
+  static Future<T?> actions<T>(
+    BuildContext context, {
+    required String title,
+    required List<SheetAction<T>> actions,
+    String? subtitle,
+  }) => _show(
+    context,
+    (_) => _ActionSheet(title: title, actions: actions, subtitle: subtitle),
+  );
 
-  @override
-  Future<T?> actions<T>(BuildContext context, ActionSheetSpec<T> spec) =>
-      _show(context, (_) => _ActionSheet(spec: spec));
+  static Future<T?> show<T>(
+    BuildContext context, {
+    required String title,
+    required WidgetBuilder builder,
+    String? subtitle,
+  }) => _show(
+    context,
+    (_) => _ContentSheet(title: title, subtitle: subtitle, builder: builder),
+  );
 
-  @override
-  Future<T?> content<T>(BuildContext context, ContentSheetSpec spec) =>
-      _show(context, (_) => _ContentSheet(spec: spec));
-
-  Future<T?> _show<T>(BuildContext context, WidgetBuilder builder) =>
+  static Future<T?> _show<T>(BuildContext context, WidgetBuilder builder) =>
       showModalBottomSheet<T>(
         context: context,
         // Over the whole app: a tab's own navigator would put it under
@@ -95,9 +119,15 @@ EdgeInsets _sheetPadding(BuildContext context) => EdgeInsets.fromLTRB(
 );
 
 class _ActionSheet<T> extends StatelessWidget {
-  const _ActionSheet({required this.spec});
+  const _ActionSheet({
+    required this.title,
+    required this.actions,
+    this.subtitle,
+  });
 
-  final ActionSheetSpec<T> spec;
+  final String title;
+  final List<SheetAction<T>> actions;
+  final String? subtitle;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -106,13 +136,13 @@ class _ActionSheet<T> extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _Heading(title: spec.title, subtitle: spec.subtitle),
+        _Heading(title: title, subtitle: subtitle),
         const Gap(Space.xl),
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           spacing: Space.sm,
           children: [
-            for (final action in spec.actions)
+            for (final action in actions)
               _ActionRow(
                 action: action,
                 onTap: () => Navigator.of(context).pop(action.value),
@@ -197,9 +227,21 @@ class _ActionRow extends StatelessWidget {
 }
 
 class _ChoiceSheet<T> extends StatelessWidget {
-  const _ChoiceSheet({required this.spec});
+  const _ChoiceSheet({
+    required this.title,
+    required this.options,
+    required this.selected,
+    this.subtitle,
+    this.illustration,
+  });
 
-  final ChoiceSheetSpec<T> spec;
+  final String title;
+  final List<RadioOption<T>> options;
+
+  /// The current choice, marked with a check.
+  final T? selected;
+  final String? subtitle;
+  final Illustration? illustration;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -208,17 +250,17 @@ class _ChoiceSheet<T> extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (spec.illustration case final illustration?) ...[
+        if (illustration case final illustration?) ...[
           SIllustration(illustration),
           const Gap(Space.md),
         ],
-        _Heading(title: spec.title, subtitle: spec.subtitle),
+        _Heading(title: title, subtitle: subtitle),
         const Gap(Space.xl),
         Flexible(
           child: SingleChildScrollView(
             child: SRadioGroup<T>(
-              options: spec.options,
-              value: spec.selected,
+              options: options,
+              value: selected,
               onChanged: (value) => Navigator.of(context).pop(value),
             ),
           ),
@@ -229,9 +271,17 @@ class _ChoiceSheet<T> extends StatelessWidget {
 }
 
 class _ContentSheet extends StatelessWidget {
-  const _ContentSheet({required this.spec});
+  const _ContentSheet({
+    required this.title,
+    required this.builder,
+    this.subtitle,
+  });
 
-  final ContentSheetSpec spec;
+  final String title;
+  final String? subtitle;
+
+  /// Built in the sheet's context, so it can close the sheet.
+  final WidgetBuilder builder;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -242,10 +292,10 @@ class _ContentSheet extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _Heading(title: spec.title, subtitle: spec.subtitle),
+        _Heading(title: title, subtitle: subtitle),
         const Gap(Space.xl),
         Flexible(
-          child: SingleChildScrollView(child: Builder(builder: spec.builder)),
+          child: SingleChildScrollView(child: Builder(builder: builder)),
         ),
       ],
     ),

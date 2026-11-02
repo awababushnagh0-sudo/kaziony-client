@@ -2,10 +2,9 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../illustration/s_illustration.dart';
-import '../illustration/s_illustration_renderer.dart';
 import '../scaffold/s_scaffold.dart';
 import '../text/s_text.dart';
 

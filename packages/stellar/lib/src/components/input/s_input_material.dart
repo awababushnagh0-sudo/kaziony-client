@@ -3,43 +3,152 @@ import 'package:flutter/services.dart';
 import 'package:kernel/kernel.dart' show formatDateTime;
 import 'package:reactive_forms/reactive_forms.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../../l10n/generated/stellar_localizations.dart';
+import '../form/s_validators.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import '../pill/s_pill.dart';
-import 's_input_renderer.dart';
-import 's_select_material.dart';
+import 's_choice_input.dart';
+import 's_date_time_input.dart';
+import 's_quantity_input.dart';
+import 's_search_field.dart';
+import 's_select_input.dart';
+import 's_text_input.dart';
 
-class MaterialInputRenderer implements InputRenderer {
-  const MaterialInputRenderer();
+/// [STextInput], drawn with reactive_forms' [ReactiveTextField].
+class STextInputMaterial extends StatelessWidget implements STextInput {
+  const STextInputMaterial({
+    required this.controlName,
+    required this.label,
+    this.hint,
+    this.kind = TextInputKind.text,
+    this.isLast = false,
+    this.onSubmitted,
+    this.autofillHints,
+    this.maxLength,
+    this.validationMessages = const {},
+    this.required = false,
+    this.helper,
+    this.autofocus = false,
+    super.key,
+  });
+
+  /// Name of the control in the enclosing SForm.
+  final String controlName;
+  final String label;
+  final String? hint;
+  final TextInputKind kind;
+
+  /// The keyboard shows "done" instead of "next".
+  final bool isLast;
+  final VoidCallback? onSubmitted;
+  final Iterable<String>? autofillHints;
+  final int? maxLength;
+
+  /// Error text per validation error key ("required", "minLength", ...),
+  /// over the translated ones for the common errors.
+  final Map<String, String Function(Object error)> validationMessages;
+
+  /// Marks the label with a red asterisk (the validators still decide).
+  final bool required;
+
+  /// A quiet line under the field explaining what to enter.
+  final String? helper;
+  final bool autofocus;
 
   @override
-  Widget text(BuildContext context, TextInputSpec spec) =>
-      spec.kind == TextInputKind.password
-      ? _PasswordInput(spec: spec)
-      : _buildField(context, spec);
+  Widget build(BuildContext context) => kind == TextInputKind.password
+      ? _PasswordInput(input: this)
+      : _buildField(context, this);
+
+  Map<String, String Function(Object error)> _messages(BuildContext context) {
+    final strings = StellarLocalizations.of(context);
+    return {
+      ValidationMessage.required: (_) => strings.validationRequired,
+      ValidationMessage.minLength: (error) =>
+          strings.validationMinLength(_requiredLength(error)),
+      ValidationMessage.maxLength: (error) =>
+          strings.validationMaxLength(_requiredLength(error)),
+      ValidationMessage.email: (_) => strings.validationEmail,
+      ValidationMessage.mustMatch: (_) => strings.validationMustMatch,
+      SValidators.libyanPhoneKey: (_) => strings.validationPhone,
+      SValidators.urlKey: (_) => strings.validationUrl,
+      SValidators.priceKey: (_) => strings.validationPrice,
+      SValidators.wholeNumberKey: (error) => strings.validationWholeNumber(
+        _bound(error, 'min'),
+        _bound(error, 'max'),
+      ),
+      ...validationMessages,
+    };
+  }
+}
+
+int _requiredLength(Object error) =>
+    error is Map ? (error['requiredLength'] as int? ?? 0) : 0;
+
+int _bound(Object error, String key) =>
+    error is Map ? (error[key] as int? ?? 0) : 0;
+
+/// [SSearchField], drawn with Material's [TextField].
+class SSearchFieldMaterial extends StatefulWidget implements SSearchField {
+  const SSearchFieldMaterial({
+    required this.hint,
+    required ValueChanged<String> this.onChanged,
+    this.initialValue = '',
+    this.autofocus = false,
+    super.key,
+  }) : onTap = null;
+
+  const SSearchFieldMaterial.button({
+    required this.hint,
+    required VoidCallback this.onTap,
+    super.key,
+  }) : onChanged = null,
+       initialValue = '',
+       autofocus = false;
+
+  final String hint;
+  final ValueChanged<String>? onChanged;
+
+  /// Set instead of [onChanged] when the field only opens the search
+  /// elsewhere.
+  final VoidCallback? onTap;
+  final String initialValue;
+
+  /// Opens the keyboard at once: on a page that is only for searching.
+  final bool autofocus;
 
   @override
-  Widget select<T>(BuildContext context, SelectInputSpec<T> spec) => _labelled(
-    context,
-    label: spec.label,
-    required: spec.required,
-    child: SelectField<T>(spec: spec),
-  );
+  State<SSearchFieldMaterial> createState() => _SearchFieldState();
+}
+
+/// [SQuantityInput], drawn with Material's outlined [IconButton]s.
+class SQuantityInputMaterial extends StatelessWidget implements SQuantityInput {
+  const SQuantityInputMaterial({
+    required this.value,
+    required this.onChanged,
+    this.min = 1,
+    required this.max,
+    super.key,
+  });
+
+  final int value;
+  final int min;
+  final int max;
+  final ValueChanged<int> onChanged;
+
+  /// Room for two figures, so the buttons don't move as the number grows.
+  static const _quantityWidth = 48.0;
 
   @override
-  Widget search(BuildContext context, SearchFieldSpec spec) =>
-      _SearchField(spec: spec);
-
-  @override
-  Widget quantity(BuildContext context, QuantityInputSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final s = StellarLocalizations.of(context);
     Widget step(SIcons icon, String tooltip, int? to) => IconButton.outlined(
       tooltip: tooltip,
-      onPressed: to == null ? null : () => spec.onChanged(to),
+      onPressed: to == null ? null : () => onChanged(to),
       style: IconButton.styleFrom(
         side: BorderSide(color: c.border),
         foregroundColor: c.text,
@@ -50,15 +159,11 @@ class MaterialInputRenderer implements InputRenderer {
       mainAxisAlignment: MainAxisAlignment.center,
       spacing: Space.xl,
       children: [
-        step(
-          SIcons.minus,
-          s.quantityFewer,
-          spec.value > spec.min ? spec.value - 1 : null,
-        ),
+        step(SIcons.minus, s.quantityFewer, value > min ? value - 1 : null),
         SizedBox(
           width: _quantityWidth,
           child: Text(
-            '${spec.value}',
+            '$value',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: context.style.text.display,
@@ -67,64 +172,105 @@ class MaterialInputRenderer implements InputRenderer {
             ),
           ),
         ),
-        step(
-          SIcons.add,
-          s.quantityMore,
-          spec.value < spec.max ? spec.value + 1 : null,
-        ),
+        step(SIcons.add, s.quantityMore, value < max ? value + 1 : null),
       ],
     );
   }
+}
 
-  /// Room for two figures, so the buttons don't move as the number grows.
-  static const _quantityWidth = 48.0;
+/// [SChoiceInput], drawn as a row of [SPill]s.
+class SChoiceInputMaterial<T> extends StatelessWidget
+    implements SChoiceInput<T> {
+  const SChoiceInputMaterial({
+    required this.controlName,
+    required this.label,
+    required this.options,
+    this.onChanged,
+    super.key,
+  });
+
+  final String controlName;
+  final String label;
+  final List<SelectOption<T>> options;
+  final ValueChanged<T>? onChanged;
 
   @override
-  Widget choice<T>(BuildContext context, ChoiceInputSpec<T> spec) => _labelled(
+  Widget build(BuildContext context) => labelledInput(
     context,
-    label: spec.label,
+    label: label,
     child: ReactiveFormField<T, T>(
-      formControlName: spec.controlName,
+      formControlName: controlName,
       builder: (field) => Wrap(
         spacing: Space.sm,
         runSpacing: Space.sm,
         children: [
-          for (final option in spec.options)
+          for (final option in options)
             SPill(
               label: option.label,
               selected: field.value == option.value,
               onTap: () {
                 field.didChange(option.value);
-                spec.onChanged?.call(option.value);
+                onChanged?.call(option.value);
               },
             ),
         ],
       ),
     ),
   );
+}
+
+/// [SDateTimeInput]: a field that opens Material's date picker, then its
+/// time picker.
+class SDateTimeInputMaterial extends StatelessWidget implements SDateTimeInput {
+  const SDateTimeInputMaterial({
+    required this.controlName,
+    required this.label,
+    required this.firstDate,
+    required this.lastDate,
+    this.presets = const [],
+    this.helper,
+    this.validationMessages = const {},
+    super.key,
+  });
+
+  final String controlName;
+  final String label;
+
+  /// The days the calendar offers.
+  final DateTime firstDate;
+  final DateTime lastDate;
+  final List<DateTimePreset> presets;
+  final String? helper;
+
+  /// Messages for the screen's own checks (e.g. "at most 30 days").
+  final Map<String, String Function(Object error)> validationMessages;
 
   @override
-  Widget dateTime(BuildContext context, DateTimeInputSpec spec) => _labelled(
+  Widget build(BuildContext context) => labelledInput(
     context,
-    label: spec.label,
-    helper: spec.helper,
-    child: _DateTimeField(spec: spec),
+    label: label,
+    helper: helper,
+    child: _DateTimeField(input: this),
   );
 }
 
 class _DateTimeField extends StatelessWidget {
-  const _DateTimeField({required this.spec});
+  const _DateTimeField({required this.input});
 
-  final DateTimeInputSpec spec;
+  final SDateTimeInputMaterial input;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final c = context.colors;
+    final strings = StellarLocalizations.of(context);
     final language = Localizations.localeOf(context).languageCode;
     return ReactiveFormField<DateTime, DateTime>(
-      formControlName: spec.controlName,
-      validationMessages: spec.validationMessages,
+      formControlName: input.controlName,
+      validationMessages: {
+        ValidationMessage.required: (_) => strings.validationRequired,
+        ...input.validationMessages,
+      },
       builder: (field) {
         final value = field.value;
         void choose(DateTime chosen) {
@@ -137,12 +283,12 @@ class _DateTimeField extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           spacing: Space.sm,
           children: [
-            if (spec.presets.isNotEmpty)
+            if (input.presets.isNotEmpty)
               Wrap(
                 spacing: Space.sm,
                 runSpacing: Space.sm,
                 children: [
-                  for (final preset in spec.presets)
+                  for (final preset in input.presets)
                     SPill(
                       label: preset.label,
                       selected: value == preset.value,
@@ -159,7 +305,7 @@ class _DateTimeField extends StatelessWidget {
               child: InputDecorator(
                 isEmpty: value == null,
                 decoration: InputDecoration(
-                  hintText: StellarLocalizations.of(context).chooseDateTime,
+                  hintText: strings.chooseDateTime,
                   errorText: field.errorText,
                   suffixIcon: Icon(
                     materialIcon(SIcons.calendar),
@@ -183,12 +329,14 @@ class _DateTimeField extends StatelessWidget {
 
   /// The phone's calendar, then its clock.
   Future<DateTime?> _pick(BuildContext context, DateTime? current) async {
-    final initial = current ?? spec.firstDate;
+    final initial = current ?? input.firstDate;
     final day = await showDatePicker(
       context: context,
-      initialDate: initial.isBefore(spec.firstDate) ? spec.firstDate : initial,
-      firstDate: spec.firstDate,
-      lastDate: spec.lastDate,
+      initialDate: initial.isBefore(input.firstDate)
+          ? input.firstDate
+          : initial,
+      firstDate: input.firstDate,
+      lastDate: input.lastDate,
     );
     if (day == null || !context.mounted) return null;
     final time = await showTimePicker(
@@ -201,8 +349,9 @@ class _DateTimeField extends StatelessWidget {
 }
 
 /// A label above a form control, with a red asterisk when [required], as
-/// in ERPNext; [helper] is a quiet line under it.
-Widget _labelled(
+/// in ERPNext; [helper] is a quiet line under it. Also used by the select
+/// input.
+Widget labelledInput(
   BuildContext context, {
   required String label,
   required Widget child,
@@ -249,14 +398,14 @@ Widget _labelled(
 
 Widget _buildField(
   BuildContext context,
-  TextInputSpec spec, {
+  STextInputMaterial input, {
   bool obscure = false,
   Widget? suffix,
 }) {
   // Phone numbers, emails, links and passwords read left to right, even in
   // Arabic; they still start at the page's start edge (the right, in
   // Arabic), like every other field.
-  final ltr = switch (spec.kind) {
+  final ltr = switch (input.kind) {
     TextInputKind.phone ||
     TextInputKind.price ||
     TextInputKind.email ||
@@ -268,30 +417,30 @@ Widget _buildField(
   final rtlPage = Directionality.of(context) == TextDirection.rtl;
   // A spinner at the end while the field is checked (async validators).
   final field = ReactiveStatusListenableBuilder(
-    formControlName: spec.controlName,
+    formControlName: input.controlName,
     builder: (context, control, _) => ReactiveTextField<String>(
-      formControlName: spec.controlName,
-      validationMessages: spec.validationMessages,
+      formControlName: input.controlName,
+      validationMessages: input._messages(context),
       obscureText: obscure,
-      maxLength: spec.maxLength,
-      maxLines: spec.kind == TextInputKind.multiline ? 4 : 1,
-      autofillHints: spec.autofillHints,
-      autofocus: spec.autofocus,
-      inputFormatters: switch (spec.kind) {
+      maxLength: input.maxLength,
+      maxLines: input.kind == TextInputKind.multiline ? 4 : 1,
+      autofillHints: input.autofillHints,
+      autofocus: input.autofocus,
+      inputFormatters: switch (input.kind) {
         TextInputKind.price => [_priceCharacters],
         TextInputKind.code => [_codeCharacters, _capitals],
         _ => null,
       },
-      textCapitalization: spec.kind == TextInputKind.code
+      textCapitalization: input.kind == TextInputKind.code
           ? TextCapitalization.characters
           : TextCapitalization.none,
-      autocorrect: spec.kind != TextInputKind.code,
-      enableSuggestions: spec.kind != TextInputKind.code,
+      autocorrect: input.kind != TextInputKind.code,
+      enableSuggestions: input.kind != TextInputKind.code,
       textDirection: ltr ? TextDirection.ltr : null,
       textAlign: ltr
           ? (rtlPage ? TextAlign.right : TextAlign.left)
           : TextAlign.start,
-      keyboardType: switch (spec.kind) {
+      keyboardType: switch (input.kind) {
         TextInputKind.phone => TextInputType.phone,
         TextInputKind.number || TextInputKind.price =>
           const TextInputType.numberWithOptions(decimal: true),
@@ -302,21 +451,21 @@ Widget _buildField(
         TextInputKind.code => TextInputType.visiblePassword,
         _ => TextInputType.text,
       },
-      textInputAction: spec.kind == TextInputKind.multiline
+      textInputAction: input.kind == TextInputKind.multiline
           ? TextInputAction.newline
-          : spec.isLast
+          : input.isLast
           ? TextInputAction.done
           : TextInputAction.next,
-      onSubmitted: spec.onSubmitted == null
+      onSubmitted: input.onSubmitted == null
           ? null
-          : (_) => spec.onSubmitted!.call(),
+          : (_) => input.onSubmitted!.call(),
       // Pressing Enter to submit keeps the cursor in the field, so the user
       // can fix a wrong password right away.
-      onEditingComplete: spec.onSubmitted == null ? null : (_) {},
+      onEditingComplete: input.onSubmitted == null ? null : (_) {},
       decoration: InputDecoration(
-        hintText: spec.hint,
+        hintText: input.hint,
         hintTextDirection: ltr ? TextDirection.ltr : null,
-        suffixText: spec.kind == TextInputKind.price
+        suffixText: input.kind == TextInputKind.price
             ? StellarLocalizations.of(context).currency
             : null,
         suffixIcon: control.pending ? const _Checking() : suffix,
@@ -328,11 +477,11 @@ Widget _buildField(
       ),
     ),
   );
-  return _labelled(
+  return labelledInput(
     context,
-    label: spec.label,
-    required: spec.required,
-    helper: spec.helper,
+    label: input.label,
+    required: input.required,
+    helper: input.helper,
     child: field,
   );
 }
@@ -372,9 +521,9 @@ class _Checking extends StatelessWidget {
 }
 
 class _PasswordInput extends StatefulWidget {
-  const _PasswordInput({required this.spec});
+  const _PasswordInput({required this.input});
 
-  final TextInputSpec spec;
+  final STextInputMaterial input;
 
   @override
   State<_PasswordInput> createState() => _PasswordInputState();
@@ -388,7 +537,7 @@ class _PasswordInputState extends State<_PasswordInput> {
     final strings = StellarLocalizations.of(context);
     return _buildField(
       context,
-      widget.spec,
+      widget.input,
       obscure: _obscure,
       suffix: IconButton(
         padding: EdgeInsets.zero,
@@ -408,19 +557,8 @@ class _PasswordInputState extends State<_PasswordInput> {
   }
 }
 
-class _SearchField extends StatefulWidget {
-  const _SearchField({required this.spec});
-
-  final SearchFieldSpec spec;
-
-  @override
-  State<_SearchField> createState() => _SearchFieldState();
-}
-
-class _SearchFieldState extends State<_SearchField> {
-  late final _controller = TextEditingController(
-    text: widget.spec.initialValue,
-  );
+class _SearchFieldState extends State<SSearchFieldMaterial> {
+  late final _controller = TextEditingController(text: widget.initialValue);
 
   @override
   void dispose() {
@@ -437,18 +575,18 @@ class _SearchFieldState extends State<_SearchField> {
       borderRadius: BorderRadius.all(Radius.circular(Radii.pill)),
       borderSide: BorderSide.none,
     );
-    final onTap = widget.spec.onTap;
+    final onTap = widget.onTap;
     return TextField(
       controller: _controller,
-      onChanged: widget.spec.onChanged,
-      autofocus: widget.spec.autofocus,
+      onChanged: widget.onChanged,
+      autofocus: widget.autofocus,
       // As a button: no cursor, no keyboard, only the tap.
       readOnly: onTap != null,
       canRequestFocus: onTap == null,
       onTap: onTap,
       style: TextStyle(fontSize: context.style.text.body),
       decoration: InputDecoration(
-        hintText: widget.spec.hint,
+        hintText: widget.hint,
         fillColor: c.fieldFill,
         border: shape,
         enabledBorder: shape,

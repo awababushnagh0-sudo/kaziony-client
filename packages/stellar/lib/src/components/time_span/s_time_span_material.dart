@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../../material/s_dashed_line.dart';
-import 's_time_span_renderer.dart';
+import 's_time_span.dart';
 
-class MaterialTimeSpanRenderer implements TimeSpanRenderer {
-  const MaterialTimeSpanRenderer();
+/// [STimeSpan]: the two ends, and a dashed line between dots.
+class STimeSpanMaterial extends StatelessWidget implements STimeSpan {
+  const STimeSpanMaterial({
+    required this.start,
+    required this.end,
+    this.length,
+    super.key,
+  });
 
   static const _dot = 8.0;
 
   /// The most of the width each end takes; the line gets the rest.
   static const _pointShare = 0.38;
 
+  final TimePoint start;
+  final TimePoint end;
+  final String? length;
+
   @override
-  Widget render(BuildContext context, TimeSpanSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
-    final length = spec.length;
+    final length = this.length;
     Widget dot(Color color) => SizedBox.square(
       dimension: _dot,
       child: DecoratedBox(
@@ -37,7 +47,7 @@ class MaterialTimeSpanRenderer implements TimeSpanRenderer {
           return Row(
             spacing: Space.md,
             children: [
-              point(spec.start, CrossAxisAlignment.start),
+              point(start, CrossAxisAlignment.start),
               Expanded(
                 child: Column(
                   spacing: Space.xs,
@@ -62,7 +72,7 @@ class MaterialTimeSpanRenderer implements TimeSpanRenderer {
                   ],
                 ),
               ),
-              point(spec.end, CrossAxisAlignment.end),
+              point(end, CrossAxisAlignment.end),
             ],
           );
         },

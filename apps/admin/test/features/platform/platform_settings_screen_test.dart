@@ -8,6 +8,7 @@ import 'package:kernel/testing.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../fakes.dart';
+import '../../support/finders.dart';
 
 Widget harness(
   FakePlatformSettingsRepository settings, {
@@ -47,9 +48,7 @@ void setWindow(WidgetTester tester) {
 }
 
 Finder get radiusField => find.descendant(
-  of: find.byWidgetPredicate(
-    (widget) => widget is STextInput && widget.label == 'Offer radius (km)',
-  ),
+  of: textField('Offer radius (km)'),
   matching: find.byType(EditableText),
 );
 

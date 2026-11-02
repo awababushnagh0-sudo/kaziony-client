@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
-import 's_tag_renderer.dart';
+import 's_tag.dart';
 
-class MaterialTagRenderer implements TagRenderer {
-  const MaterialTagRenderer();
+/// [STag], drawn as a tinted pill over its caption.
+class STagMaterial extends StatelessWidget implements STag {
+  const STagMaterial(this.label, {this.caption, this.hot = false, super.key});
+
+  final String label;
+  final String? caption;
+  final bool hot;
 
   @override
-  Widget render(BuildContext context, TagSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final caption = spec.caption;
+    final caption = this.caption;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -19,7 +24,7 @@ class MaterialTagRenderer implements TagRenderer {
       children: [
         DecoratedBox(
           decoration: BoxDecoration(
-            color: spec.hot ? c.accentSoft : c.fieldFill,
+            color: hot ? c.accentSoft : c.fieldFill,
             borderRadius: BorderRadius.circular(Radii.pill),
           ),
           child: Padding(
@@ -28,12 +33,12 @@ class MaterialTagRenderer implements TagRenderer {
               vertical: Space.xxs,
             ),
             child: Text(
-              spec.label,
+              label,
               maxLines: 1,
               style: TextStyle(
                 fontSize: text.small,
                 fontWeight: SFontWeight.bold.value,
-                color: spec.hot ? c.accentInk : c.text,
+                color: hot ? c.accentInk : c.text,
               ),
             ),
           ),

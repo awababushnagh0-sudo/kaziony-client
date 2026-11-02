@@ -4,23 +4,48 @@ import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../../l10n/generated/stellar_localizations.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
-import 's_scanner_renderer.dart';
+import 's_scanner_view.dart';
 
-class MaterialScannerRenderer implements ScannerRenderer {
-  const MaterialScannerRenderer();
+/// [SScannerView], drawn with Material.
+class SScannerViewMaterial extends StatelessWidget implements SScannerView {
+  const SScannerViewMaterial({
+    required this.camera,
+    required this.hint,
+    this.starting = false,
+    this.torchOn = false,
+    this.onTorch,
+    this.cover,
+    this.place,
+    this.actions = const [],
+    super.key,
+  });
+
+  final Widget camera;
+  final String hint;
+  final bool starting;
+  final bool torchOn;
+  final VoidCallback? onTorch;
+  final Widget? cover;
+  final ScannerPlace? place;
+  final List<ScannerAction> actions;
 
   @override
-  Widget view(BuildContext context, ScannerViewSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
-    final cover = spec.cover;
+    final cover = this.cover;
     final onCamera = cover == null;
-    final bar = _TopBar(spec: spec, onCamera: onCamera);
-    final actions = _Actions(actions: spec.actions, onCamera: onCamera);
+    final bar = _TopBar(
+      place: place,
+      torchOn: torchOn,
+      onTorch: onTorch,
+      onCamera: onCamera,
+    );
+    final actions = _Actions(actions: this.actions, onCamera: onCamera);
     return ColoredBox(
       color: c.cameraBackdrop,
       child: Stack(
@@ -28,7 +53,7 @@ class MaterialScannerRenderer implements ScannerRenderer {
         children: [
           // First, so it stays the same camera when the cover comes and
           // goes.
-          ClipRect(child: spec.camera),
+          ClipRect(child: camera),
           if (cover != null)
             ColoredBox(
               color: c.background,
@@ -49,7 +74,9 @@ class MaterialScannerRenderer implements ScannerRenderer {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ColoredBox(color: c.cameraDim, child: bar),
-                  Expanded(child: _Aim(spec: spec)),
+                  Expanded(
+                    child: _Aim(hint: hint, starting: starting),
+                  ),
                   ColoredBox(color: c.cameraDim, child: actions),
                 ],
               ),
@@ -62,9 +89,10 @@ class MaterialScannerRenderer implements ScannerRenderer {
 
 /// The square to aim at, the line sweeping it and the hint under it.
 class _Aim extends StatelessWidget {
-  const _Aim({required this.spec});
+  const _Aim({required this.hint, required this.starting});
 
-  final ScannerViewSpec spec;
+  final String hint;
+  final bool starting;
 
   /// The square's side, as a share of the area's width, and at most of
   /// its height, leaving room for the hint on short phones.
@@ -101,7 +129,7 @@ class _Aim extends StatelessWidget {
             ),
             Positioned.fromRect(
               rect: frame,
-              child: spec.starting
+              child: starting
                   ? Center(child: CircularProgressIndicator(color: c.onCamera))
                   : const _ScanLine(),
             ),
@@ -110,7 +138,7 @@ class _Aim extends StatelessWidget {
               start: Space.lg,
               end: Space.lg,
               child: Text(
-                spec.hint,
+                hint,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: c.onCamera,
@@ -194,20 +222,27 @@ class _ScanLineState extends State<_ScanLine>
   }
 }
 
-/// The [ScannerViewSpec.place] at the start and the light at the end, under
-/// the status bar.
+/// The [ScannerPlace] at the start and the light at the end, under the
+/// status bar.
 class _TopBar extends StatelessWidget {
-  const _TopBar({required this.spec, required this.onCamera});
+  const _TopBar({
+    required this.place,
+    required this.torchOn,
+    required this.onTorch,
+    required this.onCamera,
+  });
 
-  final ScannerViewSpec spec;
+  final ScannerPlace? place;
+  final bool torchOn;
+  final VoidCallback? onTorch;
   final bool onCamera;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final height = context.style.controlHeight;
-    final place = spec.place;
-    final onTorch = spec.onTorch;
+    final place = this.place;
+    final onTorch = this.onTorch;
     return Padding(
       padding: EdgeInsetsDirectional.only(
         top: MediaQuery.paddingOf(context).top + Space.sm,
@@ -232,19 +267,19 @@ class _TopBar extends StatelessWidget {
             if (onTorch != null)
               IconButton(
                 onPressed: onTorch,
-                tooltip: spec.torchOn
+                tooltip: torchOn
                     ? StellarLocalizations.of(context).torchOff
                     : StellarLocalizations.of(context).torchOn,
-                isSelected: spec.torchOn,
+                isSelected: torchOn,
                 constraints: BoxConstraints.tight(Size.square(height)),
                 padding: EdgeInsets.zero,
                 style: IconButton.styleFrom(
                   shape: const CircleBorder(),
-                  backgroundColor: spec.torchOn ? c.onCamera : c.cameraGlass,
-                  foregroundColor: spec.torchOn ? c.cameraBackdrop : c.onCamera,
+                  backgroundColor: torchOn ? c.onCamera : c.cameraGlass,
+                  foregroundColor: torchOn ? c.cameraBackdrop : c.onCamera,
                 ),
                 icon: Icon(
-                  materialIcon(spec.torchOn ? SIcons.torch : SIcons.torchOff),
+                  materialIcon(torchOn ? SIcons.torch : SIcons.torchOff),
                   size: SIconSize.md.pixels,
                 ),
               ),

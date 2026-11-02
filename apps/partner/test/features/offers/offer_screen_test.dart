@@ -5,9 +5,9 @@ import 'package:partner/features/offers/domain/offer.dart';
 import 'package:partner/features/offers/presentation/edit_offer_screen.dart';
 import 'package:partner/features/offers/presentation/offer_screen.dart';
 import 'package:partner/features/store/domain/current_store.dart';
-import 'package:stellar/stellar.dart';
 
 import '../../fakes.dart';
+import '../../support/finders.dart';
 import '../../support/pump_app.dart';
 
 void main() {
@@ -113,10 +113,7 @@ void main() {
 
     await tester.tap(find.text('Edit'));
     await tester.pumpAndSettle();
-    await tester.enterText(
-      find.widgetWithText(STextInput, 'Title'),
-      'Two for one',
-    );
+    await tester.enterText(textField('Title'), 'Two for one');
     await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
 

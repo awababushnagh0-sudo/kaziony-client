@@ -9,6 +9,7 @@ import 'package:kernel/testing.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../fakes.dart';
+import '../../support/finders.dart';
 
 void main() {
   late FakeServiceAreaRepository areas;
@@ -57,9 +58,7 @@ void main() {
   }
 
   Finder field(String label) => find.descendant(
-    of: find.byWidgetPredicate(
-      (widget) => widget is STextInput && widget.label == label,
-    ),
+    of: textField(label),
     matching: find.byType(EditableText),
   );
 

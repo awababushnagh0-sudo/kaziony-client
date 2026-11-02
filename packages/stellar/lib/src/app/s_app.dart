@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kernel/kernel.dart' show ThemeChoice, supportedLocales;
 
-import '../foundation/s_kit.dart';
+import '../foundation/s_scope.dart';
 import '../foundation/s_tokens.dart';
 import '../l10n/generated/stellar_localizations.dart';
-import '../material/s_material_kit.dart';
 import '../material/s_material_theme.dart';
 
-/// The root widget of every app: theme, kit, languages (Arabic first,
+/// The root widget of every app: theme, languages (Arabic first,
 /// right to left) and routing. Apps use this instead of MaterialApp.
 class SApp extends StatelessWidget {
   const SApp({
@@ -17,7 +16,6 @@ class SApp extends StatelessWidget {
     required this.onGenerateTitle,
     required this.locale,
     this.localizationsDelegates = const [],
-    this.kit = materialKit,
     this.style = StellarStyle.app,
     this.colors = lightColors,
     this.theme = ThemeChoice.light,
@@ -30,7 +28,6 @@ class SApp extends StatelessWidget {
 
   /// The app's own translations.
   final List<LocalizationsDelegate<Object>> localizationsDelegates;
-  final StellarKit kit;
 
   /// [StellarStyle.dashboard] for the web dashboard.
   final StellarStyle style;
@@ -48,7 +45,6 @@ class SApp extends StatelessWidget {
       // Below MaterialApp, so "follow the device" can see whether the
       // device is dark. Dev and staging builds get the dev menu on top.
       builder: (context, child) => StellarScope(
-        kit: kit,
         style: style,
         colors: Theme.of(context).brightness == Brightness.dark
             ? darkColors

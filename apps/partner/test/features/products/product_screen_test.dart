@@ -6,9 +6,9 @@ import 'package:partner/features/products/domain/product.dart';
 import 'package:partner/features/products/presentation/product_form_screen.dart';
 import 'package:partner/features/products/presentation/product_screen.dart';
 import 'package:partner/features/store/domain/current_store.dart';
-import 'package:stellar/stellar.dart';
 
 import '../../fakes.dart';
+import '../../support/finders.dart';
 import '../../support/pump_app.dart';
 
 void main() {
@@ -59,10 +59,7 @@ void main() {
 
     await tester.tap(find.byTooltip('Edit'));
     await tester.pumpAndSettle();
-    await tester.enterText(
-      find.widgetWithText(STextInput, 'Regular price'),
-      '5',
-    );
+    await tester.enterText(textField('Regular price'), '5');
     await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
 

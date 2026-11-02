@@ -1,81 +1,56 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
-import 's_browse_renderer.dart';
+import '../illustration/s_illustration.dart';
+import 's_browse_material.dart';
+
+/// One kind of store to show offers from, with its picture.
+@immutable
+class CategoryChoice {
+  const CategoryChoice({required this.label, this.illustration, this.imageUrl});
+
+  final String label;
+
+  /// One of the brand's pictures; else [imageUrl]; else a plain mark.
+  final Illustration? illustration;
+  final String? imageUrl;
+}
 
 /// Where offers are shown from, at the top of a home page: a quiet
-/// [caption] over the [place] in bold, with an arrow that says it changes
-/// ([onTap]), and [trailing] at the other end.
-class SPlaceHeader extends StatelessWidget {
-  const SPlaceHeader({
-    required this.caption,
-    required this.place,
-    required this.onTap,
-    this.trailing,
-    super.key,
-  });
-
-  final String caption;
-  final String place;
-  final VoidCallback onTap;
-  final Widget? trailing;
-
-  @override
-  Widget build(BuildContext context) => StellarKit.of(context).browse.place(
-    context,
-    PlaceHeaderSpec(
-      caption: caption,
-      place: place,
-      onTap: onTap,
-      trailing: trailing,
-    ),
-  );
+/// `caption` over the `place` in bold, with an arrow that says it changes
+/// (`onTap`), and `trailing` at the other end.
+abstract interface class SPlaceHeader implements Widget {
+  /// [caption] goes over the place ("Offers near"); [trailing] at the other
+  /// end (the brand's logo).
+  const factory SPlaceHeader({
+    required String caption,
+    required String place,
+    required VoidCallback onTap,
+    Widget? trailing,
+    Key? key,
+  }) = SPlaceHeaderMaterial;
 }
 
 /// The kinds of store, each a picture over its name, in a row that
-/// scrolls sideways; the [selected] one's name in the brand's green and
+/// scrolls sideways; the `selected` one's name in the brand's green and
 /// underlined.
-class SCategoryStrip extends StatelessWidget {
-  const SCategoryStrip({
-    required this.choices,
-    required this.selected,
-    required this.onSelected,
-    super.key,
-  });
-
-  final List<CategoryChoice> choices;
-  final int selected;
-  final ValueChanged<int> onSelected;
-
-  @override
-  Widget build(BuildContext context) =>
-      StellarKit.of(context).browse.categories(
-        context,
-        CategoryStripSpec(
-          choices: choices,
-          selected: selected,
-          onSelected: onSelected,
-        ),
-      );
+abstract interface class SCategoryStrip implements Widget {
+  /// [selected] is the index in [choices] of the one showing.
+  const factory SCategoryStrip({
+    required List<CategoryChoice> choices,
+    required int selected,
+    required ValueChanged<int> onSelected,
+    Key? key,
+  }) = SCategoryStripMaterial;
 }
 
 /// A few words from us between a page's offers, on the brand's green:
-/// the [title] big, a [message] and a [tag] on an orange pill.
-class SPromoBanner extends StatelessWidget {
-  const SPromoBanner({
-    required this.title,
-    required this.message,
-    this.tag,
-    super.key,
-  });
-
-  final String title;
-  final String message;
-  final String? tag;
-
-  @override
-  Widget build(BuildContext context) => StellarKit.of(context).browse.banner(
-    context,
-    PromoBannerSpec(title: title, message: message, tag: tag),
-  );
+/// the `title` big, a `message` and a `tag` on an orange pill.
+abstract interface class SPromoBanner implements Widget {
+  /// [tag] is a short line on an orange pill, under the [message].
+  const factory SPromoBanner({
+    required String title,
+    required String message,
+    String? tag,
+    Key? key,
+  }) = SPromoBannerMaterial;
 }

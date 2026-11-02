@@ -7,6 +7,7 @@ import 'package:kernel/testing.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../fakes.dart';
+import '../../support/finders.dart';
 
 Widget harness(FakeDashboardUserRepository users) => AppScope(
   overrides: [
@@ -33,12 +34,8 @@ void setWindow(WidgetTester tester) {
 }
 
 /// A text field of the add-user dialog, by its label.
-Finder field(String label) => find.descendant(
-  of: find.byWidgetPredicate(
-    (widget) => widget is STextInput && widget.label == label,
-  ),
-  matching: find.byType(EditableText),
-);
+Finder field(String label) =>
+    find.descendant(of: textField(label), matching: find.byType(EditableText));
 
 Future<void> openAddUser(WidgetTester tester) async {
   await tester.tap(find.text('Add user'));
@@ -114,7 +111,7 @@ void main() {
 
     await tester.enterText(field('Name'), 'Omar');
     await tester.enterText(field('Email'), 'omar@offers.ly');
-    await tester.tap(find.byType(SSelectInput<DashboardRole>));
+    await tester.tap(find.bySubtype<SSelectInput<DashboardRole>>());
     await tester.pumpAndSettle();
     await tester.tap(find.text('Admin').last);
     await tester.pumpAndSettle();

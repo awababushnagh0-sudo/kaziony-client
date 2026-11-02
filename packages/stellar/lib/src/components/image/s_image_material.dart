@@ -1,22 +1,26 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
-import 's_image_renderer.dart';
+import 's_image.dart';
 
-class MaterialImageRenderer implements ImageRenderer {
-  const MaterialImageRenderer();
+/// [SImage], loaded and kept with `cached_network_image`.
+class SImageMaterial extends StatelessWidget implements SImage {
+  const SImageMaterial(this.url, {this.size = SImageSize.thumb, super.key});
+
+  final String? url;
+  final SImageSize size;
 
   @override
-  Widget render(BuildContext context, ImageSpec spec) {
-    final side = spec.size.pixels;
-    final url = spec.url;
+  Widget build(BuildContext context) {
+    final side = size.pixels;
+    final url = this.url;
     const placeholder = _Placeholder();
     return ClipRRect(
-      borderRadius: BorderRadius.circular(spec.size.radius),
+      borderRadius: BorderRadius.circular(size.radius),
       child: SizedBox.square(
         dimension: side,
         child: url == null

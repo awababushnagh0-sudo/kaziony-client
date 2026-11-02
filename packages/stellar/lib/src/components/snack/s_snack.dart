@@ -1,16 +1,15 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
-import 's_snack_renderer.dart';
+import 's_snack_material.dart';
 
 /// Short message at the bottom of the screen.
 abstract final class SSnack {
   static void info(BuildContext context, String message) =>
-      StellarKit.of(context).snack.show(context, message, SnackTone.info);
+      SSnackMaterial.info(context, message);
 
   static void success(BuildContext context, String message) =>
-      StellarKit.of(context).snack.show(context, message, SnackTone.success);
+      SSnackMaterial.success(context, message);
 
   static void error(BuildContext context, String message) =>
-      StellarKit.of(context).snack.show(context, message, SnackTone.error);
+      SSnackMaterial.error(context, message);
 }

@@ -6,9 +6,9 @@ import 'package:partner/features/offers/presentation/new_offer_screen.dart';
 import 'package:partner/features/products/domain/product.dart';
 import 'package:partner/features/store/domain/current_store.dart';
 import 'package:partner/features/store/domain/store.dart';
-import 'package:stellar/stellar.dart';
 
 import '../../fakes.dart';
+import '../../support/finders.dart';
 import '../../support/pump_app.dart';
 
 /// A store with two branches, to choose from.
@@ -79,7 +79,7 @@ void main() {
     );
   }
 
-  Finder field(String label) => find.widgetWithText(STextInput, label);
+  Finder field(String label) => textField(label);
 
   testWidgets('posts a limited offer, ending tonight or tomorrow', (
     tester,

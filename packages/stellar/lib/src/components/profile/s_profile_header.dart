@@ -1,51 +1,62 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
-import 's_profile_renderer.dart';
+import '../icon/s_icon.dart';
+import '../illustration/s_illustration.dart';
+import 's_profile_material.dart';
+
+/// Who the person is here, as a small tag beside their name.
+@immutable
+class ProfileRole {
+  const ProfileRole({
+    required this.label,
+    required this.icon,
+    this.lead = false,
+  });
+
+  final String label;
+  final SIcons icon;
+
+  /// The one in charge (a store's owner): the tag is the brand's green,
+  /// with a sparkle; the others' is a quiet gray.
+  final bool lead;
+}
+
+/// One card in [SShortcuts].
+@immutable
+class Shortcut {
+  const Shortcut({
+    required this.illustration,
+    required this.label,
+    required this.onTap,
+    this.hint,
+  });
+
+  final Illustration illustration;
+  final String label;
+
+  /// What's inside, under [label].
+  final String? hint;
+  final VoidCallback onTap;
+}
 
 /// The top of a profile page: a round picture ([imageUrl], a logo; else a
 /// person's outline), and beside it the [title] in big type, the [role]
 /// as a small tag beside the [subtitle] (a name), and a [phone].
-class SProfileHeader extends StatelessWidget {
-  const SProfileHeader({
-    required this.title,
-    this.subtitle,
-    this.role,
-    this.phone,
-    this.imageUrl,
-    super.key,
-  });
-
-  final String title;
-  final String? subtitle;
-  final ProfileRole? role;
-
-  /// Already written for people (`formatLibyanPhone`); read left to right
-  /// in Arabic too.
-  final String? phone;
-  final String? imageUrl;
-
-  @override
-  Widget build(BuildContext context) => StellarKit.of(context).profile.header(
-    context,
-    ProfileHeaderSpec(
-      title: title,
-      subtitle: subtitle,
-      role: role,
-      phone: phone,
-      imageUrl: imageUrl,
-    ),
-  );
+abstract interface class SProfileHeader implements Widget {
+  /// [phone] is already written for people (`formatLibyanPhone`).
+  const factory SProfileHeader({
+    required String title,
+    String? subtitle,
+    ProfileRole? role,
+    String? phone,
+    String? imageUrl,
+    Key? key,
+  }) = SProfileHeaderMaterial;
 }
 
 /// The pages people open most, as rows bigger than settings rows: gray,
 /// each with its picture, its name, a line on what's inside and an arrow.
-class SShortcuts extends StatelessWidget {
-  const SShortcuts(this.shortcuts, {super.key});
-
-  final List<Shortcut> shortcuts;
-
-  @override
-  Widget build(BuildContext context) =>
-      StellarKit.of(context).profile.shortcuts(context, shortcuts);
+abstract interface class SShortcuts implements Widget {
+  const factory SShortcuts(List<Shortcut> shortcuts, {Key? key}) =
+      SShortcutsMaterial;
 }

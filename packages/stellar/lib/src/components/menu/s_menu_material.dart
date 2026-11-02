@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon_material.dart';
-import 's_menu_renderer.dart';
+import 's_menu_button.dart';
 
-/// Menus in the style of ERPNext.
-class MaterialMenuRenderer implements MenuRenderer {
-  const MaterialMenuRenderer();
+/// [SMenuButton] in the style of ERPNext, drawn with Material's
+/// [MenuAnchor].
+class SMenuButtonMaterial extends StatelessWidget implements SMenuButton {
+  const SMenuButtonMaterial({
+    required this.entries,
+    required this.builder,
+    this.alignEnd = true,
+    this.width = 184,
+    super.key,
+  });
+
+  final List<MenuEntry?> entries;
+  final Widget Function(BuildContext context, VoidCallback toggle) builder;
+  final bool alignEnd;
+  final double width;
 
   @override
-  Widget render(
-    BuildContext context, {
-    required List<MenuEntry?> entries,
-    required Widget Function(BuildContext context, VoidCallback toggle) builder,
-    bool alignEnd = true,
-    double width = 184,
-  }) => MenuAnchor(
+  Widget build(BuildContext context) => MenuAnchor(
     // The menu's start corner goes to the button's end corner, then moves
     // back by its own width so the two end edges line up.
     alignmentOffset: Offset(alignEnd ? -width : 0, 4),

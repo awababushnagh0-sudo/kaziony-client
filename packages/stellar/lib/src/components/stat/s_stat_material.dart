@@ -1,22 +1,45 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon_material.dart';
-import '../illustration/s_illustration_material.dart';
-import '../illustration/s_illustration_renderer.dart';
-import 's_stat_renderer.dart';
+import '../illustration/s_illustration.dart';
+import 's_figures.dart';
+import 's_stat_grid.dart';
+import 's_stat_tile.dart';
 
-class MaterialStatRenderer implements StatRenderer {
-  const MaterialStatRenderer();
+/// [SStatTile], drawn with Material.
+class SStatTileMaterial extends StatelessWidget implements SStatTile {
+  const SStatTileMaterial({
+    required this.label,
+    required this.value,
+    required this.illustration,
+    this.hint,
+    this.urgent = false,
+    this.onTap,
+    super.key,
+  });
 
   static const _minHeight = 92.0;
 
+  final String label;
+
+  /// Already written for people (a count).
+  final String value;
+  final Illustration illustration;
+  final String? hint;
+
+  /// Shows [hint] in orange: something to act on soon.
+  final bool urgent;
+
+  /// Opens the list behind the number.
+  final VoidCallback? onTap;
+
   @override
-  Widget tile(BuildContext context, StatTileSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final hint = spec.hint;
+    final hint = this.hint;
     // On the grid's panel, which sets it apart: no shadow or border.
     return Material(
       color: c.surface,
@@ -25,7 +48,7 @@ class MaterialStatRenderer implements StatRenderer {
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: spec.onTap,
+        onTap: onTap,
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: _minHeight),
           child: Padding(
@@ -45,7 +68,7 @@ class MaterialStatRenderer implements StatRenderer {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        spec.label,
+                        label,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -55,7 +78,7 @@ class MaterialStatRenderer implements StatRenderer {
                         ),
                       ),
                       Text(
-                        spec.value,
+                        value,
                         maxLines: 1,
                         style: TextStyle(
                           fontSize: text.display,
@@ -71,19 +94,16 @@ class MaterialStatRenderer implements StatRenderer {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: text.tiny,
-                            fontWeight: spec.urgent
+                            fontWeight: urgent
                                 ? SFontWeight.semibold.value
                                 : null,
-                            color: spec.urgent ? c.accentInk : c.textSubtle,
+                            color: urgent ? c.accentInk : c.textSubtle,
                           ),
                         ),
                     ],
                   ),
                 ),
-                const MaterialIllustrationRenderer().render(
-                  context,
-                  IllustrationSpec(illustration: spec.illustration),
-                ),
+                SIllustration(illustration),
               ],
             ),
           ),
@@ -91,17 +111,37 @@ class MaterialStatRenderer implements StatRenderer {
       ),
     );
   }
+}
+
+/// [SStatGrid], drawn with Material.
+class SStatGridMaterial extends StatelessWidget implements SStatGrid {
+  const SStatGridMaterial({
+    required this.children,
+    this.title,
+    this.note,
+    this.color = SColor.fieldFill,
+    super.key,
+  });
+
+  final String? title;
+
+  /// Under [title], quieter.
+  final String? note;
+  final List<Widget> children;
+
+  /// The panel behind the tiles: a quiet gray unless set.
+  final SColor color;
 
   @override
-  Widget grid(BuildContext context, StatGridSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final title = spec.title;
-    final note = spec.note;
-    final tiles = spec.children;
+    final title = this.title;
+    final note = this.note;
+    final tiles = children;
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: c.resolve(spec.color),
+        color: c.resolve(color),
         borderRadius: BorderRadius.circular(Radii.xxl),
       ),
       child: Padding(
@@ -162,16 +202,32 @@ class MaterialStatRenderer implements StatRenderer {
       ),
     );
   }
+}
+
+/// [SFigures], drawn with Material.
+class SFiguresMaterial extends StatelessWidget implements SFigures {
+  const SFiguresMaterial(
+    this.figures, {
+    this.look = FiguresLook.strip,
+    this.title,
+    super.key,
+  });
+
+  final List<Figure> figures;
+  final FiguresLook look;
+
+  /// Small, above the numbers.
+  final String? title;
 
   @override
-  Widget figures(BuildContext context, FiguresSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
-    final title = spec.title;
-    final strip = spec.look == FiguresLook.strip;
+    final title = this.title;
+    final strip = look == FiguresLook.strip;
     final row = IntrinsicHeight(
       child: Row(
         children: [
-          for (final (index, figure) in spec.figures.indexed) ...[
+          for (final (index, figure) in figures.indexed) ...[
             if (index > 0) VerticalDivider(color: c.border),
             Expanded(child: _Figure(figure, inline: strip)),
           ],

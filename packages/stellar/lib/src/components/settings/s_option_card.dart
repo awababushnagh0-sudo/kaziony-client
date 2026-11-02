@@ -1,49 +1,29 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
-import 's_settings_renderer.dart';
+import 's_settings_material.dart';
 
-/// Choices laid out as [SOptionCard]s, three to a row.
-class SOptionGrid extends StatelessWidget {
-  const SOptionGrid({required this.children, super.key});
+/// What an option card shows above its label: a small picture of the app
+/// window in light or dark colors, or both side by side (follow the
+/// device).
+enum WindowPreview { light, dark, lightAndDark }
 
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) =>
-      StellarKit.of(context).settings.optionGrid(context, children);
+/// Choices laid out as [SOptionCard]s, three to a row (one on narrow
+/// screens), the same width in every group.
+abstract interface class SOptionGrid implements Widget {
+  const factory SOptionGrid({required List<Widget> children, Key? key}) =
+      SOptionGridMaterial;
 }
 
 /// One choice, ERPNext-style: a picture of the app window above, the
 /// [label] and a radio circle below; the chosen card has a dark border.
-class SOptionCard extends StatelessWidget {
-  const SOptionCard({
-    required this.label,
-    required this.preview,
-    required this.selected,
-    required this.onTap,
-    this.direction,
-    super.key,
-  });
-
-  final String label;
-  final WindowPreview preview;
-  final bool selected;
-  final VoidCallback onTap;
-
-  /// Lays the preview out in this direction, not the page's.
-  final TextDirection? direction;
-
-  @override
-  Widget build(BuildContext context) =>
-      StellarKit.of(context).settings.optionCard(
-        context,
-        OptionCardSpec(
-          label: label,
-          preview: preview,
-          selected: selected,
-          onTap: onTap,
-          direction: direction,
-        ),
-      );
+abstract interface class SOptionCard implements Widget {
+  /// [direction] lays the preview out in that direction, not the page's.
+  const factory SOptionCard({
+    required String label,
+    required WindowPreview preview,
+    required bool selected,
+    required VoidCallback onTap,
+    TextDirection? direction,
+    Key? key,
+  }) = SOptionCardMaterial;
 }

@@ -26,12 +26,12 @@ class SignInScreen extends AppView {
       top: [if (!onboarding) const CustomerBackButton()],
       actions: [
         SSignInButton(
-          provider: SignInProvider.apple,
+          brand: SignInBrand.apple,
           // Needs the Apple Developer account first.
           onPressed: () => SSnack.info(context, s.appleSignInSoon),
         ),
         SSignInButton(
-          provider: SignInProvider.google,
+          brand: SignInBrand.google,
           loading: state.signingIn,
           onPressed: () async {
             final signedIn = await ref

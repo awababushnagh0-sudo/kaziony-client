@@ -1,41 +1,29 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
-import '../../l10n/generated/stellar_localizations.dart';
-import 's_dialog_renderer.dart';
+import 's_dialog_material.dart';
 
 /// A dialog with a title bar, a scrolling [body] and a footer with Cancel
 /// and [primaryLabel]. Open it with [SDialog.show].
-class SDialog extends StatelessWidget {
-  const SDialog({
-    required this.title,
-    required this.body,
-    this.primaryLabel,
-    this.onPrimary,
-    this.busy = false,
-    this.showCancel = true,
-    this.width = 520,
-    super.key,
-  });
-
-  final String title;
-  final Widget body;
-  final String? primaryLabel;
-  final VoidCallback? onPrimary;
-
-  /// Disables the buttons and closing while the action runs.
-  final bool busy;
-  final bool showCancel;
-  final double width;
+abstract interface class SDialog implements Widget {
+  /// [primaryLabel] is the main button; no footer without it. [busy]
+  /// disables the buttons and closing while the action runs.
+  const factory SDialog({
+    required String title,
+    required Widget body,
+    String? primaryLabel,
+    VoidCallback? onPrimary,
+    bool busy,
+    bool showCancel,
+    double width,
+    Key? key,
+  }) = SDialogMaterial;
 
   /// Opens a dialog (usually an [SDialog]) and returns what it pops with.
   static Future<T?> show<T>(
     BuildContext context,
     WidgetBuilder builder, {
     bool dismissible = true,
-  }) =>
-      StellarKit.of(context).dialog
-          .show<T>(context, builder, dismissible: dismissible);
+  }) => SDialogMaterial.show<T>(context, builder, dismissible: dismissible);
 
   /// Asks the user to confirm an action. Returns true if they did.
   /// [cancelLabel] names the way back when "Cancel" would read like the
@@ -47,32 +35,12 @@ class SDialog extends StatelessWidget {
     required String confirmLabel,
     String? cancelLabel,
     bool destructive = false,
-  }) => StellarKit.of(context).dialog.confirm(
+  }) => SDialogMaterial.confirm(
     context,
-    ConfirmSpec(
-      title: title,
-      message: message,
-      confirmLabel: confirmLabel,
-      cancelLabel: cancelLabel ?? StellarLocalizations.of(context).cancel,
-      destructive: destructive,
-    ),
+    title: title,
+    message: message,
+    confirmLabel: confirmLabel,
+    cancelLabel: cancelLabel,
+    destructive: destructive,
   );
-
-  @override
-  Widget build(BuildContext context) {
-    final strings = StellarLocalizations.of(context);
-    return StellarKit.of(context).dialog.render(
-      context,
-      DialogSpec(
-        title: title,
-        body: body,
-        closeLabel: strings.close,
-        cancelLabel: showCancel ? strings.cancel : null,
-        primaryLabel: primaryLabel,
-        onPrimary: onPrimary,
-        busy: busy,
-        width: width,
-      ),
-    );
-  }
 }

@@ -1,29 +1,40 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon_material.dart';
-import 's_nav_bar_renderer.dart';
+import 's_nav_bar.dart';
 
 const _barHeight = 64.0;
 
-/// A white bar like the big apps': the open tab's icon and name in the
-/// brand color, the others gray.
-class MaterialNavBarRenderer implements NavBarRenderer {
-  const MaterialNavBarRenderer();
+/// [SNavBar], a white bar like the big apps': the open tab's icon and name
+/// in the brand color, the others gray.
+class SNavBarMaterial extends StatelessWidget implements SNavBar {
+  const SNavBarMaterial({
+    required this.items,
+    required this.selected,
+    required this.onSelect,
+    required this.body,
+    super.key,
+  });
+
+  final List<NavBarItem> items;
+  final int selected;
+  final ValueChanged<int> onSelect;
+  final Widget body;
 
   @override
-  Widget render(BuildContext context, NavBarSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     return Scaffold(
-      body: spec.body,
+      body: body,
       bottomNavigationBar: DecoratedBox(
         decoration: BoxDecoration(
           border: Border(top: BorderSide(color: c.border)),
         ),
         child: NavigationBar(
-          selectedIndex: spec.selected,
-          onDestinationSelected: spec.onSelect,
+          selectedIndex: selected,
+          onDestinationSelected: onSelect,
           height: _barHeight,
           elevation: 0,
           backgroundColor: c.surface,
@@ -41,7 +52,7 @@ class MaterialNavBarRenderer implements NavBarRenderer {
             ),
           ),
           destinations: [
-            for (final item in spec.items)
+            for (final item in items)
               NavigationDestination(
                 label: item.label,
                 icon: Icon(

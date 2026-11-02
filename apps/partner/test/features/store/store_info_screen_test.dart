@@ -8,9 +8,9 @@ import 'package:partner/features/store/domain/current_store.dart';
 import 'package:partner/features/store/domain/store.dart';
 import 'package:partner/features/store/presentation/edit_store_info_screen.dart';
 import 'package:partner/features/store/presentation/store_info_screen.dart';
-import 'package:stellar/stellar.dart';
 
 import '../../fakes.dart';
+import '../../support/finders.dart';
 import '../../support/pump_app.dart';
 
 void main() {
@@ -100,11 +100,8 @@ void main() {
 
     await tester.tap(find.byTooltip('Edit'));
     await tester.pumpAndSettle();
-    await tester.enterText(
-      find.widgetWithText(STextInput, 'Email'),
-      'hello@store.ly',
-    );
-    await tester.enterText(find.widgetWithText(STextInput, 'Phone number'), '');
+    await tester.enterText(textField('Email'), 'hello@store.ly');
+    await tester.enterText(textField('Phone number'), '');
     await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
 
@@ -121,7 +118,7 @@ void main() {
 
     await tester.tap(find.byTooltip('Edit'));
     await tester.pumpAndSettle();
-    await tester.enterText(find.widgetWithText(STextInput, 'Email'), 'nope');
+    await tester.enterText(textField('Email'), 'nope');
     await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
 

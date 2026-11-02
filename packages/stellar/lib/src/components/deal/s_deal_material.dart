@@ -1,35 +1,45 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
+import '../badge/s_badge.dart';
 import '../badge/s_badge_material.dart';
-import '../badge/s_badge_renderer.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import '../image/s_image_material.dart';
-import '../image/s_image_renderer.dart';
-import '../stat/s_stat_renderer.dart';
-import 's_deal_renderer.dart';
+import '../stat/s_figures.dart';
+import 's_deal_tile.dart';
 
-class MaterialDealRenderer implements DealRenderer {
-  const MaterialDealRenderer();
+/// [SDealTile], drawn as an [InkWell] row, in a bordered [Material] when
+/// [bordered].
+class SDealTileMaterial extends StatelessWidget implements SDealTile {
+  const SDealTileMaterial({
+    required this.title,
+    required this.price,
+    this.discountPercent,
+    this.imageUrl,
+    this.stock,
+    this.bordered = false,
+    this.onTap,
+    super.key,
+  });
 
-  static const _barHeight = 10.0;
-  static const _cardBarHeight = 6.0;
-  static const _photoHeight = 220.0;
-  static const _posterWidth = 288.0;
-  static const _posterPhoto = 150.0;
-  static const _posterPhotoWide = 180.0;
-  static const _posterLogo = 40.0;
+  final String title;
+  final String price;
+  final int? discountPercent;
+  final String? imageUrl;
+  final DealTileStock? stock;
+  final bool bordered;
+  final VoidCallback? onTap;
 
   @override
-  Widget tile(BuildContext context, DealTileSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final stock = spec.stock;
+    final stock = this.stock;
     final row = Padding(
-      padding: spec.bordered
+      padding: bordered
           ? const EdgeInsets.all(Space.md)
           : const EdgeInsets.symmetric(
               horizontal: Space.lg,
@@ -43,11 +53,8 @@ class MaterialDealRenderer implements DealRenderer {
             borderRadius: BorderRadius.circular(SImageSize.deal.radius),
             child: Stack(
               children: [
-                const MaterialImageRenderer().render(
-                  context,
-                  ImageSpec(url: spec.imageUrl, size: SImageSize.deal),
-                ),
-                if (spec.discountPercent case final percent?)
+                SImageMaterial(imageUrl, size: SImageSize.deal),
+                if (discountPercent case final percent?)
                   PositionedDirectional(
                     bottom: 0,
                     start: 0,
@@ -62,7 +69,7 @@ class MaterialDealRenderer implements DealRenderer {
               spacing: Space.xs,
               children: [
                 Text(
-                  spec.title,
+                  title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -72,7 +79,7 @@ class MaterialDealRenderer implements DealRenderer {
                   ),
                 ),
                 Text(
-                  spec.price,
+                  price,
                   style: TextStyle(
                     fontSize: text.body,
                     fontWeight: SFontWeight.bold.value,
@@ -86,7 +93,7 @@ class MaterialDealRenderer implements DealRenderer {
         ],
       ),
     );
-    if (!spec.bordered) return InkWell(onTap: spec.onTap, child: row);
+    if (!bordered) return InkWell(onTap: onTap, child: row);
     final shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(Radii.xl),
       side: BorderSide(color: c.border),
@@ -97,20 +104,46 @@ class MaterialDealRenderer implements DealRenderer {
         color: c.surface,
         shape: shape,
         clipBehavior: Clip.antiAlias,
-        child: InkWell(onTap: spec.onTap, child: row),
+        child: InkWell(onTap: onTap, child: row),
       ),
     );
   }
+}
+
+/// [SDealHeader], drawn with Material's [IconButton]s on the photo.
+class SDealHeaderMaterial extends StatelessWidget implements SDealHeader {
+  const SDealHeaderMaterial({
+    required this.title,
+    required this.price,
+    this.originalPrice,
+    this.discountLabel,
+    this.imageUrl,
+    this.status,
+    this.onBack,
+    this.action,
+    super.key,
+  });
+
+  static const _photoHeight = 220.0;
+
+  final String title;
+  final String price;
+  final String? originalPrice;
+  final String? discountLabel;
+  final String? imageUrl;
+  final DealStatus? status;
+  final VoidCallback? onBack;
+  final DealAction? action;
 
   @override
-  Widget header(BuildContext context, DealHeaderSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final url = spec.imageUrl;
-    final status = spec.status;
-    final onBack = spec.onBack;
-    final action = spec.action;
-    final discountLabel = spec.discountLabel;
+    final url = imageUrl;
+    final status = this.status;
+    final onBack = this.onBack;
+    final action = this.action;
+    final discountLabel = this.discountLabel;
     final top = MediaQuery.paddingOf(context).top;
     final placeholder = ColoredBox(
       color: c.fieldFill,
@@ -182,7 +215,7 @@ class MaterialDealRenderer implements DealRenderer {
             spacing: Space.xs,
             children: [
               Text(
-                spec.title,
+                title,
                 style: TextStyle(
                   fontSize: text.display,
                   fontWeight: SFontWeight.bold.value,
@@ -196,8 +229,8 @@ class MaterialDealRenderer implements DealRenderer {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   _Prices(
-                    price: spec.price,
-                    originalPrice: spec.originalPrice,
+                    price: price,
+                    originalPrice: originalPrice,
                     priceSize: text.display,
                   ),
                   if (discountLabel != null)
@@ -229,12 +262,28 @@ class MaterialDealRenderer implements DealRenderer {
       ],
     );
   }
+}
+
+/// [SDealStock], drawn with Material's [LinearProgressIndicator].
+class SDealStockMaterial extends StatelessWidget implements SDealStock {
+  const SDealStockMaterial({
+    required this.label,
+    required this.left,
+    this.note,
+    super.key,
+  });
+
+  static const _barHeight = 10.0;
+
+  final String label;
+  final String? note;
+  final double left;
 
   @override
-  Widget stock(BuildContext context, DealStockSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final note = spec.note;
+    final note = this.note;
     return DecoratedBox(
       decoration: BoxDecoration(
         color: c.accentWash,
@@ -251,7 +300,7 @@ class MaterialDealRenderer implements DealRenderer {
               children: [
                 Expanded(
                   child: Text(
-                    spec.label,
+                    label,
                     style: TextStyle(
                       fontSize: text.body,
                       fontWeight: SFontWeight.bold.value,
@@ -274,7 +323,7 @@ class MaterialDealRenderer implements DealRenderer {
               ],
             ),
             _Bar(
-              left: spec.left,
+              left: left,
               height: _barHeight,
               fill: c.accent,
               track: c.accentSoft,
@@ -284,14 +333,44 @@ class MaterialDealRenderer implements DealRenderer {
       ),
     );
   }
+}
+
+/// [SDealCard], drawn as a bordered [Material] with an [InkWell].
+class SDealCardMaterial extends StatelessWidget implements SDealCard {
+  const SDealCardMaterial({
+    required this.title,
+    required this.price,
+    this.originalPrice,
+    this.discountPercent,
+    this.imageUrl,
+    this.status,
+    this.when,
+    this.stock,
+    this.figures = const [],
+    this.onTap,
+    super.key,
+  });
+
+  static const _barHeight = 6.0;
+
+  final String title;
+  final String price;
+  final String? originalPrice;
+  final int? discountPercent;
+  final String? imageUrl;
+  final DealStatus? status;
+  final String? when;
+  final DealStockSpec? stock;
+  final List<Figure> figures;
+  final VoidCallback? onTap;
 
   @override
-  Widget card(BuildContext context, DealCardSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final status = spec.status;
-    final when = spec.when;
-    final stock = spec.stock;
+    final status = this.status;
+    final when = this.when;
+    final stock = this.stock;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Space.lg),
       child: Material(
@@ -302,7 +381,7 @@ class MaterialDealRenderer implements DealRenderer {
         ),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: spec.onTap,
+          onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.all(Space.md),
             child: Column(
@@ -313,10 +392,7 @@ class MaterialDealRenderer implements DealRenderer {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: Space.md,
                   children: [
-                    _Photo(
-                      url: spec.imageUrl,
-                      discountPercent: spec.discountPercent,
-                    ),
+                    _Photo(url: imageUrl, discountPercent: discountPercent),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -328,7 +404,7 @@ class MaterialDealRenderer implements DealRenderer {
                             children: [
                               Expanded(
                                 child: Text(
-                                  spec.title,
+                                  title,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -339,16 +415,12 @@ class MaterialDealRenderer implements DealRenderer {
                                 ),
                               ),
                               if (status != null)
-                                const MaterialBadgeRenderer().render(
-                                  context,
-                                  status.label,
-                                  status.tone,
-                                ),
+                                SBadgeMaterial(status.label, tone: status.tone),
                             ],
                           ),
                           _Prices(
-                            price: spec.price,
-                            originalPrice: spec.originalPrice,
+                            price: price,
+                            originalPrice: originalPrice,
                             priceSize: text.body,
                           ),
                           if (when != null)
@@ -393,18 +465,18 @@ class MaterialDealRenderer implements DealRenderer {
                       ),
                       _Bar(
                         left: stock.left,
-                        height: _cardBarHeight,
+                        height: _barHeight,
                         fill: c.primary,
                         track: c.primaryTint,
                       ),
                     ],
                   ),
-                if (spec.figures.isNotEmpty)
+                if (figures.isNotEmpty)
                   // Sharing the card's width.
                   Row(
                     spacing: Space.sm,
                     children: [
-                      for (final figure in spec.figures)
+                      for (final figure in figures)
                         Expanded(child: _FigurePill(figure)),
                     ],
                   ),
@@ -415,17 +487,54 @@ class MaterialDealRenderer implements DealRenderer {
       ),
     );
   }
+}
+
+/// [SDealPoster], drawn as a bordered [Material] with an [InkWell].
+class SDealPosterMaterial extends StatelessWidget implements SDealPoster {
+  const SDealPosterMaterial({
+    required this.title,
+    required this.price,
+    required this.storeName,
+    this.originalPrice,
+    this.discountLabel,
+    this.imageUrl,
+    this.storeLogoUrl,
+    this.stockLabel,
+    this.stockHot = false,
+    this.details = const [],
+    this.inRow = false,
+    this.onTap,
+    super.key,
+  });
+
+  static const _width = 288.0;
+  static const _photo = 150.0;
+  static const _photoWide = 180.0;
+  static const _logo = 40.0;
+
+  final String title;
+  final String price;
+  final String? originalPrice;
+  final String storeName;
+  final String? discountLabel;
+  final String? imageUrl;
+  final String? storeLogoUrl;
+  final String? stockLabel;
+  final bool stockHot;
+  final List<String> details;
+  final bool inRow;
+  final VoidCallback? onTap;
 
   @override
-  Widget poster(BuildContext context, DealPosterSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final url = spec.imageUrl;
-    final logo = spec.storeLogoUrl;
-    final discount = spec.discountLabel;
-    final stock = spec.stockLabel;
-    final originalPrice = spec.originalPrice;
-    final photoHeight = spec.inRow ? _posterPhoto : _posterPhotoWide;
+    final url = imageUrl;
+    final logo = storeLogoUrl;
+    final discount = discountLabel;
+    final stock = stockLabel;
+    final originalPrice = this.originalPrice;
+    final photoHeight = inRow ? _photo : _photoWide;
     final placeholder = ColoredBox(
       color: c.cream,
       child: Center(
@@ -444,7 +553,7 @@ class MaterialDealRenderer implements DealRenderer {
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: spec.onTap,
+        onTap: onTap,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -474,7 +583,7 @@ class MaterialDealRenderer implements DealRenderer {
                   PositionedDirectional(
                     bottom: Space.md,
                     start: Space.md,
-                    child: _Logo(url: logo, size: _posterLogo),
+                    child: _Logo(url: logo, size: _logo),
                   ),
                   if (stock != null)
                     PositionedDirectional(
@@ -482,7 +591,7 @@ class MaterialDealRenderer implements DealRenderer {
                       end: Space.md,
                       child: _OnPhotoPill(
                         label: stock,
-                        color: spec.stockHot ? c.accentInk : c.text,
+                        color: stockHot ? c.accentInk : c.text,
                       ),
                     ),
                 ],
@@ -500,7 +609,7 @@ class MaterialDealRenderer implements DealRenderer {
                       spacing: Space.xxs,
                       children: [
                         Text(
-                          spec.title,
+                          title,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -510,7 +619,7 @@ class MaterialDealRenderer implements DealRenderer {
                           ),
                         ),
                         Text(
-                          spec.storeName,
+                          storeName,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -518,7 +627,7 @@ class MaterialDealRenderer implements DealRenderer {
                             color: c.textMuted,
                           ),
                         ),
-                        if (spec.details.isNotEmpty)
+                        if (details.isNotEmpty)
                           Row(
                             spacing: Space.xs,
                             children: [
@@ -529,7 +638,7 @@ class MaterialDealRenderer implements DealRenderer {
                               ),
                               Flexible(
                                 child: Text(
-                                  spec.details.join(' · '),
+                                  details.join(' · '),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -557,7 +666,7 @@ class MaterialDealRenderer implements DealRenderer {
                           ),
                         ),
                       Text(
-                        spec.price,
+                        price,
                         style: TextStyle(
                           fontSize: text.title,
                           fontWeight: SFontWeight.bold.value,
@@ -573,14 +682,28 @@ class MaterialDealRenderer implements DealRenderer {
         ),
       ),
     );
-    return spec.inRow ? SizedBox(width: _posterWidth, child: card) : card;
+    return inRow ? SizedBox(width: _width, child: card) : card;
   }
+}
+
+/// [SDealFooter], drawn as a bordered bar in a [SafeArea].
+class SDealFooterMaterial extends StatelessWidget implements SDealFooter {
+  const SDealFooterMaterial({
+    required this.price,
+    required this.action,
+    this.originalPrice,
+    super.key,
+  });
+
+  final String price;
+  final String? originalPrice;
+  final Widget action;
 
   @override
-  Widget footer(BuildContext context, DealFooterSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final originalPrice = spec.originalPrice;
+    final originalPrice = this.originalPrice;
     return DecoratedBox(
       decoration: BoxDecoration(
         color: c.surface,
@@ -608,7 +731,7 @@ class MaterialDealRenderer implements DealRenderer {
                       ),
                     ),
                   Text(
-                    spec.price,
+                    price,
                     style: TextStyle(
                       fontSize: text.display,
                       fontWeight: SFontWeight.bold.value,
@@ -618,7 +741,7 @@ class MaterialDealRenderer implements DealRenderer {
                   ),
                 ],
               ),
-              Expanded(child: spec.action),
+              Expanded(child: action),
             ],
           ),
         ),
@@ -746,10 +869,7 @@ class _Photo extends StatelessWidget {
     borderRadius: BorderRadius.circular(SImageSize.deal.radius),
     child: Stack(
       children: [
-        const MaterialImageRenderer().render(
-          context,
-          ImageSpec(url: url, size: SImageSize.deal),
-        ),
+        SImageMaterial(url, size: SImageSize.deal),
         if (discountPercent case final percent?)
           PositionedDirectional(
             bottom: 0,

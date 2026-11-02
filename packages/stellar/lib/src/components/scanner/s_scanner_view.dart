@@ -1,58 +1,70 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
-import 's_scanner_renderer.dart';
+import '../icon/s_icon.dart';
+import 's_scanner_material.dart';
 
-/// A camera filling the page, up to the status bar, dimmed around a square
-/// to aim at with [hint] under it. Over its top: the [place] and the
-/// phone's light; under the square: the [actions].
-class SScannerView extends StatelessWidget {
-  const SScannerView({
-    required this.camera,
-    required this.hint,
-    this.starting = false,
-    this.torchOn = false,
-    this.onTorch,
-    this.cover,
-    this.place,
-    this.actions = const [],
-    super.key,
+/// Where the phone scans, shown over the camera's top as a button that
+/// changes it (a store's branch).
+@immutable
+class ScannerPlace {
+  const ScannerPlace({
+    required this.label,
+    required this.semanticLabel,
+    required this.onTap,
   });
 
-  /// The camera's picture (kernel's `QrScanner.view`).
-  final Widget camera;
-  final String hint;
+  final String label;
 
-  /// Shows a spinner in the square while the camera opens.
-  final bool starting;
-  final bool torchOn;
+  /// Read out instead of [label], naming what it is ("Your branch: …").
+  final String semanticLabel;
+  final VoidCallback onTap;
+}
 
-  /// Switches the light; null hides the button (no light on this phone).
-  final VoidCallback? onTorch;
+/// A button under the square, for when the camera can't read the code.
+@immutable
+class ScannerAction {
+  const ScannerAction({
+    required this.label,
+    required this.onPressed,
+    this.icon,
+    this.count,
+  });
 
-  /// Shown on the page's background instead of the camera, e.g. when the
-  /// camera is off. The camera stays underneath, so it opens again by
-  /// itself once allowed. The [place] and [actions] stay.
-  final Widget? cover;
+  final String label;
+  final VoidCallback onPressed;
+  final SIcons? icon;
 
-  /// Where the phone scans; null hides the button (nothing to change).
-  final ScannerPlace? place;
+  /// A number in a badge after the label; none when null or 0.
+  final int? count;
+}
 
-  /// The first is the main one, drawn solid; the rest are quieter.
-  final List<ScannerAction> actions;
-
-  @override
-  Widget build(BuildContext context) => StellarKit.of(context).scanner.view(
-    context,
-    ScannerViewSpec(
-      camera: camera,
-      hint: hint,
-      starting: starting,
-      torchOn: torchOn,
-      onTorch: onTorch,
-      cover: cover,
-      place: place,
-      actions: actions,
-    ),
-  );
+/// A camera filling the page, up to the status bar, dimmed around a square
+/// to aim at with a hint under it. Over its top: the place and the
+/// phone's light; under the square: the actions.
+abstract interface class SScannerView implements Widget {
+  /// [camera] is the camera's picture (kernel's `QrScanner.view`), and
+  /// [hint] is shown under the square. [starting] shows a spinner in the
+  /// square while the camera opens.
+  ///
+  /// [onTorch] switches the light, which is on when [torchOn]; null hides
+  /// the button (no light on this phone).
+  ///
+  /// [cover] is shown on the page's background instead of the camera, e.g.
+  /// when the camera is off. The camera stays underneath, so it opens again
+  /// by itself once allowed. The [place] and [actions] stay.
+  ///
+  /// [place] is where the phone scans; null hides the button (nothing to
+  /// change). Of the [actions], the first is the main one, drawn solid;
+  /// the rest are quieter.
+  const factory SScannerView({
+    required Widget camera,
+    required String hint,
+    bool starting,
+    bool torchOn,
+    VoidCallback? onTorch,
+    Widget? cover,
+    ScannerPlace? place,
+    List<ScannerAction> actions,
+    Key? key,
+  }) = SScannerViewMaterial;
 }

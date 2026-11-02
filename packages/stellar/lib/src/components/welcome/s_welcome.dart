@@ -1,77 +1,48 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
-import 's_welcome_renderer.dart';
+import 's_welcome_material.dart';
 
 /// A page a phone app opens on the first time (welcome, location,
 /// sign-in): the brand's cream with its green and orange shapes, [child]
 /// in the middle, [actions] full width at the bottom and [top] along the
 /// top.
-class SWelcomePage extends StatelessWidget {
-  const SWelcomePage({
-    required Widget this.child,
-    this.actions = const [],
-    this.top = const [],
-    super.key,
-  }) : pages = const [],
-       controller = null,
-       onPageChanged = null;
+abstract interface class SWelcomePage implements Widget {
+  /// [child] is what the page says, centered between the top and
+  /// [actions]. [actions] are the ways on, the main one first; [top] holds
+  /// small buttons (back, language).
+  const factory SWelcomePage({
+    required Widget child,
+    List<Widget> actions,
+    List<Widget> top,
+    Key? key,
+  }) = SWelcomePageMaterial;
 
   /// [pages] to swipe through, edge to edge, so they don't look cut off at
-  /// the sides; show which with [SPageDots] in [actions].
-  const SWelcomePage.swipe({
-    required this.pages,
-    this.controller,
-    this.onPageChanged,
-    this.actions = const [],
-    this.top = const [],
-    super.key,
-  }) : child = null;
-
-  final Widget? child;
-  final List<Widget> pages;
-  final PageController? controller;
-  final ValueChanged<int>? onPageChanged;
-  final List<Widget> actions;
-  final List<Widget> top;
-
-  @override
-  Widget build(BuildContext context) => StellarKit.of(context).welcome.page(
-    context,
-    WelcomePageSpec(
-      child: child,
-      pages: pages,
-      controller: controller,
-      onPageChanged: onPageChanged,
-      actions: actions,
-      top: top,
-    ),
-  );
+  /// the sides, each centered and padded like a [child]; show which with
+  /// [SPageDots] in [actions].
+  const factory SWelcomePage.swipe({
+    required List<Widget> pages,
+    PageController? controller,
+    ValueChanged<int>? onPageChanged,
+    List<Widget> actions,
+    List<Widget> top,
+    Key? key,
+  }) = SWelcomePageMaterial.swipe;
 }
 
 /// Dots under pages that swipe: which of [count] is showing.
-class SPageDots extends StatelessWidget {
-  const SPageDots({required this.count, required this.index, super.key});
-
-  final int count;
-  final int index;
-
-  @override
-  Widget build(BuildContext context) =>
-      StellarKit.of(context).welcome
-          .dots(context, PageDotsSpec(count: count, index: index));
+abstract interface class SPageDots implements Widget {
+  /// [index] is the page showing, from 0.
+  const factory SPageDots({required int count, required int index, Key? key}) =
+      SPageDotsMaterial;
 }
 
 /// The app's [name], big in the brand's green, over its [tagline] on an
 /// orange pill.
-class SBrandTitle extends StatelessWidget {
-  const SBrandTitle({required this.name, required this.tagline, super.key});
-
-  final String name;
-  final String tagline;
-
-  @override
-  Widget build(BuildContext context) =>
-      StellarKit.of(context).welcome
-          .brand(context, BrandSpec(name: name, tagline: tagline));
+abstract interface class SBrandTitle implements Widget {
+  const factory SBrandTitle({
+    required String name,
+    required String tagline,
+    Key? key,
+  }) = SBrandTitleMaterial;
 }

@@ -1,45 +1,51 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
-import '../pill/s_pill_renderer.dart';
-import 's_list_page_renderer.dart';
+import '../pill/s_pill.dart';
+import 's_list_page.dart';
+import 's_pager.dart';
 
-class MaterialListPageRenderer implements ListPageRenderer {
-  const MaterialListPageRenderer();
+/// [SListPage] as one scroll view: the table's slivers, or an empty or
+/// error view filling the rest.
+class SListPageMaterial extends StatelessWidget implements SListPage {
+  const SListPageMaterial({
+    required this.table,
+    required this.placeholder,
+    this.filters,
+    this.pager,
+    this.loading = false,
+    super.key,
+  }) : assert(table != null || placeholder != null);
 
-  @override
-  Widget render(BuildContext context, ListPageSpec spec) =>
-      _ListPage(spec: spec);
+  final Widget? table;
+  final Widget? placeholder;
+  final Widget? filters;
+  final Widget? pager;
 
-  @override
-  Widget pager(BuildContext context, PagerSpec spec) => _Pager(spec: spec);
-}
-
-class _ListPage extends StatelessWidget {
-  const _ListPage({required this.spec});
-
-  final ListPageSpec spec;
+  /// Shows a thin bar at the top while a new page loads.
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
     Widget fill(Widget child) =>
         SliverFillRemaining(hasScrollBody: false, child: child);
+    final table = this.table;
     return CustomScrollView(
       slivers: [
-        if (spec.filters case final filters?)
-          SliverToBoxAdapter(child: filters),
+        if (filters case final filters?) SliverToBoxAdapter(child: filters),
         SliverToBoxAdapter(
           child: SizedBox(
             height: 2,
-            child: spec.loading ? const LinearProgressIndicator() : null,
+            child: loading ? const LinearProgressIndicator() : null,
           ),
         ),
-        if (spec.contentIsSliver) spec.content else fill(spec.content),
+        // The table is made of slivers; empty and error views are boxes.
+        if (table != null) table else fill(placeholder!),
         // At the bottom of the window when the rows don't fill it.
-        if (spec.pager case final pager?)
+        if (table != null && pager != null)
           fill(
             Align(alignment: AlignmentDirectional.bottomCenter, child: pager),
           ),
@@ -48,15 +54,36 @@ class _ListPage extends StatelessWidget {
   }
 }
 
-class _Pager extends StatelessWidget {
-  const _Pager({required this.spec});
+/// [SPager] on a bar with a line above it, Material's [IconButton]s for
+/// previous and next.
+class SPagerMaterial extends StatelessWidget implements SPager {
+  const SPagerMaterial({
+    required this.pageLabel,
+    required this.pageSize,
+    required this.pageSizes,
+    required this.onPageSize,
+    required this.onPrevious,
+    required this.onNext,
+    required this.previousLabel,
+    required this.nextLabel,
+    super.key,
+  });
 
-  final PagerSpec spec;
+  /// "Page 1 of 3".
+  final String pageLabel;
+  final int pageSize;
+  final List<int> pageSizes;
+  final ValueChanged<int> onPageSize;
+
+  /// Null on the first (or last) page.
+  final VoidCallback? onPrevious;
+  final VoidCallback? onNext;
+  final String previousLabel;
+  final String nextLabel;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final kit = StellarKit.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: Space.xl, vertical: 10),
       decoration: BoxDecoration(
@@ -64,21 +91,18 @@ class _Pager extends StatelessWidget {
       ),
       child: Row(
         children: [
-          for (final size in spec.pageSizes)
+          for (final size in pageSizes)
             Padding(
               padding: const EdgeInsetsDirectional.only(end: Space.xs),
-              child: kit.pill.render(
-                context,
-                PillSpec(
-                  label: '$size',
-                  selected: size == spec.pageSize,
-                  onTap: () => spec.onPageSize(size),
-                ),
+              child: SPill(
+                label: '$size',
+                selected: size == pageSize,
+                onTap: () => onPageSize(size),
               ),
             ),
           const Spacer(),
           Text(
-            spec.pageLabel,
+            pageLabel,
             style: TextStyle(
               color: c.textMuted,
               fontSize: context.style.text.small,
@@ -86,17 +110,17 @@ class _Pager extends StatelessWidget {
           ),
           const Gap(Space.sm),
           IconButton(
-            tooltip: spec.previousLabel,
+            tooltip: previousLabel,
             icon: Icon(
               materialIcon(SIcons.chevronBack),
               size: SIconSize.sm.pixels,
             ),
-            onPressed: spec.onPrevious,
+            onPressed: onPrevious,
           ),
           IconButton(
-            tooltip: spec.nextLabel,
+            tooltip: nextLabel,
             icon: Icon(materialIcon(SIcons.chevron), size: SIconSize.sm.pixels),
-            onPressed: spec.onNext,
+            onPressed: onNext,
           ),
         ],
       ),

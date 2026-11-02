@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
-import 's_alert_renderer.dart';
+import 's_alert.dart';
 
-class MaterialAlertRenderer implements AlertRenderer {
-  const MaterialAlertRenderer();
+/// [SAlert], drawn as a tinted box with Material's [Icon].
+class SAlertMaterial extends StatelessWidget implements SAlert {
+  const SAlertMaterial({required this.title, this.message, super.key});
+
+  final String title;
+  final String? message;
 
   @override
-  Widget render(BuildContext context, AlertSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final message = spec.message;
+    final message = this.message;
     return Semantics(
       liveRegion: true,
       child: DecoratedBox(
@@ -38,7 +42,7 @@ class MaterialAlertRenderer implements AlertRenderer {
                   spacing: Space.xs,
                   children: [
                     Text(
-                      spec.title,
+                      title,
                       style: TextStyle(
                         fontSize: text.body,
                         fontWeight: SFontWeight.bold.value,

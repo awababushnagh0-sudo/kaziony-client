@@ -1,16 +1,21 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
-import 's_badge_renderer.dart';
+import 's_badge_material.dart';
+
+/// What a badge says at a glance, by its colors.
+enum BadgeTone {
+  success,
+  warning,
+  danger,
+  neutral,
+
+  /// The brand's orange, solid: discounts.
+  accent,
+}
 
 /// A small rounded status label, like ERPNext's indicator pills.
-class SBadge extends StatelessWidget {
-  const SBadge(this.label, {this.tone = BadgeTone.neutral, super.key});
-
-  final String label;
-  final BadgeTone tone;
-
-  @override
-  Widget build(BuildContext context) =>
-      StellarKit.of(context).badge.render(context, label, tone);
+abstract interface class SBadge implements Widget {
+  /// [label] in the colors of its [tone] (neutral by default).
+  const factory SBadge(String label, {BadgeTone tone, Key? key}) =
+      SBadgeMaterial;
 }

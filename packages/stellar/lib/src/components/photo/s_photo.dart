@@ -4,7 +4,7 @@ import 'package:kernel/kernel.dart' show PhotoSource;
 import '../../l10n/generated/stellar_localizations.dart';
 import '../dialog/s_dialog.dart';
 import '../icon/s_icon.dart';
-import '../list_tile/s_list_tile_renderer.dart';
+import '../list_tile/s_radio_group.dart';
 import '../sheet/s_sheet.dart';
 
 /// The questions around taking a photo, in every app's words.

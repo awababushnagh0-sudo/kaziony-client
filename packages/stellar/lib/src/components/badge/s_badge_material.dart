@@ -1,14 +1,18 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
-import 's_badge_renderer.dart';
+import 's_badge.dart';
 
-class MaterialBadgeRenderer implements BadgeRenderer {
-  const MaterialBadgeRenderer();
+/// [SBadge], drawn as a tinted pill.
+class SBadgeMaterial extends StatelessWidget implements SBadge {
+  const SBadgeMaterial(this.label, {this.tone = BadgeTone.neutral, super.key});
+
+  final String label;
+  final BadgeTone tone;
 
   @override
-  Widget render(BuildContext context, String label, BadgeTone tone) {
+  Widget build(BuildContext context) {
     final (fg, bg) = badgeColors(context.colors, tone);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),

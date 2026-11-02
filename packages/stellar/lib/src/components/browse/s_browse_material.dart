@@ -1,33 +1,39 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import '../illustration/s_illustration_material.dart';
-import '../illustration/s_illustration_renderer.dart';
-import 's_browse_renderer.dart';
+import 's_browse.dart';
 
-class MaterialBrowseRenderer implements BrowseRenderer {
-  const MaterialBrowseRenderer();
+/// [SPlaceHeader], drawn as an [InkWell] row.
+class SPlaceHeaderMaterial extends StatelessWidget implements SPlaceHeader {
+  const SPlaceHeaderMaterial({
+    required this.caption,
+    required this.place,
+    required this.onTap,
+    this.trailing,
+    super.key,
+  });
 
-  static const _pictureSize = 64.0;
-  static const _choiceWidth = 84.0;
-  static const _underlineWidth = 24.0;
-  static const _underlineHeight = 3.0;
+  final String caption;
+  final String place;
+  final VoidCallback onTap;
+  final Widget? trailing;
 
   @override
-  Widget place(BuildContext context, PlaceHeaderSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final trailing = spec.trailing;
+    final trailing = this.trailing;
     return Row(
       spacing: Space.md,
       children: [
         Flexible(
           child: InkWell(
-            onTap: spec.onTap,
+            onTap: onTap,
             borderRadius: BorderRadius.circular(Radii.md),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: Space.xs),
@@ -45,7 +51,7 @@ class MaterialBrowseRenderer implements BrowseRenderer {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          spec.caption,
+                          caption,
                           style: TextStyle(
                             fontSize: text.small,
                             color: c.textMuted,
@@ -57,7 +63,7 @@ class MaterialBrowseRenderer implements BrowseRenderer {
                           children: [
                             Flexible(
                               child: Text(
-                                spec.place,
+                                place,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -86,9 +92,28 @@ class MaterialBrowseRenderer implements BrowseRenderer {
       ],
     );
   }
+}
+
+/// [SCategoryStrip], drawn as a sideways [SingleChildScrollView].
+class SCategoryStripMaterial extends StatelessWidget implements SCategoryStrip {
+  const SCategoryStripMaterial({
+    required this.choices,
+    required this.selected,
+    required this.onSelected,
+    super.key,
+  });
+
+  static const _pictureSize = 64.0;
+  static const _choiceWidth = 84.0;
+  static const _underlineWidth = 24.0;
+  static const _underlineHeight = 3.0;
+
+  final List<CategoryChoice> choices;
+  final int selected;
+  final ValueChanged<int> onSelected;
 
   @override
-  Widget categories(BuildContext context, CategoryStripSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
     return SingleChildScrollView(
@@ -97,12 +122,12 @@ class MaterialBrowseRenderer implements BrowseRenderer {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          for (final (i, choice) in spec.choices.indexed)
+          for (final (i, choice) in choices.indexed)
             Semantics(
-              selected: i == spec.selected,
+              selected: i == selected,
               button: true,
               child: InkWell(
-                onTap: () => spec.onSelected(i),
+                onTap: () => onSelected(i),
                 borderRadius: BorderRadius.circular(Radii.lg),
                 child: SizedBox(
                   width: _choiceWidth,
@@ -121,14 +146,14 @@ class MaterialBrowseRenderer implements BrowseRenderer {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: text.small,
-                            fontWeight: i == spec.selected
+                            fontWeight: i == selected
                                 ? SFontWeight.bold.value
                                 : SFontWeight.medium.value,
-                            color: i == spec.selected ? c.primary : c.text,
+                            color: i == selected ? c.primary : c.text,
                           ),
                         ),
                         AnimatedOpacity(
-                          opacity: i == spec.selected ? 1 : 0,
+                          opacity: i == selected ? 1 : 0,
                           duration: const Duration(milliseconds: 150),
                           child: DecoratedBox(
                             decoration: BoxDecoration(
@@ -151,12 +176,26 @@ class MaterialBrowseRenderer implements BrowseRenderer {
       ),
     );
   }
+}
+
+/// [SPromoBanner], drawn on the brand's gradient.
+class SPromoBannerMaterial extends StatelessWidget implements SPromoBanner {
+  const SPromoBannerMaterial({
+    required this.title,
+    required this.message,
+    this.tag,
+    super.key,
+  });
+
+  final String title;
+  final String message;
+  final String? tag;
 
   @override
-  Widget banner(BuildContext context, PromoBannerSpec spec) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final tag = spec.tag;
+    final tag = this.tag;
     return DecoratedBox(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -173,7 +212,7 @@ class MaterialBrowseRenderer implements BrowseRenderer {
           spacing: Space.xs,
           children: [
             Text(
-              spec.title,
+              title,
               style: TextStyle(
                 fontSize: text.title,
                 fontWeight: SFontWeight.bold.value,
@@ -181,7 +220,7 @@ class MaterialBrowseRenderer implements BrowseRenderer {
               ),
             ),
             Text(
-              spec.message,
+              message,
               style: TextStyle(
                 fontSize: text.small,
                 height: 1.6,
@@ -234,10 +273,7 @@ class _Picture extends StatelessWidget {
       color: c.primary,
     );
     if (choice.illustration case final picture?) {
-      return const MaterialIllustrationRenderer().render(
-        context,
-        IllustrationSpec(illustration: picture),
-      );
+      return SIllustrationMaterial(picture);
     }
     if (choice.imageUrl case final url?) {
       return CachedNetworkImage(

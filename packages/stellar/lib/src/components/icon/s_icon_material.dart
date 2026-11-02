@@ -1,20 +1,24 @@
 import 'package:flutter/widgets.dart';
 
-import '../../foundation/s_kit.dart';
+import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import 's_icon.dart';
-import 's_icon_renderer.dart';
 
-class MaterialIconRenderer implements IconRenderer {
-  const MaterialIconRenderer();
+/// [SIcon], drawn as an [Icon] from the Lucide font below.
+class SIconMaterial extends StatelessWidget implements SIcon {
+  const SIconMaterial(
+    this.icon, {
+    this.size = SIconSize.md,
+    this.color = SColor.text,
+    super.key,
+  });
+
+  final SIcons icon;
+  final SIconSize size;
+  final SColor color;
 
   @override
-  Widget render(
-    BuildContext context,
-    SIcons icon,
-    SIconSize size,
-    SColor color,
-  ) => Icon(
+  Widget build(BuildContext context) => Icon(
     materialIcon(icon),
     size: size.pixels,
     color: context.colors.resolve(color),

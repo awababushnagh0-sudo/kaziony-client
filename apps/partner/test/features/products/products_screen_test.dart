@@ -51,7 +51,7 @@ void main() {
   testWidgets('searches after a pause in typing', (tester) async {
     await open(tester);
 
-    await tester.enterText(find.byType(SSearchField), ' 2 ');
+    await tester.enterText(find.bySubtype<SSearchField>(), ' 2 ');
     await tester.pump(const Duration(milliseconds: 400));
     await tester.pumpAndSettle();
 
@@ -92,13 +92,13 @@ void main() {
     await open(tester, [for (var i = 0; i < 30; i++) product('$i')]);
     expect(products.listCalls.map((call) => call.page), [1]);
 
-    await tester.drag(find.byType(SPagedList), const Offset(0, -3000));
+    await tester.drag(find.bySubtype<SPagedList>(), const Offset(0, -3000));
     await tester.pumpAndSettle();
 
     expect(products.listCalls.map((call) => call.page), [1, 2]);
     await tester.dragUntilVisible(
       find.text('Product 29'),
-      find.byType(SPagedList),
+      find.bySubtype<SPagedList>(),
       const Offset(0, -500),
     );
     expect(find.text('Product 29'), findsOneWidget);
