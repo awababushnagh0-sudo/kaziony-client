@@ -217,6 +217,9 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get sectionBiggestDiscount => 'Biggest discounts';
 
   @override
+  String get sectionAllOffers => 'All offers';
+
+  @override
   String get seeAll => 'See all';
 
   @override

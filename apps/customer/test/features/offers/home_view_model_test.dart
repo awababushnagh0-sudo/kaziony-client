@@ -37,6 +37,7 @@ void main() {
       OfferSort.nearest,
       OfferSort.endingSoon,
       OfferSort.biggestDiscount,
+      OfferSort.newest,
     ]);
     expect(offers.queries.every((q) => q.around == souqAlJuma), isTrue);
   });
@@ -48,7 +49,7 @@ void main() {
     container.read(homeCategoryProvider.notifier).select(bakery.id);
     await container.read(homeFeedProvider.future);
 
-    expect(offers.queries, hasLength(3));
+    expect(offers.queries, hasLength(4));
     expect(offers.queries.every((q) => q.categoryId == bakery.id), isTrue);
   });
 

@@ -39,7 +39,9 @@ class OffersList extends AppView {
           divided: false,
           itemCount: page.items.length,
           itemBuilder: (context, index) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+            // With no box around them, the offers need more room apart
+            // than the list's own gap.
+            padding: const EdgeInsets.fromLTRB(Space.lg, 0, Space.lg, Space.md),
             child: OfferPoster(page.items[index]),
           ),
           onRefresh: () async {

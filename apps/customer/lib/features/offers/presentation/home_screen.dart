@@ -12,7 +12,8 @@ import 'offer_texts.dart';
 import 'widgets/offer_poster.dart';
 
 /// The Home tab: where offers are shown from, search, the kinds of store,
-/// then rows of offers around (nearest, ending soon, biggest discount).
+/// then rows of offers around (nearest, ending soon, biggest discount),
+/// then the newest, down the page.
 class HomeScreen extends AppView {
   const HomeScreen({super.key});
 
@@ -96,6 +97,12 @@ class HomeScreen extends AppView {
                         categoryId: categoryId,
                         offers: feed.biggestDiscount,
                       ),
+                      _Row(
+                        sort: OfferSort.newest,
+                        categoryId: categoryId,
+                        offers: feed.newest,
+                        down: true,
+                      ),
                     ],
                   ),
           ),
@@ -145,18 +152,20 @@ class _Categories extends AppView {
   }
 }
 
-/// One sort of the offers, in a row that scrolls sideways, with the way to
-/// all of them.
+/// One sort of the offers, in a row that scrolls sideways (or [down] the
+/// page, full width), with the way to all of them.
 class _Row extends StatelessWidget {
   const _Row({
     required this.sort,
     required this.categoryId,
     required this.offers,
+    this.down = false,
   });
 
   final OfferSort sort;
   final String? categoryId;
   final List<Offer> offers;
+  final bool down;
 
   @override
   Widget build(BuildContext context) {
@@ -176,17 +185,27 @@ class _Row extends StatelessWidget {
             ),
           ),
         ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: Space.lg),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: Space.md,
-            children: [
-              for (final offer in offers) OfferPoster(offer, inRow: true),
-            ],
+        if (down)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: Space.xl,
+              children: [for (final offer in offers) OfferPoster(offer)],
+            ),
+          )
+        else
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: Space.md,
+              children: [
+                for (final offer in offers) OfferPoster(offer, inRow: true),
+              ],
+            ),
           ),
-        ),
       ],
     );
   }

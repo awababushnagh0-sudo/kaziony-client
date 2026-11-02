@@ -36,6 +36,12 @@ void main() {
     ],
   );
 
+  /// The page, which scrolls down (the rows scroll sideways).
+  final page = find.byWidgetPredicate(
+    (widget) =>
+        widget is Scrollable && widget.axisDirection == AxisDirection.down,
+  );
+
   testWidgets('shows the rows of offers and opens one', (tester) async {
     await open(tester);
 
@@ -43,8 +49,14 @@ void main() {
     expect(find.text('Bakeries'), findsOneWidget);
     expect(find.text('Kunafa box'), findsWidgets);
 
-    await tester.ensureVisible(find.text('Kunafa box').first);
-    await tester.tap(find.text('Kunafa box').first);
+    final card = find
+        .ancestor(
+          of: find.text('Kunafa box'),
+          matching: find.bySubtype<SDealPoster>(),
+        )
+        .first;
+    await tester.ensureVisible(card);
+    await tester.tap(card);
     await tester.pumpAndSettle();
     expect(find.text('offer page'), findsOneWidget);
   });
@@ -59,11 +71,28 @@ void main() {
     expect(find.text('offers sort=endingSoon'), findsOneWidget);
   });
 
+  testWidgets('ends with the newest offers, and "See all" of them', (
+    tester,
+  ) async {
+    await open(tester);
+
+    await tester.scrollUntilVisible(
+      find.text('All offers').hitTestable(),
+      200,
+      scrollable: page,
+    );
+    await tester.tap(find.text('See all').hitTestable().last);
+    await tester.pumpAndSettle();
+
+    expect(find.text('offers sort=newest'), findsOneWidget);
+  });
+
   testWidgets('says when there are no offers around', (tester) async {
     offers.offers = [];
     await open(tester);
 
     expect(find.text('No offers near you right now'), findsOneWidget);
     expect(find.text('Near you'), findsNothing);
+    expect(find.text('All offers'), findsNothing);
   });
 }

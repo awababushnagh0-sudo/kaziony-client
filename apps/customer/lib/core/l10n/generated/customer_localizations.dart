@@ -485,6 +485,12 @@ abstract class CustomerLocalizations {
   /// **'Biggest discounts'**
   String get sectionBiggestDiscount;
 
+  /// No description provided for @sectionAllOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'All offers'**
+  String get sectionAllOffers;
+
   /// No description provided for @seeAll.
   ///
   /// In en, this message translates to:

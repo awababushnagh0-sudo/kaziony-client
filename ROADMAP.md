@@ -257,7 +257,8 @@ The screen staff use all day, so it must be fast and work on a weak connection.
 - [ ] Before release: an Android OAuth client for the release key and for Play's
       app-signing key (their SHA-1s), and the Google consent screen published
 - [x] Home: where offers are shown from, search, categories with the app's pictures, a
-      banner, then rows (ending soon, near you, biggest discount) with "See all"
+      banner, then rows (ending soon, near you, biggest discount) with "See all", then
+      "All offers" (the newest five, down the page) with "See all"
 - [x] Browse: offers around the saved place (the backend caps the radius), categories,
       search, sort on the Search tab; a home row's "See all" is just its offers in a list
       under the row's name (both share one list)

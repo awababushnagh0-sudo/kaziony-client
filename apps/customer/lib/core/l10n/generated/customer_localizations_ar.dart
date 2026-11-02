@@ -213,6 +213,9 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get sectionBiggestDiscount => 'أكبر خصم';
 
   @override
+  String get sectionAllOffers => 'كل العروض';
+
+  @override
   String get seeAll => 'عرض الكل';
 
   @override
