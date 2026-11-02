@@ -1,6 +1,5 @@
 import 'package:kernel/kernel.dart';
 
-import '../../../core/list/paged_list_view_model.dart';
 import '../../store/domain/current_store.dart';
 import '../domain/offer.dart';
 

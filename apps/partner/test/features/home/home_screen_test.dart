@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kernel/kernel.dart';
-import 'package:partner/core/providers/clock.dart';
 import 'package:partner/core/routes/routes.dart';
 import 'package:partner/features/counter/domain/claim.dart';
 import 'package:partner/features/home/domain/store_stats.dart';

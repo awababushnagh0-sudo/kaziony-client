@@ -29,7 +29,7 @@ class ReservationRow extends StatelessWidget {
     return SListTile(
       title: claim.customerName ?? s.someCustomer,
       subtitle: s.until(formatTime(claim.expiresAt, languageCode: language)),
-      code: showCode ? ClaimCode.grouped(claim.code) : null,
+      code: showCode ? formatPickupCode(claim.code) : null,
       trailing: STag(
         timeLeftLabel(s, claim.expiresAt.difference(now)),
         hot: claim.isDueSoonAt(now),

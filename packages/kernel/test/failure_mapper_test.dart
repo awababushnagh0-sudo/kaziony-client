@@ -113,6 +113,11 @@ void main() {
         'Sold out',
       ),
     );
+    expect((failure as ConflictFailure).code, isNull);
+    final soldOut = failureFromError(
+      response(409, backendError(409, 'SoldOut', 'Sold out')),
+    );
+    expect((soldOut as ConflictFailure).code, 'SoldOut');
   });
 
   test('maps other statuses', () {

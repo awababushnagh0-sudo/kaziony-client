@@ -159,6 +159,20 @@ class SessionController extends Notifier<SessionState> {
   /// Dev menu: the current access token (to show when it expires).
   String? get debugAccessToken => _tokens.current?.accessToken;
 
+  /// Dev menu: signs in as a test customer without Google, on a server
+  /// that allows it (`DEV_AUTH_ENABLED`; it answers 404 elsewhere).
+  Future<Result<SessionUser>> debugSignInAsCustomer(String name) async {
+    final publicApi = ref.read(publicApiProvider);
+    final auth = publicApi.client(api.AuthClient.new);
+    final result = await publicApi.guard(
+      () => auth.devCustomer(body: api.DevCustomerLoginDto(name: name)),
+    );
+    return switch (result) {
+      Ok(:final value) => _start(value),
+      Err(:final failure) => Err(failure),
+    };
+  }
+
   /// Dev menu: replaces the access token with an invalid one, so the next
   /// request gets a 401 and exercises the refresh flow.
   Future<void> debugExpireAccessToken() async {

@@ -2,7 +2,6 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
-import '../../../core/providers/clock.dart';
 import '../../../core/widgets/reservation_row.dart';
 import '../../store/domain/current_store.dart';
 import '../domain/claim.dart';
@@ -150,7 +149,7 @@ class _Details extends AppView {
       children: [
         if (problem != null)
           SAlert(title: problem, message: claimProblemHint(context, claim)),
-        SCodeCard(label: s.codeLabel, code: ClaimCode.grouped(claim.code)),
+        SCodeCard(label: s.codeLabel, code: formatPickupCode(claim.code)),
         // Only what's to be paid now: a used code shows no total, so no
         // money is taken twice.
         if (problem == null)

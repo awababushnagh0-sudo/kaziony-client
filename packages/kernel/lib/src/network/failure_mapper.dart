@@ -69,7 +69,7 @@ AppFailure _fromResponse(Response<dynamic> response) {
       serverMessage: message,
     ),
     404 => NotFoundFailure(message),
-    409 => ConflictFailure(message),
+    409 => ConflictFailure(message, code == 'Conflict' ? null : code),
     429 => const RateLimitedFailure(),
     >= 500 => ServerFailure(status),
     _ => UnknownFailure('HTTP $status: ${message ?? body}'),

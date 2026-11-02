@@ -2,7 +2,6 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
-import '../../../core/providers/clock.dart';
 import '../../../core/routes/routes.dart';
 import '../../../core/widgets/offer_tile.dart';
 import '../../../core/widgets/partner_illustrations.dart';

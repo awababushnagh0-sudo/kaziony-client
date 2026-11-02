@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kernel/kernel.dart';
-import 'package:partner/core/list/paged_list_view_model.dart';
 
 /// Rows "0" to "[total] - 1", served a page at a time.
 class _Numbers extends PagedListViewModel<String, String> {

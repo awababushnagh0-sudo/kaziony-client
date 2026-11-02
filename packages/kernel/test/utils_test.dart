@@ -126,4 +126,9 @@ void main() {
     expect(discountPercent(original: '3.000', offer: '2.000'), 33);
     expect(discountPercent(original: '9.000', offer: '1.000'), 89);
   });
+
+  test('groups a pickup code in fours', () {
+    expect(formatPickupCode('R3TW8KQN'), 'R3TW 8KQN');
+    expect(formatPickupCode('ABC'), 'ABC');
+  });
 }

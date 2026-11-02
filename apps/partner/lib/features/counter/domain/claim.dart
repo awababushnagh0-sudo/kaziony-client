@@ -31,11 +31,6 @@ abstract final class ClaimCode {
     final code = raw.toUpperCase().replaceAll(RegExp(r'[\s-]'), '');
     return _valid.hasMatch(code) ? code : null;
   }
-
-  /// [code] in two groups of four ("R3TW 8KQN"), as people read it out.
-  static String grouped(String code) => code.length == length
-      ? '${code.substring(0, length ~/ 2)} ${code.substring(length ~/ 2)}'
-      : code;
 }
 
 /// The offer a claim is for, as the counter needs it.

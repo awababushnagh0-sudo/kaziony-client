@@ -1,4 +1,7 @@
-import 'package:kernel/kernel.dart';
+import '../result/failure.dart';
+import '../result/result.dart';
+import '../state/state.dart';
+import 'page_result.dart';
 
 /// The rows a phone list has loaded so far.
 class PagedItems<T> {

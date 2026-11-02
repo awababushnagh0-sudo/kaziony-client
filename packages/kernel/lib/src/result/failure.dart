@@ -59,9 +59,12 @@ final class NotFoundFailure extends AppFailure {
 }
 
 /// The action conflicts with the current state (already redeemed, sold
-/// out, duplicate phone, ...). The server message explains which.
+/// out, duplicate phone, ...). The server message explains which; [code]
+/// is the backend's `error` field when it names the case (`SoldOut`).
 final class ConflictFailure extends AppFailure {
-  const ConflictFailure([super.serverMessage]);
+  const ConflictFailure([super.serverMessage, this.code]);
+
+  final String? code;
 }
 
 /// Too many attempts; try again in a minute.
