@@ -8,7 +8,7 @@ packages/
   kernel/       foundation: state (Riverpod wrapper), API + token refresh, session,
                 storage, Result/AppFailure, config, locale, version check, dev log, utils
   dev_menu/     developer menu for dev/staging builds (request log, logs, server switch)
-  stellar/      design system: component contracts, Material kit, tokens, forms, l10n
+  stellar/      design system: widget interfaces, Material drawing, tokens, forms, l10n
   offers_api/   client generated from the backend (entry points per app)
 apps/
   partner/      partner app for stores (Android + iOS); config/ holds dev/staging/prod settings

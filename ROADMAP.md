@@ -10,7 +10,7 @@ kaziony-client/
   packages/
     kernel/        foundation: state (Riverpod wrapper), networking, auth session,
                    secure storage, Result/Failure, config, locale, shared utils
-    stellar/       design system: component contracts + Material kit, theme tokens,
+    stellar/       design system: widget interfaces + Material drawing, theme tokens,
                    form wrappers, RTL
     offers_api/    Dart client generated from the backend's Swagger
   apps/
@@ -30,9 +30,10 @@ kaziony-client/
   visual comes from `stellar`. `tool/check_imports.sh` enforces both rules.
 - **Riverpod is wrapped thinly, without code generation.** `kernel` provides base classes
   (`ViewModel`, `AsyncViewModel`, `AppView`, ...) and re-exports only what apps need.
-- **Widgets have abstract contracts.** Each `stellar` component has a renderer interface
-  (e.g. `ButtonRenderer`), a Material implementation, and a public widget (`SButton`)
-  that asks the active `StellarKit` to render it. Swapping a kit restyles every app.
+- **Widgets are interfaces with factories.** Each `stellar` widget is an
+  `abstract interface class` (`SButton`) whose factories (`SButton.secondary(...)`)
+  redirect to the classes that draw it (`SButtonMaterial`), which apps can't see. (Until
+  November 2026 a renderer kit sat in between; nothing ever swapped it, so it went.)
 - **Services have abstract interfaces** (HTTP, secure storage, image picking, QR scanning,
   ...) with one implementation each, so tests can use fakes.
 - **Feature-based clean architecture in every app:**

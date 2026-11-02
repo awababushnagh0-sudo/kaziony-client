@@ -97,27 +97,47 @@ phone lists use `core/list` (`PagedListViewModel` with `SPagedList`), record pag
 
 ## 6. Stellar components
 
-Each component has its own folder, and every file in stellar starts with `s_`. The
-widget is named after its file:
+Each component has its own folder, and every file in stellar starts with `s_`. A component
+is a public interface and the classes that draw it:
 
 ```
 packages/stellar/lib/src/components/button/
-  s_button.dart             SButton (+ SButton.secondary, .text, .menu, .icon)
-  s_button_renderer.dart    ButtonSpec + ButtonRenderer (the interface)
-  s_button_material.dart    MaterialButtonRenderer (not exported)
+  s_button.dart             SButton: the interface apps use, with its factories
+                            (SButton(...), SButton.secondary(...), .text, .menu, .icon)
+  s_button_material.dart    SButtonMaterial, SIconButtonMaterial: the drawing (not exported)
 ```
 
-- One folder can hold several kinds of one thing behind one renderer: `SButton` and
-  `SButton.icon` both go through `ButtonRenderer`.
-- A new component: its folder with those three files, a renderer field in `StellarKit`
-  (`foundation/s_kit.dart`), its Material renderer in `materialKit`
-  (`material/s_material_kit.dart`), and exports in `lib/stellar.dart`.
-- Widgets that only arrange other stellar widgets (`SFieldGrid`) need no renderer.
+```dart
+abstract interface class SButton implements Widget {
+  /// Outlined: a second action beside the main one.
+  const factory SButton.secondary({
+    required String label,
+    required VoidCallback? onPressed,
+    bool loading,
+  }) = SButtonMaterial.secondary;
+}
+```
+
+- The interface `SFoo` lives in `s_foo.dart` with a doc comment on each factory; the
+  drawing class `SFooMaterial` lives in the folder's `s_foo_material.dart`. Only the
+  interface file is exported from `lib/stellar.dart`, so apps can't reach the drawing.
+- Redirecting factories can't repeat default values: defaults go on the drawing class.
+- Public types a widget takes (enums like `SignInBrand`, small data classes like
+  `RadioOption`) live in its interface file. Static helpers (`SSheet.show`,
+  `SSnack.success`) are static methods on the interface.
+- One folder can hold several widgets of one kind (`list_tile/` has `SListTile`,
+  `SListGroup`, `SRadioTile`). A widget with its own rules or logic gets its own folder,
+  even when it looks like another (`sign_in_button/` beside `button/`).
+- A new component: its folder with those two files and an export of the interface in
+  `lib/stellar.dart`.
+- Widgets that only arrange other stellar widgets (`SFieldGrid`) are plain classes.
+- A third-party SDK (maps, QR, camera) stays inside its component's drawing code; apps
+  never see its types.
 - Stellar draws two looks, picked once in `SApp(style: ...)`: `StellarStyle.app` for the
   phone apps (like DoorDash or Too Good To Go: 16 at the sides, big bold titles, white
   fields with a thin border) and `StellarStyle.dashboard` for the admin (ERPNext). Both
   share the colors and pill buttons. Sizes and shapes come from the style in the theme;
-  a renderer whose layout differs reads `context.style`. Never style an app screen to
+  drawing code whose layout differs reads `context.style`. Never style an app screen to
   fake the other look.
 - Add a component when a screen needs it, never ahead of time.
 
@@ -138,7 +158,7 @@ numbers or colors anywhere else. Stellar widgets take **enums**, never numbers o
   friends) from apps, so these rules are checked by the compiler.
 - A new stellar widget follows the same pattern: its size, color or style parameters
   are enums of tokens, never `double` or `Color`.
-- Inside stellar, renderers read tokens too (`SIconSize.md.pixels`,
+- Inside stellar, drawing code reads tokens too (`SIconSize.md.pixels`,
   `context.colors.resolve(color)`, `context.style.text.small`, `SFontWeight.medium.value`).
 - A value that doesn't exist yet gets a token in its file in `foundation/tokens/` first,
   then is used.
