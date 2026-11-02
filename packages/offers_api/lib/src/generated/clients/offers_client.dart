@@ -21,7 +21,14 @@ abstract class OffersClient {
   ///
   /// [sort] - Default: nearest when lat/lng are sent, otherwise newest.
   ///
-  /// [radiusKm] - Only offers within this distance (needs lat/lng). Default 25 km.
+  /// [lat] - Where the customer is (or the place they set on the map). Required with.
+  /// lng, except when listing one store's offers (storeId): 400 with error.
+  /// "LocationRequired". Must be inside a service area.
+  /// (`GET /app-config` → `browse.areas`): 400 with error.
+  /// "OutsideServiceArea".
+  ///
+  /// [radiusKm] - Only offers within this distance (needs lat/lng). Default and most: the.
+  /// radius in our settings (`GET /app-config` → `browse.radiusKm`).
   ///
   /// [search] - Search offer titles and store names.
   @GET('/api/v1/offers')

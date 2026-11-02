@@ -11,6 +11,7 @@ AppConfigDto _$AppConfigDtoFromJson(Map<String, dynamic> json) => AppConfigDto(
   customer: AppVersionDto.fromJson(json['customer'] as Map<String, dynamic>),
   admin: AppVersionDto.fromJson(json['admin'] as Map<String, dynamic>),
   support: SupportContactDto.fromJson(json['support'] as Map<String, dynamic>),
+  browse: BrowseConfigDto.fromJson(json['browse'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$AppConfigDtoToJson(AppConfigDto instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$AppConfigDtoToJson(AppConfigDto instance) =>
       'customer': instance.customer,
       'admin': instance.admin,
       'support': instance.support,
+      'browse': instance.browse,
     };

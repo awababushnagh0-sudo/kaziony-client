@@ -7,6 +7,8 @@ import 'package:dio/dio.dart';
 import 'clients/auth_client.dart';
 import 'clients/health_client.dart';
 import 'clients/app_config_client.dart';
+import 'clients/admin_settings_client.dart';
+import 'clients/admin_service_areas_client.dart';
 import 'clients/categories_client.dart';
 import 'clients/admin_categories_client.dart';
 import 'clients/stores_client.dart';
@@ -40,6 +42,8 @@ class OffersApi {
   AuthClient? _auth;
   HealthClient? _health;
   AppConfigClient? _appConfig;
+  AdminSettingsClient? _adminSettings;
+  AdminServiceAreasClient? _adminServiceAreas;
   CategoriesClient? _categories;
   AdminCategoriesClient? _adminCategories;
   StoresClient? _stores;
@@ -60,6 +64,10 @@ class OffersApi {
   HealthClient get health => _health ??= HealthClient(_dio, baseUrl: _baseUrl);
 
   AppConfigClient get appConfig => _appConfig ??= AppConfigClient(_dio, baseUrl: _baseUrl);
+
+  AdminSettingsClient get adminSettings => _adminSettings ??= AdminSettingsClient(_dio, baseUrl: _baseUrl);
+
+  AdminServiceAreasClient get adminServiceAreas => _adminServiceAreas ??= AdminServiceAreasClient(_dio, baseUrl: _baseUrl);
 
   CategoriesClient get categories => _categories ??= CategoriesClient(_dio, baseUrl: _baseUrl);
 

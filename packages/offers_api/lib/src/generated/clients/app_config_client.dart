@@ -13,7 +13,7 @@ part 'app_config_client.g.dart';
 abstract class AppConfigClient {
   factory AppConfigClient(Dio dio, {String? baseUrl}) = _AppConfigClient;
 
-  /// Settings the apps read on startup (minimum versions, how to reach us)
+  /// Settings the apps read on startup (minimum versions, how to reach us, browse radius)
   @GET('/api/v1/app-config')
   Future<AppConfigDto> getAppConfig();
 }
