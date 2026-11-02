@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
+import '../../l10n/generated/stellar_localizations.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import '../illustration/s_illustration.dart';
@@ -10,10 +11,25 @@ import 's_sheet.dart';
 
 const _sheetRadius = 20.0;
 
-/// [SSheet]: a white sheet with rounded top corners and a handle: an
-/// optional picture, the title and a line on what the choice changes, then
-/// the choices as an [SRadioGroup], or the ways forward as outlined rows.
-/// Tapping one closes the sheet with it.
+/// The grabber, as on iOS: a short thin bar at the top, a quiet gray.
+const _grabberSize = Size(36, 5);
+const _grabberOpacity = 0.5;
+
+/// The close button's gray circle, as on iOS; it's tapped in a box of
+/// [kMinInteractiveDimension].
+const _closeSize = 30.0;
+
+/// From the sheet's top and end edges to the close button's tap box.
+const _closeInset = Space.sm;
+
+/// How far the title keeps from each side so a long one never runs under
+/// the close button (on both sides, so it stays centered).
+const _titleInset = _closeInset + kMinInteractiveDimension - Space.lg;
+
+/// [SSheet]: a white sheet with rounded top corners, a grabber and a close
+/// button: an optional picture, the title and a line on what the choice
+/// changes, then the choices as an [SRadioGroup], or the ways forward as
+/// outlined rows. Tapping one closes the sheet with it.
 abstract final class SSheetMaterial {
   static Future<T?> choose<T>(
     BuildContext context, {
@@ -60,7 +76,6 @@ abstract final class SSheetMaterial {
         // the nav bar.
         useRootNavigator: true,
         useSafeArea: true,
-        showDragHandle: true,
         // Long lists (a store's branches) scroll inside the sheet.
         isScrollControlled: true,
         backgroundColor: context.colors.surface,
@@ -69,8 +84,74 @@ abstract final class SSheetMaterial {
             top: Radius.circular(_sheetRadius),
           ),
         ),
-        builder: builder,
+        builder: (context) => _Frame(child: builder(context)),
       );
+}
+
+/// What every sheet has around its content: the grabber at the top and
+/// the close button in the top end corner.
+class _Frame extends StatelessWidget {
+  const _Frame({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: Space.lg),
+          child: child,
+        ),
+        PositionedDirectional(
+          top: Space.sm,
+          start: 0,
+          end: 0,
+          child: Center(
+            child: Container(
+              width: _grabberSize.width,
+              height: _grabberSize.height,
+              decoration: BoxDecoration(
+                color: c.textSubtle.withValues(alpha: _grabberOpacity),
+                borderRadius: BorderRadius.circular(Radii.pill),
+              ),
+            ),
+          ),
+        ),
+        const PositionedDirectional(
+          top: _closeInset,
+          end: _closeInset,
+          child: _CloseButton(),
+        ),
+      ],
+    );
+  }
+}
+
+/// Closes the sheet with nothing chosen: an X in a gray circle.
+class _CloseButton extends StatelessWidget {
+  const _CloseButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return IconButton(
+      tooltip: StellarLocalizations.of(context).close,
+      onPressed: () => Navigator.of(context).pop(),
+      style: IconButton.styleFrom(
+        backgroundColor: c.fieldFill,
+        foregroundColor: c.textMuted,
+        shape: const CircleBorder(),
+        fixedSize: const Size.square(_closeSize),
+        minimumSize: const Size.square(_closeSize),
+        padding: EdgeInsets.zero,
+        // The circle stays small; the box it's tapped in doesn't.
+        tapTargetSize: MaterialTapTargetSize.padded,
+      ),
+      icon: Icon(materialIcon(SIcons.close), size: SIconSize.xs.pixels),
+    );
+  }
 }
 
 /// The title and its line, centered, as both sheets start.
@@ -87,13 +168,16 @@ class _Heading extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: text.title,
-            fontWeight: SFontWeight.bold.value,
-            color: c.text,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: _titleInset),
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: text.title,
+              fontWeight: SFontWeight.bold.value,
+              color: c.text,
+            ),
           ),
         ),
         if (subtitle case final subtitle?) ...[
@@ -110,7 +194,7 @@ class _Heading extends StatelessWidget {
 }
 
 /// The safe area keeps the top and sides; the bottom (the home indicator)
-/// is left to the sheet.
+/// is left to the sheet. The top is the frame's.
 EdgeInsets _sheetPadding(BuildContext context) => EdgeInsets.fromLTRB(
   Space.lg,
   0,

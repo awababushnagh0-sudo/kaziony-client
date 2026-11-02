@@ -23,7 +23,8 @@ class SheetAction<T> {
   final String? hint;
 }
 
-/// Sheets that slide up from the bottom of the screen.
+/// Sheets that slide up from the bottom of the screen, each with a grabber
+/// and a close button at the top.
 abstract final class SSheet {
   /// Lets the user pick one of [options] (a language, a sort order).
   /// Completes with the one tapped, or null when the sheet is closed.
