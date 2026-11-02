@@ -11,6 +11,8 @@
   "signInMessage": "To book offers and follow your favorite stores. You can browse without an account.",
   "guestTitle": "Welcome, dear guest!",
   "guestMessage": "Sign in to book offers before they run out and follow your favorite stores.",
+  "reserveSignInTitle": "Sign in to reserve",
+  "reserveSignInMessage": "Hold the offer now and pick it up at the store. It only takes a moment.",
   "signInAction": "Sign in",
   "termsAgreement": "By continuing you agree to the",
   "termsTitle": "Terms and Privacy Policy",

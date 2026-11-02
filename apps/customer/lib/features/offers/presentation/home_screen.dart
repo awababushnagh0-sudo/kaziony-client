@@ -4,6 +4,7 @@ import 'package:stellar/stellar.dart';
 import '../../../core/l10n/generated/customer_localizations.dart';
 import '../../../core/routes/routes.dart';
 import '../../../core/widgets/customer_illustrations.dart';
+import '../../../core/widgets/no_offers_view.dart';
 import '../../location/domain/browse_location.dart';
 import '../domain/offer.dart';
 import 'home_view_model.dart';
@@ -74,14 +75,7 @@ class HomeScreen extends AppView {
             value: feed,
             onRetry: () => ref.invalidate(homeFeedProvider),
             builder: (context, feed) => feed.isEmpty
-                ? SEmptyView(
-                    icon: SIcons.offers,
-                    title: s.noOffersTitle,
-                    message: s.noOffersMessage,
-                    actionLabel: s.changePlace,
-                    actionIcon: SIcons.location,
-                    onAction: () => context.push(Routes.location),
-                  )
+                ? const NoOffersView()
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     spacing: Space.xl,

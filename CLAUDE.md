@@ -94,6 +94,9 @@ A pattern every page of a kind repeats goes in the app's `core/`, and those page
 it instead of copying it: dashboard lists use `core/list` (`ListController`, `PagedTable`),
 phone lists use `core/list` (`PagedListViewModel` with `SPagedList`), record pages use
 `core/record` (`RecordForm` for the fields, `RecordScreen` for the page).
+In the customer app, a guest who reaches something that needs an account sees
+`SignInPrompt` (in place on a tab, `SignInPrompt.show` in a sheet after an action), and
+an empty list of offers shows `NoOffersView`; never a one-off version of either.
 
 ## 6. Stellar components
 

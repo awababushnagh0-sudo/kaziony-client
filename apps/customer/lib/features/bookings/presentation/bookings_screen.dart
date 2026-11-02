@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/customer_localizations.dart';
 import '../../../core/routes/routes.dart';
+import '../../../core/widgets/sign_in_prompt.dart';
 import 'booking_texts.dart';
 import 'bookings_view_model.dart';
 
@@ -17,13 +18,9 @@ class BookingsScreen extends AppView {
     if (ref.watch(sessionProvider) is! SignedIn) {
       return SScaffold(
         title: s.bookingsTitle,
-        body: SEmptyView(
-          icon: SIcons.bookings,
+        body: SignInPrompt(
           title: s.bookingsSignedOutTitle,
           message: s.bookingsSignedOutMessage,
-          actionLabel: s.signInAction,
-          actionIcon: SIcons.user,
-          onAction: () => context.push(Routes.signIn),
         ),
       );
     }

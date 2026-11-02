@@ -53,12 +53,17 @@ void main() {
     expect(find.text('3 of 10 left'), findsOneWidget);
   });
 
-  testWidgets('a guest signs in before reserving', (tester) async {
+  testWidgets('a guest is asked to sign in before reserving', (tester) async {
     await open(tester, signedIn: false);
 
     await tester.tap(find.text('Reserve now'));
     await tester.pumpAndSettle();
+    expect(find.text('Sign in to reserve'), findsOneWidget);
 
+    await tester.tap(find.text('Sign in'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Sign in to reserve'), findsNothing);
     expect(find.text('sign-in page'), findsOneWidget);
     expect(bookings.reserved, isEmpty);
   });

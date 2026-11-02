@@ -64,9 +64,15 @@ abstract final class SSheetMaterial {
     required String title,
     required WidgetBuilder builder,
     String? subtitle,
+    Illustration? illustration,
   }) => _show(
     context,
-    (_) => _ContentSheet(title: title, subtitle: subtitle, builder: builder),
+    (_) => _ContentSheet(
+      title: title,
+      subtitle: subtitle,
+      illustration: illustration,
+      builder: builder,
+    ),
   );
 
   static Future<T?> _show<T>(BuildContext context, WidgetBuilder builder) =>
@@ -154,12 +160,13 @@ class _CloseButton extends StatelessWidget {
   }
 }
 
-/// The title and its line, centered, as both sheets start.
+/// The picture, the title and its line, centered, as every sheet starts.
 class _Heading extends StatelessWidget {
-  const _Heading({required this.title, this.subtitle});
+  const _Heading({required this.title, this.subtitle, this.illustration});
 
   final String title;
   final String? subtitle;
+  final Illustration? illustration;
 
   @override
   Widget build(BuildContext context) {
@@ -168,6 +175,10 @@ class _Heading extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (illustration case final illustration?) ...[
+          SIllustration(illustration),
+          const Gap(Space.md),
+        ],
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: _titleInset),
           child: Text(
@@ -334,11 +345,7 @@ class _ChoiceSheet<T> extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (illustration case final illustration?) ...[
-          SIllustration(illustration),
-          const Gap(Space.md),
-        ],
-        _Heading(title: title, subtitle: subtitle),
+        _Heading(title: title, subtitle: subtitle, illustration: illustration),
         const Gap(Space.xl),
         Flexible(
           child: SingleChildScrollView(
@@ -359,10 +366,12 @@ class _ContentSheet extends StatelessWidget {
     required this.title,
     required this.builder,
     this.subtitle,
+    this.illustration,
   });
 
   final String title;
   final String? subtitle;
+  final Illustration? illustration;
 
   /// Built in the sheet's context, so it can close the sheet.
   final WidgetBuilder builder;
@@ -376,7 +385,7 @@ class _ContentSheet extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _Heading(title: title, subtitle: subtitle),
+        _Heading(title: title, subtitle: subtitle, illustration: illustration),
         const Gap(Space.xl),
         Flexible(
           child: SingleChildScrollView(child: Builder(builder: builder)),

@@ -66,15 +66,19 @@ abstract final class SSheet {
   /// Shows what [builder] makes under a [title], from the bottom of the
   /// screen (how many pieces to reserve). Completes with what the content
   /// closes the sheet with (`Navigator.pop`), or null.
+  ///
+  /// [illustration] puts one of the brand's pictures above the title.
   static Future<T?> show<T>(
     BuildContext context, {
     required String title,
     required WidgetBuilder builder,
     String? subtitle,
+    Illustration? illustration,
   }) => SSheetMaterial.show<T>(
     context,
     title: title,
     builder: builder,
     subtitle: subtitle,
+    illustration: illustration,
   );
 }

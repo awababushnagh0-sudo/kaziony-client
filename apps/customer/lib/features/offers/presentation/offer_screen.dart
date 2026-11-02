@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/customer_localizations.dart';
 import '../../../core/routes/routes.dart';
+import '../../../core/widgets/sign_in_prompt.dart';
 import '../../bookings/presentation/reserve_sheet.dart';
 import '../domain/offer.dart';
 import 'offer_texts.dart';
@@ -173,7 +174,11 @@ class _Footer extends AppView {
           expand: true,
           onPressed: signedIn
               ? () => reserve(context, ref, offer)
-              : () => context.push(Routes.signIn),
+              : () => SignInPrompt.show(
+                  context,
+                  title: s.reserveSignInTitle,
+                  message: s.reserveSignInMessage,
+                ),
         ),
       },
     );

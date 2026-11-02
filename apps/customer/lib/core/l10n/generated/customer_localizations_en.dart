@@ -45,6 +45,13 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
       'Sign in to book offers before they run out and follow your favorite stores.';
 
   @override
+  String get reserveSignInTitle => 'Sign in to reserve';
+
+  @override
+  String get reserveSignInMessage =>
+      'Hold the offer now and pick it up at the store. It only takes a moment.';
+
+  @override
   String get signInAction => 'Sign in';
 
   @override

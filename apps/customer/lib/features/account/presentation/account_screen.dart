@@ -3,7 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/customer_localizations.dart';
 import '../../../core/routes/routes.dart';
-import '../../../core/widgets/customer_illustrations.dart';
+import '../../../core/widgets/sign_in_prompt.dart';
 import '../../auth/domain/auth_repository.dart';
 import '../../location/domain/browse_location.dart';
 
@@ -33,28 +33,7 @@ class AccountScreen extends AppView {
           spacing: Space.xl,
           children: [
             if (user == null)
-              SCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SIllustration(CustomerIllustrations.guest),
-                    const Gap(Space.md),
-                    SText.title(s.guestTitle, align: TextAlign.center),
-                    const Gap(Space.xs),
-                    SText(
-                      s.guestMessage,
-                      color: SColor.textMuted,
-                      align: TextAlign.center,
-                    ),
-                    const Gap(Space.lg),
-                    SButton(
-                      label: s.signInAction,
-                      expand: true,
-                      onPressed: () => context.push(Routes.signIn),
-                    ),
-                  ],
-                ),
-              )
+              const SignInPrompt()
             else
               SProfileHeader(
                 title: user.name ?? user.email ?? s.accountTitle,

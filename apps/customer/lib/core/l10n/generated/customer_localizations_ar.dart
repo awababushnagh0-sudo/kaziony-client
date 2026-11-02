@@ -45,6 +45,13 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
       'سجّل دخولك لتحجز العروض قبل أن تنفد، وتتابع متاجرك المفضلة.';
 
   @override
+  String get reserveSignInTitle => 'سجّل دخولك لتحجز';
+
+  @override
+  String get reserveSignInMessage =>
+      'احجز العرض الآن واستلمه من المحل. الأمر يأخذ لحظة فقط.';
+
+  @override
   String get signInAction => 'تسجيل الدخول';
 
   @override

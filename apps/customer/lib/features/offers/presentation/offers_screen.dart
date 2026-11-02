@@ -2,6 +2,7 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/customer_localizations.dart';
+import '../../../core/widgets/no_offers_view.dart';
 import '../domain/offer.dart';
 import 'home_view_model.dart';
 import 'offers_view_model.dart';
@@ -119,11 +120,14 @@ class _List extends AppView {
       onRetry: () => ref.invalidate(provider),
       builder: (context, page) {
         if (page.items.isEmpty) {
-          return SEmptyView(
-            icon: SIcons.noResults,
-            title: s.noResultsTitle,
-            message: s.noResultsMessage,
-          );
+          // Nothing for the words typed, or nothing around at all.
+          return ref.watch(offersFilterProvider(initial)).search.isEmpty
+              ? const NoOffersView()
+              : SEmptyView(
+                  icon: SIcons.noResults,
+                  title: s.noResultsTitle,
+                  message: s.noResultsMessage,
+                );
         }
         return SPagedList(
           // The offers are cards, apart from each other.

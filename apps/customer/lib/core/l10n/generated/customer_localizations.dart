@@ -167,6 +167,18 @@ abstract class CustomerLocalizations {
   /// **'Sign in to book offers before they run out and follow your favorite stores.'**
   String get guestMessage;
 
+  /// No description provided for @reserveSignInTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to reserve'**
+  String get reserveSignInTitle;
+
+  /// No description provided for @reserveSignInMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold the offer now and pick it up at the store. It only takes a moment.'**
+  String get reserveSignInMessage;
+
   /// No description provided for @signInAction.
   ///
   /// In en, this message translates to:
