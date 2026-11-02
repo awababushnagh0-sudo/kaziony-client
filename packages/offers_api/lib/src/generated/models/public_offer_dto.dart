@@ -25,6 +25,7 @@ class PublicOfferDto {
     required this.offerPrice,
     required this.discountPercent,
     required this.remainingQuantity,
+    required this.totalQuantity,
     required this.maxPerUser,
     required this.claimWindowMinutes,
     required this.startsAt,
@@ -53,6 +54,9 @@ class PublicOfferDto {
 
   /// Pieces left (LIMITED offers only).
   final num? remainingQuantity;
+
+  /// Pieces it started with (LIMITED offers only), for "3 of 10 left".
+  final num? totalQuantity;
 
   /// Pieces one customer can take in all; null for no limit.
   final num? maxPerUser;
