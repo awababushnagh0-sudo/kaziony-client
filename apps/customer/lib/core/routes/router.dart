@@ -4,11 +4,16 @@ import 'package:stellar/stellar.dart';
 import '../../features/account/presentation/account_screen.dart';
 import '../../features/account/presentation/terms_screen.dart';
 import '../../features/auth/presentation/sign_in_screen.dart';
+import '../../features/bookings/presentation/booking_screen.dart';
 import '../../features/bookings/presentation/bookings_screen.dart';
-import '../../features/home/presentation/home_screen.dart';
 import '../../features/location/domain/browse_location.dart';
 import '../../features/location/presentation/location_screen.dart';
 import '../../features/location/presentation/map_picker_screen.dart';
+import '../../features/offers/domain/offer.dart';
+import '../../features/offers/presentation/home_screen.dart';
+import '../../features/offers/presentation/offer_screen.dart';
+import '../../features/offers/presentation/offers_screen.dart';
+import '../../features/offers/presentation/offers_view_model.dart';
 import '../../features/welcome/presentation/welcome_screen.dart';
 import '../l10n/generated/customer_localizations.dart';
 import '../widgets/coming_soon_screen.dart';
@@ -58,6 +63,28 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: Routes.signIn, builder: (_, _) => const SignInScreen()),
       GoRoute(
+        path: Routes.offers,
+        builder: (_, state) => OffersScreen(
+          initial: OffersFilter(
+            sort:
+                OfferSort.values
+                    .asNameMap()[state.uri.queryParameters['sort']] ??
+                OfferSort.nearest,
+            categoryId: state.uri.queryParameters['category'],
+          ),
+        ),
+      ),
+      GoRoute(
+        path: Routes.offerPattern,
+        builder: (_, state) =>
+            OfferScreen(offerId: state.pathParameters['offerId']!),
+      ),
+      GoRoute(
+        path: Routes.bookingPattern,
+        builder: (_, state) =>
+            BookingScreen(bookingId: state.pathParameters['bookingId']!),
+      ),
+      GoRoute(
         path: Routes.location,
         builder: (context, _) => LocationScreen(
           canGoBack: true,
@@ -71,7 +98,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, _, shell) => CustomerShell(shell: shell),
         branches: [
           _tab(Routes.home, (_) => const HomeScreen()),
-          _tab(Routes.search, (s) => ComingSoonScreen(title: s.searchTitle)),
+          _tab(Routes.search, (_) => const OffersScreen(searching: true)),
           _tab(Routes.bookings, (_) => const BookingsScreen()),
           _tab(
             Routes.favorites,

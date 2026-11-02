@@ -13,7 +13,14 @@ enum CustomerIllustrations implements Illustration {
 
   /// A hand holding up the brand bag among sparkles: on the account tab
   /// when nobody's signed in.
-  guest('guest', Size(240, 180));
+  guest('guest', Size(240, 180)),
+
+  /// The kinds of store on the home page: every offer (the bag), bakeries,
+  /// sweets and cafés.
+  categoryAll('category_bag', Size(64, 64)),
+  categoryBakery('category_croissant', Size(64, 64)),
+  categorySweets('category_cake', Size(64, 64)),
+  categoryCafe('category_coffee', Size(64, 64));
 
   const CustomerIllustrations(this.file, this.size);
 

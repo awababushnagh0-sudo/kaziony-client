@@ -28,12 +28,6 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get accountTitle => 'Account';
 
   @override
-  String get helloTitle => 'Welcome to Kaziony';
-
-  @override
-  String get helloText => 'Offers from stores near you will be here soon.';
-
-  @override
   String get comingSoon => 'Coming soon';
 
   @override
@@ -186,4 +180,276 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String outsideServiceArea(String areas) {
     return 'Kaziony is only in $areas for now.';
   }
+
+  @override
+  String get offersNear => 'Offers near';
+
+  @override
+  String get searchHint => 'Search for a store or an offer';
+
+  @override
+  String get allCategories => 'All';
+
+  @override
+  String get bannerTitle => 'Good food, for less';
+
+  @override
+  String get bannerMessage =>
+      'Reserve an offer, pick it up at the store and pay cash there.';
+
+  @override
+  String get bannerTag => 'Because good food shouldn\'t go to waste';
+
+  @override
+  String get sectionEndingSoon => 'Ending soon';
+
+  @override
+  String get sectionNearby => 'Near you';
+
+  @override
+  String get sectionBiggestDiscount => 'Biggest discounts';
+
+  @override
+  String get seeAll => 'See all';
+
+  @override
+  String get noOffersTitle => 'No offers near you right now';
+
+  @override
+  String get noOffersMessage =>
+      'Stores post offers during the day. Check back soon or change the place.';
+
+  @override
+  String get changePlace => 'Change the place';
+
+  @override
+  String discountOff(int percent) {
+    return '$percent% off';
+  }
+
+  @override
+  String piecesLeft(int count) {
+    return '$count left';
+  }
+
+  @override
+  String piecesOfTotal(int left, int total) {
+    return '$left of $total left';
+  }
+
+  @override
+  String endsInMinutes(int minutes) {
+    return 'Ends in $minutes min';
+  }
+
+  @override
+  String endsAtTime(String time) {
+    return 'Until $time';
+  }
+
+  @override
+  String endsOnDay(String day) {
+    return 'Until $day';
+  }
+
+  @override
+  String endsTodayAt(String time) {
+    return 'Ends today at $time';
+  }
+
+  @override
+  String endsOn(String date) {
+    return 'Ends $date';
+  }
+
+  @override
+  String distanceKm(String km) {
+    return '$km km';
+  }
+
+  @override
+  String get offersTitle => 'Offers';
+
+  @override
+  String get sortNearest => 'Nearest';
+
+  @override
+  String get sortEndingSoon => 'Ending soon';
+
+  @override
+  String get sortNewest => 'Newest';
+
+  @override
+  String get sortBiggestDiscount => 'Biggest discount';
+
+  @override
+  String get sortTitle => 'Sort offers';
+
+  @override
+  String get noResultsTitle => 'Nothing found';
+
+  @override
+  String get noResultsMessage => 'Try another word or category.';
+
+  @override
+  String holdTitle(int minutes) {
+    return 'Held for you for $minutes min';
+  }
+
+  @override
+  String get holdMessage =>
+      'Reserve now and pick it up at the store within that time.';
+
+  @override
+  String get untilEndTitle => 'Your code works until the offer ends';
+
+  @override
+  String get untilEndMessage => 'Pick it up any time before the offer ends.';
+
+  @override
+  String get payTitle => 'Pay cash at the store';
+
+  @override
+  String get payMessage => 'You pay nothing now.';
+
+  @override
+  String get pickupOne => 'Pick up at the branch';
+
+  @override
+  String get pickupAny => 'Pick up at any branch';
+
+  @override
+  String limitPerCustomer(int count) {
+    return 'Up to $count per customer';
+  }
+
+  @override
+  String get reserveNow => 'Reserve now';
+
+  @override
+  String get showMyCode => 'Show my pickup code';
+
+  @override
+  String get soldOut => 'Sold out';
+
+  @override
+  String get reserveTitle => 'How many?';
+
+  @override
+  String pricePerPiece(String price) {
+    return '$price each';
+  }
+
+  @override
+  String get reserveConfirm => 'Confirm reservation';
+
+  @override
+  String reserveHoldNote(int minutes) {
+    return 'We hold them for $minutes min. You pay cash when you pick up.';
+  }
+
+  @override
+  String get reserveUntilEndNote =>
+      'Your code works until the offer ends. You pay cash when you pick up.';
+
+  @override
+  String get reserveAlreadyReserved =>
+      'You already have a reservation for this offer.';
+
+  @override
+  String get reserveLimitReached =>
+      'You\'ve already taken the most this offer allows.';
+
+  @override
+  String get reserveOverLimit => 'You can\'t take that many. Try fewer.';
+
+  @override
+  String get reserveTooMany =>
+      'You have too many reservations. Pick one up or cancel one first.';
+
+  @override
+  String get reserveNotEnough => 'There aren\'t that many left. Try fewer.';
+
+  @override
+  String get reserveNotStarted => 'This offer hasn\'t started yet.';
+
+  @override
+  String get reserveEnded => 'This offer has ended.';
+
+  @override
+  String get reserveBanned =>
+      'You missed several pickups, so you can\'t reserve for a few days.';
+
+  @override
+  String get reserved => 'Reserved!';
+
+  @override
+  String get bookingTitle => 'Pickup code';
+
+  @override
+  String get qrLabel => 'QR code to show at the store';
+
+  @override
+  String get showAtCounter => 'Show this at the counter';
+
+  @override
+  String timeLeftToPickUp(String time) {
+    return '$time left to pick up';
+  }
+
+  @override
+  String validUntil(String time) {
+    return 'Valid until $time';
+  }
+
+  @override
+  String payAtCounter(String price) {
+    return 'Pay $price cash when you pick up';
+  }
+
+  @override
+  String quantityTimes(int count) {
+    return '×$count';
+  }
+
+  @override
+  String get pickUpAt => 'Pick up at';
+
+  @override
+  String get cancelBooking => 'Cancel reservation';
+
+  @override
+  String get cancelBookingTitle => 'Cancel this reservation?';
+
+  @override
+  String get cancelBookingMessage =>
+      'The pieces go back to the offer, and it doesn\'t count against you.';
+
+  @override
+  String get keepBooking => 'Keep it';
+
+  @override
+  String get bookingCancelled => 'Reservation cancelled';
+
+  @override
+  String get statusReserved => 'Waiting for pickup';
+
+  @override
+  String get statusPickedUp => 'Picked up';
+
+  @override
+  String get statusExpired => 'Time ran out';
+
+  @override
+  String get statusCancelled => 'Cancelled';
+
+  @override
+  String get bookingsEmptyTitle => 'No reservations yet';
+
+  @override
+  String get bookingsEmptyMessage =>
+      'Reserve an offer and its pickup code shows up here.';
+
+  @override
+  String get browseOffers => 'Browse offers';
 }

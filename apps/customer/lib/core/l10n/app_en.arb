@@ -6,8 +6,6 @@
   "bookingsTitle": "My bookings",
   "favoritesTitle": "Favorites",
   "accountTitle": "Account",
-  "helloTitle": "Welcome to Kaziony",
-  "helloText": "Offers from stores near you will be here soon.",
   "comingSoon": "Coming soon",
   "signInTitle": "Sign in",
   "signInMessage": "To book offers and follow your favorite stores. You can browse without an account.",
@@ -62,5 +60,203 @@
         "example": "Tripoli"
       }
     }
-  }
+  },
+  "offersNear": "Offers near",
+  "searchHint": "Search for a store or an offer",
+  "allCategories": "All",
+  "bannerTitle": "Good food, for less",
+  "bannerMessage": "Reserve an offer, pick it up at the store and pay cash there.",
+  "bannerTag": "Because good food shouldn't go to waste",
+  "sectionEndingSoon": "Ending soon",
+  "sectionNearby": "Near you",
+  "sectionBiggestDiscount": "Biggest discounts",
+  "seeAll": "See all",
+  "noOffersTitle": "No offers near you right now",
+  "noOffersMessage": "Stores post offers during the day. Check back soon or change the place.",
+  "changePlace": "Change the place",
+  "discountOff": "{percent}% off",
+  "@discountOff": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "piecesLeft": "{count} left",
+  "@piecesLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "piecesOfTotal": "{left} of {total} left",
+  "@piecesOfTotal": {
+    "placeholders": {
+      "left": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "endsInMinutes": "Ends in {minutes} min",
+  "@endsInMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "endsAtTime": "Until {time}",
+  "@endsAtTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "endsOnDay": "Until {day}",
+  "@endsOnDay": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "endsTodayAt": "Ends today at {time}",
+  "@endsTodayAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "endsOn": "Ends {date}",
+  "@endsOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "distanceKm": "{km} km",
+  "@distanceKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "offersTitle": "Offers",
+  "sortNearest": "Nearest",
+  "sortEndingSoon": "Ending soon",
+  "sortNewest": "Newest",
+  "sortBiggestDiscount": "Biggest discount",
+  "sortTitle": "Sort offers",
+  "noResultsTitle": "Nothing found",
+  "noResultsMessage": "Try another word or category.",
+  "holdTitle": "Held for you for {minutes} min",
+  "@holdTitle": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "holdMessage": "Reserve now and pick it up at the store within that time.",
+  "untilEndTitle": "Your code works until the offer ends",
+  "untilEndMessage": "Pick it up any time before the offer ends.",
+  "payTitle": "Pay cash at the store",
+  "payMessage": "You pay nothing now.",
+  "pickupOne": "Pick up at the branch",
+  "pickupAny": "Pick up at any branch",
+  "limitPerCustomer": "Up to {count} per customer",
+  "@limitPerCustomer": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reserveNow": "Reserve now",
+  "showMyCode": "Show my pickup code",
+  "soldOut": "Sold out",
+  "reserveTitle": "How many?",
+  "pricePerPiece": "{price} each",
+  "@pricePerPiece": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "reserveConfirm": "Confirm reservation",
+  "reserveHoldNote": "We hold them for {minutes} min. You pay cash when you pick up.",
+  "@reserveHoldNote": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "reserveUntilEndNote": "Your code works until the offer ends. You pay cash when you pick up.",
+  "reserveAlreadyReserved": "You already have a reservation for this offer.",
+  "reserveLimitReached": "You've already taken the most this offer allows.",
+  "reserveOverLimit": "You can't take that many. Try fewer.",
+  "reserveTooMany": "You have too many reservations. Pick one up or cancel one first.",
+  "reserveNotEnough": "There aren't that many left. Try fewer.",
+  "reserveNotStarted": "This offer hasn't started yet.",
+  "reserveEnded": "This offer has ended.",
+  "reserveBanned": "You missed several pickups, so you can't reserve for a few days.",
+  "reserved": "Reserved!",
+  "bookingTitle": "Pickup code",
+  "qrLabel": "QR code to show at the store",
+  "showAtCounter": "Show this at the counter",
+  "timeLeftToPickUp": "{time} left to pick up",
+  "@timeLeftToPickUp": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "validUntil": "Valid until {time}",
+  "@validUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "payAtCounter": "Pay {price} cash when you pick up",
+  "@payAtCounter": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "quantityTimes": "×{count}",
+  "@quantityTimes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pickUpAt": "Pick up at",
+  "cancelBooking": "Cancel reservation",
+  "cancelBookingTitle": "Cancel this reservation?",
+  "cancelBookingMessage": "The pieces go back to the offer, and it doesn't count against you.",
+  "keepBooking": "Keep it",
+  "bookingCancelled": "Reservation cancelled",
+  "statusReserved": "Waiting for pickup",
+  "statusPickedUp": "Picked up",
+  "statusExpired": "Time ran out",
+  "statusCancelled": "Cancelled",
+  "bookingsEmptyTitle": "No reservations yet",
+  "bookingsEmptyMessage": "Reserve an offer and its pickup code shows up here.",
+  "browseOffers": "Browse offers"
 }

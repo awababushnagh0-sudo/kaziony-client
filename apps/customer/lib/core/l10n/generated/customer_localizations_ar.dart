@@ -28,12 +28,6 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get accountTitle => 'حسابي';
 
   @override
-  String get helloTitle => 'أهلاً بك في كزيوني';
-
-  @override
-  String get helloText => 'قريباً هنا عروض المتاجر القريبة منك.';
-
-  @override
   String get comingSoon => 'قريباً';
 
   @override
@@ -183,4 +177,268 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String outsideServiceArea(String areas) {
     return 'كزيوني متوفر حالياً في $areas فقط.';
   }
+
+  @override
+  String get offersNear => 'عروض قريبة من';
+
+  @override
+  String get searchHint => 'ابحث عن محل أو عرض';
+
+  @override
+  String get allCategories => 'الكل';
+
+  @override
+  String get bannerTitle => 'أكل لذيذ.. بسعر أقل';
+
+  @override
+  String get bannerMessage => 'احجز العرض، استلمه من المحل، وادفع نقدًا هناك.';
+
+  @override
+  String get bannerTag => 'لأن الخير ما يتلوحش';
+
+  @override
+  String get sectionEndingSoon => 'ينتهي قريبًا';
+
+  @override
+  String get sectionNearby => 'قريب منك';
+
+  @override
+  String get sectionBiggestDiscount => 'أكبر خصم';
+
+  @override
+  String get seeAll => 'عرض الكل';
+
+  @override
+  String get noOffersTitle => 'لا توجد عروض قريبة الآن';
+
+  @override
+  String get noOffersMessage =>
+      'المحلات تنشر عروضها خلال اليوم. ارجع بعد قليل أو غيّر المكان.';
+
+  @override
+  String get changePlace => 'غيّر المكان';
+
+  @override
+  String discountOff(int percent) {
+    return 'خصم $percent٪';
+  }
+
+  @override
+  String piecesLeft(int count) {
+    return 'باقي $count';
+  }
+
+  @override
+  String piecesOfTotal(int left, int total) {
+    return 'باقي $left من $total';
+  }
+
+  @override
+  String endsInMinutes(int minutes) {
+    return 'ينتهي خلال $minutes د';
+  }
+
+  @override
+  String endsAtTime(String time) {
+    return 'حتى $time';
+  }
+
+  @override
+  String endsOnDay(String day) {
+    return 'حتى $day';
+  }
+
+  @override
+  String endsTodayAt(String time) {
+    return 'ينتهي اليوم $time';
+  }
+
+  @override
+  String endsOn(String date) {
+    return 'ينتهي $date';
+  }
+
+  @override
+  String distanceKm(String km) {
+    return '$km كم';
+  }
+
+  @override
+  String get offersTitle => 'العروض';
+
+  @override
+  String get sortNearest => 'الأقرب';
+
+  @override
+  String get sortEndingSoon => 'ينتهي قريبًا';
+
+  @override
+  String get sortNewest => 'الأحدث';
+
+  @override
+  String get sortBiggestDiscount => 'أكبر خصم';
+
+  @override
+  String get sortTitle => 'ترتيب العروض';
+
+  @override
+  String get noResultsTitle => 'لا توجد نتائج';
+
+  @override
+  String get noResultsMessage => 'جرّب كلمة أخرى أو قسمًا آخر.';
+
+  @override
+  String holdTitle(int minutes) {
+    return 'نحجزه لك $minutes دقيقة';
+  }
+
+  @override
+  String get holdMessage => 'احجز الآن واستلمه من المحل خلال هذا الوقت.';
+
+  @override
+  String get untilEndTitle => 'رمزك صالح حتى نهاية العرض';
+
+  @override
+  String get untilEndMessage => 'استلمه في أي وقت قبل أن ينتهي العرض.';
+
+  @override
+  String get payTitle => 'الدفع نقدًا في المحل';
+
+  @override
+  String get payMessage => 'لا تدفع شيئًا الآن.';
+
+  @override
+  String get pickupOne => 'استلم من الفرع';
+
+  @override
+  String get pickupAny => 'استلم من أي فرع';
+
+  @override
+  String limitPerCustomer(int count) {
+    return 'حد أقصى $count لكل زبون';
+  }
+
+  @override
+  String get reserveNow => 'احجز الآن';
+
+  @override
+  String get showMyCode => 'عرض رمز الاستلام';
+
+  @override
+  String get soldOut => 'نفدت الكمية';
+
+  @override
+  String get reserveTitle => 'كم قطعة تريد؟';
+
+  @override
+  String pricePerPiece(String price) {
+    return '$price للقطعة';
+  }
+
+  @override
+  String get reserveConfirm => 'تأكيد الحجز';
+
+  @override
+  String reserveHoldNote(int minutes) {
+    return 'نحجزها لك $minutes دقيقة، وتدفع نقدًا عند الاستلام.';
+  }
+
+  @override
+  String get reserveUntilEndNote =>
+      'رمزك صالح حتى نهاية العرض، وتدفع نقدًا عند الاستلام.';
+
+  @override
+  String get reserveAlreadyReserved => 'عندك حجز لهذا العرض.';
+
+  @override
+  String get reserveLimitReached => 'أخذت أقصى ما يسمح به هذا العرض.';
+
+  @override
+  String get reserveOverLimit => 'لا يمكنك أخذ هذا العدد. جرّب أقل.';
+
+  @override
+  String get reserveTooMany => 'عندك حجوزات كثيرة. استلم أحدها أو ألغِه أولًا.';
+
+  @override
+  String get reserveNotEnough => 'لم يبقَ هذا العدد. جرّب أقل.';
+
+  @override
+  String get reserveNotStarted => 'هذا العرض لم يبدأ بعد.';
+
+  @override
+  String get reserveEnded => 'انتهى هذا العرض.';
+
+  @override
+  String get reserveBanned => 'فاتتك عدة استلامات، فلا يمكنك الحجز لبضعة أيام.';
+
+  @override
+  String get reserved => 'تم الحجز!';
+
+  @override
+  String get bookingTitle => 'رمز الاستلام';
+
+  @override
+  String get qrLabel => 'رمز QR لعرضه في المحل';
+
+  @override
+  String get showAtCounter => 'اعرض هذا الرمز عند الكاشير';
+
+  @override
+  String timeLeftToPickUp(String time) {
+    return 'باقي $time للاستلام';
+  }
+
+  @override
+  String validUntil(String time) {
+    return 'صالح حتى $time';
+  }
+
+  @override
+  String payAtCounter(String price) {
+    return 'ادفع $price نقدًا عند الاستلام';
+  }
+
+  @override
+  String quantityTimes(int count) {
+    return '×$count';
+  }
+
+  @override
+  String get pickUpAt => 'استلم من';
+
+  @override
+  String get cancelBooking => 'إلغاء الحجز';
+
+  @override
+  String get cancelBookingTitle => 'إلغاء الحجز؟';
+
+  @override
+  String get cancelBookingMessage => 'ترجع القطع للعرض، ولا يُحسب عليك.';
+
+  @override
+  String get keepBooking => 'لا، أبقِه';
+
+  @override
+  String get bookingCancelled => 'تم إلغاء الحجز';
+
+  @override
+  String get statusReserved => 'بانتظار الاستلام';
+
+  @override
+  String get statusPickedUp => 'تم الاستلام';
+
+  @override
+  String get statusExpired => 'انتهى الوقت';
+
+  @override
+  String get statusCancelled => 'ملغى';
+
+  @override
+  String get bookingsEmptyTitle => 'لا حجوزات بعد';
+
+  @override
+  String get bookingsEmptyMessage => 'احجز عرضًا وسيظهر رمز استلامه هنا.';
+
+  @override
+  String get browseOffers => 'تصفّح العروض';
 }

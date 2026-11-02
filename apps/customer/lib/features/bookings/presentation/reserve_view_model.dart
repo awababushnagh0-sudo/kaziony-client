@@ -1,0 +1,54 @@
+import 'package:kernel/kernel.dart';
+
+import '../../offers/domain/offer.dart';
+import '../domain/booking.dart';
+
+class ReserveState {
+  const ReserveState({
+    required this.quantity,
+    this.sending = false,
+    this.failure,
+  });
+
+  final int quantity;
+  final bool sending;
+
+  /// Why the last try was refused, said in the sheet.
+  final AppFailure? failure;
+}
+
+/// How many pieces of [offer] to reserve, and reserving them.
+class ReserveViewModel extends ViewModel<ReserveState> {
+  ReserveViewModel(this.offer);
+
+  final Offer offer;
+
+  @override
+  ReserveState build() => const ReserveState(quantity: 1);
+
+  void setQuantity(int quantity) =>
+      state = ReserveState(quantity: quantity.clamp(1, offer.maxReservable));
+
+  /// The booking made, or null when it was refused ([ReserveState.failure]
+  /// says why).
+  Future<Booking?> reserve() async {
+    if (state.sending) return null;
+    final quantity = state.quantity;
+    state = ReserveState(quantity: quantity, sending: true);
+    final result = await ref
+        .read(bookingsRepositoryProvider)
+        .reserve(offer.id, quantity: quantity);
+    if (!ref.mounted) return null;
+    switch (result) {
+      case Ok(:final value):
+        state = ReserveState(quantity: quantity);
+        return value;
+      case Err(:final failure):
+        state = ReserveState(quantity: quantity, failure: failure);
+        return null;
+    }
+  }
+}
+
+final reserveViewModel = NotifierProvider.autoDispose
+    .family<ReserveViewModel, ReserveState, Offer>(ReserveViewModel.new);

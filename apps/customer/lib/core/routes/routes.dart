@@ -15,6 +15,20 @@ abstract final class Routes {
   static const location = '/location';
   static const locationMap = '/location/map';
 
+  /// Every offer around, one sort or category ([offersQuery]): "See all".
+  static const offers = '/offers';
+  static String offersQuery({required String sort, String? categoryId}) => Uri(
+    path: offers,
+    queryParameters: {'sort': sort, 'category': ?categoryId},
+  ).toString();
+
+  static const offerPattern = '/offer/:offerId';
+  static String offer(String offerId) => '/offer/$offerId';
+
+  /// A reservation's pickup code.
+  static const bookingPattern = '/booking/:bookingId';
+  static String booking(String bookingId) => '/booking/$bookingId';
+
   // The tabs.
   static const home = '/home';
   static const search = '/search';

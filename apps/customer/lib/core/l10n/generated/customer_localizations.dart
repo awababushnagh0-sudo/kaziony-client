@@ -137,18 +137,6 @@ abstract class CustomerLocalizations {
   /// **'Account'**
   String get accountTitle;
 
-  /// No description provided for @helloTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Welcome to Kaziony'**
-  String get helloTitle;
-
-  /// No description provided for @helloText.
-  ///
-  /// In en, this message translates to:
-  /// **'Offers from stores near you will be here soon.'**
-  String get helloText;
-
   /// No description provided for @comingSoon.
   ///
   /// In en, this message translates to:
@@ -430,6 +418,462 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'Kaziony is only in {areas} for now.'**
   String outsideServiceArea(String areas);
+
+  /// No description provided for @offersNear.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers near'**
+  String get offersNear;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for a store or an offer'**
+  String get searchHint;
+
+  /// No description provided for @allCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get allCategories;
+
+  /// No description provided for @bannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Good food, for less'**
+  String get bannerTitle;
+
+  /// No description provided for @bannerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserve an offer, pick it up at the store and pay cash there.'**
+  String get bannerMessage;
+
+  /// No description provided for @bannerTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Because good food shouldn\'t go to waste'**
+  String get bannerTag;
+
+  /// No description provided for @sectionEndingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Ending soon'**
+  String get sectionEndingSoon;
+
+  /// No description provided for @sectionNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Near you'**
+  String get sectionNearby;
+
+  /// No description provided for @sectionBiggestDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Biggest discounts'**
+  String get sectionBiggestDiscount;
+
+  /// No description provided for @seeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get seeAll;
+
+  /// No description provided for @noOffersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No offers near you right now'**
+  String get noOffersTitle;
+
+  /// No description provided for @noOffersMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Stores post offers during the day. Check back soon or change the place.'**
+  String get noOffersMessage;
+
+  /// No description provided for @changePlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Change the place'**
+  String get changePlace;
+
+  /// No description provided for @discountOff.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% off'**
+  String discountOff(int percent);
+
+  /// No description provided for @piecesLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} left'**
+  String piecesLeft(int count);
+
+  /// No description provided for @piecesOfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{left} of {total} left'**
+  String piecesOfTotal(int left, int total);
+
+  /// No description provided for @endsInMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends in {minutes} min'**
+  String endsInMinutes(int minutes);
+
+  /// No description provided for @endsAtTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Until {time}'**
+  String endsAtTime(String time);
+
+  /// No description provided for @endsOnDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Until {day}'**
+  String endsOnDay(String day);
+
+  /// No description provided for @endsTodayAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends today at {time}'**
+  String endsTodayAt(String time);
+
+  /// No description provided for @endsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends {date}'**
+  String endsOn(String date);
+
+  /// No description provided for @distanceKm.
+  ///
+  /// In en, this message translates to:
+  /// **'{km} km'**
+  String distanceKm(String km);
+
+  /// No description provided for @offersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers'**
+  String get offersTitle;
+
+  /// No description provided for @sortNearest.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest'**
+  String get sortNearest;
+
+  /// No description provided for @sortEndingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Ending soon'**
+  String get sortEndingSoon;
+
+  /// No description provided for @sortNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get sortNewest;
+
+  /// No description provided for @sortBiggestDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Biggest discount'**
+  String get sortBiggestDiscount;
+
+  /// No description provided for @sortTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort offers'**
+  String get sortTitle;
+
+  /// No description provided for @noResultsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing found'**
+  String get noResultsTitle;
+
+  /// No description provided for @noResultsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another word or category.'**
+  String get noResultsMessage;
+
+  /// No description provided for @holdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Held for you for {minutes} min'**
+  String holdTitle(int minutes);
+
+  /// No description provided for @holdMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserve now and pick it up at the store within that time.'**
+  String get holdMessage;
+
+  /// No description provided for @untilEndTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your code works until the offer ends'**
+  String get untilEndTitle;
+
+  /// No description provided for @untilEndMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick it up any time before the offer ends.'**
+  String get untilEndMessage;
+
+  /// No description provided for @payTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay cash at the store'**
+  String get payTitle;
+
+  /// No description provided for @payMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You pay nothing now.'**
+  String get payMessage;
+
+  /// No description provided for @pickupOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up at the branch'**
+  String get pickupOne;
+
+  /// No description provided for @pickupAny.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up at any branch'**
+  String get pickupAny;
+
+  /// No description provided for @limitPerCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to {count} per customer'**
+  String limitPerCustomer(int count);
+
+  /// No description provided for @reserveNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserve now'**
+  String get reserveNow;
+
+  /// No description provided for @showMyCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Show my pickup code'**
+  String get showMyCode;
+
+  /// No description provided for @soldOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold out'**
+  String get soldOut;
+
+  /// No description provided for @reserveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How many?'**
+  String get reserveTitle;
+
+  /// No description provided for @pricePerPiece.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} each'**
+  String pricePerPiece(String price);
+
+  /// No description provided for @reserveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm reservation'**
+  String get reserveConfirm;
+
+  /// No description provided for @reserveHoldNote.
+  ///
+  /// In en, this message translates to:
+  /// **'We hold them for {minutes} min. You pay cash when you pick up.'**
+  String reserveHoldNote(int minutes);
+
+  /// No description provided for @reserveUntilEndNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your code works until the offer ends. You pay cash when you pick up.'**
+  String get reserveUntilEndNote;
+
+  /// No description provided for @reserveAlreadyReserved.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have a reservation for this offer.'**
+  String get reserveAlreadyReserved;
+
+  /// No description provided for @reserveLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve already taken the most this offer allows.'**
+  String get reserveLimitReached;
+
+  /// No description provided for @reserveOverLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t take that many. Try fewer.'**
+  String get reserveOverLimit;
+
+  /// No description provided for @reserveTooMany.
+  ///
+  /// In en, this message translates to:
+  /// **'You have too many reservations. Pick one up or cancel one first.'**
+  String get reserveTooMany;
+
+  /// No description provided for @reserveNotEnough.
+  ///
+  /// In en, this message translates to:
+  /// **'There aren\'t that many left. Try fewer.'**
+  String get reserveNotEnough;
+
+  /// No description provided for @reserveNotStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'This offer hasn\'t started yet.'**
+  String get reserveNotStarted;
+
+  /// No description provided for @reserveEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'This offer has ended.'**
+  String get reserveEnded;
+
+  /// No description provided for @reserveBanned.
+  ///
+  /// In en, this message translates to:
+  /// **'You missed several pickups, so you can\'t reserve for a few days.'**
+  String get reserveBanned;
+
+  /// No description provided for @reserved.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserved!'**
+  String get reserved;
+
+  /// No description provided for @bookingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup code'**
+  String get bookingTitle;
+
+  /// No description provided for @qrLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'QR code to show at the store'**
+  String get qrLabel;
+
+  /// No description provided for @showAtCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'Show this at the counter'**
+  String get showAtCounter;
+
+  /// No description provided for @timeLeftToPickUp.
+  ///
+  /// In en, this message translates to:
+  /// **'{time} left to pick up'**
+  String timeLeftToPickUp(String time);
+
+  /// No description provided for @validUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid until {time}'**
+  String validUntil(String time);
+
+  /// No description provided for @payAtCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay {price} cash when you pick up'**
+  String payAtCounter(String price);
+
+  /// No description provided for @quantityTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'×{count}'**
+  String quantityTimes(int count);
+
+  /// No description provided for @pickUpAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up at'**
+  String get pickUpAt;
+
+  /// No description provided for @cancelBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel reservation'**
+  String get cancelBooking;
+
+  /// No description provided for @cancelBookingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel this reservation?'**
+  String get cancelBookingTitle;
+
+  /// No description provided for @cancelBookingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The pieces go back to the offer, and it doesn\'t count against you.'**
+  String get cancelBookingMessage;
+
+  /// No description provided for @keepBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it'**
+  String get keepBooking;
+
+  /// No description provided for @bookingCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation cancelled'**
+  String get bookingCancelled;
+
+  /// No description provided for @statusReserved.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for pickup'**
+  String get statusReserved;
+
+  /// No description provided for @statusPickedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up'**
+  String get statusPickedUp;
+
+  /// No description provided for @statusExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Time ran out'**
+  String get statusExpired;
+
+  /// No description provided for @statusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get statusCancelled;
+
+  /// No description provided for @bookingsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No reservations yet'**
+  String get bookingsEmptyTitle;
+
+  /// No description provided for @bookingsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserve an offer and its pickup code shows up here.'**
+  String get bookingsEmptyMessage;
+
+  /// No description provided for @browseOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse offers'**
+  String get browseOffers;
 }
 
 class _CustomerLocalizationsDelegate
