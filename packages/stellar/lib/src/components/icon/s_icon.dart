@@ -9,6 +9,9 @@ enum SIcons {
   // Things.
   store,
   location,
+
+  /// Finding where the phone is ("use my location").
+  navigate,
   home,
   users,
   user,
@@ -35,6 +38,21 @@ enum SIcons {
 
   /// Customers on their way to pick up.
   pickups,
+
+  /// A customer's reservations.
+  bookings,
+
+  /// Offers and stores a customer saved.
+  favorites,
+
+  /// Food not thrown away.
+  leaf,
+
+  /// Money saved.
+  wallet,
+
+  /// Paying cash at the counter.
+  cash,
 
   /// Numbers over time: a store's month.
   chart,

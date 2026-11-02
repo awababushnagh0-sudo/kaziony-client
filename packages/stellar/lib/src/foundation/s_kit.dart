@@ -15,6 +15,7 @@ import '../components/input/s_input_renderer.dart';
 import '../components/item_summary/s_item_summary_renderer.dart';
 import '../components/list_page/s_list_page_renderer.dart';
 import '../components/list_tile/s_list_tile_renderer.dart';
+import '../components/map/s_map_renderer.dart';
 import '../components/menu/s_menu_renderer.dart';
 import '../components/nav_bar/s_nav_bar_renderer.dart';
 import '../components/paged_list/s_paged_list_renderer.dart';
@@ -36,6 +37,7 @@ import '../components/table/s_table_renderer.dart';
 import '../components/tag/s_tag_renderer.dart';
 import '../components/text/s_text_renderer.dart';
 import '../components/time_span/s_time_span_renderer.dart';
+import '../components/welcome/s_welcome_renderer.dart';
 import 's_tokens.dart';
 
 /// A complete set of renderers, one per component. Provide another kit to
@@ -79,6 +81,8 @@ class StellarKit {
     required this.confirmation,
     required this.timeSpan,
     required this.profile,
+    required this.welcome,
+    required this.map,
   });
 
   final ButtonRenderer button;
@@ -117,6 +121,8 @@ class StellarKit {
   final ConfirmationRenderer confirmation;
   final TimeSpanRenderer timeSpan;
   final ProfileRenderer profile;
+  final WelcomeRenderer welcome;
+  final MapRenderer map;
 
   static StellarKit of(BuildContext context) => StellarScope.of(context).kit;
 }

@@ -13,7 +13,7 @@ packages/
   stellar/    shared look: every widget, color, size, radius, font and icon
   offers_api/ generated API client; never edit by hand (tool/generate_api.sh)
   dev_menu/   developer menu, dev/staging builds only
-apps/<app>/   partner, admin (customer later)
+apps/<app>/   partner, customer, admin
 ```
 
 - **Logic** (no UI) used by more than one app goes in `kernel`. Logic for one app stays
@@ -22,6 +22,9 @@ apps/<app>/   partner, admin (customer later)
 - Apps depend only on `kernel`, `stellar` and `offers_api`. No third-party package in an
   app's `pubspec.yaml`: wrap or re-export it from `kernel` or `stellar` the first time
   it's needed.
+  One exception: `google_maps_flutter_ios_sdk9` in the phone apps, never imported. It
+  picks the iOS maps plugin that works with Swift Package Manager, a choice Flutter only
+  takes from the app.
 - Apps never import `package:flutter/material.dart` (or any `package:flutter/...`).
   Layout widgets (`Row`, `Column`, `Padding`, ...) come from `kernel`, everything visual
   from `stellar`. `tool/check_imports.sh` enforces this.

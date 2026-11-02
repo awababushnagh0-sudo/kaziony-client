@@ -53,5 +53,7 @@
   "themeHint": "اختر شكل التطبيق: فاتح أو داكن أو مثل هاتفك.",
   "themeSystem": "تلقائي",
   "themeLight": "فاتح",
-  "themeDark": "داكن"
+  "themeDark": "داكن",
+  "continueWithGoogle": "المتابعة مع Google",
+  "continueWithApple": "المتابعة مع Apple"
 }

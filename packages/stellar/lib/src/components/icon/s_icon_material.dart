@@ -37,6 +37,11 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // map-pin
+  SIcons.navigate => const IconData(
+    0xe123,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // navigation
   SIcons.home => const IconData(
     0xe0f5,
     fontFamily: _f,
@@ -162,6 +167,31 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // clock
+  SIcons.bookings => const IconData(
+    0xe20f,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // ticket
+  SIcons.favorites => const IconData(
+    0xe0f2,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // heart
+  SIcons.leaf => const IconData(
+    0xe2de,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // leaf
+  SIcons.wallet => const IconData(
+    0xe204,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // wallet
+  SIcons.cash => const IconData(
+    0xe5b8,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // hand-coins
   SIcons.chart => const IconData(
     0xe068,
     fontFamily: _f,

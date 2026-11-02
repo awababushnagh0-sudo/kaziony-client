@@ -13,6 +13,7 @@ import '../components/input/s_input_material.dart';
 import '../components/item_summary/s_item_summary_material.dart';
 import '../components/list_page/s_list_page_material.dart';
 import '../components/list_tile/s_list_tile_material.dart';
+import '../components/map/s_map_material.dart';
 import '../components/menu/s_menu_material.dart';
 import '../components/nav_bar/s_nav_bar_material.dart';
 import '../components/paged_list/s_paged_list_material.dart';
@@ -34,6 +35,7 @@ import '../components/table/s_table_material.dart';
 import '../components/tag/s_tag_material.dart';
 import '../components/text/s_text_material.dart';
 import '../components/time_span/s_time_span_material.dart';
+import '../components/welcome/s_welcome_material.dart';
 import '../foundation/s_kit.dart';
 
 /// The default kit, built on Material widgets. Each renderer lives in its
@@ -75,4 +77,6 @@ const materialKit = StellarKit(
   confirmation: MaterialConfirmationRenderer(),
   timeSpan: MaterialTimeSpanRenderer(),
   profile: MaterialProfileRenderer(),
+  welcome: MaterialWelcomeRenderer(),
+  map: MaterialMapRenderer(),
 );

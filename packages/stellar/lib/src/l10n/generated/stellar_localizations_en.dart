@@ -184,4 +184,10 @@ class StellarLocalizationsEn extends StellarLocalizations {
 
   @override
   String get themeDark => 'Dark';
+
+  @override
+  String get continueWithGoogle => 'Continue with Google';
+
+  @override
+  String get continueWithApple => 'Continue with Apple';
 }

@@ -143,6 +143,68 @@ class MaterialButtonRenderer implements ButtonRenderer {
   }
 
   @override
+  Widget signIn(BuildContext context, SignInButtonSpec spec) {
+    final colors = context.colors;
+    // Each company's rules: Apple's is solid, dark on a light screen and
+    // light on a dark one, its mark in the words' color; Google's is plain
+    // with a border, its mark in color.
+    final (
+      background,
+      foreground,
+      border,
+      mark,
+      tint,
+    ) = switch (spec.provider) {
+      SignInProvider.apple => (
+        colors.text,
+        colors.surface,
+        BorderSide.none,
+        'apple',
+        colors.surface,
+      ),
+      SignInProvider.google => (
+        colors.surface,
+        colors.text,
+        BorderSide(color: colors.border),
+        'google',
+        null,
+      ),
+    };
+    final icon = spec.loading
+        ? SizedBox.square(
+            dimension: SIconSize.md.pixels,
+            child: CircularProgressIndicator(
+              strokeWidth: 2.5,
+              color: foreground,
+            ),
+          )
+        : Image.asset(
+            'assets/brands/$mark.png',
+            package: 'stellar',
+            width: SIconSize.md.pixels,
+            height: SIconSize.md.pixels,
+            color: tint,
+            excludeFromSemantics: true,
+          );
+    return SizedBox(
+      width: double.infinity,
+      child: AbsorbPointer(
+        absorbing: spec.loading,
+        child: OutlinedButton.icon(
+          style: OutlinedButton.styleFrom(
+            backgroundColor: background,
+            foregroundColor: foreground,
+            side: border,
+          ),
+          onPressed: spec.loading ? () {} : spec.onPressed,
+          icon: icon,
+          label: Text(spec.label),
+        ),
+      ),
+    );
+  }
+
+  @override
   Widget icon(BuildContext context, IconButtonSpec spec) => IconButton(
     tooltip: spec.tooltip,
     onPressed: spec.onPressed,

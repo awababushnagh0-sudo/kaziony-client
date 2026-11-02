@@ -84,5 +84,7 @@
   "themeHint": "Choose how the app looks: light, dark, or like your phone.",
   "themeSystem": "Automatic",
   "themeLight": "Light",
-  "themeDark": "Dark"
+  "themeDark": "Dark",
+  "continueWithGoogle": "Continue with Google",
+  "continueWithApple": "Continue with Apple"
 }

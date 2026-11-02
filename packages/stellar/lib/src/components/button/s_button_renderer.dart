@@ -67,9 +67,35 @@ class IconButtonSpec {
   final VoidCallback? onPressed;
 }
 
-/// Draws every kind of button: with a label ([ButtonVariant]) or just an
-/// icon.
+/// An account people sign in with.
+enum SignInProvider { apple, google }
+
+@immutable
+class SignInButtonSpec {
+  const SignInButtonSpec({
+    required this.provider,
+    required this.label,
+    required this.onPressed,
+    this.loading = false,
+  });
+
+  final SignInProvider provider;
+
+  /// "Continue with Apple", in the app's language.
+  final String label;
+  final VoidCallback? onPressed;
+
+  /// Shows a spinner and ignores taps while the sign-in runs.
+  final bool loading;
+}
+
+/// Draws every kind of button: with a label ([ButtonVariant]), just an
+/// icon, or one that signs in with another company's account.
 abstract interface class ButtonRenderer {
   Widget render(BuildContext context, ButtonSpec spec);
   Widget icon(BuildContext context, IconButtonSpec spec);
+
+  /// Full width, with the provider's mark before the label, as its rules
+  /// ask.
+  Widget signIn(BuildContext context, SignInButtonSpec spec);
 }

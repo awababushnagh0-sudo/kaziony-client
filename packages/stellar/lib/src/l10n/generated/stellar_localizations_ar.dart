@@ -180,4 +180,10 @@ class StellarLocalizationsAr extends StellarLocalizations {
 
   @override
   String get themeDark => 'داكن';
+
+  @override
+  String get continueWithGoogle => 'المتابعة مع Google';
+
+  @override
+  String get continueWithApple => 'المتابعة مع Apple';
 }

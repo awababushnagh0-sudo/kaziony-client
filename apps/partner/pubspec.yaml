@@ -18,6 +18,9 @@ dependencies:
   stellar: any
   offers_api: any
   intl: any
+  # Not imported: picks the Google Maps iOS plugin that works with Swift
+  # Package Manager (iOS 15+). Plugins only take this choice from the app.
+  google_maps_flutter_ios_sdk9: ^2.19.0
 
 dev_dependencies:
   flutter_test:
