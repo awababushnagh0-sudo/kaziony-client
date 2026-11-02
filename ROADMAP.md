@@ -255,10 +255,18 @@ The screen staff use all day, so it must be fast and work on a weak connection.
       Developer account (and is required on iOS alongside Google)
 - [ ] Before release: an Android OAuth client for the release key and for Play's
       app-signing key (their SHA-1s), and the Google consent screen published
-- [ ] Browse: offers around the saved place (the backend caps the radius), categories,
-      search, sort
-- [ ] Offer page, store page, follow
-- [ ] Claim → reservation with QR code and countdown, my claims, cancel
+- [x] Home: where offers are shown from, search, categories with the app's pictures, a
+      banner, then rows (ending soon, near you, biggest discount) with "See all"
+- [x] Browse: offers around the saved place (the backend caps the radius), categories,
+      search, sort (the Search tab and "See all" share one list page)
+- [x] Offer page: photo, prices, store, pieces left of the total, hold time, branches;
+      guests sign in to reserve, reserved shows the pickup code, sold out can't be tapped
+- [x] Reserve → pickup code page with QR code and countdown; Bookings tab lists them;
+      cancel after asking. Refusals (sold out, limit, not enough left) come with a stable
+      `error` code from the backend, said in the app's words
+- [x] Dev menu: "Sign in as a test customer" (dev auth), to try reserving without Google
+- [ ] Store page, follow
+- [ ] Guest illustration on Account: pick one that doesn't look like Presto's
 - [ ] Profile: name, contact phone, language
 
 ## Step 5: Admin dashboard (Flutter Web)
