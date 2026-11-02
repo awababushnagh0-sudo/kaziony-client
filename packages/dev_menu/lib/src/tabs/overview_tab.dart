@@ -76,6 +76,25 @@ class OverviewTab extends AppView {
         DevSection(
           title: 'Test actions',
           children: [
+            if (config.kind == AppKind.customer && session is! SignedIn)
+              ListTile(
+                leading: const Icon(Icons.person_add_alt),
+                title: const Text('Sign in as a test customer'),
+                subtitle: const Text(
+                  'No Google; the server must allow dev logins',
+                ),
+                onTap: () async {
+                  final result = await sessionController.debugSignInAsCustomer(
+                    'Test customer',
+                  );
+                  if (context.mounted) {
+                    showDevSnack(
+                      context,
+                      result is Ok ? 'Signed in' : 'Sign-in failed: $result',
+                    );
+                  }
+                },
+              ),
             ListTile(
               leading: const Icon(Icons.timer_off_outlined),
               title: const Text('Expire access token'),
