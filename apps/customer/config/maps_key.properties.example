@@ -1,0 +1,5 @@
+# Copy to maps_key.properties (kept out of git) and put the Google Maps key
+# here: Google Cloud console > APIs & Services > Credentials, the key
+# restricted to Maps SDK for Android and iOS and to this app
+# (ly.kaziony.customer). Android Gradle and the iOS build both read it.
+MAPS_API_KEY=

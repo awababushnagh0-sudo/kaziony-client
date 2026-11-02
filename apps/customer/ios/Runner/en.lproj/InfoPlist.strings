@@ -1,0 +1,2 @@
+/* Why the app asks for the location (iOS permission prompt). */
+"NSLocationWhenInUseUsageDescription" = "To show you offers from stores near you.";

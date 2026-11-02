@@ -1,0 +1,7 @@
+{
+  "APP_ENV": "staging",
+  "API_BASE_URL": "https://staging-api.example.ly",
+  "GOOGLE_SERVER_CLIENT_ID": "101057578884-us14r5t17hsfurgcaub03j6h2tqvc110.apps.googleusercontent.com",
+  "GOOGLE_IOS_CLIENT_ID": "101057578884-7ltqpocbm09g0fu9ihkfke33pquk6kk0.apps.googleusercontent.com",
+  "MAP_PROVIDER": "openfreemap"
+}

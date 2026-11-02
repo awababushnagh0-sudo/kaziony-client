@@ -54,6 +54,31 @@
       "program": "lib/main.dart",
       "flutterMode": "release",
       "args": ["--dart-define-from-file=config/prod.json"]
+    },
+    {
+      "name": "Customer · dev (local backend)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "apps/customer",
+      "program": "lib/main.dart",
+      "args": ["--dart-define-from-file=config/dev.json"]
+    },
+    {
+      "name": "Customer · staging",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "apps/customer",
+      "program": "lib/main.dart",
+      "args": ["--dart-define-from-file=config/staging.json"]
+    },
+    {
+      "name": "Customer · prod (release, no dev menu)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "apps/customer",
+      "program": "lib/main.dart",
+      "flutterMode": "release",
+      "args": ["--dart-define-from-file=config/prod.json"]
     }
   ]
 }

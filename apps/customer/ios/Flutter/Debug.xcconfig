@@ -1,0 +1,3 @@
+#include "Generated.xcconfig"
+// The Google Maps key, kept out of git (see config/maps_key.properties.example).
+#include? "../../config/maps_key.properties"

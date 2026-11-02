@@ -11,6 +11,7 @@ workspace:
   - packages/stellar
   - packages/offers_api
   - apps/partner
+  - apps/customer
   - apps/admin
 
 dev_dependencies:
