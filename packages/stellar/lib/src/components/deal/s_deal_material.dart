@@ -489,7 +489,8 @@ class SDealCardMaterial extends StatelessWidget implements SDealCard {
   }
 }
 
-/// [SDealPoster], drawn as a bordered [Material] with an [InkWell].
+/// [SDealPoster]: no box around it, the photo rounded on its own and the
+/// words under it, tapped as one with an [InkWell].
 class SDealPosterMaterial extends StatelessWidget implements SDealPoster {
   const SDealPosterMaterial({
     required this.title,
@@ -507,10 +508,14 @@ class SDealPosterMaterial extends StatelessWidget implements SDealPoster {
     super.key,
   });
 
-  static const _width = 288.0;
-  static const _photo = 150.0;
-  static const _photoWide = 180.0;
-  static const _logo = 40.0;
+  /// A card in a row takes most of the screen's width, so the next one
+  /// peeks in; never wider than this.
+  static const _rowShare = 0.72;
+  static const _rowMaxWidth = 320.0;
+
+  /// The photo's width to its height: wide, like a banner.
+  static const _photoRatio = 2.0;
+  static const _logo = 48.0;
 
   final String title;
   final String price;
@@ -534,7 +539,6 @@ class SDealPosterMaterial extends StatelessWidget implements SDealPoster {
     final discount = discountLabel;
     final stock = stockLabel;
     final originalPrice = this.originalPrice;
-    final photoHeight = inRow ? _photo : _photoWide;
     final placeholder = ColoredBox(
       color: c.cream,
       child: Center(
@@ -545,144 +549,149 @@ class SDealPosterMaterial extends StatelessWidget implements SDealPoster {
         ),
       ),
     );
-    final card = Material(
-      color: c.surface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Radii.xl),
-        side: BorderSide(color: c.border),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              height: photoHeight,
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  if (url == null)
-                    placeholder
-                  else
-                    CachedNetworkImage(
-                      imageUrl: url,
-                      fit: BoxFit.cover,
-                      memCacheHeight:
-                          (photoHeight * MediaQuery.devicePixelRatioOf(context))
-                              .round(),
-                      placeholder: (_, _) => placeholder,
-                      errorWidget: (_, _, _) => placeholder,
-                    ),
-                  if (discount != null)
-                    PositionedDirectional(
-                      top: Space.md,
-                      start: Space.md,
-                      child: _DiscountPill(discount),
-                    ),
+    final card = InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(Radii.xl),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AspectRatio(
+            aspectRatio: _photoRatio,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(Radii.xl),
+                  child: url == null
+                      ? placeholder
+                      : LayoutBuilder(
+                          builder: (context, box) => CachedNetworkImage(
+                            imageUrl: url,
+                            fit: BoxFit.cover,
+                            memCacheWidth:
+                                (box.maxWidth *
+                                        MediaQuery.devicePixelRatioOf(context))
+                                    .round(),
+                            placeholder: (_, _) => placeholder,
+                            errorWidget: (_, _, _) => placeholder,
+                          ),
+                        ),
+                ),
+                if (discount != null)
                   PositionedDirectional(
-                    bottom: Space.md,
-                    start: Space.md,
+                    top: Space.sm,
+                    end: Space.sm,
+                    child: _DiscountPill(discount),
+                  ),
+                PositionedDirectional(
+                  bottom: Space.sm,
+                  start: Space.sm,
+                  // The logo stands for the store on the card; the name
+                  // is for screen readers.
+                  child: Semantics(
+                    label: storeName,
+                    image: true,
                     child: _Logo(url: logo, size: _logo),
                   ),
-                  if (stock != null)
-                    PositionedDirectional(
-                      bottom: Space.md,
-                      end: Space.md,
-                      child: _OnPhotoPill(
-                        label: stock,
-                        color: stockHot ? c.accentInk : c.text,
-                      ),
+                ),
+                if (stock != null)
+                  PositionedDirectional(
+                    bottom: Space.sm,
+                    end: Space.sm,
+                    child: _OnPhotoPill(
+                      label: stock,
+                      color: stockHot ? c.accentInk : c.text,
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(Space.md),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                spacing: Space.md,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: Space.xxs,
-                      children: [
-                        Text(
-                          title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: text.body,
-                            fontWeight: SFontWeight.bold.value,
-                            color: c.text,
-                          ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              Space.xxs,
+              Space.sm,
+              Space.xxs,
+              0,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              spacing: Space.md,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: Space.xxs,
+                    children: [
+                      Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: text.body,
+                          fontWeight: SFontWeight.bold.value,
+                          color: c.text,
                         ),
-                        Text(
-                          storeName,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: text.small,
-                            color: c.textMuted,
-                          ),
-                        ),
-                        if (details.isNotEmpty)
-                          Row(
-                            spacing: Space.xs,
-                            children: [
-                              Icon(
-                                materialIcon(SIcons.clock),
-                                size: SIconSize.xs.pixels,
-                                color: c.textSubtle,
-                              ),
-                              Flexible(
-                                child: Text(
-                                  details.join(' · '),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: text.small,
-                                    color: c.textMuted,
-                                  ),
+                      ),
+                      if (details.isNotEmpty)
+                        Row(
+                          spacing: Space.xs,
+                          children: [
+                            Icon(
+                              materialIcon(SIcons.clock),
+                              size: SIconSize.xs.pixels,
+                              color: c.textSubtle,
+                            ),
+                            Flexible(
+                              child: Text(
+                                details.join(' · '),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: text.small,
+                                  color: c.textMuted,
                                 ),
                               ),
-                            ],
-                          ),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      if (originalPrice != null)
-                        Text(
-                          originalPrice,
-                          style: TextStyle(
-                            fontSize: text.small,
-                            color: c.textSubtle,
-                            decoration: TextDecoration.lineThrough,
-                            decorationColor: c.textSubtle,
-                          ),
+                            ),
+                          ],
                         ),
-                      Text(
-                        price,
-                        style: TextStyle(
-                          fontSize: text.title,
-                          fontWeight: SFontWeight.bold.value,
-                          color: c.primary,
-                        ),
-                      ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    if (originalPrice != null)
+                      Text(
+                        originalPrice,
+                        style: TextStyle(
+                          fontSize: text.small,
+                          color: c.textSubtle,
+                          decoration: TextDecoration.lineThrough,
+                          decorationColor: c.textSubtle,
+                        ),
+                      ),
+                    Text(
+                      price,
+                      style: TextStyle(
+                        fontSize: text.subtitle,
+                        fontWeight: SFontWeight.bold.value,
+                        color: c.primary,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
-    return inRow ? SizedBox(width: _width, child: card) : card;
+    if (!inRow) return card;
+    final width = MediaQuery.sizeOf(context).width * _rowShare;
+    return SizedBox(
+      width: width < _rowMaxWidth ? width : _rowMaxWidth,
+      child: card,
+    );
   }
 }
 
@@ -782,7 +791,7 @@ class _DiscountPill extends StatelessWidget {
   }
 }
 
-/// A short word in a white pill, so it reads on any photo ("3 left").
+/// A short word in a small white pill, so it reads on any photo ("2 left").
 class _OnPhotoPill extends StatelessWidget {
   const _OnPhotoPill({required this.label, required this.color});
 
@@ -797,13 +806,13 @@ class _OnPhotoPill extends StatelessWidget {
     ),
     child: Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: Space.md,
-        vertical: Space.xs,
+        horizontal: Space.sm,
+        vertical: Space.xxs,
       ),
       child: Text(
         label,
         style: TextStyle(
-          fontSize: context.style.text.small,
+          fontSize: context.style.text.tiny,
           fontWeight: SFontWeight.bold.value,
           color: color,
         ),
@@ -812,8 +821,11 @@ class _OnPhotoPill extends StatelessWidget {
   );
 }
 
-/// A store's logo in a white ring, so it stands off the photo; the store
-/// icon when it has none.
+/// How much of the photo shows through the plate under a store's logo.
+const _logoPlateOpacity = 0.8;
+
+/// A store's logo on a light round plate, so it stands off the photo while
+/// a little of it shows through; the store icon when it has none.
 class _Logo extends StatelessWidget {
   const _Logo({required this.url, required this.size});
 
@@ -834,23 +846,26 @@ class _Logo extends StatelessWidget {
     );
     return DecoratedBox(
       decoration: BoxDecoration(
+        color: c.surface.withValues(alpha: _logoPlateOpacity),
         shape: BoxShape.circle,
-        border: Border.all(color: c.surface, width: 2),
         boxShadow: [BoxShadow(color: c.shadow, blurRadius: 8)],
       ),
-      child: ClipOval(
-        child: SizedBox.square(
-          dimension: size,
-          child: url == null
-              ? fallback
-              : CachedNetworkImage(
-                  imageUrl: url,
-                  fit: BoxFit.cover,
-                  memCacheWidth: (size * MediaQuery.devicePixelRatioOf(context))
-                      .round(),
-                  placeholder: (_, _) => fallback,
-                  errorWidget: (_, _, _) => fallback,
-                ),
+      child: Padding(
+        padding: const EdgeInsets.all(Space.xs),
+        child: ClipOval(
+          child: SizedBox.square(
+            dimension: size,
+            child: url == null
+                ? fallback
+                : CachedNetworkImage(
+                    imageUrl: url,
+                    fit: BoxFit.cover,
+                    memCacheWidth:
+                        (size * MediaQuery.devicePixelRatioOf(context)).round(),
+                    placeholder: (_, _) => fallback,
+                    errorWidget: (_, _, _) => fallback,
+                  ),
+          ),
         ),
       ),
     );

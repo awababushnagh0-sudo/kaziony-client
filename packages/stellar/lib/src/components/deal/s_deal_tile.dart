@@ -151,17 +151,19 @@ abstract interface class SDealCard implements Widget {
   }) = SDealCardMaterial;
 }
 
-/// An offer as customers browse it: the photo big, with the discount, the
-/// store's logo and how much is left on it; the title and prices under it,
-/// then `details` ("Ends in 45 min · 0.8 km"). `inRow` gives it a fixed
-/// width, for a row that scrolls sideways.
+/// An offer as customers browse it: a wide photo, rounded, with the
+/// discount, the store's logo and how much is left on it; the title
+/// and prices under it, then `details` ("Ends in 45 min · 0.8 km"). The
+/// offer comes first: the logo stands for the store, whose `storeName`
+/// screen readers say. `inRow` makes it most of the screen's width, for a
+/// row that scrolls sideways.
 abstract interface class SDealPoster implements Widget {
   /// [price] and [originalPrice] are already written for people
   /// (`formatPrice`); [discountLabel] is "44% off". [stockLabel] is
   /// "3 left", null for what isn't counted; [stockHot] turns it orange,
   /// almost gone. [details] are short facts under the title, in this
-  /// order. [inRow] makes it one of a row that scrolls sideways: a fixed
-  /// width, so the next card peeks in.
+  /// order. [inRow] makes it one of a row that scrolls sideways: most of
+  /// the screen's width, so the next card peeks in.
   const factory SDealPoster({
     required String title,
     required String price,
