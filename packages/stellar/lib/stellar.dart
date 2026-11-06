@@ -26,6 +26,7 @@ export 'src/components/deal_photo/s_deal_photo.dart';
 export 'src/components/dialog/s_dialog.dart';
 export 'src/components/divider/s_divider.dart';
 export 'src/components/expandable/s_expandable.dart';
+export 'src/components/favorite_button/s_favorite_button.dart';
 export 'src/components/form/s_field_grid.dart';
 export 'src/components/form/s_form.dart';
 export 'src/components/form/s_form_section.dart';

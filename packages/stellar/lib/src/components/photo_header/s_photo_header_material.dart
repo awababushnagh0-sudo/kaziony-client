@@ -6,9 +6,9 @@ import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../badge/s_badge.dart';
 import '../badge/s_badge_material.dart';
+import '../favorite_button/s_heart_material.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
-import 's_heart_material.dart';
 import 's_photo_header.dart';
 
 /// [SPhotoHeader], drawn as a pinned [SliverPersistentHeader].
