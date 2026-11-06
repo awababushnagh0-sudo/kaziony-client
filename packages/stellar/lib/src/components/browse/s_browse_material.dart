@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -106,9 +108,19 @@ class SCategoryStripMaterial extends StatelessWidget implements SCategoryStrip {
   });
 
   static const _pictureSize = 64.0;
-  static const _choiceWidth = 84.0;
-  static const _underlineWidth = 24.0;
-  static const _underlineHeight = 3.0;
+  static const _choiceWidth = 80.0;
+
+  /// The sticker behind the picked one's picture, bigger than it: room
+  /// for it is kept above the picture and between it and the name.
+  static const _stickerSize = 80.0;
+  static const _stickerRoom = Space.sm;
+
+  /// The dot between two choices.
+  static const _dotSize = 4.0;
+
+  /// How the sticker pops in: a bounce, and a twist from a little turned.
+  static const _pop = Duration(milliseconds: 320);
+  static const _twist = 0.08;
 
   final List<CategoryChoice> choices;
   final int selected;
@@ -118,7 +130,7 @@ class SCategoryStripMaterial extends StatelessWidget implements SCategoryStrip {
   Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    // At least as wide as the screen, so a few choices sit in the middle
+    // At least as wide as the screen, so a few choices spread across it
     // and many still scroll.
     return LayoutBuilder(
       builder: (context, box) => SingleChildScrollView(
@@ -127,26 +139,75 @@ class SCategoryStripMaterial extends StatelessWidget implements SCategoryStrip {
         child: ConstrainedBox(
           constraints: BoxConstraints(minWidth: box.maxWidth - 2 * Space.sm),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            // The room the screen leaves goes evenly between the choices
+            // and the dots, keeping the dots off the sticker.
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              for (final (i, choice) in choices.indexed)
+              for (final (i, choice) in choices.indexed) ...[
+                // Level with the pictures' middles.
+                if (i > 0)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: _stickerRoom + (_pictureSize - _dotSize) / 2,
+                      left: Space.xs,
+                      right: Space.xs,
+                    ),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: c.primary,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const SizedBox.square(dimension: _dotSize),
+                    ),
+                  ),
                 Semantics(
                   selected: i == selected,
                   button: true,
-                  child: InkWell(
+                  // No ripple: the sticker popping in is the answer to a
+                  // tap.
+                  child: GestureDetector(
                     onTap: () => onSelected(i),
-                    borderRadius: BorderRadius.circular(Radii.lg),
+                    behavior: HitTestBehavior.opaque,
                     child: SizedBox(
                       width: _choiceWidth,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: Space.xs),
+                        padding: const EdgeInsets.only(
+                          top: _stickerRoom,
+                          bottom: Space.xs,
+                        ),
                         child: Column(
-                          spacing: Space.xs,
+                          spacing: _stickerRoom,
                           children: [
                             SizedBox.square(
                               dimension: _pictureSize,
-                              child: _Picture(choice),
+                              child: Stack(
+                                alignment: Alignment.center,
+                                clipBehavior: Clip.none,
+                                children: [
+                                  OverflowBox(
+                                    maxWidth: _stickerSize,
+                                    maxHeight: _stickerSize,
+                                    child: AnimatedRotation(
+                                      turns: i == selected ? 0 : -_twist,
+                                      duration: _pop,
+                                      curve: Curves.easeOutBack,
+                                      child: AnimatedScale(
+                                        scale: i == selected ? 1 : 0,
+                                        duration: _pop,
+                                        curve: Curves.easeOutBack,
+                                        child: CustomPaint(
+                                          size: const Size.square(_stickerSize),
+                                          painter: _StickerPainter(
+                                            c.accentSoft,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  _Picture(choice),
+                                ],
+                              ),
                             ),
                             Text(
                               choice.label,
@@ -160,34 +221,54 @@ class SCategoryStripMaterial extends StatelessWidget implements SCategoryStrip {
                                 color: i == selected ? c.primary : c.text,
                               ),
                             ),
-                            AnimatedOpacity(
-                              opacity: i == selected ? 1 : 0,
-                              duration: const Duration(milliseconds: 150),
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  color: c.primary,
-                                  borderRadius: BorderRadius.circular(
-                                    Radii.pill,
-                                  ),
-                                ),
-                                child: const SizedBox(
-                                  width: _underlineWidth,
-                                  height: _underlineHeight,
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ),
                     ),
                   ),
                 ),
+              ],
             ],
           ),
         ),
       ),
     );
   }
+}
+
+/// A round sticker with a wavy edge, like a cookie cutter's: behind the
+/// picked kind of store.
+class _StickerPainter extends CustomPainter {
+  const _StickerPainter(this.color);
+
+  final Color color;
+
+  static const _waves = 9;
+
+  /// How deep the waves cut, against the radius.
+  static const _depth = 0.07;
+
+  /// Points along the edge: enough for the waves to look smooth.
+  static const _steps = 108;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = size.center(Offset.zero);
+    final radius = size.shortestSide / 2 / (1 + _depth);
+    final path = Path();
+    for (var i = 0; i <= _steps; i++) {
+      final angle = 2 * pi * i / _steps;
+      final r = radius * (1 + _depth * cos(_waves * angle));
+      final point = center + Offset(r * cos(angle), r * sin(angle));
+      i == 0
+          ? path.moveTo(point.dx, point.dy)
+          : path.lineTo(point.dx, point.dy);
+    }
+    canvas.drawPath(path..close(), Paint()..color = color);
+  }
+
+  @override
+  bool shouldRepaint(_StickerPainter old) => old.color != color;
 }
 
 /// [SLogoTile], drawn as an [InkWell] column, the logo in a thin ring.

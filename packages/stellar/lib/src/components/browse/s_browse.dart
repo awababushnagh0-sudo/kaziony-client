@@ -30,9 +30,10 @@ abstract interface class SPlaceHeader implements Widget {
   }) = SPlaceHeaderMaterial;
 }
 
-/// The kinds of store, each a picture over its name, in a row: centered
-/// when they all fit, scrolling sideways when they don't; the `selected`
-/// one's name in the brand's green and underlined.
+/// The kinds of store, each a picture over its name, in a row: spread
+/// across when they all fit, scrolling sideways when they don't, a green
+/// dot between each two; the `selected` one's name in the brand's green,
+/// its picture on a soft orange wavy sticker that pops in.
 abstract interface class SCategoryStrip implements Widget {
   /// [selected] is the index in [choices] of the one showing.
   const factory SCategoryStrip({
