@@ -5,8 +5,8 @@ import '../../foundation/s_tokens.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 
-/// A heart: the icon set's outline, or filled in the brand's green once
-/// saved. Drawn when filled, as the icon set's hearts are outlines only.
+/// A heart: the icon set's outline, or filled in the favorites' pink-red
+/// once saved. Drawn when filled, as the icon set's hearts are outlines only.
 class HeartMaterial extends StatelessWidget {
   const HeartMaterial({required this.filled, super.key});
 
@@ -21,7 +21,7 @@ class HeartMaterial extends StatelessWidget {
     }
     return CustomPaint(
       size: Size.square(size),
-      painter: _HeartPainter(c.primary),
+      painter: _HeartPainter(c.favorite),
     );
   }
 }

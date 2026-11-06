@@ -26,10 +26,10 @@ class SPhotoHeaderMaterial extends StatelessWidget implements SPhotoHeader {
   });
 
   /// The photo's height, under the status bar.
-  static const _photoHeight = 240.0;
+  static const _photoHeight = 200.0;
 
   /// Taller with words on it, so they leave the picture room.
-  static const _captionedHeight = 300.0;
+  static const _captionedHeight = 250.0;
 
   /// Without a photo: room for the bar and the discount tag under it, or
   /// for the caption.

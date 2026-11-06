@@ -29,6 +29,7 @@ class StellarColors {
     required this.scrim,
     required this.onScrim,
     required this.onScrimBrand,
+    required this.favorite,
     required this.codeInk,
     required this.codePaper,
     required this.background,
@@ -113,6 +114,10 @@ class StellarColors {
   /// The brand's green light enough to read on a photo's dark shade (an
   /// offer's price): the same in both themes.
   final Color onScrimBrand;
+
+  /// A saved favorite's heart: pink-red, as people know a favorite by, not
+  /// the brand's green.
+  final Color favorite;
 
   /// A QR code's dark squares and the white around them: the same in both
   /// themes, so every scanner reads it.
