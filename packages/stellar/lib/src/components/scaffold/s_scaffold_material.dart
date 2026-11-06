@@ -5,6 +5,7 @@ import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
+import '../nav_bar/s_nav_bar_material.dart';
 import '../shell/s_shell_material.dart';
 import 's_scaffold.dart';
 
@@ -47,6 +48,12 @@ class SScaffoldMaterial extends StatelessWidget implements SScaffold {
   Widget build(BuildContext context) {
     // Phones keep the usual 16 at the sides, as the big apps do.
     final sides = context.style == StellarStyle.app ? Space.lg : Space.xl;
+    // What floats over the page's foot (the tabs' banner, the floating
+    // button), for lists to end above.
+    final banner = NavBarRoom.of(context);
+    final room =
+        banner +
+        (floating == null ? 0 : context.style.controlHeight + Space.lg);
     Widget body = this.body;
     if (padded) {
       body = Padding(
@@ -78,6 +85,7 @@ class SScaffoldMaterial extends StatelessWidget implements SScaffold {
     } else if (scrollable) {
       final onRefresh = this.onRefresh;
       body = SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: banner),
         // Short pages can still be pulled down to reload.
         physics: onRefresh == null
             ? null
@@ -126,7 +134,7 @@ class SScaffoldMaterial extends StatelessWidget implements SScaffold {
           : null,
       body: SafeArea(
         top: !underStatusBar,
-        child: floating == null ? body : _RoomForFloating(child: body),
+        child: room == 0 ? body : _RoomAtFoot(bottom: room, child: body),
       ),
       floatingActionButton: floating == null
           ? null
@@ -200,22 +208,19 @@ class SScaffoldMaterial extends StatelessWidget implements SScaffold {
   }
 }
 
-/// Asks lists for room at their end, so the floating button never hides
-/// the last row.
-class _RoomForFloating extends StatelessWidget {
-  const _RoomForFloating({required this.child});
+/// Asks lists for room at their end, so what floats over the page's foot
+/// never hides the last row.
+class _RoomAtFoot extends StatelessWidget {
+  const _RoomAtFoot({required this.bottom, required this.child});
 
+  final double bottom;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
     return MediaQuery(
-      data: media.copyWith(
-        padding: media.padding.copyWith(
-          bottom: context.style.controlHeight + Space.lg,
-        ),
-      ),
+      data: media.copyWith(padding: media.padding.copyWith(bottom: bottom)),
       child: child,
     );
   }

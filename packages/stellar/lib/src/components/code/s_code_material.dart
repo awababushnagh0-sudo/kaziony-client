@@ -8,6 +8,7 @@ import 'package:reactive_forms/reactive_forms.dart'
 
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
+import '../snack/s_snack.dart';
 import 's_code_card.dart';
 import 's_code_input.dart';
 import 's_qr_code.dart';
@@ -100,6 +101,53 @@ class SCodeCardMaterial extends StatelessWidget implements SCodeCard {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// [SCodeCard.copyable], its button a Material [IconButton].
+class SCopyableCodeMaterial extends StatelessWidget implements SCodeCard {
+  const SCopyableCodeMaterial({
+    required this.code,
+    required this.copyLabel,
+    required this.copiedMessage,
+    super.key,
+  });
+
+  final String code;
+  final String copyLabel;
+  final String copiedMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Semantics(
+      button: true,
+      hint: copyLabel,
+      // No ripple: the snack says it's copied.
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () async {
+          await Clipboard.setData(ClipboardData(text: code));
+          if (context.mounted) SSnack.info(context, copiedMessage);
+        },
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            code,
+            textDirection: TextDirection.ltr,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            style: TextStyle(
+              fontSize: context.style.text.code,
+              fontWeight: SFontWeight.bold.value,
+              letterSpacing: _letterSpacing,
+              height: 1.2,
+              color: c.text,
+            ),
           ),
         ),
       ),

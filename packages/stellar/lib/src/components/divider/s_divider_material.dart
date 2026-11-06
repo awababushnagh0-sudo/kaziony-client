@@ -28,3 +28,41 @@ class SDividerMaterial extends StatelessWidget implements SDivider {
           );
   }
 }
+
+/// [SDivider.dashed], painted.
+class SDashedDividerMaterial extends StatelessWidget implements SDivider {
+  const SDashedDividerMaterial({super.key});
+
+  @override
+  Widget build(BuildContext context) => CustomPaint(
+    size: const Size.fromHeight(1),
+    painter: _DashesPainter(context.colors.border),
+  );
+}
+
+class _DashesPainter extends CustomPainter {
+  const _DashesPainter(this.color);
+
+  final Color color;
+
+  static const _dash = 5.0;
+  static const _gap = 4.0;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = size.height;
+    final y = size.height / 2;
+    for (var x = 0.0; x < size.width; x += _dash + _gap) {
+      canvas.drawLine(
+        Offset(x, y),
+        Offset((x + _dash).clamp(0, size.width), y),
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(_DashesPainter old) => old.color != color;
+}

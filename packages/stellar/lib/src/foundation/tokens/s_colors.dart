@@ -30,6 +30,10 @@ class StellarColors {
     required this.onScrim,
     required this.onScrimBrand,
     required this.favorite,
+    required this.inverseSurface,
+    required this.onInverse,
+    required this.onInverseMuted,
+    required this.onInverseAccent,
     required this.codeInk,
     required this.codePaper,
     required this.background,
@@ -118,6 +122,15 @@ class StellarColors {
   /// A saved favorite's heart: pink-red, as people know a favorite by, not
   /// the brand's green.
   final Color favorite;
+
+  /// A bar floating over the page about something under way (a booking to
+  /// pick up): dark in both looks, a little lighter than the dark page,
+  /// with [onInverse] on it, [onInverseMuted] for quieter words and
+  /// [onInverseAccent] for what's running out (the time left).
+  final Color inverseSurface;
+  final Color onInverse;
+  final Color onInverseMuted;
+  final Color onInverseAccent;
 
   /// A QR code's dark squares and the white around them: the same in both
   /// themes, so every scanner reads it.

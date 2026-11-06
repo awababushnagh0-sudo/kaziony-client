@@ -16,7 +16,13 @@ class SSliverViewMaterial extends StatelessWidget implements SSliverView {
     final view = CustomScrollView(
       // Short pages can still be pulled down to reload.
       physics: onRefresh == null ? null : const AlwaysScrollableScrollPhysics(),
-      slivers: slivers,
+      slivers: [
+        ...slivers,
+        // Room to end above what floats over the page's foot.
+        SliverToBoxAdapter(
+          child: SizedBox(height: MediaQuery.paddingOf(context).bottom),
+        ),
+      ],
     );
     if (onRefresh == null) return view;
     return RefreshIndicator(

@@ -151,6 +151,11 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // scan-qr-code
+  SIcons.qrCode => const IconData(
+    0xe1df,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // qr-code
   SIcons.torch => const IconData(
     0xe0d3,
     fontFamily: _f,

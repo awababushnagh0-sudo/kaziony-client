@@ -12,4 +12,14 @@ abstract interface class SCodeCard implements Widget {
     required String code,
     Key? key,
   }) = SCodeCardMaterial;
+
+  /// The code alone, in big dark letters on the card it's in; tapping it
+  /// copies it and says so ([copiedMessage]). [copyLabel] says what a tap
+  /// does, for screen readers.
+  const factory SCodeCard.copyable({
+    required String code,
+    required String copyLabel,
+    required String copiedMessage,
+    Key? key,
+  }) = SCopyableCodeMaterial;
 }

@@ -11,4 +11,8 @@ abstract interface class SDivider implements Widget {
   /// own (from a store's branches to its offers): plainer to see than a
   /// line.
   const factory SDivider.band({Key? key}) = SDividerMaterial.band;
+
+  /// A dashed line, as across a ticket: between a pass's head and its
+  /// code.
+  const factory SDivider.dashed({Key? key}) = SDashedDividerMaterial;
 }

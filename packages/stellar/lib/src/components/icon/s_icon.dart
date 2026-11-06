@@ -32,6 +32,9 @@ enum SIcons {
 
   /// Reads a customer's code at the counter.
   scan,
+
+  /// Shows the customer's own code, to be read.
+  qrCode,
   torch,
   torchOff,
   keyboard,
