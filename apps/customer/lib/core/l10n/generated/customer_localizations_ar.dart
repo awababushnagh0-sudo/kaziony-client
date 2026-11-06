@@ -488,21 +488,6 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   }
 
   @override
-  String endsInMinutes(int minutes) {
-    return 'ينتهي خلال $minutes د';
-  }
-
-  @override
-  String endsAtTime(String time) {
-    return 'حتى $time';
-  }
-
-  @override
-  String endsOnDay(String day) {
-    return 'حتى $day';
-  }
-
-  @override
   String distanceKm(String km) {
     return '$km كم';
   }

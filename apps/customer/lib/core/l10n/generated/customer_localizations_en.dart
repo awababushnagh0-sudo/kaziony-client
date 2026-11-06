@@ -476,21 +476,6 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   }
 
   @override
-  String endsInMinutes(int minutes) {
-    return 'Ends in $minutes min';
-  }
-
-  @override
-  String endsAtTime(String time) {
-    return 'Until $time';
-  }
-
-  @override
-  String endsOnDay(String day) {
-    return 'Until $day';
-  }
-
-  @override
   String distanceKm(String km) {
     return '$km km';
   }

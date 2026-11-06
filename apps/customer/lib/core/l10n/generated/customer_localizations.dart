@@ -839,24 +839,6 @@ abstract class CustomerLocalizations {
   /// **'{left} of {total} left'**
   String piecesOfTotal(int left, int total);
 
-  /// No description provided for @endsInMinutes.
-  ///
-  /// In en, this message translates to:
-  /// **'Ends in {minutes} min'**
-  String endsInMinutes(int minutes);
-
-  /// No description provided for @endsAtTime.
-  ///
-  /// In en, this message translates to:
-  /// **'Until {time}'**
-  String endsAtTime(String time);
-
-  /// No description provided for @endsOnDay.
-  ///
-  /// In en, this message translates to:
-  /// **'Until {day}'**
-  String endsOnDay(String day);
-
   /// No description provided for @distanceKm.
   ///
   /// In en, this message translates to:

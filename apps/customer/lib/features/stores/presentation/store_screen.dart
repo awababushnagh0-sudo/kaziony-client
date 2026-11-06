@@ -62,13 +62,13 @@ class StoreScreen extends AppView {
                         children: [
                           for (final offer in store.offers)
                             Padding(
-                              // Cards have no box around them, so they need
-                              // more room apart than tiles do.
-                              padding: EdgeInsets.fromLTRB(
+                              // Cards and tiles alike are raised: room
+                              // apart for their shadows.
+                              padding: const EdgeInsets.fromLTRB(
                                 Space.lg,
                                 0,
                                 Space.lg,
-                                tiles ? Space.sm : Space.md,
+                                Space.md,
                               ),
                               child: OfferCard(
                                 offer,

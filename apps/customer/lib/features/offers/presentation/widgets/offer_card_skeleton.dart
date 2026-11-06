@@ -35,7 +35,7 @@ class OfferListSkeleton extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(Space.lg, Space.md, Space.lg, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: tiles ? Space.sm : Space.lg,
+        spacing: Space.md,
         children: [
           for (var i = 0; i < _count; i++)
             OfferCardSkeleton(
@@ -102,30 +102,50 @@ class _Tile extends StatelessWidget {
   const _Tile();
 
   @override
-  Widget build(BuildContext context) => const SCard(
-    child: Row(
-      spacing: Space.md,
-      children: [
-        SBone.image(size: SImageSize.tile),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: Space.xxs,
-            children: [
-              SBone.text(length: BoneLength.long),
-              SBone.text(
-                variant: TextVariant.caption,
-                length: BoneLength.medium,
-              ),
-              SBone.text(variant: TextVariant.caption),
-              SBone.text(
-                variant: TextVariant.subtitle,
-                length: BoneLength.short,
-              ),
-            ],
+  Widget build(BuildContext context) => const SCard.raised(
+    padded: false,
+    child: Padding(
+      padding: EdgeInsets.all(Space.sm),
+      child: Row(
+        spacing: Space.md,
+        children: [
+          SBone.image(size: SImageSize.tile),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SBone.text(length: BoneLength.long),
+                SBone.text(
+                  variant: TextVariant.caption,
+                  length: BoneLength.medium,
+                ),
+                Gap(Space.xxs),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  spacing: Space.md,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: Space.xxs,
+                        children: [
+                          SBone.text(variant: TextVariant.caption),
+                          SBone.text(
+                            variant: TextVariant.caption,
+                            length: BoneLength.medium,
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Where the prices go.
+                    SBone.badge(),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }

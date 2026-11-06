@@ -18,30 +18,6 @@ extension OfferTexts on CustomerLocalizations {
     languageCode: Localizations.localeOf(context).languageCode,
   );
 
-  /// "2 left", only once a counted offer is almost gone: plenty left is
-  /// nothing to act on, a few left is a reason to reserve now.
-  String? stock(Offer offer) =>
-      offer.almostGone ? piecesLeft(offer.remaining ?? 0) : null;
-
-  /// When it ends, as short as it can be: "Ends in 45 min" in the last
-  /// hour, "Until 9:00 PM" today, "Until Thursday" this coming week,
-  /// "Until Nov 9" after.
-  String ends(BuildContext context, Offer offer, DateTime now) {
-    final language = Localizations.localeOf(context).languageCode;
-    final left = offer.endsAt.difference(now);
-    if (left.inMinutes < 60) {
-      return endsInMinutes(left.inMinutes < 1 ? 1 : left.inMinutes);
-    }
-    if (isSameDay(offer.endsAt, now)) {
-      return endsAtTime(formatTime(offer.endsAt, languageCode: language));
-    }
-    return endsOnDay(
-      _daysApart(now, offer.endsAt) < _daysNamed
-          ? formatWeekday(offer.endsAt, languageCode: language)
-          : formatDayMonth(offer.endsAt, languageCode: language),
-    );
-  }
-
   /// When it can be picked up, on the offer's page: "Pick up 4:00 PM –
   /// 9:00 PM" within one day, else "Pick up until 9:00 PM". The day is
   /// [pickupDay]'s.
@@ -89,12 +65,6 @@ extension OfferTexts on CustomerLocalizations {
 
   /// "1.2 km".
   String distance(double km) => distanceKm(km.toStringAsFixed(1));
-
-  /// The facts under an offer's title: when it ends, how far.
-  List<String> details(BuildContext context, Offer offer, DateTime now) => [
-    ends(context, offer, now),
-    if (offer.nearestBranch.distanceKm case final km?) distance(km),
-  ];
 }
 
 /// A weekday names one day only within the week ahead; past it, the date.

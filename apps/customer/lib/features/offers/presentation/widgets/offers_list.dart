@@ -74,14 +74,8 @@ class OffersPagedList extends AppView {
       header: header,
       itemCount: page.items.length,
       itemBuilder: (context, index) => Padding(
-        // Cards have no box around them, so they need more room apart
-        // than tiles do.
-        padding: EdgeInsets.fromLTRB(
-          Space.lg,
-          0,
-          Space.lg,
-          tiles ? Space.sm : Space.md,
-        ),
+        // Cards and tiles alike are raised: room apart for their shadows.
+        padding: const EdgeInsets.fromLTRB(Space.lg, 0, Space.lg, Space.md),
         child: OfferCard(
           page.items[index],
           shape: tiles ? OfferCardShape.tile : OfferCardShape.card,

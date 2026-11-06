@@ -50,8 +50,9 @@ class OfferCard extends AppView {
         padded: false,
         child: _Boxed(offer: offer, now: now),
       ),
-      OfferCardShape.tile => SCard(
+      OfferCardShape.tile => SCard.raised(
         onTap: open,
+        padded: false,
         child: _Tile(offer: offer, now: now),
       ),
     };
@@ -70,10 +71,7 @@ class _Boxed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final s = CustomerLocalizations.of(context);
     final left = offer.remaining ?? 0;
-    final rating = offer.store.rating;
-    final km = offer.nearestBranch.distanceKm;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -88,15 +86,7 @@ class _Boxed extends StatelessWidget {
                 PositionedDirectional(
                   top: Space.sm,
                   start: 0,
-                  // White, to read on any photo; orange words once
-                  // almost gone.
-                  child: SBadge(
-                    s.piecesLeft(left),
-                    tone: offer.almostGone
-                        ? BadgeTone.onPhotoHot
-                        : BadgeTone.onPhoto,
-                    edge: BadgeEdge.start,
-                  ),
+                  child: _LeftTag(offer: offer, left: left),
                 ),
               // The logo stands for the store; its name is for screen
               // readers.
@@ -108,11 +98,7 @@ class _Boxed extends StatelessWidget {
               PositionedDirectional(
                 bottom: 0,
                 end: 0,
-                child: SBadge(
-                  s.discountOff(offer.discountPercent),
-                  tone: BadgeTone.brand,
-                  edge: BadgeEdge.end,
-                ),
+                child: _DiscountTag(offer, edge: BadgeEdge.end),
               ),
             ],
           ),
@@ -133,55 +119,7 @@ class _Boxed extends StatelessWidget {
                 weight: SFontWeight.bold,
                 maxLines: 1,
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                spacing: Space.md,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: Space.xxs,
-                      children: [
-                        _Fact(
-                          icon: SIcons.clock,
-                          text: s.cardPickup(context, offer, now),
-                        ),
-                        // Each only once known: a new store has no
-                        // rating, and the distance needs the customer's
-                        // place.
-                        if (rating != null || km != null)
-                          Row(
-                            spacing: Space.sm,
-                            children: [
-                              if (rating != null)
-                                SRating(
-                                  average: rating.average,
-                                  label: s.rating(rating),
-                                  small: true,
-                                ),
-                              if (rating != null && km != null)
-                                const SText(
-                                  '|',
-                                  variant: TextVariant.caption,
-                                  color: SColor.textSubtle,
-                                ),
-                              if (km != null)
-                                Flexible(
-                                  child: SText(
-                                    s.distance(km),
-                                    variant: TextVariant.caption,
-                                    weight: SFontWeight.semibold,
-                                    maxLines: 1,
-                                  ),
-                                ),
-                            ],
-                          ),
-                      ],
-                    ),
-                  ),
-                  _Prices(offer),
-                ],
-              ),
+              _Facts(offer: offer, now: now),
             ],
           ),
         ),
@@ -190,8 +128,10 @@ class _Boxed extends StatelessWidget {
   }
 }
 
-/// A small photo at the start with the discount on its corner, the words
-/// beside it, in an outlined box.
+/// A square photo at the start, with the card's tags against its edge:
+/// how many are left at its top, the discount at its foot. Beside it the
+/// title, the store, then when to pick up and the rating and how far, the
+/// prices beside those two, as on the card.
 class _Tile extends StatelessWidget {
   const _Tile({required this.offer, required this.now});
 
@@ -200,51 +140,143 @@ class _Tile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final left = offer.remaining ?? 0;
+    return Padding(
+      padding: const EdgeInsets.all(Space.sm),
+      child: Row(
+        spacing: Space.md,
+        children: [
+          Stack(
+            children: [
+              SImage(offer.thumbUrl ?? offer.imageUrl, size: SImageSize.tile),
+              if (offer.limited && left > 0)
+                PositionedDirectional(
+                  top: Space.sm,
+                  start: 0,
+                  child: _LeftTag(offer: offer, left: left),
+                ),
+              PositionedDirectional(
+                bottom: Space.sm,
+                start: 0,
+                child: _DiscountTag(offer, edge: BadgeEdge.start),
+              ),
+            ],
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _Title(offer.title),
+                SText(
+                  offer.store.name,
+                  variant: TextVariant.caption,
+                  color: SColor.textMuted,
+                  maxLines: 1,
+                ),
+                const Gap(Space.xxs),
+                _Facts(offer: offer, now: now),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// When to pick up, then the rating and how far, with the prices beside
+/// those two lines.
+class _Facts extends StatelessWidget {
+  const _Facts({required this.offer, required this.now});
+
+  final Offer offer;
+  final DateTime now;
+
+  @override
+  Widget build(BuildContext context) {
     final s = CustomerLocalizations.of(context);
-    final stock = s.stock(offer);
+    final rating = offer.store.rating;
+    final km = offer.nearestBranch.distanceKm;
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
       spacing: Space.md,
       children: [
-        SDealPhoto(
-          offer.thumbUrl ?? offer.imageUrl,
-          size: SImageSize.tile,
-          discount: s.discountOff(offer.discountPercent),
-        ),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: Space.xxs,
             children: [
-              Row(
-                spacing: Space.sm,
-                children: [
-                  Expanded(child: _Title(offer.title)),
-                  if (stock != null) SBadge(stock, tone: BadgeTone.warning),
-                ],
-              ),
-              SText(
-                offer.store.name,
-                variant: TextVariant.caption,
-                color: SColor.textMuted,
-                maxLines: 1,
-              ),
               _Fact(
                 icon: SIcons.clock,
-                text: s.details(context, offer, now).join(' · '),
+                text: s.cardPickup(context, offer, now),
               ),
-              Row(
-                spacing: Space.sm,
-                children: [
-                  _Price(s.price(context, offer.offerPrice)),
-                  _WasPrice(s.price(context, offer.originalPrice)),
-                ],
-              ),
+              // Each only once known: a new store has no rating, and the
+              // distance needs the customer's place.
+              if (rating != null || km != null)
+                Row(
+                  spacing: Space.sm,
+                  children: [
+                    if (rating != null)
+                      SRating(
+                        average: rating.average,
+                        label: s.rating(rating),
+                        small: true,
+                      ),
+                    if (rating != null && km != null)
+                      const SText(
+                        '|',
+                        variant: TextVariant.caption,
+                        color: SColor.textSubtle,
+                      ),
+                    if (km != null)
+                      Flexible(
+                        child: SText(
+                          s.distance(km),
+                          variant: TextVariant.caption,
+                          weight: SFontWeight.semibold,
+                          maxLines: 1,
+                        ),
+                      ),
+                  ],
+                ),
             ],
           ),
         ),
+        _Prices(offer),
       ],
     );
   }
+}
+
+/// "3 left" against a photo's edge: white, to read on any photo; orange
+/// words once almost gone.
+class _LeftTag extends StatelessWidget {
+  const _LeftTag({required this.offer, required this.left});
+
+  final Offer offer;
+  final int left;
+
+  @override
+  Widget build(BuildContext context) => SBadge(
+    CustomerLocalizations.of(context).piecesLeft(left),
+    tone: offer.almostGone ? BadgeTone.onPhotoHot : BadgeTone.onPhoto,
+    edge: BadgeEdge.start,
+  );
+}
+
+/// The discount against a photo's [edge], in the brand's green.
+class _DiscountTag extends StatelessWidget {
+  const _DiscountTag(this.offer, {required this.edge});
+
+  final Offer offer;
+  final BadgeEdge edge;
+
+  @override
+  Widget build(BuildContext context) => SBadge(
+    CustomerLocalizations.of(context).discountOff(offer.discountPercent),
+    tone: BadgeTone.brand,
+    edge: edge,
+  );
 }
 
 /// One line: people see the photo and the start of the title, and open

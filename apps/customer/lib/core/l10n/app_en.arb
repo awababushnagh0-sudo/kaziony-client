@@ -241,30 +241,6 @@
       }
     }
   },
-  "endsInMinutes": "Ends in {minutes} min",
-  "@endsInMinutes": {
-    "placeholders": {
-      "minutes": {
-        "type": "int"
-      }
-    }
-  },
-  "endsAtTime": "Until {time}",
-  "@endsAtTime": {
-    "placeholders": {
-      "time": {
-        "type": "String"
-      }
-    }
-  },
-  "endsOnDay": "Until {day}",
-  "@endsOnDay": {
-    "placeholders": {
-      "day": {
-        "type": "String"
-      }
-    }
-  },
   "distanceKm": "{km} km",
   "@distanceKm": {
     "placeholders": {
