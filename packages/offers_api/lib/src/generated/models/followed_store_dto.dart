@@ -15,6 +15,8 @@ class FollowedStoreDto {
     required this.name,
     required this.logoUrl,
     required this.category,
+    required this.ratingAverage,
+    required this.ratingCount,
     required this.liveOfferCount,
     required this.followedAt,
   });
@@ -25,6 +27,10 @@ class FollowedStoreDto {
   final String name;
   final String? logoUrl;
   final CategoryDto category;
+
+  /// Average stars from customers' pickups, one decimal; null before the first.
+  final num? ratingAverage;
+  final num ratingCount;
   final num liveOfferCount;
   final DateTime followedAt;
 

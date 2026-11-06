@@ -97,6 +97,7 @@ class ApiStoresRepository implements StoresRepository {
             logoUrl: store.logoUrl,
             category: toCategory(store.category),
             liveOfferCount: store.liveOfferCount.toInt(),
+            rating: toRating(store.ratingAverage, store.ratingCount),
           ),
       ],
     );

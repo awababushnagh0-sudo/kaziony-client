@@ -14,10 +14,9 @@ import '../../features/offers/presentation/home_screen.dart';
 import '../../features/offers/presentation/offer_screen.dart';
 import '../../features/offers/presentation/search_screen.dart';
 import '../../features/offers/presentation/section_offers_screen.dart';
+import '../../features/stores/presentation/favorites_screen.dart';
 import '../../features/stores/presentation/store_screen.dart';
 import '../../features/welcome/presentation/welcome_screen.dart';
-import '../l10n/generated/customer_localizations.dart';
-import '../widgets/coming_soon_screen.dart';
 import '../widgets/customer_shell.dart';
 import 'redirect.dart';
 import 'routes.dart';
@@ -100,14 +99,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       StatefulShellRoute.indexedStack(
         builder: (_, _, shell) => CustomerShell(shell: shell),
         branches: [
-          _tab(Routes.home, (_) => const HomeScreen()),
-          _tab(Routes.search, (_) => const SearchScreen()),
-          _tab(Routes.bookings, (_) => const BookingsScreen()),
-          _tab(
-            Routes.favorites,
-            (s) => ComingSoonScreen(title: s.favoritesTitle),
-          ),
-          _tab(Routes.account, (_) => const AccountScreen()),
+          _tab(Routes.home, const HomeScreen()),
+          _tab(Routes.search, const SearchScreen()),
+          _tab(Routes.bookings, const BookingsScreen()),
+          _tab(Routes.favorites, const FavoritesScreen()),
+          _tab(Routes.account, const AccountScreen()),
         ],
       ),
     ],
@@ -117,14 +113,6 @@ final routerProvider = Provider<GoRouter>((ref) {
 /// Under both location pages: [Routes.welcomeMap], [Routes.locationMap].
 final _map = GoRoute(path: 'map', builder: (_, _) => const MapPickerScreen());
 
-StatefulShellBranch _tab(
-  String path,
-  Widget Function(CustomerLocalizations s) page,
-) => StatefulShellBranch(
-  routes: [
-    GoRoute(
-      path: path,
-      builder: (context, _) => page(CustomerLocalizations.of(context)),
-    ),
-  ],
+StatefulShellBranch _tab(String path, Widget page) => StatefulShellBranch(
+  routes: [GoRoute(path: path, builder: (_, _) => page)],
 );

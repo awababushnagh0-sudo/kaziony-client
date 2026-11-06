@@ -18,8 +18,8 @@ import 'widgets/offer_card_skeleton.dart';
 
 /// The Home tab: where offers are shown from, search, the kinds of store,
 /// a few words about the app, then rows of offers around (ending soon,
-/// nearest, biggest discount) between rows of stores (near you, followed),
-/// and the way to every offer.
+/// nearest, biggest discount) with the stores near you between them, your
+/// favorite stores under them, and the way to every offer.
 class HomeScreen extends AppView {
   const HomeScreen({super.key});
 
@@ -213,9 +213,10 @@ class _AboutBanners extends StatelessWidget {
   }
 }
 
-/// The rows of offers with the rows of stores between them (the stores
-/// follow the category too), and the way to every offer at the end. A row
-/// with nothing in it is left out.
+/// The rows of offers with the stores near the customer between them
+/// (the stores follow the category too), their favorite stores under the
+/// last row, and the way to every offer at the end. A row with nothing in
+/// it is left out.
 class _Sections extends AppView {
   const _Sections({required this.feed, required this.categoryId});
 
@@ -246,14 +247,16 @@ class _Sections extends AppView {
         categoryId: categoryId,
         offers: feed.nearby,
       ),
-      if (followedStores.isNotEmpty)
-        StoreLogoRow(title: s.homeFavoriteStores, stores: followedStores),
       if (feed.biggestDiscount.isNotEmpty)
         _OfferRow(
           sort: OfferSort.biggestDiscount,
           categoryId: categoryId,
           offers: feed.biggestDiscount,
         ),
+      // The customer's own stores close the page, where they look once
+      // the offers run out.
+      if (followedStores.isNotEmpty)
+        StoreLogoRow(title: s.homeFavoriteStores, stores: followedStores),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: Space.lg),
         child: _AllOffers(total: feed.total, categoryId: categoryId),

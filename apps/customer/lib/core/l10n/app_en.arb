@@ -119,7 +119,6 @@
   "bookingsTitle": "My bookings",
   "favoritesTitle": "Favorites",
   "accountTitle": "Account",
-  "comingSoon": "Coming soon",
   "signInTitle": "Sign in",
   "signInMessage": "To book offers and save your favorite stores. You can browse without an account.",
   "guestTitle": "Welcome, dear guest!",
@@ -318,5 +317,7 @@
   "statusCancelled": "Cancelled",
   "bookingsEmptyTitle": "No reservations yet",
   "bookingsEmptyMessage": "Reserve an offer and its pickup code shows up here.",
+  "favoritesEmptyTitle": "No favorite stores yet",
+  "favoritesEmptyMessage": "Tap the heart on a store's page to keep it here.",
   "browseOffers": "Browse offers"
 }

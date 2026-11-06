@@ -56,7 +56,6 @@
   "bookingsTitle": "حجوزاتي",
   "favoritesTitle": "المفضلة",
   "accountTitle": "حسابي",
-  "comingSoon": "قريباً",
   "signInTitle": "سجّل دخولك",
   "signInMessage": "لتحجز العروض وتحفظ متاجرك المفضلة. التصفح متاح بدون حساب.",
   "guestTitle": "أهلًا بك، ضيفنا العزيز!",
@@ -170,5 +169,7 @@
   "statusCancelled": "ملغى",
   "bookingsEmptyTitle": "لا حجوزات بعد",
   "bookingsEmptyMessage": "احجز عرضًا وسيظهر رمز استلامه هنا.",
+  "favoritesEmptyTitle": "لا محلات مفضلة بعد",
+  "favoritesEmptyMessage": "اضغط على القلب في صفحة أي محل ليظهر هنا.",
   "browseOffers": "تصفّح العروض"
 }

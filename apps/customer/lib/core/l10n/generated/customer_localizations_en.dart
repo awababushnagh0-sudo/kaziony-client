@@ -244,9 +244,6 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get accountTitle => 'Account';
 
   @override
-  String get comingSoon => 'Coming soon';
-
-  @override
   String get signInTitle => 'Sign in';
 
   @override
@@ -629,6 +626,13 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   @override
   String get bookingsEmptyMessage =>
       'Reserve an offer and its pickup code shows up here.';
+
+  @override
+  String get favoritesEmptyTitle => 'No favorite stores yet';
+
+  @override
+  String get favoritesEmptyMessage =>
+      'Tap the heart on a store\'s page to keep it here.';
 
   @override
   String get browseOffers => 'Browse offers';

@@ -437,12 +437,6 @@ abstract class CustomerLocalizations {
   /// **'Account'**
   String get accountTitle;
 
-  /// No description provided for @comingSoon.
-  ///
-  /// In en, this message translates to:
-  /// **'Coming soon'**
-  String get comingSoon;
-
   /// No description provided for @signInTitle.
   ///
   /// In en, this message translates to:
@@ -1120,6 +1114,18 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'Reserve an offer and its pickup code shows up here.'**
   String get bookingsEmptyMessage;
+
+  /// No description provided for @favoritesEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No favorite stores yet'**
+  String get favoritesEmptyTitle;
+
+  /// No description provided for @favoritesEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the heart on a store\'s page to keep it here.'**
+  String get favoritesEmptyMessage;
 
   /// No description provided for @browseOffers.
   ///

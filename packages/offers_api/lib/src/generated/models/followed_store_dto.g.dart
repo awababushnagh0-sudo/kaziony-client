@@ -12,6 +12,8 @@ FollowedStoreDto _$FollowedStoreDtoFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       logoUrl: json['logoUrl'] as String?,
       category: CategoryDto.fromJson(json['category'] as Map<String, dynamic>),
+      ratingAverage: json['ratingAverage'] as num?,
+      ratingCount: json['ratingCount'] as num,
       liveOfferCount: json['liveOfferCount'] as num,
       followedAt: DateTime.parse(json['followedAt'] as String),
     );
@@ -22,6 +24,8 @@ Map<String, dynamic> _$FollowedStoreDtoToJson(FollowedStoreDto instance) =>
       'name': instance.name,
       'logoUrl': ?instance.logoUrl,
       'category': instance.category,
+      'ratingAverage': ?instance.ratingAverage,
+      'ratingCount': instance.ratingCount,
       'liveOfferCount': instance.liveOfferCount,
       'followedAt': instance.followedAt.toIso8601String(),
     };

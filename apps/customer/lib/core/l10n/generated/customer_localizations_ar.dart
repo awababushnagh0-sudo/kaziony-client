@@ -256,9 +256,6 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get accountTitle => 'حسابي';
 
   @override
-  String get comingSoon => 'قريباً';
-
-  @override
   String get signInTitle => 'سجّل دخولك';
 
   @override
@@ -631,6 +628,13 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String get bookingsEmptyMessage => 'احجز عرضًا وسيظهر رمز استلامه هنا.';
+
+  @override
+  String get favoritesEmptyTitle => 'لا محلات مفضلة بعد';
+
+  @override
+  String get favoritesEmptyMessage =>
+      'اضغط على القلب في صفحة أي محل ليظهر هنا.';
 
   @override
   String get browseOffers => 'تصفّح العروض';

@@ -2,7 +2,8 @@ import 'package:kernel/kernel.dart';
 
 import '../../offers/domain/offer.dart';
 
-/// A store in a list (near you, followed): its logo, name, and how far.
+/// A store in a list (near you, the customer's favorites): its logo,
+/// name, and how far.
 class StoreSummary {
   const StoreSummary({
     required this.id,
@@ -25,7 +26,7 @@ class StoreSummary {
   /// Null for followed stores, listed wherever they are.
   final Branch? nearestBranch;
 
-  /// Null before its first rating, and for followed stores.
+  /// Null before its first rating.
   final StoreRating? rating;
 }
 

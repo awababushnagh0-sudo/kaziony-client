@@ -19,6 +19,11 @@ enum CustomerIllustrations implements Illustration {
   /// when nobody's signed in.
   guest('guest', Size(240, 180)),
 
+  /// The brand bag with a pink heart on its corner, among little hearts:
+  /// the Favorites tab before any store is saved. Pink, not the brand's
+  /// green, as people know a favorite by.
+  favorites('favorites', Size(240, 180)),
+
   /// The bag asleep under the moon: food saved as stores close, on a home
   /// banner.
   bagSleep('bag_sleep', Size(140, 120)),
