@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:customer/core/routes/routes.dart';
 import 'package:customer/features/location/domain/browse_location.dart';
 import 'package:customer/features/offers/domain/offer.dart';
@@ -72,6 +74,23 @@ void main() {
     await tester.tap(card);
     await tester.pumpAndSettle();
     expect(find.text('offer page'), findsOneWidget);
+  });
+
+  testWidgets('picking a kind of store shows the rows\' skeleton meanwhile', (
+    tester,
+  ) async {
+    await open(tester);
+    offers.browseGate = Completer<void>();
+
+    await tester.tap(find.text('Bakeries'));
+    await tester.pump();
+
+    expect(find.byWidgetPredicate((w) => w is SSkeleton), findsWidgets);
+    expect(find.byWidgetPredicate((w) => w is SLoadingView), findsNothing);
+
+    offers.browseGate!.complete();
+    await tester.pumpAndSettle();
+    expect(find.byType(OfferCard), findsWidgets);
   });
 
   testWidgets('"See all" lists the row\'s offers', (tester) async {

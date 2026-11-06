@@ -90,13 +90,16 @@ class HomeScreen extends AppView {
             sliver: SliverToBoxAdapter(child: _AboutBanners()),
           ),
           switch (feed) {
+            // Loading the first time, or again for another kind of store
+            // (the old rows are for the kind just left). Pulling down to
+            // refresh keeps the rows instead.
+            AsyncLoading() => const SliverPadding(
+              padding: EdgeInsets.symmetric(vertical: Space.xl),
+              sliver: SliverToBoxAdapter(child: _SectionsSkeleton()),
+            ),
             AsyncData(:final value) when !value.isEmpty => SliverPadding(
               padding: const EdgeInsets.symmetric(vertical: Space.xl),
               sliver: _Sections(feed: value, categoryId: categoryId),
-            ),
-            AsyncValue(isLoading: true, hasValue: false) => const SliverPadding(
-              padding: EdgeInsets.symmetric(vertical: Space.xl),
-              sliver: SliverToBoxAdapter(child: _SectionsSkeleton()),
             ),
             _ => SliverFillRemaining(
               hasScrollBody: false,

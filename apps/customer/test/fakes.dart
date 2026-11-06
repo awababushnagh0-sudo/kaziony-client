@@ -155,6 +155,9 @@ class FakeOffersRepository implements OffersRepository {
   AppFailure? browseFailure;
   final queries = <OffersQuery>[];
 
+  /// When set, [browse] waits for it: the page while offers load.
+  Completer<void>? browseGate;
+
   /// What [get] gives; built from [offers] when not set.
   Result<OfferDetail>? detail;
   List<Category> categoryList = const [bakery];
@@ -166,6 +169,7 @@ class FakeOffersRepository implements OffersRepository {
     required int pageSize,
   }) async {
     queries.add(query);
+    await browseGate?.future;
     if (browseFailure case final failure?) return Err(failure);
     return Ok(PageResult(items: offers, total: offers.length));
   }
