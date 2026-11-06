@@ -53,7 +53,7 @@ class PagedTable<T, F> extends AppView {
         failure: error is AppFailure ? error : UnknownFailure(error),
         onRetry: () => ref.invalidate(page),
       ),
-      _ when rows == null => const SLoadingView(),
+      _ when rows == null => const SSkeleton.list(leading: false),
       _ when current.hasFilters => SEmptyView(
         title: s.listNoResults,
         message: s.listNoResultsMessage,

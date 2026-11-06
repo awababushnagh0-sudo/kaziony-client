@@ -42,6 +42,7 @@ class ServiceAreasSection extends AppView {
           value: ref.watch(serviceAreasViewModel),
           onRetry: () => ref.invalidate(serviceAreasViewModel),
           // The table is made of slivers; the record page scrolls, not it.
+          loading: const SSkeleton.list(rows: 3, leading: false),
           builder: (context, areas) => CustomScrollView(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),

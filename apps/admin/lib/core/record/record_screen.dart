@@ -89,6 +89,10 @@ class RecordScreen<T> extends AppView {
         body: SAsyncView(
           value: loaded,
           onRetry: () => ref.invalidate(record),
+          loading: const Padding(
+            padding: EdgeInsets.all(Space.lg),
+            child: SSkeleton.groups(),
+          ),
           builder: (context, saved) =>
               SForm(form: editor.form, child: builder(context, saved)),
         ),

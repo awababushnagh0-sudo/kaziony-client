@@ -1,5 +1,24 @@
 {
   "@@locale": "en",
+  "storePickupInstructions": "Pickup instructions",
+  "storePickupInstructionsHint": "e.g. Show your code at the cashier by the door; bring a bag.",
+  "storeRating": "Rating",
+  "ratingSummary": "★ {average} · {count, plural, =1{1 rating} other{{count} ratings}}",
+  "@ratingSummary": {
+    "placeholders": {
+      "average": {
+        "type": "double",
+        "format": "decimalPatternDigits",
+        "optionalParameters": {
+          "decimalDigits": 1
+        }
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noRatingsYet": "No ratings yet",
   "appTitle": "Offers Admin",
   "loginTitle": "Sign in",
   "loginSubtitle": "Welcome back. Sign in to manage stores and offers.",

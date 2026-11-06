@@ -28,6 +28,10 @@ class DashboardScreen extends AppView {
       body: SAsyncView(
         value: stats,
         onRetry: viewModel.reload,
+        loading: const Padding(
+          padding: EdgeInsets.all(Space.lg),
+          child: SSkeleton.groups(),
+        ),
         builder: (context, stats) => _StatsGrid(stats: stats),
       ),
     );

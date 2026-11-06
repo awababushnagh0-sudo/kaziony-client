@@ -98,6 +98,36 @@ abstract class AdminLocalizations {
     Locale('en'),
   ];
 
+  /// No description provided for @storePickupInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup instructions'**
+  String get storePickupInstructions;
+
+  /// No description provided for @storePickupInstructionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Show your code at the cashier by the door; bring a bag.'**
+  String get storePickupInstructionsHint;
+
+  /// No description provided for @storeRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get storeRating;
+
+  /// No description provided for @ratingSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'★ {average} · {count, plural, =1{1 rating} other{{count} ratings}}'**
+  String ratingSummary(double average, int count);
+
+  /// No description provided for @noRatingsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No ratings yet'**
+  String get noRatingsYet;
+
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:

@@ -210,6 +210,12 @@ class _StoreRecord extends AppView {
                   label: s.storeDescription,
                   kind: TextInputKind.multiline,
                 ),
+                STextInput(
+                  controlName: 'pickupInstructions',
+                  label: s.storePickupInstructions,
+                  hint: s.storePickupInstructionsHint,
+                  kind: TextInputKind.multiline,
+                ),
               ],
             ),
           ),
@@ -259,6 +265,13 @@ class _StoreRecord extends AppView {
         SRecordFacts([
           RecordFact(s.columnBranches, '${store.branchCount}'),
           RecordFact(s.storeTeam, '${store.teamCount}'),
+          RecordFact(s.storeRating, switch (store.ratingAverage) {
+            final average? when store.ratingCount > 0 => s.ratingSummary(
+              average,
+              store.ratingCount,
+            ),
+            _ => s.noRatingsYet,
+          }),
         ]),
         SRecordFacts([
           RecordFact(

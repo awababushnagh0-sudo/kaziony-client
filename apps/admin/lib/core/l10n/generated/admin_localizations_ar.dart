@@ -10,6 +10,40 @@ class AdminLocalizationsAr extends AdminLocalizations {
   AdminLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
+  String get storePickupInstructions => 'تعليمات الاستلام';
+
+  @override
+  String get storePickupInstructionsHint =>
+      'مثال: اعرض رمزك عند الكاشير قرب الباب، وأحضر كيسًا.';
+
+  @override
+  String get storeRating => 'التقييم';
+
+  @override
+  String ratingSummary(double average, int count) {
+    final intl.NumberFormat averageNumberFormat =
+        intl.NumberFormat.decimalPatternDigits(
+          locale: localeName,
+          decimalDigits: 1,
+        );
+    final String averageString = averageNumberFormat.format(average);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count تقييم',
+      many: '$count تقييمًا',
+      few: '$count تقييمات',
+      two: 'تقييمان',
+      one: 'تقييم واحد',
+    );
+    return '★ $averageString · $_temp0';
+  }
+
+  @override
+  String get noRatingsYet => 'لا توجد تقييمات بعد';
+
+  @override
   String get appTitle => 'إدارة العروض';
 
   @override

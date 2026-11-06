@@ -78,8 +78,10 @@ void main() {
 
     expect(find.text('Stores'), findsOneWidget);
     expect(find.text('Sweet Coast'), findsWidgets);
+    expect(find.text('★ 4.5 · 37 ratings'), findsOneWidget);
     expect(find.text('Active'), findsOneWidget);
     expect(find.text('Fresh sweets every morning.'), findsOneWidget);
+    expect(find.text('Show your code at the cashier.'), findsOneWidget);
     expect(find.text('Sweets'), findsWidgets);
     expect(find.text('Oct 15, 2026'), findsOneWidget);
   });
@@ -240,6 +242,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.enterText(field('Description'), 'Open late.');
+    await tester.enterText(field('Pickup instructions'), ' Ask at the door. ');
     await tester.tap(find.text('Contact'));
     await tester.pumpAndSettle();
     await tester.enterText(field('Store phone'), '092 123 4567');
@@ -252,6 +255,7 @@ void main() {
     expect(edited.name, 'Sweet Coast');
     expect(edited.categoryId, 'cat-sweets');
     expect(edited.description, 'Open late.');
+    expect(edited.pickupInstructions, 'Ask at the door.');
     expect(edited.phone, '+218921234567');
     expect(edited.email, isNull);
     expect(edited.instagramUrl, 'https://instagram.com/sweetcoast');

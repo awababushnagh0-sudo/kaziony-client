@@ -52,7 +52,10 @@ class StoreDetails {
     required this.createdAt,
     required this.branchCount,
     required this.teamCount,
+    required this.ratingCount,
     this.description,
+    this.pickupInstructions,
+    this.ratingAverage,
     this.logoUrl,
     this.phone,
     this.email,
@@ -70,6 +73,15 @@ class StoreDetails {
   /// Owners and staff.
   final int teamCount;
   final String? description;
+
+  /// Shown to customers on every offer's page: where to go in the shop,
+  /// what to bring.
+  final String? pickupInstructions;
+
+  /// Customers' stars after a pickup (1 to 5), one decimal. Null before the
+  /// first rating.
+  final double? ratingAverage;
+  final int ratingCount;
   final String? logoUrl;
 
   /// Normalized (+2189XXXXXXXX).
@@ -86,6 +98,7 @@ class EditedStore {
     required this.name,
     required this.categoryId,
     this.description,
+    this.pickupInstructions,
     this.phone,
     this.email,
     this.facebookUrl,
@@ -95,6 +108,7 @@ class EditedStore {
   final String name;
   final String categoryId;
   final String? description;
+  final String? pickupInstructions;
 
   /// Normalized (+2189XXXXXXXX).
   final String? phone;
