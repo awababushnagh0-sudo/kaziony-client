@@ -101,6 +101,18 @@ abstract class StellarLocalizations {
     Locale('en'),
   ];
 
+  /// No description provided for @searchClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear the search'**
+  String get searchClear;
+
+  /// No description provided for @chipRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get chipRemove;
+
   /// No description provided for @retry.
   ///
   /// In en, this message translates to:

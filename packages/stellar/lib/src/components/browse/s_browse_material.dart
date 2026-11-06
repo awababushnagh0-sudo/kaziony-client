@@ -5,6 +5,7 @@ import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
+import '../illustration/s_illustration.dart';
 import '../illustration/s_illustration_material.dart';
 import 's_browse.dart';
 
@@ -94,7 +95,8 @@ class SPlaceHeaderMaterial extends StatelessWidget implements SPlaceHeader {
   }
 }
 
-/// [SCategoryStrip], drawn as a sideways [SingleChildScrollView].
+/// [SCategoryStrip], drawn as a sideways [SingleChildScrollView] at least
+/// the screen's width.
 class SCategoryStripMaterial extends StatelessWidget implements SCategoryStrip {
   const SCategoryStripMaterial({
     required this.choices,
@@ -116,141 +118,155 @@ class SCategoryStripMaterial extends StatelessWidget implements SCategoryStrip {
   Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: Space.sm),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (final (i, choice) in choices.indexed)
-            Semantics(
-              selected: i == selected,
-              button: true,
-              child: InkWell(
-                onTap: () => onSelected(i),
-                borderRadius: BorderRadius.circular(Radii.lg),
-                child: SizedBox(
-                  width: _choiceWidth,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: Space.xs),
-                    child: Column(
-                      spacing: Space.xs,
-                      children: [
-                        SizedBox.square(
-                          dimension: _pictureSize,
-                          child: _Picture(choice),
-                        ),
-                        Text(
-                          choice.label,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: text.small,
-                            fontWeight: i == selected
-                                ? SFontWeight.bold.value
-                                : SFontWeight.medium.value,
-                            color: i == selected ? c.primary : c.text,
-                          ),
-                        ),
-                        AnimatedOpacity(
-                          opacity: i == selected ? 1 : 0,
-                          duration: const Duration(milliseconds: 150),
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: c.primary,
-                              borderRadius: BorderRadius.circular(Radii.pill),
+    // At least as wide as the screen, so a few choices sit in the middle
+    // and many still scroll.
+    return LayoutBuilder(
+      builder: (context, box) => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: Space.sm),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minWidth: box.maxWidth - 2 * Space.sm),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (final (i, choice) in choices.indexed)
+                Semantics(
+                  selected: i == selected,
+                  button: true,
+                  child: InkWell(
+                    onTap: () => onSelected(i),
+                    borderRadius: BorderRadius.circular(Radii.lg),
+                    child: SizedBox(
+                      width: _choiceWidth,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: Space.xs),
+                        child: Column(
+                          spacing: Space.xs,
+                          children: [
+                            SizedBox.square(
+                              dimension: _pictureSize,
+                              child: _Picture(choice),
                             ),
-                            child: const SizedBox(
-                              width: _underlineWidth,
-                              height: _underlineHeight,
+                            Text(
+                              choice.label,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: text.small,
+                                fontWeight: i == selected
+                                    ? SFontWeight.bold.value
+                                    : SFontWeight.medium.value,
+                                color: i == selected ? c.primary : c.text,
+                              ),
                             ),
-                          ),
+                            AnimatedOpacity(
+                              opacity: i == selected ? 1 : 0,
+                              duration: const Duration(milliseconds: 150),
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: c.primary,
+                                  borderRadius: BorderRadius.circular(
+                                    Radii.pill,
+                                  ),
+                                ),
+                                child: const SizedBox(
+                                  width: _underlineWidth,
+                                  height: _underlineHeight,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-        ],
+            ],
+          ),
+        ),
       ),
     );
   }
 }
 
-/// [SPromoBanner], drawn on the brand's gradient.
-class SPromoBannerMaterial extends StatelessWidget implements SPromoBanner {
-  const SPromoBannerMaterial({
-    required this.title,
-    required this.message,
-    this.tag,
+/// [SLogoTile], drawn as an [InkWell] column, the logo in a thin ring.
+class SLogoTileMaterial extends StatelessWidget implements SLogoTile {
+  const SLogoTileMaterial(
+    this.url, {
+    required this.name,
+    required this.onTap,
     super.key,
   });
 
-  final String title;
-  final String message;
-  final String? tag;
+  final String? url;
+  final String name;
+  final VoidCallback onTap;
+
+  /// Room for a name a little wider than the logo.
+  static const _width = 80.0;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final text = context.style.text;
-    final tag = this.tag;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: AlignmentDirectional.topStart,
-          end: AlignmentDirectional.bottomEnd,
-          colors: [c.brandFrom, c.brandTo],
-        ),
-        borderRadius: BorderRadius.circular(Radii.xl),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(Space.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: Space.xs,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: text.title,
-                fontWeight: SFontWeight.bold.value,
-                color: c.onBrand,
-              ),
-            ),
-            Text(
-              message,
-              style: TextStyle(
-                fontSize: text.small,
-                height: 1.6,
-                color: c.onBrand.withValues(alpha: 0.85),
-              ),
-            ),
-            if (tag != null) ...[
-              const SizedBox(height: Space.xs),
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  color: c.accent,
-                  borderRadius: BorderRadius.circular(Radii.pill),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Space.md,
-                    vertical: Space.xs,
+    final url = this.url;
+    final side = SImageSize.logoInRow.pixels;
+    const fallback = SIllustrationMaterial(SIllustrations.avatar);
+    return Semantics(
+      button: true,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(Radii.lg),
+        child: SizedBox(
+          width: _width,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: Space.xs),
+            child: Column(
+              spacing: Space.xs,
+              children: [
+                DecoratedBox(
+                  position: DecorationPosition.foreground,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: c.border),
                   ),
-                  child: Text(
-                    tag,
-                    style: TextStyle(
-                      fontSize: text.small,
-                      fontWeight: SFontWeight.bold.value,
-                      color: c.onAccent,
+                  child: ClipOval(
+                    child: SizedBox.square(
+                      dimension: side,
+                      child: url == null
+                          ? fallback
+                          : CachedNetworkImage(
+                              imageUrl: url,
+                              fit: BoxFit.cover,
+                              memCacheWidth:
+                                  (side *
+                                          MediaQuery.devicePixelRatioOf(
+                                            context,
+                                          ))
+                                      .round(),
+                              placeholder: (_, _) =>
+                                  ColoredBox(color: c.fieldFill),
+                              errorWidget: (_, _, _) => fallback,
+                            ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ],
+                // One line, so a long name doesn't make the whole row
+                // taller than its neighbours.
+                Text(
+                  name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: context.style.text.tiny,
+                    fontWeight: SFontWeight.medium.value,
+                    color: c.text,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

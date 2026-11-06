@@ -10,6 +10,12 @@ class StellarLocalizationsEn extends StellarLocalizations {
   StellarLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get searchClear => 'Clear the search';
+
+  @override
+  String get chipRemove => 'Remove';
+
+  @override
   String get retry => 'Try again';
 
   @override

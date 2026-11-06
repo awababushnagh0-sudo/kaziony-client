@@ -1,5 +1,7 @@
 {
   "@@locale": "ar",
+  "searchClear": "مسح البحث",
+  "chipRemove": "إزالة",
   "retry": "حاول مرة أخرى",
   "cancel": "إلغاء",
   "ok": "حسناً",

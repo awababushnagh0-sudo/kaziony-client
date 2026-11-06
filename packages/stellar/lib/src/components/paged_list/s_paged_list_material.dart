@@ -4,6 +4,7 @@ import 'package:kernel/kernel.dart' show AppFailure;
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../../l10n/generated/stellar_localizations.dart';
+import '../skeleton/s_skeleton.dart';
 import '../status/s_error_view.dart';
 import 's_paged_list.dart';
 
@@ -11,7 +12,8 @@ import 's_paged_list.dart';
 /// are usually there before the user gets to them.
 const _loadAhead = 600.0;
 
-/// [SPagedList] as a Material [ListView] in a [RefreshIndicator].
+/// [SPagedList] as slivers in a [CustomScrollView], in a
+/// [RefreshIndicator].
 class SPagedListMaterial extends StatelessWidget implements SPagedList {
   const SPagedListMaterial({
     required this.itemCount,
@@ -24,6 +26,7 @@ class SPagedListMaterial extends StatelessWidget implements SPagedList {
     this.header,
     this.endNote,
     this.divided = true,
+    this.placeholder,
     super.key,
   });
 
@@ -39,16 +42,13 @@ class SPagedListMaterial extends StatelessWidget implements SPagedList {
 
   /// Lines between the rows; otherwise a gap, for rows that are cards.
   final bool divided;
+  final Widget? placeholder;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final loading = hasMore || loadingMore || moreFailure != null;
-    final endNote = this.endNote;
-    final footer = loading || endNote != null;
     final header = this.header;
-    // Rows start after the header, if any.
-    final first = header == null ? 0 : 1;
     return RefreshIndicator(
       onRefresh: onRefresh,
       color: c.primary,
@@ -63,65 +63,92 @@ class SPagedListMaterial extends StatelessWidget implements SPagedList {
           }
           return false;
         },
-        child: ListView.separated(
+        child: CustomScrollView(
           // Pulling down works even when the rows don't fill the screen.
           physics: const AlwaysScrollableScrollPhysics(),
-          // Plus the room a floating button asks for (SScaffold.floating).
-          padding: EdgeInsets.only(
-            bottom: Space.xl + MediaQuery.paddingOf(context).bottom,
-          ),
-          itemCount: first + itemCount + (footer ? 1 : 0),
-          // Lines (or gaps, between cards) only between rows.
-          separatorBuilder: (_, index) =>
-              index >= first && index < first + itemCount - 1
-              ? divided
+          slivers: [
+            if (header != null) SliverToBoxAdapter(child: header),
+            SliverPadding(
+              // Cards stand apart from what's above them, as from each
+              // other; lined rows start right under it.
+              padding: EdgeInsets.only(top: divided ? 0 : Space.md),
+              sliver: SliverList.separated(
+                itemCount: itemCount,
+                itemBuilder: itemBuilder,
+                separatorBuilder: (_, _) => divided
                     ? const Divider(indent: Space.lg, endIndent: Space.lg)
-                    : const Gap(Space.sm)
-              : const SizedBox.shrink(),
-          itemBuilder: (context, index) {
-            if (header != null && index == 0) return header;
-            final row = index - first;
-            if (row < itemCount) return itemBuilder(context, row);
-            if (loading || endNote == null) {
-              return _Footer(
-                loadingMore: loadingMore,
-                failure: moreFailure,
-                onRetry: onLoadMore,
-              );
-            }
-            return Padding(
-              padding: const EdgeInsets.all(Space.lg),
-              child: Text(
-                endNote,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: context.style.text.tiny,
-                  color: c.textSubtle,
-                ),
+                    : const Gap(Space.sm),
               ),
-            );
-          },
+            ),
+            SliverPadding(
+              // Plus the room a floating button asks for
+              // (SScaffold.floating).
+              padding: EdgeInsets.only(
+                bottom: Space.xl + MediaQuery.paddingOf(context).bottom,
+              ),
+              sliver: SliverToBoxAdapter(
+                child: switch ((loading, endNote)) {
+                  (true, _) => _Footer(
+                    loadingMore: loadingMore,
+                    placeholder: placeholder,
+                    failure: moreFailure,
+                    onRetry: onLoadMore,
+                  ),
+                  (false, final String note) => _EndNote(note),
+                  _ => null,
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-/// A spinner while more rows load, or what went wrong with a retry.
+/// Quiet words under the last row, once everything has loaded.
+class _EndNote extends StatelessWidget {
+  const _EndNote(this.note);
+
+  final String note;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.all(Space.lg),
+    child: Text(
+      note,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: context.style.text.tiny,
+        color: context.colors.textSubtle,
+      ),
+    ),
+  );
+}
+
+/// The next row's skeleton (or a spinner) while more rows load, or what
+/// went wrong with a retry.
 class _Footer extends StatelessWidget {
   const _Footer({
     required this.loadingMore,
+    required this.placeholder,
     required this.failure,
     required this.onRetry,
   });
 
   final bool loadingMore;
+  final Widget? placeholder;
   final AppFailure? failure;
   final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) {
     final failure = this.failure;
+    final placeholder = this.placeholder;
+    if (failure == null && loadingMore && placeholder != null) {
+      // Where the next row will be, so it seems to fill in.
+      return SSkeleton(child: placeholder);
+    }
     return Padding(
       padding: const EdgeInsets.all(Space.lg),
       child: failure == null

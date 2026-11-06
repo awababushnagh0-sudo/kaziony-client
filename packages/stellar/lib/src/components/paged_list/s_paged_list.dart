@@ -15,7 +15,10 @@ abstract interface class SPagedList implements Widget {
   /// [header] sits above the rows, scrolling with them (a summary of the
   /// list). [endNote] is quiet text under the last row once everything has
   /// loaded (what the list holds and for how long). Turn [divided] off for
-  /// rows that are cards of their own, which get a gap instead of a line.
+  /// rows that are cards of their own, which get a gap instead of a line,
+  /// and room above the first one. [placeholder] is a row's skeleton
+  /// (bones, see `SSkeleton`), shown while more rows load in place of a
+  /// spinner.
   const factory SPagedList({
     required int itemCount,
     required IndexedWidgetBuilder itemBuilder,
@@ -27,6 +30,7 @@ abstract interface class SPagedList implements Widget {
     Widget? header,
     String? endNote,
     bool divided,
+    Widget? placeholder,
     Key? key,
   }) = SPagedListMaterial;
 }

@@ -8,6 +8,7 @@ import '../badge/s_badge_material.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import '../image/s_image_material.dart';
+import '../photo_header/s_photo_header_material.dart';
 import '../stat/s_figures.dart';
 import 's_deal_tile.dart';
 
@@ -182,7 +183,7 @@ class SDealHeaderMaterial extends StatelessWidget implements SDealHeader {
                 PositionedDirectional(
                   top: top + Space.sm,
                   start: Space.lg,
-                  child: _RoundButton(
+                  child: RoundPhotoButton(
                     icon: SIcons.chevronBack,
                     tooltip: MaterialLocalizations.of(context)
                         .backButtonTooltip,
@@ -193,7 +194,7 @@ class SDealHeaderMaterial extends StatelessWidget implements SDealHeader {
                 PositionedDirectional(
                   top: top + Space.sm,
                   end: Space.lg,
-                  child: _RoundButton(
+                  child: RoundPhotoButton(
                     icon: action.icon,
                     tooltip: action.tooltip,
                     onPressed: action.onPressed,
@@ -489,387 +490,22 @@ class SDealCardMaterial extends StatelessWidget implements SDealCard {
   }
 }
 
-/// [SDealPoster]: no box around it, the photo rounded on its own and the
-/// words under it, tapped as one with an [InkWell].
-class SDealPosterMaterial extends StatelessWidget implements SDealPoster {
-  const SDealPosterMaterial({
-    required this.title,
-    required this.price,
-    required this.storeName,
-    this.originalPrice,
-    this.discountLabel,
-    this.imageUrl,
-    this.storeLogoUrl,
-    this.stockLabel,
-    this.stockHot = false,
-    this.details = const [],
-    this.inRow = false,
-    this.onTap,
-    super.key,
-  });
-
-  /// A card in a row takes most of the screen's width, so the next one
-  /// peeks in; never wider than this.
-  static const _rowShare = 0.72;
-  static const _rowMaxWidth = 320.0;
-
-  /// The photo's width to its height: wide, like a banner.
-  static const _photoRatio = 2.0;
-  static const _logo = 48.0;
-
-  final String title;
-  final String price;
-  final String? originalPrice;
-  final String storeName;
-  final String? discountLabel;
-  final String? imageUrl;
-  final String? storeLogoUrl;
-  final String? stockLabel;
-  final bool stockHot;
-  final List<String> details;
-  final bool inRow;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final text = context.style.text;
-    final url = imageUrl;
-    final logo = storeLogoUrl;
-    final discount = discountLabel;
-    final stock = stockLabel;
-    final originalPrice = this.originalPrice;
-    final placeholder = ColoredBox(
-      color: c.cream,
-      child: Center(
-        child: Icon(
-          materialIcon(SIcons.offers),
-          size: SIconSize.xl.pixels,
-          color: c.textSubtle,
-        ),
-      ),
-    );
-    final card = InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(Radii.xl),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          AspectRatio(
-            aspectRatio: _photoRatio,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(Radii.xl),
-                  child: url == null
-                      ? placeholder
-                      : LayoutBuilder(
-                          builder: (context, box) => CachedNetworkImage(
-                            imageUrl: url,
-                            fit: BoxFit.cover,
-                            memCacheWidth:
-                                (box.maxWidth *
-                                        MediaQuery.devicePixelRatioOf(context))
-                                    .round(),
-                            placeholder: (_, _) => placeholder,
-                            errorWidget: (_, _, _) => placeholder,
-                          ),
-                        ),
-                ),
-                if (discount != null)
-                  PositionedDirectional(
-                    top: Space.sm,
-                    end: Space.sm,
-                    child: _DiscountPill(discount),
-                  ),
-                PositionedDirectional(
-                  bottom: Space.sm,
-                  start: Space.sm,
-                  // The logo stands for the store on the card; the name
-                  // is for screen readers.
-                  child: Semantics(
-                    label: storeName,
-                    image: true,
-                    child: _Logo(url: logo, size: _logo),
-                  ),
-                ),
-                if (stock != null)
-                  PositionedDirectional(
-                    bottom: Space.sm,
-                    end: Space.sm,
-                    child: _OnPhotoPill(
-                      label: stock,
-                      color: stockHot ? c.accentInk : c.text,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              Space.xxs,
-              Space.sm,
-              Space.xxs,
-              0,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              spacing: Space.md,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: Space.xxs,
-                    children: [
-                      Text(
-                        title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: text.body,
-                          fontWeight: SFontWeight.bold.value,
-                          color: c.text,
-                        ),
-                      ),
-                      if (details.isNotEmpty)
-                        Row(
-                          spacing: Space.xs,
-                          children: [
-                            Icon(
-                              materialIcon(SIcons.clock),
-                              size: SIconSize.xs.pixels,
-                              color: c.textSubtle,
-                            ),
-                            Flexible(
-                              child: Text(
-                                details.join(' · '),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: text.small,
-                                  color: c.textMuted,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    if (originalPrice != null)
-                      Text(
-                        originalPrice,
-                        style: TextStyle(
-                          fontSize: text.small,
-                          color: c.textSubtle,
-                          decoration: TextDecoration.lineThrough,
-                          decorationColor: c.textSubtle,
-                        ),
-                      ),
-                    Text(
-                      price,
-                      style: TextStyle(
-                        fontSize: text.subtitle,
-                        fontWeight: SFontWeight.bold.value,
-                        color: c.primary,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-    if (!inRow) return card;
-    final width = MediaQuery.sizeOf(context).width * _rowShare;
-    return SizedBox(
-      width: width < _rowMaxWidth ? width : _rowMaxWidth,
-      child: card,
-    );
-  }
-}
-
-/// [SDealFooter], drawn as a bordered bar in a [SafeArea].
+/// [SDealFooter], drawn as a row: `SScaffold.bottom` gives it its room
+/// and keeps it clear of the home indicator.
 class SDealFooterMaterial extends StatelessWidget implements SDealFooter {
-  const SDealFooterMaterial({
-    required this.price,
-    required this.action,
-    this.originalPrice,
-    super.key,
-  });
+  const SDealFooterMaterial({required this.action, this.quantity, super.key});
 
-  final String price;
-  final String? originalPrice;
   final Widget action;
+  final Widget? quantity;
 
   @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final text = context.style.text;
-    final originalPrice = this.originalPrice;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: c.surface,
-        border: Border(top: BorderSide(color: c.border)),
-      ),
-      child: SafeArea(
-        top: false,
-        child: Padding(
-          padding: const EdgeInsets.all(Space.lg),
-          child: Row(
-            spacing: Space.lg,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (originalPrice != null)
-                    Text(
-                      originalPrice,
-                      style: TextStyle(
-                        fontSize: text.small,
-                        color: c.textSubtle,
-                        decoration: TextDecoration.lineThrough,
-                        decorationColor: c.textSubtle,
-                      ),
-                    ),
-                  Text(
-                    price,
-                    style: TextStyle(
-                      fontSize: text.display,
-                      fontWeight: SFontWeight.bold.value,
-                      height: 1.2,
-                      color: c.primary,
-                    ),
-                  ),
-                ],
-              ),
-              Expanded(child: action),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// The discount on a big photo: "44% off" in the discount's colors.
-class _DiscountPill extends StatelessWidget {
-  const _DiscountPill(this.label);
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        gradient: discountGradient(c),
-        borderRadius: BorderRadius.circular(Radii.pill),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: Space.md,
-          vertical: Space.xs,
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: context.style.text.small,
-            fontWeight: SFontWeight.bold.value,
-            color: c.onDiscount,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// A short word in a small white pill, so it reads on any photo ("2 left").
-class _OnPhotoPill extends StatelessWidget {
-  const _OnPhotoPill({required this.label, required this.color});
-
-  final String label;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) => DecoratedBox(
-    decoration: BoxDecoration(
-      color: context.colors.surface,
-      borderRadius: BorderRadius.circular(Radii.pill),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Space.sm,
-        vertical: Space.xxs,
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          fontSize: context.style.text.tiny,
-          fontWeight: SFontWeight.bold.value,
-          color: color,
-        ),
-      ),
-    ),
+  Widget build(BuildContext context) => Row(
+    spacing: Space.md,
+    children: [
+      ?quantity,
+      Expanded(child: action),
+    ],
   );
-}
-
-/// How much of the photo shows through the plate under a store's logo.
-const _logoPlateOpacity = 0.8;
-
-/// A store's logo on a light round plate, so it stands off the photo while
-/// a little of it shows through; the store icon when it has none.
-class _Logo extends StatelessWidget {
-  const _Logo({required this.url, required this.size});
-
-  final String? url;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final url = this.url;
-    final fallback = ColoredBox(
-      color: c.primarySoft,
-      child: Icon(
-        materialIcon(SIcons.store),
-        size: SIconSize.sm.pixels,
-        color: c.primary,
-      ),
-    );
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: c.surface.withValues(alpha: _logoPlateOpacity),
-        shape: BoxShape.circle,
-        boxShadow: [BoxShadow(color: c.shadow, blurRadius: 8)],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(Space.xs),
-        child: ClipOval(
-          child: SizedBox.square(
-            dimension: size,
-            child: url == null
-                ? fallback
-                : CachedNetworkImage(
-                    imageUrl: url,
-                    fit: BoxFit.cover,
-                    memCacheWidth:
-                        (size * MediaQuery.devicePixelRatioOf(context)).round(),
-                    placeholder: (_, _) => fallback,
-                    errorWidget: (_, _, _) => fallback,
-                  ),
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 /// An offer's photo with its discount in the corner, cut by the rounding.
@@ -1026,46 +662,6 @@ class _Bar extends StatelessWidget {
   );
 }
 
-/// A white circle on a photo, so the icon reads on any picture.
-class _RoundButton extends StatelessWidget {
-  const _RoundButton({
-    required this.icon,
-    required this.tooltip,
-    required this.onPressed,
-  });
-
-  static const _size = 44.0;
-
-  final SIcons icon;
-  final String tooltip;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        boxShadow: [BoxShadow(color: c.shadow, blurRadius: 12)],
-      ),
-      child: Material(
-        color: c.surface,
-        shape: const CircleBorder(),
-        clipBehavior: Clip.antiAlias,
-        child: SizedBox.square(
-          dimension: _size,
-          child: IconButton(
-            tooltip: tooltip,
-            onPressed: onPressed,
-            color: c.text,
-            icon: Icon(materialIcon(icon), size: SIconSize.md.pixels),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 /// "● Live" in a white pill, so it reads on any photo.
 class _StatusPill extends StatelessWidget {
   const _StatusPill(this.status);
@@ -1151,13 +747,6 @@ class _DiscountTag extends StatelessWidget {
     );
   }
 }
-
-/// The discount's own colors, light at the start and deeper at the end.
-LinearGradient discountGradient(StellarColors c) => LinearGradient(
-  begin: AlignmentDirectional.topStart,
-  end: AlignmentDirectional.bottomEnd,
-  colors: [c.discountFrom, c.discountTo],
-);
 
 /// How much is left at a tile's end: the pieces left in big figures, and
 /// "of 10" smaller under them, set off toward the end so the two read as a

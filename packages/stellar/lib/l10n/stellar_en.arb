@@ -1,5 +1,7 @@
 {
   "@@locale": "en",
+  "searchClear": "Clear the search",
+  "chipRemove": "Remove",
   "retry": "Try again",
   "cancel": "Cancel",
   "ok": "OK",

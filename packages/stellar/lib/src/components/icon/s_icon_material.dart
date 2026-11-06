@@ -291,6 +291,16 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // menu
+  SIcons.viewCards => const IconData(
+    0xe4d2,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // gallery-vertical-end
+  SIcons.viewList => const IconData(
+    0xe1d9,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // layout-list
   SIcons.logout => const IconData(
     0xe10e,
     fontFamily: _f,

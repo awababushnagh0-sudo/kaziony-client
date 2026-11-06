@@ -30,9 +30,9 @@ abstract interface class SPlaceHeader implements Widget {
   }) = SPlaceHeaderMaterial;
 }
 
-/// The kinds of store, each a picture over its name, in a row that
-/// scrolls sideways; the `selected` one's name in the brand's green and
-/// underlined.
+/// The kinds of store, each a picture over its name, in a row: centered
+/// when they all fit, scrolling sideways when they don't; the `selected`
+/// one's name in the brand's green and underlined.
 abstract interface class SCategoryStrip implements Widget {
   /// [selected] is the index in [choices] of the one showing.
   const factory SCategoryStrip({
@@ -43,14 +43,16 @@ abstract interface class SCategoryStrip implements Widget {
   }) = SCategoryStripMaterial;
 }
 
-/// A few words from us between a page's offers, on the brand's green:
-/// the `title` big, a `message` and a `tag` on an orange pill.
-abstract interface class SPromoBanner implements Widget {
-  /// [tag] is a short line on an orange pill, under the [message].
-  const factory SPromoBanner({
-    required String title,
-    required String message,
-    String? tag,
+/// A store's logo, round, with its name under it, tapped to open the
+/// store: one of a row of stores (`SCarousel.small`). The brand's
+/// picture of someone without one when it has no logo.
+abstract interface class SLogoTile implements Widget {
+  /// [url] is null when the store has no logo; [name] goes under it, on
+  /// one line.
+  const factory SLogoTile(
+    String? url, {
+    required String name,
+    required VoidCallback onTap,
     Key? key,
-  }) = SPromoBannerMaterial;
+  }) = SLogoTileMaterial;
 }

@@ -96,6 +96,12 @@ enum SIcons {
   filter,
   more,
   menu,
+
+  /// Show a list as big cards.
+  viewCards,
+
+  /// Show a list as compact rows.
+  viewList,
   logout,
   disable,
   enable,

@@ -10,6 +10,12 @@ class StellarLocalizationsAr extends StellarLocalizations {
   StellarLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
+  String get searchClear => 'مسح البحث';
+
+  @override
+  String get chipRemove => 'إزالة';
+
+  @override
   String get retry => 'حاول مرة أخرى';
 
   @override

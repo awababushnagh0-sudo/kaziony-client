@@ -12,4 +12,14 @@ abstract interface class SCard implements Widget {
     bool padded,
     Key? key,
   }) = SCardMaterial;
+
+  /// Lifted off the page on a soft shadow instead of an outline: a card
+  /// that has to stand out among others (an offer in a home row). In the
+  /// dark, where shadows don't show, it keeps the outline.
+  const factory SCard.raised({
+    required Widget child,
+    VoidCallback? onTap,
+    bool padded,
+    Key? key,
+  }) = SCardMaterial.raised;
 }

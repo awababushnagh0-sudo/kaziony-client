@@ -10,7 +10,8 @@ enum TextVariant { display, title, subtitle, body, caption, label }
 /// ([TextVariant], [SFontWeight], [SColor]), never raw numbers or colors.
 abstract interface class SText implements Widget {
   /// Body text in the text's color unless told otherwise. A null [weight]
-  /// keeps the variant's own; [maxLines] cuts it with an ellipsis.
+  /// keeps the variant's own; [maxLines] cuts it with an ellipsis; [struck]
+  /// crosses it out (a regular price beside its offer price).
   const factory SText(
     String text, {
     TextVariant variant,
@@ -18,6 +19,7 @@ abstract interface class SText implements Widget {
     SFontWeight? weight,
     TextAlign? align,
     int? maxLines,
+    bool struck,
     Key? key,
   }) = STextMaterial;
 

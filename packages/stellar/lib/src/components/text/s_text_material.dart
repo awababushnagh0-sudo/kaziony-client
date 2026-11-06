@@ -15,6 +15,7 @@ class STextMaterial extends StatelessWidget implements SText {
     this.weight,
     this.align,
     this.maxLines,
+    this.struck = false,
     super.key,
   });
 
@@ -25,7 +26,8 @@ class STextMaterial extends StatelessWidget implements SText {
     super.key,
   }) : variant = TextVariant.display,
        weight = SFontWeight.bold,
-       maxLines = null;
+       maxLines = null,
+       struck = false;
 
   const STextMaterial.title(
     this.text, {
@@ -34,7 +36,8 @@ class STextMaterial extends StatelessWidget implements SText {
     this.maxLines,
     super.key,
   }) : variant = TextVariant.title,
-       weight = SFontWeight.bold;
+       weight = SFontWeight.bold,
+       struck = false;
 
   const STextMaterial.caption(
     this.text, {
@@ -43,7 +46,8 @@ class STextMaterial extends StatelessWidget implements SText {
     this.maxLines,
     super.key,
   }) : variant = TextVariant.caption,
-       weight = null;
+       weight = null,
+       struck = false;
 
   final String text;
   final TextVariant variant;
@@ -53,6 +57,7 @@ class STextMaterial extends StatelessWidget implements SText {
   final SFontWeight? weight;
   final TextAlign? align;
   final int? maxLines;
+  final bool struck;
 
   @override
   Widget build(BuildContext context) {
@@ -65,14 +70,17 @@ class STextMaterial extends StatelessWidget implements SText {
       TextVariant.caption => theme.bodySmall,
       TextVariant.label => theme.labelLarge,
     };
+    final color = context.colors.resolve(this.color);
     return Text(
       text,
       textAlign: align,
       maxLines: maxLines,
       overflow: maxLines == null ? null : TextOverflow.ellipsis,
       style: base?.copyWith(
-        color: context.colors.resolve(color),
+        color: color,
         fontWeight: weight?.value,
+        decoration: struck ? TextDecoration.lineThrough : null,
+        decorationColor: struck ? color : null,
       ),
     );
   }

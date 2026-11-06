@@ -52,6 +52,8 @@ class StellarColors {
     required this.cameraGlass,
     required this.scanLine,
     required this.scanGlow,
+    required this.bone,
+    required this.boneShine,
   });
 
   /// Whether these are light colors (dark text) or dark ones.
@@ -157,6 +159,11 @@ class StellarColors {
   /// The line sweeping a scanner's square, and the light around it.
   final Color scanLine;
   final Color scanGlow;
+
+  /// The gray shapes that stand in for what's loading (SSkeleton), and
+  /// the light that sweeps across them.
+  final Color bone;
+  final Color boneShine;
 
   /// The token behind [color].
   Color resolve(SColor color) => switch (color) {

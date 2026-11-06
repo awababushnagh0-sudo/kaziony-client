@@ -53,6 +53,8 @@ const lightColors = StellarColors(
   cameraGlass: Color(0x29FFFFFF),
   scanLine: Color(0xFF6EE7B7),
   scanGlow: Color(0xFF34D399),
+  bone: Color(0xFFECEAE3),
+  boneShine: Color(0xFFF8F7F3),
 );
 
 /// The same colors at night: dark grays, the brand's green and orange
@@ -103,6 +105,8 @@ const darkColors = StellarColors(
   cameraGlass: Color(0x29FFFFFF),
   scanLine: Color(0xFF6EE7B7),
   scanGlow: Color(0xFF34D399),
+  bone: Color(0xFF2A2A2A),
+  boneShine: Color(0xFF3A3A3A),
 );
 
 /// The red, yellow and green dots of a Mac window, in the small window

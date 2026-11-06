@@ -96,6 +96,8 @@ class SSearchFieldMaterial extends StatefulWidget implements SSearchField {
   const SSearchFieldMaterial({
     required this.hint,
     required ValueChanged<String> this.onChanged,
+    this.onSubmitted,
+    this.controller,
     this.initialValue = '',
     this.autofocus = false,
     super.key,
@@ -106,11 +108,17 @@ class SSearchFieldMaterial extends StatefulWidget implements SSearchField {
     required VoidCallback this.onTap,
     super.key,
   }) : onChanged = null,
+       onSubmitted = null,
+       controller = null,
        initialValue = '',
        autofocus = false;
 
   final String hint;
   final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
+
+  /// The caller's, to change the words from outside; else the field's own.
+  final TextEditingController? controller;
 
   /// Set instead of [onChanged] when the field only opens the search
   /// elsewhere.
@@ -124,7 +132,8 @@ class SSearchFieldMaterial extends StatefulWidget implements SSearchField {
   State<SSearchFieldMaterial> createState() => _SearchFieldState();
 }
 
-/// [SQuantityInput], drawn with Material's outlined [IconButton]s.
+/// [SQuantityInput], drawn as a pill with a thin border, its minus and
+/// plus Material [IconButton]s at the ends.
 class SQuantityInputMaterial extends StatelessWidget implements SQuantityInput {
   const SQuantityInputMaterial({
     required this.value,
@@ -140,40 +149,45 @@ class SQuantityInputMaterial extends StatelessWidget implements SQuantityInput {
   final ValueChanged<int> onChanged;
 
   /// Room for two figures, so the buttons don't move as the number grows.
-  static const _quantityWidth = 48.0;
+  static const _quantityWidth = 28.0;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final s = StellarLocalizations.of(context);
-    Widget step(SIcons icon, String tooltip, int? to) => IconButton.outlined(
+    Widget step(SIcons icon, String tooltip, int? to) => IconButton(
       tooltip: tooltip,
       onPressed: to == null ? null : () => onChanged(to),
-      style: IconButton.styleFrom(
-        side: BorderSide(color: c.border),
-        foregroundColor: c.text,
-      ),
+      color: c.primary,
+      disabledColor: c.textSubtle,
       icon: Icon(materialIcon(icon), size: SIconSize.md.pixels),
     );
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      spacing: Space.xl,
-      children: [
-        step(SIcons.minus, s.quantityFewer, value > min ? value - 1 : null),
-        SizedBox(
-          width: _quantityWidth,
-          child: Text(
-            '$value',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: context.style.text.display,
-              fontWeight: SFontWeight.bold.value,
-              color: c.text,
+    return Container(
+      height: context.style.controlHeight,
+      decoration: BoxDecoration(
+        color: c.surface,
+        border: Border.all(color: c.border),
+        borderRadius: BorderRadius.circular(Radii.pill),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          step(SIcons.minus, s.quantityFewer, value > min ? value - 1 : null),
+          SizedBox(
+            width: _quantityWidth,
+            child: Text(
+              '$value',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: context.style.text.subtitle,
+                fontWeight: SFontWeight.bold.value,
+                color: c.text,
+              ),
             ),
           ),
-        ),
-        step(SIcons.add, s.quantityMore, value < max ? value + 1 : null),
-      ],
+          step(SIcons.add, s.quantityMore, value < max ? value + 1 : null),
+        ],
+      ),
     );
   }
 }
@@ -558,12 +572,21 @@ class _PasswordInputState extends State<_PasswordInput> {
 }
 
 class _SearchFieldState extends State<SSearchFieldMaterial> {
-  late final _controller = TextEditingController(text: widget.initialValue);
+  TextEditingController? _own;
+
+  TextEditingController get _controller =>
+      widget.controller ??
+      (_own ??= TextEditingController(text: widget.initialValue));
 
   @override
   void dispose() {
-    _controller.dispose();
+    _own?.dispose();
     super.dispose();
+  }
+
+  void _clear() {
+    _controller.clear();
+    widget.onChanged?.call('');
   }
 
   @override
@@ -576,28 +599,45 @@ class _SearchFieldState extends State<SSearchFieldMaterial> {
       borderSide: BorderSide.none,
     );
     final onTap = widget.onTap;
-    return TextField(
-      controller: _controller,
-      onChanged: widget.onChanged,
-      autofocus: widget.autofocus,
-      // As a button: no cursor, no keyboard, only the tap.
-      readOnly: onTap != null,
-      canRequestFocus: onTap == null,
-      onTap: onTap,
-      style: TextStyle(fontSize: context.style.text.body),
-      decoration: InputDecoration(
-        hintText: widget.hint,
-        fillColor: c.fieldFill,
-        border: shape,
-        enabledBorder: shape,
-        focusedBorder: shape,
-        prefixIcon: Icon(
-          materialIcon(SIcons.search),
-          size: SIconSize.xs.pixels,
-          color: c.textSubtle,
+    // Rebuilt as the words change, for the × to come and go.
+    return ListenableBuilder(
+      listenable: _controller,
+      builder: (context, _) => TextField(
+        controller: _controller,
+        onChanged: widget.onChanged,
+        onSubmitted: widget.onSubmitted,
+        textInputAction: TextInputAction.search,
+        autofocus: widget.autofocus,
+        // As a button: no cursor, no keyboard, only the tap.
+        readOnly: onTap != null,
+        canRequestFocus: onTap == null,
+        onTap: onTap,
+        style: TextStyle(fontSize: context.style.text.body),
+        decoration: InputDecoration(
+          hintText: widget.hint,
+          fillColor: c.fieldFill,
+          border: shape,
+          enabledBorder: shape,
+          focusedBorder: shape,
+          prefixIcon: Icon(
+            materialIcon(SIcons.search),
+            size: SIconSize.xs.pixels,
+            color: c.textSubtle,
+          ),
+          // Clear of the round end.
+          prefixIconConstraints: const BoxConstraints(minWidth: 44),
+          suffixIcon: onTap != null || _controller.text.isEmpty
+              ? null
+              : IconButton(
+                  tooltip: StellarLocalizations.of(context).searchClear,
+                  icon: Icon(
+                    materialIcon(SIcons.close),
+                    size: SIconSize.sm.pixels,
+                    color: c.textSubtle,
+                  ),
+                  onPressed: _clear,
+                ),
         ),
-        // Clear of the round end.
-        prefixIconConstraints: const BoxConstraints(minWidth: 44),
       ),
     );
   }

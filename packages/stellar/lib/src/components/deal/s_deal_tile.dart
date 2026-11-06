@@ -151,46 +151,15 @@ abstract interface class SDealCard implements Widget {
   }) = SDealCardMaterial;
 }
 
-/// An offer as customers browse it: a wide photo, rounded, with the
-/// discount, the store's logo and how much is left on it; the title
-/// and prices under it, then `details` ("Ends in 45 min · 0.8 km"). The
-/// offer comes first: the logo stands for the store, whose `storeName`
-/// screen readers say. `inRow` makes it most of the screen's width, for a
-/// row that scrolls sideways.
-abstract interface class SDealPoster implements Widget {
-  /// [price] and [originalPrice] are already written for people
-  /// (`formatPrice`); [discountLabel] is "44% off". [stockLabel] is
-  /// "3 left", null for what isn't counted; [stockHot] turns it orange,
-  /// almost gone. [details] are short facts under the title, in this
-  /// order. [inRow] makes it one of a row that scrolls sideways: most of
-  /// the screen's width, so the next card peeks in.
-  const factory SDealPoster({
-    required String title,
-    required String price,
-    required String storeName,
-    String? originalPrice,
-    String? discountLabel,
-    String? imageUrl,
-    String? storeLogoUrl,
-    String? stockLabel,
-    bool stockHot,
-    List<String> details,
-    bool inRow,
-    VoidCallback? onTap,
-    Key? key,
-  }) = SDealPosterMaterial;
-}
-
 /// The bottom of an offer's page, pinned under it (`SScaffold.bottom`):
-/// the `price` in big figures with the regular one crossed out above it,
-/// and the `action` beside it.
+/// the main `action`, with how many to take beside it, in thumb reach.
+/// The page above shows the price.
 abstract interface class SDealFooter implements Widget {
-  /// [price] and [originalPrice] are already written for people
-  /// (`formatPrice`); [action] is the main button (an `SButton`).
+  /// [action] is the main button (an `SButton`); [quantity] an
+  /// `SQuantityInput`, null when there's only one to take.
   const factory SDealFooter({
-    required String price,
     required Widget action,
-    String? originalPrice,
+    Widget? quantity,
     Key? key,
   }) = SDealFooterMaterial;
 }
