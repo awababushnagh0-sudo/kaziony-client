@@ -11,7 +11,7 @@ import 'widgets/store_tile_skeleton.dart';
 
 /// The Favorites tab: the stores the customer saved with the heart on a
 /// store's page, the last saved first, each with how many offers it has
-/// now. Signed out, the way to sign in.
+/// now and a heart that takes it out. Signed out, the way to sign in.
 class FavoritesScreen extends AppView {
   const FavoritesScreen({super.key});
 
@@ -42,8 +42,8 @@ class _Stores extends AppView {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = CustomerLocalizations.of(context);
     return SAsyncView(
-      value: ref.watch(followedStoresProvider),
-      onRetry: () => ref.invalidate(followedStoresProvider),
+      value: ref.watch(favoriteStoresViewModel),
+      onRetry: () => ref.invalidate(favoriteStoresViewModel),
       loading: const Padding(
         padding: EdgeInsets.all(Space.lg),
         child: StoreTilesSkeleton(count: 4),
@@ -59,13 +59,27 @@ class _Stores extends AppView {
           );
         }
         return SSliverView(
-          onRefresh: () => ref.refresh(followedStoresProvider.future),
+          onRefresh: () => ref.refresh(favoriteStoresViewModel.future),
           slivers: [
             SliverPadding(
               padding: const EdgeInsets.all(Space.lg),
               sliver: SliverList.separated(
                 itemCount: stores.length,
-                itemBuilder: (_, i) => StoreTile(stores[i]),
+                itemBuilder: (_, i) => StoreTile(
+                  stores[i],
+                  trailing: SFavoriteButton(
+                    saved: true,
+                    tooltip: s.storeRemoveFavorite,
+                    onPressed: () async {
+                      final failure = await ref
+                          .read(favoriteStoresViewModel.notifier)
+                          .remove(stores[i].id);
+                      if (failure != null && context.mounted) {
+                        SSnack.error(context, failureMessage(context, failure));
+                      }
+                    },
+                  ),
+                ),
                 separatorBuilder: (_, _) => const Gap(Space.sm),
               ),
             ),

@@ -38,7 +38,7 @@ class HomeScreen extends AppView {
                 ref
                   ..invalidate(categoriesProvider)
                   ..invalidate(nearbyStoresProvider)
-                  ..invalidate(followedStoresProvider);
+                  ..invalidate(favoriteStoresViewModel);
                 final failure = await ref
                     .read(homeFeedProvider.notifier)
                     .refresh();
@@ -232,7 +232,7 @@ class _Sections extends AppView {
         ref.watch(nearbyStoresProvider(categoryId)).value ??
         const <StoreSummary>[];
     final followedStores =
-        ref.watch(followedStoresProvider).value ?? const <StoreSummary>[];
+        ref.watch(favoriteStoresViewModel).value ?? const <StoreSummary>[];
     final sections = [
       if (feed.endingSoon.isNotEmpty)
         _OfferRow(

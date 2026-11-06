@@ -248,6 +248,7 @@ class FakeStoresRepository implements StoresRepository {
   List<StoreSummary> followedStores = const [];
   final follows = <String>[];
   final unfollows = <String>[];
+  AppFailure? unfollowFailure;
 
   @override
   Future<Result<PageResult<StoreSummary>>> nearby(
@@ -283,6 +284,7 @@ class FakeStoresRepository implements StoresRepository {
   @override
   Future<Result<void>> unfollow(String storeId) async {
     unfollows.add(storeId);
+    if (unfollowFailure case final failure?) return Err(failure);
     return const Ok(null);
   }
 }

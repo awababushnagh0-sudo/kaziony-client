@@ -41,7 +41,7 @@ class StoreViewModel extends AsyncViewModel<StoreDetail> {
     if (!ref.mounted) return null;
     switch (result) {
       case Ok():
-        ref.invalidate(followedStoresProvider);
+        ref.invalidate(favoriteStoresViewModel);
         return null;
       case Err(:final failure):
         state = AsyncData(store);

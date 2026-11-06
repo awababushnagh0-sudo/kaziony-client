@@ -54,6 +54,31 @@ void main() {
     expect(find.text('store page'), findsOneWidget);
   });
 
+  testWidgets('the heart takes a store out of the favorites', (tester) async {
+    stores.followedStores = const [storeSummary];
+    await open(tester);
+
+    await tester.tap(find.byTooltip('Remove from favorites'));
+    await tester.pumpAndSettle();
+
+    expect(stores.unfollows, ['s1']);
+    expect(find.text('Sweet shop'), findsNothing);
+    expect(find.text('No favorite stores yet'), findsOneWidget);
+  });
+
+  testWidgets('a store the server keeps comes back, with why', (tester) async {
+    stores
+      ..followedStores = const [storeSummary]
+      ..unfollowFailure = const NoConnectionFailure();
+    await open(tester);
+
+    await tester.tap(find.byTooltip('Remove from favorites'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Sweet shop'), findsOneWidget);
+    expect(find.text('No internet connection'), findsOneWidget);
+  });
+
   testWidgets('with nothing saved, it says how to save a store', (
     tester,
   ) async {

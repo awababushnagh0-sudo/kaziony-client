@@ -9,9 +9,12 @@ import '../../domain/store.dart';
 /// A store in a list that runs down the page: its logo, name, rating, kind
 /// and how far, and how many offers it has now. Opens its page.
 class StoreTile extends StatelessWidget {
-  const StoreTile(this.store, {this.onOpen, super.key});
+  const StoreTile(this.store, {this.onOpen, this.trailing, super.key});
 
   final StoreSummary store;
+
+  /// At the end, apart from the words (the heart that removes a favorite).
+  final Widget? trailing;
 
   /// Told when it's opened, before the store's page shows.
   final VoidCallback? onOpen;
@@ -67,6 +70,7 @@ class StoreTile extends StatelessWidget {
               ],
             ),
           ),
+          ?trailing,
         ],
       ),
     );
