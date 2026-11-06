@@ -36,12 +36,8 @@ class ProductsScreen extends AppView {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(
-              Space.lg,
-              Space.sm,
-              Space.lg,
-              Space.sm,
-            ),
+            // The list below brings its own room above the cards.
+            padding: const EdgeInsets.fromLTRB(Space.lg, Space.sm, Space.lg, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               spacing: Space.md,
@@ -87,6 +83,7 @@ class _ProductList extends AppView {
     return SAsyncView(
       value: ref.watch(productsViewModel),
       onRetry: () => ref.invalidate(productsViewModel),
+      loading: const SSkeleton.list(),
       builder: (context, page) {
         if (page.items.isEmpty) {
           return _Empty(query: ref.watch(productQueryProvider));
@@ -112,6 +109,7 @@ class _ProductList extends AppView {
           hasMore: page.hasMore,
           loadingMore: page.loadingMore,
           moreFailure: page.moreFailure,
+          placeholder: const SSkeleton.list(rows: 1),
         );
       },
     );

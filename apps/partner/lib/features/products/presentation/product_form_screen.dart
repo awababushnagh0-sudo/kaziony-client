@@ -25,6 +25,7 @@ class ProductFormScreen extends AppView {
       body: SAsyncView(
         value: product,
         onRetry: () => ref.invalidate(productViewModel(id)),
+        loading: const SSkeleton.page(),
         builder: (_, _) => const SizedBox.shrink(),
       ),
     );

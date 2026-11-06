@@ -25,6 +25,8 @@ class _TwoBranches extends FakeStoreRepository {
         logoUrl: null,
         coverUrl: null,
         isActive: true,
+        ratingAverage: base.ratingAverage,
+        ratingCount: base.ratingCount,
         branches: [
           ...base.branches,
           const Branch(

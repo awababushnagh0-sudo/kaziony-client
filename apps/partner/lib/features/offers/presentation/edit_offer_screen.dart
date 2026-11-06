@@ -22,6 +22,7 @@ class EditOfferScreen extends AppView {
       body: SAsyncView(
         value: offer,
         onRetry: () => ref.invalidate(offerViewModel(offerId)),
+        loading: const SSkeleton.groups(),
         builder: (_, _) => const SizedBox.shrink(),
       ),
     );

@@ -105,6 +105,7 @@ class ClaimScreen extends AppView {
           : SAsyncView(
               value: claim,
               onRetry: () => ref.invalidate(claimViewModel(code)),
+              loading: const SSkeleton.page(),
               builder: (context, claim) =>
                   SingleChildScrollView(child: _Details(claim: claim)),
             ),

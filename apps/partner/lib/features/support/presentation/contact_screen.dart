@@ -22,6 +22,7 @@ class ContactScreen extends AppView {
       body: SAsyncView(
         value: ref.watch(supportContactProvider),
         onRetry: () => ref.invalidate(supportContactProvider),
+        loading: const SSkeleton.groups(),
         builder: (context, support) => SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

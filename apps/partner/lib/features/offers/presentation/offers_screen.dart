@@ -39,12 +39,8 @@ class OffersScreen extends AppView {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(
-              Space.lg,
-              Space.sm,
-              Space.lg,
-              Space.sm,
-            ),
+            // The list below brings its own room above the cards.
+            padding: const EdgeInsets.fromLTRB(Space.lg, Space.sm, Space.lg, 0),
             child: Wrap(
               spacing: Space.sm,
               runSpacing: Space.sm,
@@ -82,6 +78,7 @@ class _OfferList extends AppView {
     return SAsyncView(
       value: ref.watch(offersViewModel),
       onRetry: () => ref.invalidate(offersViewModel),
+      loading: const SSkeleton.list(),
       builder: (context, page) {
         if (page.items.isEmpty) {
           if (ref.watch(offerFilterProvider) != null) {
@@ -120,6 +117,7 @@ class _OfferList extends AppView {
           hasMore: page.hasMore,
           loadingMore: page.loadingMore,
           moreFailure: page.moreFailure,
+          placeholder: const SSkeleton.list(rows: 1),
         );
       },
     );

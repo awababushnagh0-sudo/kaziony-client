@@ -10,6 +10,44 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   PartnerLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
+  String get pickupInstructionsLabel => 'تعليمات الاستلام';
+
+  @override
+  String get pickupInstructionsHint =>
+      'مثال: اعرض رمزك عند الكاشير قرب الباب، وأحضر كيسًا.';
+
+  @override
+  String get pickupInstructionsHelper =>
+      'يراها الزبائن في كل عرض: أين يتوجهون في المتجر وماذا يُحضرون.';
+
+  @override
+  String get ratingLabel => 'التقييم';
+
+  @override
+  String ratingSummary(double average, int count) {
+    final intl.NumberFormat averageNumberFormat =
+        intl.NumberFormat.decimalPatternDigits(
+          locale: localeName,
+          decimalDigits: 1,
+        );
+    final String averageString = averageNumberFormat.format(average);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count تقييم',
+      many: '$count تقييمًا',
+      few: '$count تقييمات',
+      two: 'تقييمان',
+      one: 'تقييم واحد',
+    );
+    return '★ $averageString · $_temp0';
+  }
+
+  @override
+  String get noRatingsYet => 'لا توجد تقييمات بعد';
+
+  @override
   String get appTitle => 'كزيوني للمتاجر';
 
   @override

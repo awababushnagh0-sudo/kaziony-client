@@ -33,6 +33,7 @@ class NewOfferScreen extends AppView {
           ref.invalidate(productViewModel(productId));
           if (fromId != null) ref.invalidate(offerViewModel(fromId));
         },
+        loading: const SSkeleton.groups(),
         builder: (_, _) => const SizedBox.shrink(),
       ),
     );

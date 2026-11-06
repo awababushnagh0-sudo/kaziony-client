@@ -42,6 +42,14 @@ class EditStoreInfoScreen extends AppView {
               maxLength: 1000,
             ),
             STextInput(
+              controlName: 'pickupInstructions',
+              label: s.pickupInstructionsLabel,
+              hint: s.pickupInstructionsHint,
+              helper: s.pickupInstructionsHelper,
+              kind: TextInputKind.multiline,
+              maxLength: 500,
+            ),
+            STextInput(
               controlName: 'phone',
               label: s.phoneLabel,
               kind: TextInputKind.phone,

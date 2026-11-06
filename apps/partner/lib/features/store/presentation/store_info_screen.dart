@@ -30,6 +30,7 @@ class StoreInfoScreen extends AppView {
       body: SAsyncView(
         value: store,
         onRetry: ref.read(storeViewModel.notifier).reload,
+        loading: const SSkeleton.groups(groups: 3),
         builder: (context, store) {
           final profile = store.profile;
           String shown(String? value) =>
@@ -70,9 +71,26 @@ class StoreInfoScreen extends AppView {
                 const Gap(Space.xl),
                 SListGroup(
                   children: [
+                    SFactTile(
+                      label: s.ratingLabel,
+                      value: switch (store.ratingAverage) {
+                        final average? when store.ratingCount > 0 =>
+                          s.ratingSummary(average, store.ratingCount),
+                        _ => s.noRatingsYet,
+                      },
+                    ),
+                  ],
+                ),
+                const Gap(Space.xl),
+                SListGroup(
+                  children: [
                     SListTile(
                       title: s.descriptionLabel,
                       subtitle: shown(profile.description),
+                    ),
+                    SListTile(
+                      title: s.pickupInstructionsLabel,
+                      subtitle: shown(profile.pickupInstructions),
                     ),
                     SListTile(
                       title: s.phoneLabel,

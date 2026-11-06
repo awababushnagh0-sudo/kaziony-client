@@ -101,6 +101,42 @@ abstract class PartnerLocalizations {
     Locale('en'),
   ];
 
+  /// No description provided for @pickupInstructionsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup instructions'**
+  String get pickupInstructionsLabel;
+
+  /// No description provided for @pickupInstructionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Show your code at the cashier by the door; bring a bag.'**
+  String get pickupInstructionsHint;
+
+  /// No description provided for @pickupInstructionsHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers see this on every offer: where to go in the shop and what to bring.'**
+  String get pickupInstructionsHelper;
+
+  /// No description provided for @ratingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get ratingLabel;
+
+  /// No description provided for @ratingSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'★ {average} · {count, plural, =1{1 rating} other{{count} ratings}}'**
+  String ratingSummary(double average, int count);
+
+  /// No description provided for @noRatingsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No ratings yet'**
+  String get noRatingsYet;
+
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:

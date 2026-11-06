@@ -26,6 +26,10 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
         value: profile.description,
         validators: [Validators.maxLength(1000)],
       ),
+      'pickupInstructions': FormControl<String>(
+        value: profile.pickupInstructions,
+        validators: [Validators.maxLength(500)],
+      ),
       'phone': FormControl<String>(
         value: phone == null ? null : formatLibyanPhone(phone),
         validators: [SValidators.libyanPhone],
@@ -65,6 +69,7 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
           storeId,
           StoreProfile(
             description: _text('description'),
+            pickupInstructions: _text('pickupInstructions'),
             phone: phone == null ? null : normalizeLibyanPhone(phone),
             email: _text('email'),
             facebookUrl: _text('facebookUrl'),

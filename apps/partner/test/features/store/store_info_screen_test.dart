@@ -52,8 +52,19 @@ void main() {
     expect(find.text('Store a'), findsOneWidget);
     expect(find.text('Sweets'), findsOneWidget);
     expect(find.text('Fresh every morning'), findsOneWidget);
+    expect(find.text('Show your code at the cashier'), findsOneWidget);
     expect(find.text('0910000001'), findsOneWidget);
     expect(find.text('Not set'), findsNWidgets(3));
+    expect(find.text('★ 4.5 · 37 ratings'), findsOneWidget);
+  });
+
+  testWidgets('says so before the first rating', (tester) async {
+    await open(
+      tester,
+      loaded: Ok(storeDetails(ratingAverage: null, ratingCount: 0)),
+    );
+
+    expect(find.text('No ratings yet'), findsOneWidget);
   });
 
   testWidgets('staff can see it but not edit it', (tester) async {
@@ -102,6 +113,10 @@ void main() {
     await tester.pumpAndSettle();
     await tester.enterText(textField('Email'), 'hello@store.ly');
     await tester.enterText(textField('Phone number'), '');
+    await tester.enterText(
+      textField('Pickup instructions'),
+      '  Ask at the counter; bring a bag ',
+    );
     await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
 
@@ -109,6 +124,7 @@ void main() {
     expect(saved.email, 'hello@store.ly');
     expect(saved.phone, isNull);
     expect(saved.description, 'Fresh every morning');
+    expect(saved.pickupInstructions, 'Ask at the counter; bring a bag');
     // Back on the info page, with the saved values.
     expect(find.text('hello@store.ly'), findsOneWidget);
   });

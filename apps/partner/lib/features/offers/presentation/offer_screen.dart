@@ -30,6 +30,7 @@ class OfferScreen extends AppView {
       body: SAsyncView(
         value: offer,
         onRetry: () => ref.invalidate(offerViewModel(offerId)),
+        loading: const SSkeleton.page(),
         builder: (context, offer) => SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -18,6 +18,7 @@ class BranchesScreen extends AppView {
       body: SAsyncView(
         value: ref.watch(storeViewModel),
         onRetry: ref.read(storeViewModel.notifier).reload,
+        loading: const SSkeleton.groups(groups: 1, rows: 4),
         builder: (context, store) => SingleChildScrollView(
           child: SListGroup(
             children: [

@@ -23,6 +23,7 @@ class PickupsScreen extends AppView {
       body: SAsyncView(
         value: ref.watch(pickupsViewModel),
         onRetry: () => ref.invalidate(pickupsViewModel),
+        loading: const SSkeleton.list(),
         builder: (context, page) {
           // The server ends reservations that ran out every few minutes;
           // until then they're hidden here.
@@ -68,6 +69,7 @@ class PickupsScreen extends AppView {
             hasMore: page.hasMore,
             loadingMore: page.loadingMore,
             moreFailure: page.moreFailure,
+            placeholder: const SSkeleton.list(rows: 1),
           );
         },
       ),

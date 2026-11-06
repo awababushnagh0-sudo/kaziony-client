@@ -10,6 +10,41 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   PartnerLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get pickupInstructionsLabel => 'Pickup instructions';
+
+  @override
+  String get pickupInstructionsHint =>
+      'e.g. Show your code at the cashier by the door; bring a bag.';
+
+  @override
+  String get pickupInstructionsHelper =>
+      'Customers see this on every offer: where to go in the shop and what to bring.';
+
+  @override
+  String get ratingLabel => 'Rating';
+
+  @override
+  String ratingSummary(double average, int count) {
+    final intl.NumberFormat averageNumberFormat =
+        intl.NumberFormat.decimalPatternDigits(
+          locale: localeName,
+          decimalDigits: 1,
+        );
+    final String averageString = averageNumberFormat.format(average);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ratings',
+      one: '1 rating',
+    );
+    return '★ $averageString · $_temp0';
+  }
+
+  @override
+  String get noRatingsYet => 'No ratings yet';
+
+  @override
   String get appTitle => 'Kaziony for Stores';
 
   @override

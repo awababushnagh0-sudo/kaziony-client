@@ -45,12 +45,8 @@ class ChooseOfferProductScreen extends AppView {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(
-              Space.lg,
-              Space.sm,
-              Space.lg,
-              Space.sm,
-            ),
+            // The list below brings its own room above the cards.
+            padding: const EdgeInsets.fromLTRB(Space.lg, Space.sm, Space.lg, 0),
             child: SSearchField(
               hint: s.searchProducts,
               onChanged: ref.read(offerProductQueryProvider.notifier).setSearch,
@@ -60,6 +56,7 @@ class ChooseOfferProductScreen extends AppView {
             child: SAsyncView(
               value: ref.watch(offerProductsViewModel),
               onRetry: () => ref.invalidate(offerProductsViewModel),
+              loading: const SSkeleton.list(),
               builder: (context, page) {
                 if (page.items.isEmpty) {
                   if (ref.watch(offerProductQueryProvider).search.isNotEmpty) {
@@ -96,6 +93,7 @@ class ChooseOfferProductScreen extends AppView {
                   hasMore: page.hasMore,
                   loadingMore: page.loadingMore,
                   moreFailure: page.moreFailure,
+                  placeholder: const SSkeleton.list(rows: 1),
                 );
               },
             ),

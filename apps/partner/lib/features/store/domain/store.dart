@@ -56,6 +56,7 @@ class StoreMember {
 class StoreProfile {
   const StoreProfile({
     required this.description,
+    required this.pickupInstructions,
     required this.phone,
     required this.email,
     required this.facebookUrl,
@@ -63,6 +64,9 @@ class StoreProfile {
   });
 
   final String? description;
+
+  /// Shown on every offer's page: where to go in the shop, what to bring.
+  final String? pickupInstructions;
   final String? phone;
   final String? email;
   final String? facebookUrl;
@@ -78,6 +82,8 @@ class Store {
     required this.logoUrl,
     required this.coverUrl,
     required this.isActive,
+    required this.ratingAverage,
+    required this.ratingCount,
     required this.branches,
     required this.members,
   });
@@ -95,6 +101,11 @@ class Store {
 
   /// Disabled stores can't post offers.
   final bool isActive;
+
+  /// Customers' stars after a pickup (1 to 5), one decimal. Null before the
+  /// first rating.
+  final double? ratingAverage;
+  final int ratingCount;
   final List<Branch> branches;
   final List<StoreMember> members;
 }

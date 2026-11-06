@@ -28,6 +28,7 @@ class ProductScreen extends AppView {
       body: SAsyncView(
         value: product,
         onRetry: () => ref.invalidate(productViewModel(productId)),
+        loading: const SSkeleton.page(),
         builder: (context, product) => SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

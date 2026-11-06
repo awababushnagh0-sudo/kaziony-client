@@ -55,6 +55,8 @@ Store storeDetails({
   StoreProfile? profile,
   List<Branch>? branches,
   String? logoUrl,
+  double? ratingAverage = 4.5,
+  int ratingCount = 37,
 }) => Store(
   id: 'a',
   name: 'Store a',
@@ -63,6 +65,7 @@ Store storeDetails({
       profile ??
       const StoreProfile(
         description: 'Fresh every morning',
+        pickupInstructions: 'Show your code at the cashier',
         phone: '+218910000001',
         email: null,
         facebookUrl: null,
@@ -71,6 +74,8 @@ Store storeDetails({
   logoUrl: logoUrl,
   coverUrl: null,
   isActive: true,
+  ratingAverage: ratingAverage,
+  ratingCount: ratingCount,
   branches: branches ?? [branch('b1', 'Andalus')],
   members: const [
     StoreMember(

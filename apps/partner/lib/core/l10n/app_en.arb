@@ -1,5 +1,25 @@
 {
   "@@locale": "en",
+  "pickupInstructionsLabel": "Pickup instructions",
+  "pickupInstructionsHint": "e.g. Show your code at the cashier by the door; bring a bag.",
+  "pickupInstructionsHelper": "Customers see this on every offer: where to go in the shop and what to bring.",
+  "ratingLabel": "Rating",
+  "ratingSummary": "★ {average} · {count, plural, =1{1 rating} other{{count} ratings}}",
+  "@ratingSummary": {
+    "placeholders": {
+      "average": {
+        "type": "double",
+        "format": "decimalPatternDigits",
+        "optionalParameters": {
+          "decimalDigits": 1
+        }
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noRatingsYet": "No ratings yet",
   "appTitle": "Kaziony for Stores",
   "loginTitle": "Welcome to your store",
   "loginSubtitle": "Log in with the phone number and password our team gave you.",

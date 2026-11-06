@@ -36,6 +36,10 @@ class HomeScreen extends AppView {
       body: SAsyncView(
         value: home,
         onRetry: () => ref.invalidate(homeViewModel),
+        loading: const Padding(
+          padding: EdgeInsets.all(Space.lg),
+          child: SSkeleton.groups(),
+        ),
         builder: (context, home) => _HomeBody(home),
       ),
     );
