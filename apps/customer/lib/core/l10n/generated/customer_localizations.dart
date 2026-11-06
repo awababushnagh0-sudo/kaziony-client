@@ -191,6 +191,12 @@ abstract class CustomerLocalizations {
   /// **'Thanks for rating!'**
   String get ratingThanks;
 
+  /// No description provided for @ratingSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send rating'**
+  String get ratingSend;
+
   /// No description provided for @ratingNotPickedUp.
   ///
   /// In en, this message translates to:
@@ -202,12 +208,6 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'You\'ve already rated this pickup.'**
   String get ratingAlreadyRated;
-
-  /// No description provided for @ratingListHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Rate'**
-  String get ratingListHint;
 
   /// No description provided for @pickupInstructionsTitle.
   ///
@@ -1004,7 +1004,7 @@ abstract class CustomerLocalizations {
   /// No description provided for @bookingTitle.
   ///
   /// In en, this message translates to:
-  /// **'Pickup code'**
+  /// **'Booking details'**
   String get bookingTitle;
 
   /// No description provided for @qrLabel.
@@ -1013,41 +1013,167 @@ abstract class CustomerLocalizations {
   /// **'QR code to show at the store'**
   String get qrLabel;
 
-  /// No description provided for @showAtCounter.
-  ///
-  /// In en, this message translates to:
-  /// **'Show this at the counter'**
-  String get showAtCounter;
-
-  /// No description provided for @timeLeftToPickUp.
-  ///
-  /// In en, this message translates to:
-  /// **'{time} left to pick up'**
-  String timeLeftToPickUp(String time);
-
   /// No description provided for @validUntil.
   ///
   /// In en, this message translates to:
   /// **'Valid until {time}'**
   String validUntil(String time);
 
-  /// No description provided for @payAtCounter.
+  /// No description provided for @bookingReadyTitle.
   ///
   /// In en, this message translates to:
-  /// **'Pay {price} cash when you pick up'**
-  String payAtCounter(String price);
+  /// **'Your booking is ready'**
+  String get bookingReadyTitle;
+
+  /// No description provided for @bookingReadyBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Your booking is ready for pickup'**
+  String get bookingReadyBanner;
+
+  /// No description provided for @closeAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get closeAction;
+
+  /// No description provided for @pickupTimeLeftLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Left to pick up'**
+  String get pickupTimeLeftLabel;
+
+  /// No description provided for @oneCodeFor.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =2{One code for both pieces} other{One code for {count} pieces}}'**
+  String oneCodeFor(int count);
+
+  /// No description provided for @copyCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy the code'**
+  String get copyCode;
+
+  /// No description provided for @codeCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Code copied'**
+  String get codeCopied;
+
+  /// No description provided for @codeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the code to the staff, or read them the letters if the camera can\'t scan it. Tap the code to copy it.'**
+  String get codeHint;
+
+  /// No description provided for @directionsAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Directions'**
+  String get directionsAction;
+
+  /// No description provided for @pickupWhereTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Where to pick up'**
+  String get pickupWhereTitle;
+
+  /// No description provided for @orBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'or {branch}'**
+  String orBranch(String branch);
+
+  /// No description provided for @orOtherBranches.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{or 1 more branch} other{or {count} more branches}}'**
+  String orOtherBranches(int count);
+
+  /// No description provided for @bookingsNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get bookingsNow;
+
+  /// No description provided for @bookingsPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Before'**
+  String get bookingsPast;
+
+  /// No description provided for @pickUpBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up before {time}'**
+  String pickUpBefore(String time);
+
+  /// No description provided for @offerEndsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer ends'**
+  String get offerEndsLabel;
+
+  /// No description provided for @showCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Show pickup code'**
+  String get showCode;
+
+  /// No description provided for @payInCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash at pickup'**
+  String get payInCash;
+
+  /// No description provided for @factPieces.
+  ///
+  /// In en, this message translates to:
+  /// **'Pieces'**
+  String get factPieces;
+
+  /// No description provided for @factTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get factTotal;
+
+  /// No description provided for @factBookedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Booked'**
+  String get factBookedAt;
+
+  /// No description provided for @factPickedUpAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up'**
+  String get factPickedUpAt;
+
+  /// No description provided for @payCashTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay cash at pickup'**
+  String get payCashTitle;
+
+  /// No description provided for @priceEach.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} × {price}'**
+  String priceEach(int count, String price);
+
+  /// No description provided for @cancelNoPenalty.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel the booking (no penalty)'**
+  String get cancelNoPenalty;
 
   /// No description provided for @quantityTimes.
   ///
   /// In en, this message translates to:
   /// **'×{count}'**
   String quantityTimes(int count);
-
-  /// No description provided for @pickUpAt.
-  ///
-  /// In en, this message translates to:
-  /// **'Pick up at'**
-  String get pickUpAt;
 
   /// No description provided for @cancelBooking.
   ///

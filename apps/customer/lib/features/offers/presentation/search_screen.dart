@@ -108,7 +108,7 @@ class _Ideas extends AppView {
     final recentsController = ref.read(recentSearchesProvider.notifier);
     final nearby = ref.watch(nearbyStoresProvider(null));
     final stores = nearby.value ?? const [];
-    return CustomScrollView(
+    return SSliverView(
       slivers: [
         const SliverToBoxAdapter(child: Gap(Space.sm)),
         if (categories.isNotEmpty)

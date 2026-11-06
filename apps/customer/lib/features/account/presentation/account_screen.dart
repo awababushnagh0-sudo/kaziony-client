@@ -27,57 +27,56 @@ class AccountScreen extends AppView {
     };
     return SScaffold(
       showAppBar: false,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          spacing: Space.xl,
-          children: [
-            if (user == null)
-              const SignInPrompt()
-            else
-              SProfileHeader(
-                title: user.name ?? user.email ?? s.accountTitle,
-                subtitle: user.name == null ? null : user.email,
-              ),
-            SListGroup(
-              title: s.appSection,
-              separated: true,
-              children: [
-                SListTile(
-                  icon: SIcons.location,
-                  title: s.locationRow,
-                  value: place,
-                  onTap: () => context.push(Routes.location),
-                ),
-                SListTile(
-                  icon: SIcons.language,
-                  title: stellar.language,
-                  value: languageName(ref.watch(localeProvider)),
-                  onTap: () => chooseLanguage(context, ref),
-                ),
-                SListTile(
-                  icon: SIcons.appearance,
-                  title: stellar.theme,
-                  value: themeName(context, ref.watch(themeChoiceProvider)),
-                  onTap: () => chooseTheme(context, ref),
-                ),
-                SListTile(
-                  icon: SIcons.document,
-                  title: s.termsTitle,
-                  onTap: () => context.push(Routes.terms),
-                ),
-              ],
+      scrollable: true,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: Space.xl,
+        children: [
+          if (user == null)
+            const SignInPrompt()
+          else
+            SProfileHeader(
+              title: user.name ?? user.email ?? s.accountTitle,
+              subtitle: user.name == null ? null : user.email,
             ),
-            // No question first: signing back in is one tap.
-            if (user != null)
-              SButton.dangerSecondary(
-                label: s.logout,
-                icon: SIcons.logout,
-                expand: true,
-                onPressed: ref.read(authRepositoryProvider).signOut,
+          SListGroup(
+            title: s.appSection,
+            separated: true,
+            children: [
+              SListTile(
+                icon: SIcons.location,
+                title: s.locationRow,
+                value: place,
+                onTap: () => context.push(Routes.location),
               ),
-          ],
-        ),
+              SListTile(
+                icon: SIcons.language,
+                title: stellar.language,
+                value: languageName(ref.watch(localeProvider)),
+                onTap: () => chooseLanguage(context, ref),
+              ),
+              SListTile(
+                icon: SIcons.appearance,
+                title: stellar.theme,
+                value: themeName(context, ref.watch(themeChoiceProvider)),
+                onTap: () => chooseTheme(context, ref),
+              ),
+              SListTile(
+                icon: SIcons.document,
+                title: s.termsTitle,
+                onTap: () => context.push(Routes.terms),
+              ),
+            ],
+          ),
+          // No question first: signing back in is one tap.
+          if (user != null)
+            SButton.dangerSecondary(
+              label: s.logout,
+              icon: SIcons.logout,
+              expand: true,
+              onPressed: ref.read(authRepositoryProvider).signOut,
+            ),
+        ],
       ),
     );
   }

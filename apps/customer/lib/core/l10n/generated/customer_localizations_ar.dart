@@ -97,13 +97,13 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get ratingThanks => 'شكرًا على تقييمك!';
 
   @override
+  String get ratingSend => 'إرسال التقييم';
+
+  @override
   String get ratingNotPickedUp => 'تقدر تقيّم المحل بعد ما تستلم طلبك.';
 
   @override
   String get ratingAlreadyRated => 'قيّمت هذا الاستلام من قبل.';
-
-  @override
-  String get ratingListHint => 'قيّم';
 
   @override
   String get pickupInstructionsTitle => 'طريقة الاستلام';
@@ -565,18 +565,10 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get reserved => 'تم الحجز!';
 
   @override
-  String get bookingTitle => 'رمز الاستلام';
+  String get bookingTitle => 'تفاصيل الحجز';
 
   @override
   String get qrLabel => 'رمز QR لعرضه في المحل';
-
-  @override
-  String get showAtCounter => 'اعرض هذا الرمز عند الكاشير';
-
-  @override
-  String timeLeftToPickUp(String time) {
-    return 'باقي $time للاستلام';
-  }
 
   @override
   String validUntil(String time) {
@@ -584,17 +576,111 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   }
 
   @override
-  String payAtCounter(String price) {
-    return 'ادفع $price نقدًا عند الاستلام';
+  String get bookingReadyTitle => 'حجزك جاهز';
+
+  @override
+  String get bookingReadyBanner => 'حجزك جاهز للاستلام';
+
+  @override
+  String get closeAction => 'إغلاق';
+
+  @override
+  String get pickupTimeLeftLabel => 'متبقي للاستلام';
+
+  @override
+  String oneCodeFor(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'رمز واحد لـ$count قطعة',
+      few: 'رمز واحد لـ$count قطع',
+      two: 'رمز واحد للقطعتين',
+    );
+    return '$_temp0';
   }
+
+  @override
+  String get copyCode => 'انسخ الرمز';
+
+  @override
+  String get codeCopied => 'نُسخ الرمز';
+
+  @override
+  String get codeHint =>
+      'اعرض الرمز للموظف، أو أعطه الحروف إذا لم تقرأه الكاميرا. اضغط على الرمز لنسخه.';
+
+  @override
+  String get directionsAction => 'الاتجاهات';
+
+  @override
+  String get pickupWhereTitle => 'أين تستلم';
+
+  @override
+  String orBranch(String branch) {
+    return 'أو $branch';
+  }
+
+  @override
+  String orOtherBranches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'أو $count فرع آخر',
+      many: 'أو $count فرعًا آخر',
+      few: 'أو $count فروع أخرى',
+      two: 'أو فرعان آخران',
+      one: 'أو فرع آخر',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get bookingsNow => 'الحالية';
+
+  @override
+  String get bookingsPast => 'السابقة';
+
+  @override
+  String pickUpBefore(String time) {
+    return 'استلم قبل $time';
+  }
+
+  @override
+  String get offerEndsLabel => 'ينتهي العرض';
+
+  @override
+  String get showCode => 'عرض رمز الاستلام';
+
+  @override
+  String get payInCash => 'نقدًا عند الاستلام';
+
+  @override
+  String get factPieces => 'القطع';
+
+  @override
+  String get factTotal => 'المجموع';
+
+  @override
+  String get factBookedAt => 'وقت الحجز';
+
+  @override
+  String get factPickedUpAt => 'وقت الاستلام';
+
+  @override
+  String get payCashTitle => 'ادفع نقدًا عند الاستلام';
+
+  @override
+  String priceEach(int count, String price) {
+    return '$count × $price';
+  }
+
+  @override
+  String get cancelNoPenalty => 'إلغاء الحجز (بدون مخالفة)';
 
   @override
   String quantityTimes(int count) {
     return '×$count';
   }
-
-  @override
-  String get pickUpAt => 'استلم من';
 
   @override
   String get cancelBooking => 'إلغاء الحجز';

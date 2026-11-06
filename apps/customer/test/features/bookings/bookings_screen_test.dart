@@ -28,6 +28,7 @@ void main() {
         overrides: [
           bookingsRepositoryProvider.overrideWithValue(bookings),
           minuteClockProvider.overrideWith((ref) => Stream.value(now)),
+          secondClockProvider.overrideWith((ref) => Stream.value(now)),
           if (signedIn)
             sessionProvider.overrideWith(() => SignedInSession(customer())),
         ],
@@ -43,29 +44,33 @@ void main() {
     expect(find.text('sign-in page'), findsOneWidget);
   });
 
-  testWidgets('lists bookings, with the code while it is good', (tester) async {
+  testWidgets('the ones to pick up first, counting down, then the past', (
+    tester,
+  ) async {
     bookings.bookings = [
       booking(),
       booking(id: 'k2', status: BookingStatus.expired),
     ];
     await open(tester);
 
-    expect(find.textContaining('A2GU GPJ7'), findsOneWidget);
-    expect(find.text('Sweet shop · Time ran out'), findsOneWidget);
+    expect(find.text('Now'), findsOneWidget);
+    expect(find.text('42:05'), findsOneWidget);
+    expect(find.text('Before'), findsOneWidget);
+    expect(find.text('Time ran out'), findsOneWidget);
 
-    await tester.tap(find.textContaining('A2GU GPJ7'));
+    await tester.tap(find.text('Show pickup code'));
     await tester.pumpAndSettle();
     expect(find.text('pickup code page'), findsOneWidget);
   });
 
-  testWidgets('a pickup not rated yet asks for a rating', (tester) async {
-    bookings.bookings = [
-      booking(status: BookingStatus.pickedUp, canRate: true),
-      booking(id: 'k2', status: BookingStatus.pickedUp, myRating: 4),
-    ];
+  testWidgets('a past booking opens its page', (tester) async {
+    bookings.bookings = [booking(status: BookingStatus.pickedUp)];
     await open(tester);
 
-    expect(find.text('Rate'), findsOneWidget);
+    expect(find.text('Now'), findsNothing);
+    await tester.tap(find.text('Picked up'));
+    await tester.pumpAndSettle();
+    expect(find.text('pickup code page'), findsOneWidget);
   });
 
   testWidgets('with none yet, it leads to the offers', (tester) async {

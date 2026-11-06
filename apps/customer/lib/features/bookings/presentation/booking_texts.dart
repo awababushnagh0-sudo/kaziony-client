@@ -56,3 +56,10 @@ String countdown(Duration left) {
       ? '${clamped.inHours}:$minutes:$seconds'
       : '$minutes:$seconds';
 }
+
+/// Of [bookings], those still to pick up at [now], the soonest to run out
+/// first.
+List<Booking> toPickUpAt(List<Booking> bookings, DateTime now) => [
+  for (final booking in bookings)
+    if (booking.isActiveAt(now)) booking,
+]..sort((a, b) => a.expiresAt.compareTo(b.expiresAt));

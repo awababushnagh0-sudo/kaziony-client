@@ -89,14 +89,14 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get ratingThanks => 'Thanks for rating!';
 
   @override
+  String get ratingSend => 'Send rating';
+
+  @override
   String get ratingNotPickedUp =>
       'You can rate the store once you\'ve picked up.';
 
   @override
   String get ratingAlreadyRated => 'You\'ve already rated this pickup.';
-
-  @override
-  String get ratingListHint => 'Rate';
 
   @override
   String get pickupInstructionsTitle => 'Pickup instructions';
@@ -561,18 +561,10 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get reserved => 'Reserved!';
 
   @override
-  String get bookingTitle => 'Pickup code';
+  String get bookingTitle => 'Booking details';
 
   @override
   String get qrLabel => 'QR code to show at the store';
-
-  @override
-  String get showAtCounter => 'Show this at the counter';
-
-  @override
-  String timeLeftToPickUp(String time) {
-    return '$time left to pick up';
-  }
 
   @override
   String validUntil(String time) {
@@ -580,17 +572,107 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   }
 
   @override
-  String payAtCounter(String price) {
-    return 'Pay $price cash when you pick up';
+  String get bookingReadyTitle => 'Your booking is ready';
+
+  @override
+  String get bookingReadyBanner => 'Your booking is ready for pickup';
+
+  @override
+  String get closeAction => 'Close';
+
+  @override
+  String get pickupTimeLeftLabel => 'Left to pick up';
+
+  @override
+  String oneCodeFor(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'One code for $count pieces',
+      two: 'One code for both pieces',
+    );
+    return '$_temp0';
   }
+
+  @override
+  String get copyCode => 'Copy the code';
+
+  @override
+  String get codeCopied => 'Code copied';
+
+  @override
+  String get codeHint =>
+      'Show the code to the staff, or read them the letters if the camera can\'t scan it. Tap the code to copy it.';
+
+  @override
+  String get directionsAction => 'Directions';
+
+  @override
+  String get pickupWhereTitle => 'Where to pick up';
+
+  @override
+  String orBranch(String branch) {
+    return 'or $branch';
+  }
+
+  @override
+  String orOtherBranches(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'or $count more branches',
+      one: 'or 1 more branch',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get bookingsNow => 'Now';
+
+  @override
+  String get bookingsPast => 'Before';
+
+  @override
+  String pickUpBefore(String time) {
+    return 'Pick up before $time';
+  }
+
+  @override
+  String get offerEndsLabel => 'Offer ends';
+
+  @override
+  String get showCode => 'Show pickup code';
+
+  @override
+  String get payInCash => 'Cash at pickup';
+
+  @override
+  String get factPieces => 'Pieces';
+
+  @override
+  String get factTotal => 'Total';
+
+  @override
+  String get factBookedAt => 'Booked';
+
+  @override
+  String get factPickedUpAt => 'Picked up';
+
+  @override
+  String get payCashTitle => 'Pay cash at pickup';
+
+  @override
+  String priceEach(int count, String price) {
+    return '$count × $price';
+  }
+
+  @override
+  String get cancelNoPenalty => 'Cancel the booking (no penalty)';
 
   @override
   String quantityTimes(int count) {
     return '×$count';
   }
-
-  @override
-  String get pickUpAt => 'Pick up at';
 
   @override
   String get cancelBooking => 'Cancel reservation';

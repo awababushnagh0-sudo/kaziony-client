@@ -50,9 +50,9 @@
     }
   },
   "ratingThanks": "Thanks for rating!",
+  "ratingSend": "Send rating",
   "ratingNotPickedUp": "You can rate the store once you've picked up.",
   "ratingAlreadyRated": "You've already rated this pickup.",
-  "ratingListHint": "Rate",
   "pickupInstructionsTitle": "Pickup instructions",
   "pickupInstructionsDefault": "Show your pickup code to a staff member at the store, and they'll hand you your order.",
   "homeStoresNearby": "Stores near you",
@@ -270,17 +270,8 @@
   "reserveEnded": "This offer has ended.",
   "reserveBanned": "You missed several pickups, so you can't reserve for a few days.",
   "reserved": "Reserved!",
-  "bookingTitle": "Pickup code",
+  "bookingTitle": "Booking details",
   "qrLabel": "QR code to show at the store",
-  "showAtCounter": "Show this at the counter",
-  "timeLeftToPickUp": "{time} left to pick up",
-  "@timeLeftToPickUp": {
-    "placeholders": {
-      "time": {
-        "type": "String"
-      }
-    }
-  },
   "validUntil": "Valid until {time}",
   "@validUntil": {
     "placeholders": {
@@ -289,14 +280,36 @@
       }
     }
   },
-  "payAtCounter": "Pay {price} cash when you pick up",
-  "@payAtCounter": {
-    "placeholders": {
-      "price": {
-        "type": "String"
-      }
-    }
-  },
+  "bookingReadyTitle": "Your booking is ready",
+  "bookingReadyBanner": "Your booking is ready for pickup",
+  "closeAction": "Close",
+  "pickupTimeLeftLabel": "Left to pick up",
+  "oneCodeFor": "{count, plural, =2{One code for both pieces} other{One code for {count} pieces}}",
+  "@oneCodeFor": {"placeholders": {"count": {"type": "int"}}},
+  "copyCode": "Copy the code",
+  "codeCopied": "Code copied",
+  "codeHint": "Show the code to the staff, or read them the letters if the camera can't scan it. Tap the code to copy it.",
+  "directionsAction": "Directions",
+  "pickupWhereTitle": "Where to pick up",
+  "orBranch": "or {branch}",
+  "@orBranch": {"placeholders": {"branch": {"type": "String"}}},
+  "orOtherBranches": "{count, plural, =1{or 1 more branch} other{or {count} more branches}}",
+  "@orOtherBranches": {"placeholders": {"count": {"type": "int"}}},
+  "bookingsNow": "Now",
+  "bookingsPast": "Before",
+  "pickUpBefore": "Pick up before {time}",
+  "@pickUpBefore": {"placeholders": {"time": {"type": "String"}}},
+  "offerEndsLabel": "Offer ends",
+  "showCode": "Show pickup code",
+  "payInCash": "Cash at pickup",
+  "factPieces": "Pieces",
+  "factTotal": "Total",
+  "factBookedAt": "Booked",
+  "factPickedUpAt": "Picked up",
+  "payCashTitle": "Pay cash at pickup",
+  "priceEach": "{count} × {price}",
+  "@priceEach": {"placeholders": {"count": {"type": "int"}, "price": {"type": "String"}}},
+  "cancelNoPenalty": "Cancel the booking (no penalty)",
   "quantityTimes": "×{count}",
   "@quantityTimes": {
     "placeholders": {
@@ -305,7 +318,6 @@
       }
     }
   },
-  "pickUpAt": "Pick up at",
   "cancelBooking": "Cancel reservation",
   "cancelBookingTitle": "Cancel this reservation?",
   "cancelBookingMessage": "The pieces go back to the offer, and it doesn't count against you.",

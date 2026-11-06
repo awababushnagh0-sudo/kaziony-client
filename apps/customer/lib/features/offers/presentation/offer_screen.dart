@@ -183,7 +183,10 @@ class _Body extends AppView {
         // offer itself.
         if (detail.branches.isNotEmpty) ...[
           const Gap(Space.md),
-          BranchDirections(branches: detail.branches),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+            child: BranchDirections(branches: detail.branches),
+          ),
         ],
         if (description.isNotEmpty)
           PageSection(

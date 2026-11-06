@@ -56,7 +56,12 @@ class StoreScreen extends AppView {
             if (store.branches.isNotEmpty)
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: Space.lg),
+                  padding: const EdgeInsets.fromLTRB(
+                    Space.lg,
+                    Space.lg,
+                    Space.lg,
+                    0,
+                  ),
                   child: BranchDirections(branches: store.branches),
                 ),
               ),
