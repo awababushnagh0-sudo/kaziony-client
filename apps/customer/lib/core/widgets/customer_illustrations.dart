@@ -36,7 +36,7 @@ enum CustomerIllustrations implements Illustration {
   /// sweets and cafés.
   categoryAll('category_bag', Size(64, 64)),
   categoryBakery('category_croissant', Size(64, 64)),
-  categorySweets('category_cake', Size(64, 64)),
+  categorySweets('category_cupcake', Size(64, 64)),
   categoryCafe('category_coffee', Size(64, 64));
 
   const CustomerIllustrations(this.file, this.size);
