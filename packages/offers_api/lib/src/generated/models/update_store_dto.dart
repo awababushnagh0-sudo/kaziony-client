@@ -12,6 +12,7 @@ class UpdateStoreDto {
     this.categoryId,
     this.name,
     this.description,
+    this.pickupInstructions,
     this.phone,
     this.email,
     this.facebookUrl,
@@ -24,6 +25,10 @@ class UpdateStoreDto {
   final String? categoryId;
   final String? name;
   final String? description;
+
+  /// Shown to customers on every offer's page: where to go in the shop,.
+  /// what to bring.
+  final String? pickupInstructions;
   final String? phone;
 
   /// For customers to get in touch.

@@ -10,6 +10,7 @@ UpdateStoreProfileDto _$UpdateStoreProfileDtoFromJson(
   Map<String, dynamic> json,
 ) => UpdateStoreProfileDto(
   description: json['description'] as String?,
+  pickupInstructions: json['pickupInstructions'] as String?,
   phone: json['phone'] as String?,
   email: json['email'] as String?,
   facebookUrl: json['facebookUrl'] as String?,
@@ -20,6 +21,7 @@ Map<String, dynamic> _$UpdateStoreProfileDtoToJson(
   UpdateStoreProfileDto instance,
 ) => <String, dynamic>{
   'description': ?instance.description,
+  'pickupInstructions': ?instance.pickupInstructions,
   'phone': ?instance.phone,
   'email': ?instance.email,
   'facebookUrl': ?instance.facebookUrl,

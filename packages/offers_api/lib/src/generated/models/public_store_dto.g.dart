@@ -17,7 +17,10 @@ PublicStoreDto _$PublicStoreDtoFromJson(Map<String, dynamic> json) =>
       email: json['email'] as String?,
       facebookUrl: json['facebookUrl'] as String?,
       instagramUrl: json['instagramUrl'] as String?,
+      pickupInstructions: json['pickupInstructions'] as String?,
       category: CategoryDto.fromJson(json['category'] as Map<String, dynamic>),
+      ratingAverage: json['ratingAverage'] as num?,
+      ratingCount: json['ratingCount'] as num,
       branches: (json['branches'] as List<dynamic>)
           .map((e) => PublicBranchDto.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -39,7 +42,10 @@ Map<String, dynamic> _$PublicStoreDtoToJson(PublicStoreDto instance) =>
       'email': ?instance.email,
       'facebookUrl': ?instance.facebookUrl,
       'instagramUrl': ?instance.instagramUrl,
+      'pickupInstructions': ?instance.pickupInstructions,
       'category': instance.category,
+      'ratingAverage': ?instance.ratingAverage,
+      'ratingCount': instance.ratingCount,
       'branches': instance.branches,
       'followerCount': instance.followerCount,
       'isFollowing': ?instance.isFollowing,

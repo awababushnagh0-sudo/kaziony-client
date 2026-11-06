@@ -21,6 +21,48 @@ class _StoresClient implements StoresClient {
   final ParseErrorLogger? errorLogger;
 
   @override
+  Future<PublicStoreListDto> nearby({
+    required num lat,
+    required num lng,
+    required num page,
+    required num pageSize,
+    String? categoryId,
+    String? search,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'lat': lat,
+      r'lng': lng,
+      r'page': page,
+      r'pageSize': pageSize,
+      r'categoryId': categoryId,
+      r'search': search,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<PublicStoreListDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/stores',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late PublicStoreListDto _value;
+    try {
+      _value = PublicStoreListDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<PublicStoreDto> getStore({
     required String storeId,
     num? lat,

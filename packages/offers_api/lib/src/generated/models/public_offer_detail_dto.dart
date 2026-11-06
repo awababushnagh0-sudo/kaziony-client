@@ -35,6 +35,7 @@ class PublicOfferDetailDto {
     required this.branchCount,
     required this.branches,
     required this.myActiveClaimId,
+    required this.pickupInstructions,
   });
   
   factory PublicOfferDetailDto.fromJson(Map<String, Object?> json) => _$PublicOfferDetailDtoFromJson(json);
@@ -80,6 +81,9 @@ class PublicOfferDetailDto {
 
   /// The logged-in customer's active reservation for this offer, if any.
   final String? myActiveClaimId;
+
+  /// The store's: where to go in the shop, what to bring.
+  final String? pickupInstructions;
 
   Map<String, Object?> toJson() => _$PublicOfferDetailDtoToJson(this);
 }

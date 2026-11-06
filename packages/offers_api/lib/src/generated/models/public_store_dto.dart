@@ -22,7 +22,10 @@ class PublicStoreDto {
     required this.email,
     required this.facebookUrl,
     required this.instagramUrl,
+    required this.pickupInstructions,
     required this.category,
+    required this.ratingAverage,
+    required this.ratingCount,
     required this.branches,
     required this.followerCount,
     required this.isFollowing,
@@ -40,7 +43,14 @@ class PublicStoreDto {
   final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
+
+  /// Where to go in the shop, what to bring.
+  final String? pickupInstructions;
   final CategoryDto category;
+
+  /// Average stars from customers' pickups, one decimal; null before the first.
+  final num? ratingAverage;
+  final num ratingCount;
 
   /// Active branches, closest first when a location is sent.
   final List<PublicBranchDto> branches;

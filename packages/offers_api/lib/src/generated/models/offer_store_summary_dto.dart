@@ -15,6 +15,8 @@ class OfferStoreSummaryDto {
     required this.name,
     required this.logoUrl,
     required this.category,
+    required this.ratingAverage,
+    required this.ratingCount,
   });
   
   factory OfferStoreSummaryDto.fromJson(Map<String, Object?> json) => _$OfferStoreSummaryDtoFromJson(json);
@@ -23,6 +25,10 @@ class OfferStoreSummaryDto {
   final String name;
   final String? logoUrl;
   final CategoryDto category;
+
+  /// Average stars from customers' pickups, one decimal; null before the first.
+  final num? ratingAverage;
+  final num ratingCount;
 
   Map<String, Object?> toJson() => _$OfferStoreSummaryDtoToJson(this);
 }

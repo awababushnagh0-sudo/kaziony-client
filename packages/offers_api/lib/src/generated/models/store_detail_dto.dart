@@ -22,6 +22,9 @@ class StoreDetailDto {
     required this.email,
     required this.facebookUrl,
     required this.instagramUrl,
+    required this.pickupInstructions,
+    required this.ratingAverage,
+    required this.ratingCount,
     required this.isActive,
     required this.createdAt,
     required this.category,
@@ -40,6 +43,13 @@ class StoreDetailDto {
   final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
+
+  /// Shown to customers on every offer's page.
+  final String? pickupInstructions;
+
+  /// Average stars from customers' pickups, one decimal; null before the first.
+  final num? ratingAverage;
+  final num ratingCount;
   final bool isActive;
   final DateTime createdAt;
   final CategoryDto category;

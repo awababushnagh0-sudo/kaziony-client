@@ -10,6 +10,7 @@ part 'update_store_profile_dto.g.dart';
 class UpdateStoreProfileDto {
   const UpdateStoreProfileDto({
     this.description,
+    this.pickupInstructions,
     this.phone,
     this.email,
     this.facebookUrl,
@@ -19,6 +20,10 @@ class UpdateStoreProfileDto {
   factory UpdateStoreProfileDto.fromJson(Map<String, Object?> json) => _$UpdateStoreProfileDtoFromJson(json);
   
   final String? description;
+
+  /// Shown to customers on every offer's page: where to go in the shop,.
+  /// what to bring.
+  final String? pickupInstructions;
   final String? phone;
 
   /// For customers to get in touch.

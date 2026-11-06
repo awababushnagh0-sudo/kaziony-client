@@ -28,6 +28,8 @@ CustomerClaimDto _$CustomerClaimDtoFromJson(
       .map((e) => PublicBranchDto.fromJson(e as Map<String, dynamic>))
       .toList(),
   canCancel: json['canCancel'] as bool,
+  myRating: json['myRating'] as num?,
+  canRate: json['canRate'] as bool,
 );
 
 Map<String, dynamic> _$CustomerClaimDtoToJson(CustomerClaimDto instance) =>
@@ -45,4 +47,6 @@ Map<String, dynamic> _$CustomerClaimDtoToJson(CustomerClaimDto instance) =>
       'store': instance.store,
       'branches': instance.branches,
       'canCancel': instance.canCancel,
+      'myRating': ?instance.myRating,
+      'canRate': instance.canRate,
     };

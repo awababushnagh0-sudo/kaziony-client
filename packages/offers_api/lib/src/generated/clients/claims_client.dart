@@ -8,6 +8,7 @@ import 'package:retrofit/retrofit.dart';
 import '../models/create_claim_dto.dart';
 import '../models/customer_claim_dto.dart';
 import '../models/customer_claim_list_dto.dart';
+import '../models/rate_claim_dto.dart';
 
 part 'claims_client.g.dart';
 
@@ -46,5 +47,14 @@ abstract class ClaimsClient {
   @POST('/api/v1/me/claims/{claimId}/cancel')
   Future<CustomerClaimDto> cancel({
     @Path('claimId') required String claimId,
+  });
+
+  /// Rate the store after picking up.
+  ///
+  /// Once per pickup. 409 with error "NotPickedUp" before it was picked up, "AlreadyRated" the second time.
+  @POST('/api/v1/me/claims/{claimId}/rating')
+  Future<CustomerClaimDto> rate({
+    @Path('claimId') required String claimId,
+    @Body() required RateClaimDto body,
   });
 }

@@ -34,6 +34,7 @@ PublicOfferDetailDto _$PublicOfferDetailDtoFromJson(
       .map((e) => PublicBranchDto.fromJson(e as Map<String, dynamic>))
       .toList(),
   myActiveClaimId: json['myActiveClaimId'] as String?,
+  pickupInstructions: json['pickupInstructions'] as String?,
 );
 
 Map<String, dynamic> _$PublicOfferDetailDtoToJson(
@@ -60,4 +61,5 @@ Map<String, dynamic> _$PublicOfferDetailDtoToJson(
   'branchCount': instance.branchCount,
   'branches': instance.branches,
   'myActiveClaimId': ?instance.myActiveClaimId,
+  'pickupInstructions': ?instance.pickupInstructions,
 };

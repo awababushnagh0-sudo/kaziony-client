@@ -27,6 +27,8 @@ class CustomerClaimDto {
     required this.store,
     required this.branches,
     required this.canCancel,
+    required this.myRating,
+    required this.canRate,
   });
   
   factory CustomerClaimDto.fromJson(Map<String, Object?> json) => _$CustomerClaimDtoFromJson(json);
@@ -55,6 +57,12 @@ class CustomerClaimDto {
   /// Where it can be picked up.
   final List<PublicBranchDto> branches;
   final bool canCancel;
+
+  /// The stars I gave the store for this pickup; null until rated.
+  final num? myRating;
+
+  /// Picked up and not rated yet.
+  final bool canRate;
 
   Map<String, Object?> toJson() => _$CustomerClaimDtoToJson(this);
 }

@@ -13,6 +13,8 @@ OfferStoreSummaryDto _$OfferStoreSummaryDtoFromJson(
   name: json['name'] as String,
   logoUrl: json['logoUrl'] as String?,
   category: CategoryDto.fromJson(json['category'] as Map<String, dynamic>),
+  ratingAverage: json['ratingAverage'] as num?,
+  ratingCount: json['ratingCount'] as num,
 );
 
 Map<String, dynamic> _$OfferStoreSummaryDtoToJson(
@@ -22,4 +24,6 @@ Map<String, dynamic> _$OfferStoreSummaryDtoToJson(
   'name': instance.name,
   'logoUrl': ?instance.logoUrl,
   'category': instance.category,
+  'ratingAverage': ?instance.ratingAverage,
+  'ratingCount': instance.ratingCount,
 };
