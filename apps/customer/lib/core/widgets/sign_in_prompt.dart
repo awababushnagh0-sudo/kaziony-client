@@ -30,7 +30,6 @@ class SignInPrompt extends StatelessWidget {
     illustration: CustomerIllustrations.guest,
     builder: (sheet) => SButton(
       label: CustomerLocalizations.of(context).signInAction,
-      icon: SIcons.user,
       expand: true,
       onPressed: () {
         Navigator.of(sheet).pop();
@@ -47,7 +46,6 @@ class SignInPrompt extends StatelessWidget {
       title: title ?? s.guestTitle,
       message: message ?? s.guestMessage,
       actionLabel: s.signInAction,
-      actionIcon: SIcons.user,
       onAction: () => context.push(Routes.signIn),
     );
   }

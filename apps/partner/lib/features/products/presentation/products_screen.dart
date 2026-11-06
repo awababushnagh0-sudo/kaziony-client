@@ -141,7 +141,6 @@ class _Empty extends StatelessWidget {
       title: s.noProductsTitle,
       message: s.noProductsMessage,
       actionLabel: s.addProduct,
-      actionIcon: SIcons.add,
       onAction: () => context.push(Routes.newProduct),
     );
   }

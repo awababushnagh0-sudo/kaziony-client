@@ -19,7 +19,6 @@ class NoOffersView extends StatelessWidget {
       title: s.noOffersTitle,
       message: s.noOffersMessage,
       actionLabel: s.changePlace,
-      actionIcon: SIcons.location,
       onAction: () => context.push(Routes.location),
     );
   }

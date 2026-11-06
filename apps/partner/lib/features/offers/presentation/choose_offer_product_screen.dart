@@ -70,7 +70,6 @@ class ChooseOfferProductScreen extends AppView {
                     title: s.noProductsTitle,
                     message: s.noProductsForOffer,
                     actionLabel: s.somethingNew,
-                    actionIcon: SIcons.add,
                     onAction: () => context.pushReplacement(Routes.quickOffer),
                   );
                 }

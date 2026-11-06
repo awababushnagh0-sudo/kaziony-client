@@ -225,7 +225,12 @@ Widget _status(
           ],
           if (actionLabel != null && onAction != null) ...[
             const Gap(Space.xl),
-            SButton(label: actionLabel, icon: actionIcon, onPressed: onAction),
+            SButton(
+              label: actionLabel,
+              // Under a picture, words alone: an icon too would crowd it.
+              icon: illustration == null ? actionIcon : null,
+              onPressed: onAction,
+            ),
           ],
         ],
       ),

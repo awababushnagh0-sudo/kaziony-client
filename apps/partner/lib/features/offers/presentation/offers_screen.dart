@@ -92,7 +92,6 @@ class _OfferList extends AppView {
             title: s.noOffersTitle,
             message: isOwner ? s.noOffersMessage : null,
             actionLabel: isOwner ? s.postOffer : null,
-            actionIcon: SIcons.add,
             onAction: () => startOffer(context),
           );
         }

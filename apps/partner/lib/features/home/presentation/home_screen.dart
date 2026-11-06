@@ -79,7 +79,6 @@ class _HomeBody extends AppView {
             title: s.quietDayTitle,
             message: isOwner ? s.quietDayOwnerMessage : s.quietDayStaffMessage,
             actionLabel: isOwner ? s.postOffer : null,
-            actionIcon: SIcons.add,
             onAction: () => startOffer(context),
           )
         else ...[

@@ -12,7 +12,7 @@ abstract interface class SEmptyView implements Widget {
   /// picture (a list that's empty because nothing was added yet). The
   /// button shows when there's both an [actionLabel] and an [onAction];
   /// its [actionIcon] is refresh by default, as most actions here are
-  /// "Try again".
+  /// "Try again", and left out under an [illustration].
   const factory SEmptyView({
     required String title,
     String? message,
