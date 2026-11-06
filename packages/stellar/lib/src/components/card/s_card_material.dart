@@ -25,8 +25,8 @@ class SCardMaterial extends StatelessWidget implements SCard {
   final bool padded;
   final bool raised;
 
-  static const _shadowBlur = 16.0;
-  static const _shadowDrop = Offset(0, 4);
+  static const _shadowBlur = 8.0;
+  static const _shadowDrop = Offset(0, 2);
 
   @override
   Widget build(BuildContext context) {
