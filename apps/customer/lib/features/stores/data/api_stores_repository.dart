@@ -63,7 +63,6 @@ class ApiStoresRepository implements StoresRepository {
       (store) => StoreDetail(
         id: store.id,
         name: store.name,
-        description: store.description,
         logoUrl: store.logoUrl,
         coverUrl: store.coverUrl,
         phone: store.phone,
@@ -71,7 +70,6 @@ class ApiStoresRepository implements StoresRepository {
         rating: toRating(store.ratingAverage, store.ratingCount),
         category: toCategory(store.category),
         branches: [for (final branch in store.branches) toBranch(branch)],
-        followerCount: store.followerCount.toInt(),
         isFollowing: store.isFollowing,
         offers: [
           // Read through JSON, so they map the same way as browsing's

@@ -6,24 +6,41 @@ import 'package:kernel/kernel.dart';
 /// compact [list] of tiles, more to a screen.
 enum OffersLayout { cards, list }
 
-/// The layout the customer last picked, remembered on the phone. Cards
-/// until they pick.
+/// Where offers are listed, each keeping its own layout.
+enum OffersPlace {
+  /// Search and a home row's "See all": cards until the customer picks.
+  lists('offers.layout', OffersLayout.cards),
+
+  /// A store's page: its offers are all from one store, so tiles show
+  /// more of them at once until the customer picks.
+  store('store.offers.layout', OffersLayout.list);
+
+  const OffersPlace(this._key, this._first);
+
+  final String _key;
+  final OffersLayout _first;
+}
+
+/// The layout the customer last picked for a [OffersPlace], remembered on
+/// the phone.
 class OffersLayoutController extends ViewModel<OffersLayout> {
-  static const _key = 'offers.layout';
+  OffersLayoutController(this.place);
+
+  final OffersPlace place;
 
   @override
   OffersLayout build() {
     unawaited(_load());
-    return OffersLayout.cards;
+    return place._first;
   }
 
   Future<void> set(OffersLayout layout) async {
     state = layout;
-    await ref.read(settingsStoreProvider).setString(_key, layout.name);
+    await ref.read(settingsStoreProvider).setString(place._key, layout.name);
   }
 
   Future<void> _load() async {
-    final saved = await ref.read(settingsStoreProvider).getString(_key);
+    final saved = await ref.read(settingsStoreProvider).getString(place._key);
     final layout = OffersLayout.values
         .where((layout) => layout.name == saved)
         .firstOrNull;
@@ -32,6 +49,6 @@ class OffersLayoutController extends ViewModel<OffersLayout> {
 }
 
 final offersLayoutProvider =
-    NotifierProvider<OffersLayoutController, OffersLayout>(
+    NotifierProvider.family<OffersLayoutController, OffersLayout, OffersPlace>(
       OffersLayoutController.new,
     );

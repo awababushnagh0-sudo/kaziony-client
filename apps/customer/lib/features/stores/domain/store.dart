@@ -36,9 +36,7 @@ class StoreDetail {
     required this.name,
     required this.category,
     required this.branches,
-    required this.followerCount,
     required this.offers,
-    this.description,
     this.logoUrl,
     this.coverUrl,
     this.phone,
@@ -49,7 +47,6 @@ class StoreDetail {
 
   final String id;
   final String name;
-  final String? description;
   final String? logoUrl;
   final String? coverUrl;
   final String? phone;
@@ -64,7 +61,6 @@ class StoreDetail {
 
   /// Closest first.
   final List<Branch> branches;
-  final int followerCount;
 
   /// Null for guests.
   final bool? isFollowing;

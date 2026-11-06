@@ -110,19 +110,21 @@ void main() {
       scrollable: page,
     );
     expect(find.text('Stores near you'), findsOneWidget);
-    expect(find.text('Stores you follow'), findsNothing);
+    expect(find.text('Your favorite stores'), findsNothing);
     await tester.tap(find.text('Sweet shop'));
     await tester.pumpAndSettle();
 
     expect(find.text('store page'), findsOneWidget);
   });
 
-  testWidgets('shows the stores a signed-in customer follows', (tester) async {
+  testWidgets('shows the favorite stores of a signed-in customer', (
+    tester,
+  ) async {
     stores.followedStores = const [storeSummary];
     await open(tester, signedIn: true);
 
     await tester.scrollUntilVisible(
-      find.text('Stores you follow').hitTestable(),
+      find.text('Your favorite stores').hitTestable(),
       200,
       scrollable: page,
     );

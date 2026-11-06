@@ -31,4 +31,23 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Dahra'), findsNothing);
   });
+
+  testWidgets('a box tile does its one thing when tapped', (tester) async {
+    var taps = 0;
+    await tester.pumpWidget(
+      app(
+        SBoxTile(
+          title: 'Dahra',
+          subtitle: '0.8 km',
+          action: SIcons.navigate,
+          actionLabel: 'Get directions',
+          onTap: () => taps++,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Dahra'));
+    expect(taps, 1);
+  });
 }

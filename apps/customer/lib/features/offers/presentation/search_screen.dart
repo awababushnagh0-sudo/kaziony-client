@@ -287,7 +287,9 @@ class _ResultsSkeleton extends AppView {
           child: StoreTilesSkeleton(count: 2),
         ),
         OfferListSkeleton(
-          tiles: ref.watch(offersLayoutProvider) == OffersLayout.list,
+          tiles:
+              ref.watch(offersLayoutProvider(OffersPlace.lists)) ==
+              OffersLayout.list,
         ),
       ],
     ),

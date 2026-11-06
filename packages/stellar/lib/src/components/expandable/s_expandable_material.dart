@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
-import '../badge/s_badge.dart';
-import '../badge/s_badge_material.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import '../illustration/s_illustration.dart';
-import '../illustration/s_illustration_material.dart';
+import 's_box_head.dart';
 import 's_expandable.dart';
 
 const _turn = Duration(milliseconds: 200);
@@ -44,18 +42,7 @@ class _SExpandableMaterialState extends State<SExpandableMaterial> {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final text = context.style.text;
-    final icon = widget.icon;
-    final illustration = widget.illustration;
-    final subtitle = widget.subtitle;
-    final tag = widget.tag;
-    return Material(
-      color: c.surface,
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Radii.lg),
-        side: BorderSide(color: c.border),
-      ),
+    return BoxFrame(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -64,63 +51,20 @@ class _SExpandableMaterialState extends State<SExpandableMaterial> {
             button: true,
             child: InkWell(
               onTap: () => setState(() => _open = !_open),
-              child: Padding(
-                padding: const EdgeInsets.all(Space.md),
-                child: Row(
-                  spacing: Space.md,
-                  children: [
-                    if (illustration != null)
-                      SIllustrationMaterial(illustration)
-                    else if (icon != null)
-                      Icon(
-                        materialIcon(icon),
-                        size: SIconSize.md.pixels,
-                        color: c.text,
-                      ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: Space.xxs,
-                        children: [
-                          Text(
-                            widget.title,
-                            style: TextStyle(
-                              fontSize: text.body,
-                              fontWeight: SFontWeight.bold.value,
-                              color: c.text,
-                            ),
-                          ),
-                          if (tag != null || subtitle != null)
-                            Wrap(
-                              spacing: Space.xs,
-                              runSpacing: Space.xxs,
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: [
-                                if (tag != null)
-                                  SBadgeMaterial(tag, tone: BadgeTone.success),
-                                if (subtitle != null)
-                                  Text(
-                                    subtitle,
-                                    style: TextStyle(
-                                      fontSize: text.small,
-                                      color: c.textMuted,
-                                    ),
-                                  ),
-                              ],
-                            ),
-                        ],
-                      ),
-                    ),
-                    AnimatedRotation(
-                      turns: _open ? 0.5 : 0,
-                      duration: _turn,
-                      child: Icon(
-                        materialIcon(SIcons.chevronDown),
-                        size: SIconSize.sm.pixels,
-                        color: c.textSubtle,
-                      ),
-                    ),
-                  ],
+              child: BoxHead(
+                title: widget.title,
+                subtitle: widget.subtitle,
+                tag: widget.tag,
+                icon: widget.icon,
+                illustration: widget.illustration,
+                end: AnimatedRotation(
+                  turns: _open ? 0.5 : 0,
+                  duration: _turn,
+                  child: Icon(
+                    materialIcon(SIcons.chevronDown),
+                    size: SIconSize.sm.pixels,
+                    color: c.textSubtle,
+                  ),
                 ),
               ),
             ),

@@ -14,6 +14,7 @@ class SRatingMaterial extends StatelessWidget implements SRating {
     this.count,
     required this.label,
     this.small = false,
+    this.onPhoto = false,
     super.key,
   });
 
@@ -21,6 +22,7 @@ class SRatingMaterial extends StatelessWidget implements SRating {
   final int? count;
   final String label;
   final bool small;
+  final bool onPhoto;
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +47,16 @@ class SRatingMaterial extends StatelessWidget implements SRating {
                 style: TextStyle(
                   fontSize: size,
                   fontWeight: SFontWeight.semibold.value,
-                  color: c.text,
+                  color: onPhoto ? c.onScrim : c.text,
                 ),
               ),
               if (count != null)
                 Text(
                   '($count)',
-                  style: TextStyle(fontSize: size, color: c.textMuted),
+                  style: TextStyle(
+                    fontSize: size,
+                    color: onPhoto ? c.onScrim : c.textMuted,
+                  ),
                 ),
             ],
           ),

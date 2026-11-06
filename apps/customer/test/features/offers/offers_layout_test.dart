@@ -17,15 +17,50 @@ void main() {
   setUp(() => settings = MemorySettingsStore());
 
   test('offers show as cards until the customer picks', () {
-    expect(open().read(offersLayoutProvider), OffersLayout.cards);
+    expect(
+      open().read(offersLayoutProvider(OffersPlace.lists)),
+      OffersLayout.cards,
+    );
+  });
+
+  test("a store's offers show as tiles until the customer picks", () {
+    expect(
+      open().read(offersLayoutProvider(OffersPlace.store)),
+      OffersLayout.list,
+    );
   });
 
   test('the layout picked is kept on the phone for next time', () async {
-    await open().read(offersLayoutProvider.notifier).set(OffersLayout.list);
+    const lists = OffersPlace.lists;
+    await open()
+        .read(offersLayoutProvider(lists).notifier)
+        .set(OffersLayout.list);
 
     final next = open();
-    next.read(offersLayoutProvider);
+    next.read(offersLayoutProvider(lists));
     await pumpEventQueue();
-    expect(next.read(offersLayoutProvider), OffersLayout.list);
+    expect(next.read(offersLayoutProvider(lists)), OffersLayout.list);
+    // A store's page keeps its own.
+    expect(
+      next.read(offersLayoutProvider(OffersPlace.store)),
+      OffersLayout.list,
+    );
+  });
+
+  test("a store's layout is kept apart from the other lists", () async {
+    const store = OffersPlace.store;
+    await open()
+        .read(offersLayoutProvider(store).notifier)
+        .set(OffersLayout.cards);
+
+    final next = open();
+    next.read(offersLayoutProvider(store));
+    next.read(offersLayoutProvider(OffersPlace.lists));
+    await pumpEventQueue();
+    expect(next.read(offersLayoutProvider(store)), OffersLayout.cards);
+    expect(
+      next.read(offersLayoutProvider(OffersPlace.lists)),
+      OffersLayout.cards,
+    );
   });
 }

@@ -27,13 +27,14 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get branchClosest => 'الأقرب';
 
   @override
-  String offerInfoPickupBetween(String start, String end) {
-    return 'الاستلام $start – $end';
-  }
+  String get offerFactPickup => 'الاستلام';
 
   @override
-  String offerInfoPickupUntil(String time) {
-    return 'الاستلام حتى $time';
+  String get offerFactLeft => 'المتبقي';
+
+  @override
+  String offerFactLeftValue(int left, int total) {
+    return '$left من $total';
   }
 
   @override
@@ -115,7 +116,7 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get homeStoresNearby => 'محلات قريبة منك';
 
   @override
-  String get homeStoresFollowed => 'محلات تتابعها';
+  String get homeFavoriteStores => 'محلاتك المفضلة';
 
   @override
   String get homeAllOffersTitle => 'تصفّح كل العروض حولك';
@@ -178,49 +179,29 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get offerPageGoodToKnow => 'قبل أن تحجز';
 
   @override
-  String get storeDirections => 'الاتجاهات';
-
-  @override
   String get storeGetDirections => 'عرض الاتجاهات';
 
   @override
   String get storeDirectionsFailed => 'تعذّر فتح الخريطة. حاول مرة أخرى.';
 
   @override
-  String get storeFollow => 'متابعة';
+  String get storeAddFavorite => 'أضف إلى المفضلة';
 
   @override
-  String get storeFollowing => 'تتابعه';
+  String get storeRemoveFavorite => 'أزل من المفضلة';
 
   @override
-  String storeFollowers(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count متابع',
-      few: '$count متابعين',
-      two: 'متابعان',
-      one: 'متابع واحد',
-      zero: 'لا متابعين',
-    );
-    return '$_temp0';
-  }
+  String get storeFavoriteSignInTitle => 'سجّل الدخول لتحفظ محلاتك المفضلة';
 
   @override
-  String get storeFollowSignInTitle => 'سجّل الدخول لتتابع المحلات';
-
-  @override
-  String get storeFollowSignInMessage =>
-      'تابع محلاتك المفضلة لتجد عروضها في مكان واحد.';
+  String get storeFavoriteSignInMessage =>
+      'احفظ المحلات التي تحبها لتجد عروضها في مكان واحد.';
 
   @override
   String get storeOffersNow => 'العروض الآن';
 
   @override
   String get storeNoOffers => 'لا عروض الآن. عُد لاحقًا.';
-
-  @override
-  String get storeBranches => 'الفروع';
 
   @override
   String get searchCraving => 'ماذا تشتهي اليوم؟';
@@ -282,14 +263,14 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String get signInMessage =>
-      'لتحجز العروض وتتابع متاجرك المفضلة. التصفح متاح بدون حساب.';
+      'لتحجز العروض وتحفظ متاجرك المفضلة. التصفح متاح بدون حساب.';
 
   @override
   String get guestTitle => 'أهلًا بك، ضيفنا العزيز!';
 
   @override
   String get guestMessage =>
-      'سجّل دخولك لتحجز العروض قبل أن تنفد، وتتابع متاجرك المفضلة.';
+      'سجّل دخولك لتحجز العروض قبل أن تنفد، وتحفظ متاجرك المفضلة.';
 
   @override
   String get reserveSignInTitle => 'سجّل دخولك لتحجز';
@@ -483,11 +464,6 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   }
 
   @override
-  String piecesOfTotal(int left, int total) {
-    return 'باقي $left من $total';
-  }
-
-  @override
   String distanceKm(String km) {
     return '$km كم';
   }
@@ -532,12 +508,6 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String get payMessage => 'لا تدفع شيئًا الآن.';
-
-  @override
-  String get pickupOne => 'استلم من الفرع';
-
-  @override
-  String get pickupAny => 'استلم من أي فرع';
 
   @override
   String limitPerCustomer(int count) {

@@ -36,15 +36,27 @@ enum BadgeEdge {
   end,
 }
 
+/// How big a badge is.
+enum BadgeSize {
+  /// A status in a row, a tag on a card's photo.
+  regular,
+
+  /// On a big photo, to be seen first (an offer page's discount): a size up
+  /// and bold. A discount on its own is this size already.
+  large,
+}
+
 /// A small rounded status label, like ERPNext's indicator pills.
 abstract interface class SBadge implements Widget {
   /// [label] in the colors of its [tone] (neutral by default). With
   /// [edge], it's square on that side, to sit flush against a photo's edge
-  /// (an offer card's "2 left"), small and bold.
+  /// (an offer card's "2 left"), small and bold. [size] is regular unless
+  /// told otherwise.
   const factory SBadge(
     String label, {
     BadgeTone tone,
     BadgeEdge? edge,
+    BadgeSize size,
     Key? key,
   }) = SBadgeMaterial;
 }

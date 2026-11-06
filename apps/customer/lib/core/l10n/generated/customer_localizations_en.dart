@@ -24,13 +24,14 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get branchClosest => 'Closest';
 
   @override
-  String offerInfoPickupBetween(String start, String end) {
-    return 'Pick up $start – $end';
-  }
+  String get offerFactPickup => 'Pick up';
 
   @override
-  String offerInfoPickupUntil(String time) {
-    return 'Pick up until $time';
+  String get offerFactLeft => 'Left';
+
+  @override
+  String offerFactLeftValue(int left, int total) {
+    return '$left of $total';
   }
 
   @override
@@ -108,7 +109,7 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get homeStoresNearby => 'Stores near you';
 
   @override
-  String get homeStoresFollowed => 'Stores you follow';
+  String get homeFavoriteStores => 'Your favorite stores';
 
   @override
   String get homeAllOffersTitle => 'Browse every offer around you';
@@ -168,46 +169,29 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get offerPageGoodToKnow => 'Good to know';
 
   @override
-  String get storeDirections => 'Directions';
-
-  @override
   String get storeGetDirections => 'Get directions';
 
   @override
   String get storeDirectionsFailed => 'We couldn\'t open the map. Try again.';
 
   @override
-  String get storeFollow => 'Follow';
+  String get storeAddFavorite => 'Add to favorites';
 
   @override
-  String get storeFollowing => 'Following';
+  String get storeRemoveFavorite => 'Remove from favorites';
 
   @override
-  String storeFollowers(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count followers',
-      one: '1 follower',
-    );
-    return '$_temp0';
-  }
+  String get storeFavoriteSignInTitle => 'Sign in to save your favorite stores';
 
   @override
-  String get storeFollowSignInTitle => 'Sign in to follow stores';
-
-  @override
-  String get storeFollowSignInMessage =>
-      'Follow your favorite stores and find their offers in one place.';
+  String get storeFavoriteSignInMessage =>
+      'Save the stores you like and find their offers in one place.';
 
   @override
   String get storeOffersNow => 'Offers now';
 
   @override
   String get storeNoOffers => 'No offers right now. Check back later.';
-
-  @override
-  String get storeBranches => 'Branches';
 
   @override
   String get searchCraving => 'What are you craving?';
@@ -267,14 +251,14 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String get signInMessage =>
-      'To book offers and follow your favorite stores. You can browse without an account.';
+      'To book offers and save your favorite stores. You can browse without an account.';
 
   @override
   String get guestTitle => 'Welcome, dear guest!';
 
   @override
   String get guestMessage =>
-      'Sign in to book offers before they run out and follow your favorite stores.';
+      'Sign in to book offers before they run out and save your favorite stores.';
 
   @override
   String get reserveSignInTitle => 'Sign in to reserve';
@@ -471,11 +455,6 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   }
 
   @override
-  String piecesOfTotal(int left, int total) {
-    return '$left of $total left';
-  }
-
-  @override
   String distanceKm(String km) {
     return '$km km';
   }
@@ -521,12 +500,6 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String get payMessage => 'You pay nothing now.';
-
-  @override
-  String get pickupOne => 'Pick up at the branch';
-
-  @override
-  String get pickupAny => 'Pick up at any branch';
 
   @override
   String limitPerCustomer(int count) {

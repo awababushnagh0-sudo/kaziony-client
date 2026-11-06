@@ -55,7 +55,8 @@ void main() {
 
     expect(find.text('Kunafa box'), findsOneWidget);
     expect(find.text('Sweet shop'), findsOneWidget);
-    expect(find.text('3 of 10 left'), findsOneWidget);
+    expect(find.text('Left'), findsOneWidget);
+    expect(find.text('3 of 10'), findsOneWidget);
   });
 
   testWidgets('shows the store\'s rating once it has one', (tester) async {
@@ -77,11 +78,11 @@ void main() {
     await open(tester);
 
     // The time's own format puts a narrow space before AM and PM.
+    expect(find.text('Pick up'), findsOneWidget);
     expect(
-      find.textContaining(RegExp('^Pick up 11:00.AM – 5:00.PM\$')),
+      find.textContaining(RegExp('^Today 11:00.AM – 5:00.PM\$')),
       findsOneWidget,
     );
-    expect(find.text('Today'), findsOneWidget);
   });
 
   testWidgets('over several days, until when and which day', (tester) async {
@@ -94,10 +95,9 @@ void main() {
     await open(tester);
 
     expect(
-      find.textContaining(RegExp('^Pick up until 9:00.PM\$')),
+      find.textContaining(RegExp('^Tomorrow until 9:00.PM\$')),
       findsOneWidget,
     );
-    expect(find.text('Tomorrow'), findsOneWidget);
   });
 
   testWidgets('pickup instructions in our words, until the store has its own', (
@@ -186,15 +186,23 @@ void main() {
     expect(find.text('store page'), findsOneWidget);
   });
 
-  testWidgets('directions open the branch in the maps', (tester) async {
+  testWidgets('scrolled, the photo folds into a bar with the title', (
+    tester,
+  ) async {
     await open(tester);
 
     await tester.drag(find.byType(CustomScrollView), const Offset(0, -1000));
     await tester.pumpAndSettle();
-    // Scrolled, the back button stays, in a bar with the title.
+    // The back button stays; the name left the photo for the bar.
     expect(find.byTooltip('Back'), findsOneWidget);
-    expect(find.text('Kunafa box'), findsNWidgets(2));
-    await tester.tap(find.text('Get directions'));
+    expect(find.text('Kunafa box'), findsOneWidget);
+  });
+
+  testWidgets('directions open the branch in the maps', (tester) async {
+    await open(tester);
+
+    // The branch's box is the way there, near the top.
+    await tester.tap(find.text('Hay Al Andalus'));
     await tester.pump();
 
     expect(links.opened, [directionsLink(souqAlJuma)]);
@@ -204,9 +212,7 @@ void main() {
     links = FakeLinkOpener(opens: false);
     await open(tester);
 
-    await tester.drag(find.byType(CustomScrollView), const Offset(0, -1000));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Get directions'));
+    await tester.tap(find.text('Hay Al Andalus'));
     await tester.pump();
 
     expect(find.text("We couldn't open the map. Try again."), findsOneWidget);

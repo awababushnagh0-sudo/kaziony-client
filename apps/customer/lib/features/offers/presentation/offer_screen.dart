@@ -12,9 +12,10 @@ import '../domain/offer.dart';
 import 'offer_texts.dart';
 import 'offer_view_model.dart';
 
-/// One offer: its photo and prices, the store's rating and when to pick it
-/// up, the store, how much is left, what it is, how picking up works and
-/// where, and the way to reserve it, as many as allowed.
+/// One offer: its photo with its name and prices on it, when to pick up
+/// and how many are left, the store with its rating and how far, where to
+/// pick up, what it is, how picking up works, and the way to reserve it, as many as
+/// allowed.
 class OfferScreen extends AppView {
   const OfferScreen({required this.offerId, super.key});
 
@@ -22,7 +23,6 @@ class OfferScreen extends AppView {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final s = CustomerLocalizations.of(context);
     final detail = ref.watch(offerViewModel(offerId));
     final shown = detail.value;
     return SScaffold(
@@ -46,7 +46,7 @@ class OfferScreen extends AppView {
                   ? _StockBadge(offer: detail.offer)
                   : null,
               imageUrl: detail.offer.imageUrl,
-              discountLabel: s.discountOff(detail.offer.discountPercent),
+              caption: _Caption(offer: detail.offer),
               onBack: context.pop,
             ),
             SliverToBoxAdapter(child: _Body(detail: detail)),
@@ -79,8 +79,8 @@ class _StockBadge extends StatelessWidget {
   }
 }
 
-/// The page while the offer loads: its photo, title, rating and pickup
-/// time, price, store and the first part about it.
+/// The page while the offer loads: its photo, the two facts, the store's
+/// box and the branches' box, then the first part about it.
 class _Skeleton extends StatelessWidget {
   const _Skeleton();
 
@@ -88,21 +88,47 @@ class _Skeleton extends StatelessWidget {
   Widget build(BuildContext context) => const SSkeleton(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: Space.sm,
+      spacing: Space.md,
       children: [
         SBone.wide(),
+        Row(
+          spacing: Space.md,
+          children: [
+            Expanded(child: SBone.button()),
+            Expanded(child: SBone.button()),
+          ],
+        ),
+        _BoxBone(),
+        _BoxBone(),
         Gap(Space.sm),
-        SBone.text(variant: TextVariant.display, length: BoneLength.long),
-        SBone.text(length: BoneLength.medium),
-        SBone.text(variant: TextVariant.title, length: BoneLength.short),
-        Gap(Space.md),
-        SBone.button(),
-        Gap(Space.lg),
         SBone.text(variant: TextVariant.subtitle, length: BoneLength.medium),
         SBone.text(),
         SBone.text(length: BoneLength.long),
       ],
     ),
+  );
+}
+
+/// A box's bones: its picture, and two lines beside it.
+class _BoxBone extends StatelessWidget {
+  const _BoxBone();
+
+  @override
+  Widget build(BuildContext context) => const Row(
+    spacing: Space.md,
+    children: [
+      SBone.image(size: SImageSize.logoOnPhoto),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: Space.xxs,
+          children: [
+            SBone.text(length: BoneLength.medium),
+            SBone.text(variant: TextVariant.caption, length: BoneLength.long),
+          ],
+        ),
+      ),
+    ],
   );
 }
 
@@ -121,55 +147,50 @@ class _Body extends AppView {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        // The two things to plan around, side by side: when to come, and
+        // how many are left.
         Padding(
           padding: const EdgeInsets.fromLTRB(Space.lg, Space.lg, Space.lg, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: Space.xs,
-            children: [
-              SText.display(offer.title),
-              const Gap(Space.xs),
-              _Facts(offer: offer, now: now),
-              const Gap(Space.sm),
-              Wrap(
-                spacing: Space.sm,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  SText(
-                    s.price(context, offer.offerPrice),
-                    variant: TextVariant.title,
-                    weight: SFontWeight.bold,
-                    color: SColor.primary,
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: Space.md,
+              children: [
+                Expanded(
+                  child: _FactBox(
+                    icon: SIcons.clock,
+                    label: s.offerFactPickup,
+                    value: s.cardPickup(context, offer, now),
                   ),
-                  SText(
-                    s.price(context, offer.originalPrice),
-                    color: SColor.textSubtle,
-                    struck: true,
+                ),
+                if (offer.limited && total != null && total > 0)
+                  Expanded(
+                    child: _FactBox(
+                      icon: SIcons.products,
+                      label: s.offerFactLeft,
+                      value: s.offerFactLeftValue(offer.remaining ?? 0, total),
+                    ),
                   ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(Space.lg),
-          child: _StoreRow(store: offer.store),
+          padding: const EdgeInsets.fromLTRB(Space.lg, Space.md, Space.lg, 0),
+          child: _StoreCard(offer: offer),
         ),
-        // When it ends is in the facts above.
-        if (offer.limited && total != null && total > 0)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
-            child: SDealStock(
-              label: s.piecesOfTotal(offer.remaining ?? 0, total),
-              left: (offer.remaining ?? 0) / total,
-            ),
-          ),
+        // Where to go, right under who: the first thing to know after the
+        // offer itself.
+        if (detail.branches.isNotEmpty) ...[
+          const Gap(Space.md),
+          BranchDirections(branches: detail.branches),
+        ],
         if (description.isNotEmpty)
           PageSection(
             title: s.offerPageAbout,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: Space.lg),
-              child: SText(description, color: SColor.textMuted),
+              child: SText(description),
             ),
           ),
         PageSection(
@@ -199,11 +220,6 @@ class _Body extends AppView {
             ],
           ),
         ),
-        if (detail.branches.isNotEmpty)
-          PageSection(
-            title: detail.branches.length == 1 ? s.pickupOne : s.pickupAny,
-            child: BranchDirections(branches: detail.branches),
-          ),
         PageSection(
           title: s.pickupInstructionsTitle,
           child: Padding(
@@ -212,7 +228,6 @@ class _Body extends AppView {
             // happens at the counter.
             child: SText(
               detail.pickupInstructions ?? s.pickupInstructionsDefault,
-              color: SColor.textMuted,
             ),
           ),
         ),
@@ -222,37 +237,43 @@ class _Body extends AppView {
   }
 }
 
-/// The facts to know at a glance, a plain icon before each: the store's
-/// rating once it has one, and when to pick up, with the day beside it.
-class _Facts extends StatelessWidget {
-  const _Facts({required this.offer, required this.now});
+/// On the photo's foot, in white over its shade: the offer's name, and
+/// its price beside the regular one and the discount.
+class _Caption extends StatelessWidget {
+  const _Caption({required this.offer});
 
   final Offer offer;
-  final DateTime now;
 
   @override
   Widget build(BuildContext context) {
     final s = CustomerLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: Space.sm,
+      mainAxisSize: MainAxisSize.min,
+      spacing: Space.xs,
       children: [
-        if (offer.store.rating case final rating?)
-          SRating(
-            average: rating.average,
-            count: rating.count,
-            label: s.rating(rating),
-          ),
-        Row(
+        SText.display(offer.title, color: SColor.onScrim),
+        Wrap(
           spacing: Space.sm,
+          runSpacing: Space.xs,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            const SIcon(
-              SIcons.clock,
-              size: SIconSize.sm,
-              color: SColor.textMuted,
+            SText(
+              s.price(context, offer.offerPrice),
+              variant: TextVariant.title,
+              weight: SFontWeight.bold,
+              color: SColor.onScrimBrand,
             ),
-            Flexible(child: SText(s.pickupTime(context, offer))),
-            SBadge(s.pickupDay(context, offer, now)),
+            SText(
+              s.price(context, offer.originalPrice),
+              color: SColor.onScrim,
+              struck: true,
+            ),
+            SBadge(
+              s.discountOff(offer.discountPercent),
+              tone: BadgeTone.brand,
+              size: BadgeSize.large,
+            ),
           ],
         ),
       ],
@@ -260,22 +281,119 @@ class _Facts extends StatelessWidget {
   }
 }
 
-/// The store, as a row that opens its page.
-class _StoreRow extends StatelessWidget {
-  const _StoreRow({required this.store});
+/// One thing to plan around in an outlined box: its icon and what it is,
+/// then the value, bold.
+class _FactBox extends StatelessWidget {
+  const _FactBox({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
 
-  final OfferStore store;
+  final SIcons icon;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) => SCard(
+    padded: false,
+    child: Padding(
+      padding: const EdgeInsets.all(Space.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: Space.xs,
+        children: [
+          Row(
+            spacing: Space.xs,
+            children: [
+              SIcon(icon, size: SIconSize.sm, color: SColor.textMuted),
+              SText(
+                label,
+                variant: TextVariant.caption,
+                color: SColor.textMuted,
+              ),
+            ],
+          ),
+          SText(value, weight: SFontWeight.bold),
+        ],
+      ),
+    ),
+  );
+}
+
+/// The store, as a row that opens its page.
+/// The store: its logo, its name, then its rating, kind and how far its
+/// nearest branch is; opens its page.
+class _StoreCard extends StatelessWidget {
+  const _StoreCard({required this.offer});
+
+  final Offer offer;
 
   @override
   Widget build(BuildContext context) {
+    final s = CustomerLocalizations.of(context);
     final language = Localizations.localeOf(context).languageCode;
+    final store = offer.store;
+    final rating = store.rating;
+    final km = offer.nearestBranch.distanceKm;
+    const dot = SText(
+      '·',
+      variant: TextVariant.caption,
+      color: SColor.textSubtle,
+    );
     return SCard(
       padded: false,
-      child: SListTile(
-        leading: SLogo(store.logoUrl, storeName: store.name),
-        title: store.name,
-        subtitle: store.category.name(language),
-        onTap: () => context.push(Routes.store(store.id)),
+      onTap: () => context.push(Routes.store(store.id)),
+      child: Padding(
+        padding: const EdgeInsets.all(Space.md),
+        child: Row(
+          spacing: Space.md,
+          children: [
+            SLogo(store.logoUrl, storeName: store.name),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: Space.xxs,
+                children: [
+                  SText(store.name, weight: SFontWeight.bold, maxLines: 1),
+                  Wrap(
+                    spacing: Space.xs,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      if (rating != null) ...[
+                        SRating(
+                          average: rating.average,
+                          count: rating.count,
+                          label: s.rating(rating),
+                          small: true,
+                        ),
+                        dot,
+                      ],
+                      SText(
+                        store.category.name(language),
+                        variant: TextVariant.caption,
+                        color: SColor.textMuted,
+                      ),
+                      if (km != null) ...[
+                        dot,
+                        SText(
+                          s.distance(km),
+                          variant: TextVariant.caption,
+                          color: SColor.textMuted,
+                        ),
+                      ],
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SIcon(
+              SIcons.chevron,
+              size: SIconSize.sm,
+              color: SColor.textSubtle,
+            ),
+          ],
+        ),
       ),
     );
   }

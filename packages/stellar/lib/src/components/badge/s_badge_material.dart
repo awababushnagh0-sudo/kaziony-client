@@ -10,12 +10,14 @@ class SBadgeMaterial extends StatelessWidget implements SBadge {
     this.label, {
     this.tone = BadgeTone.neutral,
     this.edge,
+    this.size = BadgeSize.regular,
     super.key,
   });
 
   final String label;
   final BadgeTone tone;
   final BadgeEdge? edge;
+  final BadgeSize size;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class SBadgeMaterial extends StatelessWidget implements SBadge {
     final discount = tone == BadgeTone.discount;
     // A discount floating on a photo is the first thing seen; as a tag on
     // a card's photo edge it's as small as the tags beside it.
-    final big = discount && edge == null;
+    final big = size == BadgeSize.large || (discount && edge == null);
     final (fg, bg) = badgeColors(c, tone);
     return Container(
       padding: big
@@ -52,7 +54,7 @@ class SBadgeMaterial extends StatelessWidget implements SBadge {
         style: TextStyle(
           fontSize: big ? text.small : text.tiny,
           fontWeight: switch (tone) {
-            _ when edge != null => SFontWeight.bold.value,
+            _ when edge != null || big => SFontWeight.bold.value,
             BadgeTone.discount ||
             BadgeTone.onPhoto ||
             BadgeTone.onPhotoHot => SFontWeight.bold.value,

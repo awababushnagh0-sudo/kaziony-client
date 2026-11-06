@@ -113,17 +113,23 @@ abstract class CustomerLocalizations {
   /// **'Closest'**
   String get branchClosest;
 
-  /// No description provided for @offerInfoPickupBetween.
+  /// No description provided for @offerFactPickup.
   ///
   /// In en, this message translates to:
-  /// **'Pick up {start} – {end}'**
-  String offerInfoPickupBetween(String start, String end);
+  /// **'Pick up'**
+  String get offerFactPickup;
 
-  /// No description provided for @offerInfoPickupUntil.
+  /// No description provided for @offerFactLeft.
   ///
   /// In en, this message translates to:
-  /// **'Pick up until {time}'**
-  String offerInfoPickupUntil(String time);
+  /// **'Left'**
+  String get offerFactLeft;
+
+  /// No description provided for @offerFactLeftValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{left} of {total}'**
+  String offerFactLeftValue(int left, int total);
 
   /// No description provided for @offerInfoToday.
   ///
@@ -221,11 +227,11 @@ abstract class CustomerLocalizations {
   /// **'Stores near you'**
   String get homeStoresNearby;
 
-  /// No description provided for @homeStoresFollowed.
+  /// No description provided for @homeFavoriteStores.
   ///
   /// In en, this message translates to:
-  /// **'Stores you follow'**
-  String get homeStoresFollowed;
+  /// **'Your favorite stores'**
+  String get homeFavoriteStores;
 
   /// No description provided for @homeAllOffersTitle.
   ///
@@ -299,12 +305,6 @@ abstract class CustomerLocalizations {
   /// **'Good to know'**
   String get offerPageGoodToKnow;
 
-  /// No description provided for @storeDirections.
-  ///
-  /// In en, this message translates to:
-  /// **'Directions'**
-  String get storeDirections;
-
   /// No description provided for @storeGetDirections.
   ///
   /// In en, this message translates to:
@@ -317,35 +317,29 @@ abstract class CustomerLocalizations {
   /// **'We couldn\'t open the map. Try again.'**
   String get storeDirectionsFailed;
 
-  /// No description provided for @storeFollow.
+  /// No description provided for @storeAddFavorite.
   ///
   /// In en, this message translates to:
-  /// **'Follow'**
-  String get storeFollow;
+  /// **'Add to favorites'**
+  String get storeAddFavorite;
 
-  /// No description provided for @storeFollowing.
+  /// No description provided for @storeRemoveFavorite.
   ///
   /// In en, this message translates to:
-  /// **'Following'**
-  String get storeFollowing;
+  /// **'Remove from favorites'**
+  String get storeRemoveFavorite;
 
-  /// No description provided for @storeFollowers.
+  /// No description provided for @storeFavoriteSignInTitle.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 follower} other{{count} followers}}'**
-  String storeFollowers(int count);
+  /// **'Sign in to save your favorite stores'**
+  String get storeFavoriteSignInTitle;
 
-  /// No description provided for @storeFollowSignInTitle.
+  /// No description provided for @storeFavoriteSignInMessage.
   ///
   /// In en, this message translates to:
-  /// **'Sign in to follow stores'**
-  String get storeFollowSignInTitle;
-
-  /// No description provided for @storeFollowSignInMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Follow your favorite stores and find their offers in one place.'**
-  String get storeFollowSignInMessage;
+  /// **'Save the stores you like and find their offers in one place.'**
+  String get storeFavoriteSignInMessage;
 
   /// No description provided for @storeOffersNow.
   ///
@@ -358,12 +352,6 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'No offers right now. Check back later.'**
   String get storeNoOffers;
-
-  /// No description provided for @storeBranches.
-  ///
-  /// In en, this message translates to:
-  /// **'Branches'**
-  String get storeBranches;
 
   /// No description provided for @searchCraving.
   ///
@@ -464,7 +452,7 @@ abstract class CustomerLocalizations {
   /// No description provided for @signInMessage.
   ///
   /// In en, this message translates to:
-  /// **'To book offers and follow your favorite stores. You can browse without an account.'**
+  /// **'To book offers and save your favorite stores. You can browse without an account.'**
   String get signInMessage;
 
   /// No description provided for @guestTitle.
@@ -476,7 +464,7 @@ abstract class CustomerLocalizations {
   /// No description provided for @guestMessage.
   ///
   /// In en, this message translates to:
-  /// **'Sign in to book offers before they run out and follow your favorite stores.'**
+  /// **'Sign in to book offers before they run out and save your favorite stores.'**
   String get guestMessage;
 
   /// No description provided for @reserveSignInTitle.
@@ -833,12 +821,6 @@ abstract class CustomerLocalizations {
   /// **'{count} left'**
   String piecesLeft(int count);
 
-  /// No description provided for @piecesOfTotal.
-  ///
-  /// In en, this message translates to:
-  /// **'{left} of {total} left'**
-  String piecesOfTotal(int left, int total);
-
   /// No description provided for @distanceKm.
   ///
   /// In en, this message translates to:
@@ -922,18 +904,6 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'You pay nothing now.'**
   String get payMessage;
-
-  /// No description provided for @pickupOne.
-  ///
-  /// In en, this message translates to:
-  /// **'Pick up at the branch'**
-  String get pickupOne;
-
-  /// No description provided for @pickupAny.
-  ///
-  /// In en, this message translates to:
-  /// **'Pick up at any branch'**
-  String get pickupAny;
 
   /// No description provided for @limitPerCustomer.
   ///

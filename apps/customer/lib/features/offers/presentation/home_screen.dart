@@ -247,7 +247,7 @@ class _Sections extends AppView {
         offers: feed.nearby,
       ),
       if (followedStores.isNotEmpty)
-        StoreLogoRow(title: s.homeStoresFollowed, stores: followedStores),
+        StoreLogoRow(title: s.homeFavoriteStores, stores: followedStores),
       if (feed.biggestDiscount.isNotEmpty)
         _OfferRow(
           sort: OfferSort.biggestDiscount,

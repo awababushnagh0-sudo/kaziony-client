@@ -264,7 +264,6 @@ class FakeStoresRepository implements StoresRepository {
           name: 'Sweet shop',
           category: bakery,
           branches: const [branch],
-          followerCount: 3,
           rating: rating,
           pickupInstructions: pickupInstructions,
           isFollowing: false,

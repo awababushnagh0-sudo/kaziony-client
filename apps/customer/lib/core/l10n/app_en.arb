@@ -3,25 +3,10 @@
   "branchCount": "{count, plural, =1{1 branch} other{{count} branches}}",
   "@branchCount": {"placeholders": {"count": {"type": "int"}}},
   "branchClosest": "Closest",
-  "offerInfoPickupBetween": "Pick up {start} – {end}",
-  "@offerInfoPickupBetween": {
-    "placeholders": {
-      "start": {
-        "type": "String"
-      },
-      "end": {
-        "type": "String"
-      }
-    }
-  },
-  "offerInfoPickupUntil": "Pick up until {time}",
-  "@offerInfoPickupUntil": {
-    "placeholders": {
-      "time": {
-        "type": "String"
-      }
-    }
-  },
+  "offerFactPickup": "Pick up",
+  "offerFactLeft": "Left",
+  "offerFactLeftValue": "{left} of {total}",
+  "@offerFactLeftValue": {"placeholders": {"left": {"type": "int"}, "total": {"type": "int"}}},
   "offerInfoToday": "Today",
   "cardPickupBetween": "{day} {start} – {end}",
   "@cardPickupBetween": {"placeholders": {"day": {"type": "String"}, "start": {"type": "String"}, "end": {"type": "String"}}},
@@ -71,7 +56,7 @@
   "pickupInstructionsTitle": "Pickup instructions",
   "pickupInstructionsDefault": "Show your pickup code to a staff member at the store, and they'll hand you your order.",
   "homeStoresNearby": "Stores near you",
-  "homeStoresFollowed": "Stores you follow",
+  "homeFavoriteStores": "Your favorite stores",
   "homeAllOffersTitle": "Browse every offer around you",
   "homeAllOffersCount": "{count, plural, =1{1 offer waiting, newest first} other{{count} offers waiting, newest first}}",
   "@homeAllOffersCount": {
@@ -105,24 +90,14 @@
   },
   "offerPageAbout": "About this offer",
   "offerPageGoodToKnow": "Good to know",
-  "storeDirections": "Directions",
   "storeGetDirections": "Get directions",
   "storeDirectionsFailed": "We couldn't open the map. Try again.",
-  "storeFollow": "Follow",
-  "storeFollowing": "Following",
-  "storeFollowers": "{count, plural, =1{1 follower} other{{count} followers}}",
-  "@storeFollowers": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "storeFollowSignInTitle": "Sign in to follow stores",
-  "storeFollowSignInMessage": "Follow your favorite stores and find their offers in one place.",
+  "storeAddFavorite": "Add to favorites",
+  "storeRemoveFavorite": "Remove from favorites",
+  "storeFavoriteSignInTitle": "Sign in to save your favorite stores",
+  "storeFavoriteSignInMessage": "Save the stores you like and find their offers in one place.",
   "storeOffersNow": "Offers now",
   "storeNoOffers": "No offers right now. Check back later.",
-  "storeBranches": "Branches",
   "searchCraving": "What are you craving?",
   "searchRecent": "Recent searches",
   "searchClearRecent": "Clear",
@@ -146,9 +121,9 @@
   "accountTitle": "Account",
   "comingSoon": "Coming soon",
   "signInTitle": "Sign in",
-  "signInMessage": "To book offers and follow your favorite stores. You can browse without an account.",
+  "signInMessage": "To book offers and save your favorite stores. You can browse without an account.",
   "guestTitle": "Welcome, dear guest!",
-  "guestMessage": "Sign in to book offers before they run out and follow your favorite stores.",
+  "guestMessage": "Sign in to book offers before they run out and save your favorite stores.",
   "reserveSignInTitle": "Sign in to reserve",
   "reserveSignInMessage": "Hold the offer now and pick it up at the store. It only takes a moment.",
   "signInAction": "Sign in",
@@ -230,17 +205,6 @@
       }
     }
   },
-  "piecesOfTotal": "{left} of {total} left",
-  "@piecesOfTotal": {
-    "placeholders": {
-      "left": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
   "distanceKm": "{km} km",
   "@distanceKm": {
     "placeholders": {
@@ -269,8 +233,6 @@
   "untilEndMessage": "Pick it up any time before the offer ends.",
   "payTitle": "Pay cash at the store",
   "payMessage": "You pay nothing now.",
-  "pickupOne": "Pick up at the branch",
-  "pickupAny": "Pick up at any branch",
   "limitPerCustomer": "Up to {count} per customer",
   "@limitPerCustomer": {
     "placeholders": {

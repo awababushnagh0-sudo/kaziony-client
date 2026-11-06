@@ -18,22 +18,8 @@ extension OfferTexts on CustomerLocalizations {
     languageCode: Localizations.localeOf(context).languageCode,
   );
 
-  /// When it can be picked up, on the offer's page: "Pick up 4:00 PM –
-  /// 9:00 PM" within one day, else "Pick up until 9:00 PM". The day is
-  /// [pickupDay]'s.
-  String pickupTime(BuildContext context, Offer offer) {
-    final language = Localizations.localeOf(context).languageCode;
-    final end = formatTime(offer.endsAt, languageCode: language);
-    return isSameDay(offer.startsAt, offer.endsAt)
-        ? offerInfoPickupBetween(
-            formatTime(offer.startsAt, languageCode: language),
-            end,
-          )
-        : offerInfoPickupUntil(end);
-  }
-
-  /// When to pick up, short, for a card whose clock icon says it's the
-  /// pickup: "Today 4:00 PM – 9:00 PM", else "Thursday until 9:00 PM".
+  /// When to pick up, short, beside a clock or a "Pick up" label: "Today
+  /// 4:00 PM – 9:00 PM", else "Thursday until 9:00 PM".
   String cardPickup(BuildContext context, Offer offer, DateTime now) {
     final language = Localizations.localeOf(context).languageCode;
     final day = pickupDay(context, offer, now);
@@ -47,7 +33,7 @@ extension OfferTexts on CustomerLocalizations {
         : cardPickupUntil(day, end);
   }
 
-  /// The day [pickupTime] ends: "Today", "Tomorrow", "Thursday" this
+  /// The day an offer's pickup ends: "Today", "Tomorrow", "Thursday" this
   /// coming week, "Nov 9" after.
   String pickupDay(BuildContext context, Offer offer, DateTime now) {
     final language = Localizations.localeOf(context).languageCode;

@@ -26,12 +26,17 @@ class OfferCard extends AppView {
   const OfferCard(
     this.offer, {
     this.shape = OfferCardShape.card,
+    this.inStore = false,
     this.onOpen,
     super.key,
   });
 
   final Offer offer;
   final OfferCardShape shape;
+
+  /// On the store's own page: its logo, name and rating are on the page
+  /// already, so the card leaves them out.
+  final bool inStore;
 
   /// Told when it's opened, before the offer's page shows.
   final VoidCallback? onOpen;
@@ -48,12 +53,12 @@ class OfferCard extends AppView {
       OfferCardShape.card => SCard.raised(
         onTap: open,
         padded: false,
-        child: _Boxed(offer: offer, now: now),
+        child: _Boxed(offer: offer, now: now, inStore: inStore),
       ),
       OfferCardShape.tile => SCard.raised(
         onTap: open,
         padded: false,
-        child: _Tile(offer: offer, now: now),
+        child: _Tile(offer: offer, now: now, inStore: inStore),
       ),
     };
   }
@@ -61,13 +66,14 @@ class OfferCard extends AppView {
 
 /// The photo inset at the top of a card, flat where the words meet it:
 /// how many are left on a tag at its top, the store's logo and the
-/// discount at its foot. Under it the title across, then when to pick up
+/// discount at its foot (no logo [inStore]). Under it the title across, then when to pick up
 /// and the rating and how far, the prices beside those two.
 class _Boxed extends StatelessWidget {
-  const _Boxed({required this.offer, required this.now});
+  const _Boxed({required this.offer, required this.now, required this.inStore});
 
   final Offer offer;
   final DateTime now;
+  final bool inStore;
 
   @override
   Widget build(BuildContext context) {
@@ -90,11 +96,15 @@ class _Boxed extends StatelessWidget {
                 ),
               // The logo stands for the store; its name is for screen
               // readers.
-              PositionedDirectional(
-                bottom: Space.sm,
-                start: Space.sm,
-                child: SLogo(offer.store.logoUrl, storeName: offer.store.name),
-              ),
+              if (!inStore)
+                PositionedDirectional(
+                  bottom: Space.sm,
+                  start: Space.sm,
+                  child: SLogo(
+                    offer.store.logoUrl,
+                    storeName: offer.store.name,
+                  ),
+                ),
               PositionedDirectional(
                 bottom: 0,
                 end: 0,
@@ -119,7 +129,7 @@ class _Boxed extends StatelessWidget {
                 weight: SFontWeight.bold,
                 maxLines: 1,
               ),
-              _Facts(offer: offer, now: now),
+              _Facts(offer: offer, now: now, inStore: inStore),
             ],
           ),
         ),
@@ -130,13 +140,14 @@ class _Boxed extends StatelessWidget {
 
 /// A square photo at the start, with the card's tags against its edge:
 /// how many are left at its top, the discount at its foot. Beside it the
-/// title, the store, then when to pick up and the rating and how far, the
+/// title, the store (not [inStore]), then when to pick up and the rating and how far, the
 /// prices beside those two, as on the card.
 class _Tile extends StatelessWidget {
-  const _Tile({required this.offer, required this.now});
+  const _Tile({required this.offer, required this.now, required this.inStore});
 
   final Offer offer;
   final DateTime now;
+  final bool inStore;
 
   @override
   Widget build(BuildContext context) {
@@ -167,14 +178,15 @@ class _Tile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _Title(offer.title),
-                SText(
-                  offer.store.name,
-                  variant: TextVariant.caption,
-                  color: SColor.textMuted,
-                  maxLines: 1,
-                ),
+                if (!inStore)
+                  SText(
+                    offer.store.name,
+                    variant: TextVariant.caption,
+                    color: SColor.textMuted,
+                    maxLines: 1,
+                  ),
                 const Gap(Space.xxs),
-                _Facts(offer: offer, now: now),
+                _Facts(offer: offer, now: now, inStore: inStore),
               ],
             ),
           ),
@@ -184,18 +196,19 @@ class _Tile extends StatelessWidget {
   }
 }
 
-/// When to pick up, then the rating and how far, with the prices beside
-/// those two lines.
+/// When to pick up, then the store's rating (not [inStore]) and how far,
+/// with the prices beside those two lines.
 class _Facts extends StatelessWidget {
-  const _Facts({required this.offer, required this.now});
+  const _Facts({required this.offer, required this.now, required this.inStore});
 
   final Offer offer;
   final DateTime now;
+  final bool inStore;
 
   @override
   Widget build(BuildContext context) {
     final s = CustomerLocalizations.of(context);
-    final rating = offer.store.rating;
+    final rating = inStore ? null : offer.store.rating;
     final km = offer.nearestBranch.distanceKm;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,

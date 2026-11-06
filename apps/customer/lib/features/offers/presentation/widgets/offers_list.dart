@@ -26,7 +26,9 @@ class OffersList extends AppView {
       value: ref.watch(provider),
       onRetry: () => ref.invalidate(provider),
       loading: OfferListSkeleton(
-        tiles: ref.watch(offersLayoutProvider) == OffersLayout.list,
+        tiles:
+            ref.watch(offersLayoutProvider(OffersPlace.lists)) ==
+            OffersLayout.list,
       ),
       builder: (context, page) {
         if (page.items.isEmpty) {
@@ -67,7 +69,8 @@ class OffersPagedList extends AppView {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final viewModel = ref.read(offers.notifier);
-    final tiles = ref.watch(offersLayoutProvider) == OffersLayout.list;
+    final tiles =
+        ref.watch(offersLayoutProvider(OffersPlace.lists)) == OffersLayout.list;
     return SPagedList(
       // The offers are cards, apart from each other.
       divided: false,

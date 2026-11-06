@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../icon/s_icon.dart';
 import '../illustration/s_illustration.dart';
+import 's_box_tile_material.dart';
 import 's_expandable_material.dart';
 
 /// A box that opens to show more inside it, and closes again: a list that
@@ -25,4 +26,23 @@ abstract interface class SExpandable implements Widget {
     bool initiallyOpen,
     Key? key,
   }) = SExpandableMaterial;
+}
+
+/// An [SExpandable]'s box that does one thing when tapped instead of
+/// opening (directions to the only branch): the same head, so the two
+/// read as one, with [action]'s icon at its end in the brand's green in
+/// place of the chevron. [actionLabel] says what tapping does, for screen
+/// readers.
+abstract interface class SBoxTile implements Widget {
+  const factory SBoxTile({
+    required String title,
+    required SIcons action,
+    required String actionLabel,
+    required VoidCallback onTap,
+    String? subtitle,
+    String? tag,
+    SIcons? icon,
+    Illustration? illustration,
+    Key? key,
+  }) = SBoxTileMaterial;
 }

@@ -8,7 +8,7 @@ import 'package:kernel/kernel.dart';
 import '../../fakes.dart';
 import '../../support/pump_app.dart';
 
-/// Refuses to follow, to see the page put it back.
+/// Refuses to save, to see the page put it back.
 class _RefusingStores extends FakeStoresRepository {
   @override
   Future<Result<void>> follow(String storeId) async =>
@@ -49,49 +49,44 @@ void main() {
     await open(tester);
 
     expect(find.text('Sweet shop'), findsOneWidget);
-    expect(find.text('Bakeries · 3 followers'), findsOneWidget);
-    expect(find.text('Kunafa box'), findsOneWidget);
-
-    await tester.drag(find.byType(CustomScrollView), const Offset(0, -1000));
-    await tester.pumpAndSettle();
+    expect(find.text('Bakeries'), findsOneWidget);
     expect(find.text('Hay Al Andalus'), findsOneWidget);
-    expect(find.text('Get directions'), findsOneWidget);
+    expect(find.text('Kunafa box'), findsOneWidget);
   });
 
-  testWidgets('follows the store, then stops', (tester) async {
+  testWidgets('saves the store to favorites, then takes it out', (
+    tester,
+  ) async {
     await open(tester);
 
-    await tester.tap(find.text('Follow'));
+    await tester.tap(find.byTooltip('Add to favorites'));
     await tester.pumpAndSettle();
     expect(stores.follows, ['s1']);
-    expect(find.text('Following'), findsOneWidget);
-    expect(find.text('Bakeries · 4 followers'), findsOneWidget);
+    expect(find.byTooltip('Remove from favorites'), findsOneWidget);
 
-    await tester.tap(find.text('Following'));
+    await tester.tap(find.byTooltip('Remove from favorites'));
     await tester.pumpAndSettle();
     expect(stores.unfollows, ['s1']);
-    expect(find.text('Follow'), findsOneWidget);
-    expect(find.text('Bakeries · 3 followers'), findsOneWidget);
+    expect(find.byTooltip('Add to favorites'), findsOneWidget);
   });
 
-  testWidgets('puts it back when following was refused', (tester) async {
+  testWidgets('puts it back when saving was refused', (tester) async {
     stores = _RefusingStores();
     await open(tester);
 
-    await tester.tap(find.text('Follow'));
+    await tester.tap(find.byTooltip('Add to favorites'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Follow'), findsOneWidget);
-    expect(find.text('Bakeries · 3 followers'), findsOneWidget);
+    expect(find.byTooltip('Add to favorites'), findsOneWidget);
   });
 
-  testWidgets('a guest is asked to sign in before following', (tester) async {
+  testWidgets('a guest is asked to sign in before saving', (tester) async {
     await open(tester, signedIn: false);
 
-    await tester.tap(find.text('Follow'));
+    await tester.tap(find.byTooltip('Add to favorites'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Sign in to follow stores'), findsOneWidget);
+    expect(find.text('Sign in to save your favorite stores'), findsOneWidget);
     expect(stores.follows, isEmpty);
   });
 }

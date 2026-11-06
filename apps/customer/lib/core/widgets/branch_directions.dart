@@ -6,10 +6,11 @@ import '../../features/offers/presentation/offer_texts.dart';
 import '../l10n/generated/customer_localizations.dart';
 import 'customer_illustrations.dart';
 
-/// Where to pick up, with the way there in the phone's maps. One branch:
-/// it, and a big "Get directions". Several: a box with a little map, how
-/// many and which is closest, that opens to every one of them, closest
-/// first, a directions button each.
+/// Where to pick up, with the way there in the phone's maps, as one box
+/// with a little map either way. One branch: the box is it, and tapping
+/// it opens the directions. Several: the box says how many and which is
+/// closest, and opens to every one of them, closest first, each a row that
+/// opens its directions.
 class BranchDirections extends AppView {
   /// [branches] closest first, at least one: the offer's branches (or the
   /// store's), all of them places to pick up.
@@ -37,31 +38,22 @@ class BranchDirections extends AppView {
       return parts.isEmpty ? null : parts.join(' · ');
     }
 
+    // The way there, at the end of the box and of each row: the arrow,
+    // without words, the same in both.
+    const go = SIcon(SIcons.navigate, color: SColor.primary);
+    final Widget box;
     if (branches case [final only]) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SListTile(
-            icon: SIcons.location,
-            title: only.name,
-            subtitle: where(only),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
-            child: SButton.secondary(
-              label: s.storeGetDirections,
-              icon: SIcons.navigate,
-              expand: true,
-              onPressed: () => directions(only),
-            ),
-          ),
-        ],
+      box = SBoxTile(
+        illustration: CustomerIllustrations.map,
+        title: only.name,
+        subtitle: where(only),
+        action: SIcons.navigate,
+        actionLabel: s.storeGetDirections,
+        onTap: () => directions(only),
       );
-    }
-    final closest = branches.first;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Space.lg),
-      child: SExpandable(
+    } else {
+      final closest = branches.first;
+      box = SExpandable(
         illustration: CustomerIllustrations.map,
         title: s.branchCount(branches.length),
         tag: s.branchClosest,
@@ -78,15 +70,17 @@ class BranchDirections extends AppView {
               SListTile(
                 title: branch.name,
                 subtitle: where(branch),
-                trailing: SButton.text(
-                  label: s.storeDirections,
-                  onPressed: () => directions(branch),
-                ),
+                trailing: go,
+                onTap: () => directions(branch),
               ),
             ],
           ],
         ),
-      ),
+      );
+    }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+      child: box,
     );
   }
 }

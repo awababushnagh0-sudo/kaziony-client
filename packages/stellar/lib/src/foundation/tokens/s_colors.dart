@@ -28,6 +28,7 @@ class StellarColors {
     required this.shadow,
     required this.scrim,
     required this.onScrim,
+    required this.onScrimBrand,
     required this.codeInk,
     required this.codePaper,
     required this.background,
@@ -109,6 +110,10 @@ class StellarColors {
   final Color scrim;
   final Color onScrim;
 
+  /// The brand's green light enough to read on a photo's dark shade (an
+  /// offer's price): the same in both themes.
+  final Color onScrimBrand;
+
   /// A QR code's dark squares and the white around them: the same in both
   /// themes, so every scanner reads it.
   final Color codeInk;
@@ -178,6 +183,8 @@ class StellarColors {
     SColor.warning => warning,
     SColor.danger => danger,
     SColor.onDanger => onDanger,
+    SColor.onScrim => onScrim,
+    SColor.onScrimBrand => onScrimBrand,
     SColor.link => link,
     SColor.surface => surface,
     SColor.surfaceMuted => surfaceMuted,
@@ -220,6 +227,12 @@ enum SColor {
 
   /// On a [danger] background.
   onDanger,
+
+  /// Words on a photo, over its dark shade: white in either look.
+  onScrim,
+
+  /// The brand's green on a photo, over its dark shade (an offer's price).
+  onScrimBrand,
   link,
 
   // Behind things: panels and cards (SStatGrid).

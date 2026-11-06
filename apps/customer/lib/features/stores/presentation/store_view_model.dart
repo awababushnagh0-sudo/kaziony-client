@@ -50,11 +50,10 @@ class StoreViewModel extends AsyncViewModel<StoreDetail> {
   }
 }
 
-/// [store] with [following] set, and its followers counted again.
+/// [store] with [following] set.
 StoreDetail _following(StoreDetail store, bool following) => StoreDetail(
   id: store.id,
   name: store.name,
-  description: store.description,
   logoUrl: store.logoUrl,
   coverUrl: store.coverUrl,
   phone: store.phone,
@@ -62,7 +61,6 @@ StoreDetail _following(StoreDetail store, bool following) => StoreDetail(
   rating: store.rating,
   category: store.category,
   branches: store.branches,
-  followerCount: store.followerCount + (following ? 1 : -1),
   isFollowing: following,
   offers: store.offers,
 );
