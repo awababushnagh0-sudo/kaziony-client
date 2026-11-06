@@ -257,18 +257,24 @@ The screen staff use all day, so it must be fast and work on a weak connection.
 - [ ] Before release: an Android OAuth client for the release key and for Play's
       app-signing key (their SHA-1s), and the Google consent screen published
 - [x] Home: where offers are shown from, search, categories with the app's pictures, a
-      banner, then rows (ending soon, near you, biggest discount) with "See all", then
-      "All offers" (the newest five, down the page) with "See all"
+      carousel of banners, then rows (ending soon, near you, biggest discount) with "See
+      all" and rows of stores between them, then one "All offers" card to every offer
 - [x] Browse: offers around the saved place (the backend caps the radius), categories,
       search, sort on the Search tab; a home row's "See all" is just its offers in a list
-      under the row's name (both share one list)
+      under the row's name (both share one list), shown as big cards or compact tiles,
+      as the customer picks (remembered on the phone)
 - [x] Offer page: photo, prices, store, pieces left of the total, hold time, branches;
       guests sign in to reserve, reserved shows the pickup code, sold out can't be tapped
 - [x] Reserve → pickup code page with QR code and countdown; Bookings tab lists them;
       cancel after asking. Refusals (sold out, limit, not enough left) come with a stable
       `error` code from the backend, said in the app's words
 - [x] Dev menu: "Sign in as a test customer" (dev auth), to try reserving without Google
-- [ ] Store page, follow
+- [x] Store page (cover, logo, follow, description, live offers, branches with
+      directions) and follow; home rows of stores near you and stores you follow
+- [x] Offer page: the photo folds into a pinned bar with the back button, the store
+      opens its page, directions open Google Maps, how many to reserve sits by the button
+- [x] Search tab: before searching, the kinds of store, recent searches (on the phone)
+      and stores near you; then matching stores and offers, filters once there are offers
 - [ ] Guest illustration on Account: pick one that doesn't look like Presto's
 - [ ] Profile: name, contact phone, language
 

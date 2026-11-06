@@ -88,7 +88,11 @@ when a second user appears:
 | several features of one app | `apps/<app>/lib/core/widgets/` |
 | more than one app | `stellar` |
 
-App widgets only arrange stellar widgets; they never style anything themselves.
+Stellar is the design system: it holds the bricks (text, image, card, badge, pill, the
+sideways row, ...), and only widgets more than one app uses. A widget only one app uses is
+built in that app from those bricks; when a brick is missing, add it to stellar as a
+generic piece, and keep the app's design in the app. App widgets only arrange stellar
+widgets; they never style anything themselves.
 
 A pattern every page of a kind repeats goes in the app's `core/`, and those pages build on
 it instead of copying it: dashboard lists use `core/list` (`ListController`, `PagedTable`),
@@ -96,7 +100,9 @@ phone lists use `core/list` (`PagedListViewModel` with `SPagedList`), record pag
 `core/record` (`RecordForm` for the fields, `RecordScreen` for the page).
 In the customer app, a guest who reaches something that needs an account sees
 `SignInPrompt` (in place on a tab, `SignInPrompt.show` in a sheet after an action), and
-an empty list of offers shows `NoOffersView`; never a one-off version of either.
+an empty list of offers shows `NoOffersView`; never a one-off version of either. An offer
+is always an `OfferCard` in one of its shapes (the card in home rows and lists, or tiles in
+lists, as `OffersLayoutSwitch` picked).
 
 ## 6. Stellar components
 
@@ -177,6 +183,11 @@ numbers or colors anywhere else. Stellar widgets take **enums**, never numbers o
   don't do math on them in the app. Dates: `formatDate`, in the user's language.
 - Built for slow, unstable connections: loading and error states with "Try again",
   buttons that can't submit twice (`loading: true`), friendly messages.
+- While content loads, show its skeleton, not a spinner: `SAsyncView(loading: ...)` with
+  an `SSkeleton` shaped like what's coming (`SSkeleton.list`, `.groups`, `.page`, or the
+  app's own made of `SBone`s, like `OfferCardSkeleton`), and `SPagedList(placeholder:)`
+  for the next rows. Spinners only in buttons and where there's no shape to show (a map,
+  the camera, an upload).
 - Icon-only buttons always have a tooltip (`SButton.icon` requires one) so screen
   readers can name them.
 
