@@ -55,13 +55,19 @@ class OffersFilterController extends ViewModel<OffersFilter> {
     return initial;
   }
 
-  /// Waits for a pause in typing before searching.
+  /// Waits for a pause in typing before searching; an emptied field shows
+  /// everything again at once.
   void setSearch(String value) {
     _debounce?.cancel();
-    _debounce = Timer(searchDelay, () {
-      final search = value.trim();
-      if (search != state.search) state = state.copyWith(search: search);
-    });
+    if (value.trim().isEmpty) return searchNow(value);
+    _debounce = Timer(searchDelay, () => searchNow(value));
+  }
+
+  /// Searches without waiting: the keyboard's search key, a recent search.
+  void searchNow(String value) {
+    _debounce?.cancel();
+    final search = value.trim();
+    if (search != state.search) state = state.copyWith(search: search);
   }
 
   void setSort(OfferSort sort) => state = state.copyWith(sort: sort);
@@ -75,14 +81,16 @@ final offersFilterProvider = NotifierProvider.autoDispose
       OffersFilterController.new,
     );
 
+/// The offers that match [filter]: a list's own `offersFilterProvider`, or
+/// the Search tab's.
 class OffersViewModel extends PagedListViewModel<Offer, OffersQuery> {
-  OffersViewModel(this.initial);
+  OffersViewModel(this.filter);
 
-  final OffersFilter initial;
+  final ProviderListenable<OffersFilter> filter;
 
   @override
   OffersQuery watchQuery() {
-    final filter = ref.watch(offersFilterProvider(initial));
+    final filter = ref.watch(this.filter);
     return OffersQuery(
       // The redirect keeps the app on the welcome pages until there's a
       // place.
@@ -104,5 +112,5 @@ class OffersViewModel extends PagedListViewModel<Offer, OffersQuery> {
 
 final offersViewModel = AsyncNotifierProvider.autoDispose
     .family<OffersViewModel, PagedItems<Offer>, OffersFilter>(
-      OffersViewModel.new,
+      (initial) => OffersViewModel(offersFilterProvider(initial)),
     );

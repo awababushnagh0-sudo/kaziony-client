@@ -64,4 +64,51 @@ void main() {
     expect(find.text('A2GU GPJ7'), findsNothing);
     expect(find.text('Cancel reservation'), findsNothing);
   });
+
+  testWidgets('once picked up, rates the store', (tester) async {
+    bookings.bookings = [
+      booking(status: BookingStatus.pickedUp, canRate: true),
+    ];
+    await open(tester);
+
+    expect(find.text('How was your pickup at Sweet shop?'), findsOneWidget);
+    await tester.tap(find.byTooltip('4 stars'));
+    await tester.pumpAndSettle();
+
+    expect(bookings.rated, [('k1', 4)]);
+    expect(find.text('Thanks for rating!'), findsOneWidget);
+    expect(find.text('You rated Sweet shop'), findsOneWidget);
+    // Given, the stars can't be tapped again.
+    expect(find.byTooltip('4 stars'), findsNothing);
+  });
+
+  testWidgets('a rating already given shows its stars', (tester) async {
+    final semantics = tester.ensureSemantics();
+    bookings.bookings = [booking(status: BookingStatus.pickedUp, myRating: 3)];
+    await open(tester);
+
+    expect(find.text('You rated Sweet shop'), findsOneWidget);
+    expect(find.bySemanticsLabel(RegExp('3 stars')), findsOneWidget);
+    expect(find.byTooltip('1 star'), findsNothing);
+    semantics.dispose();
+  });
+
+  testWidgets('says why a rating was refused', (tester) async {
+    bookings.bookings = [
+      booking(status: BookingStatus.pickedUp, canRate: true),
+    ];
+    bookings.rateResult = const Err(ConflictFailure(null, 'AlreadyRated'));
+    await open(tester);
+
+    await tester.tap(find.byTooltip('5 stars'));
+    await tester.pumpAndSettle();
+
+    expect(find.text("You've already rated this pickup."), findsOneWidget);
+  });
+
+  testWidgets('nothing to rate before the pickup', (tester) async {
+    await open(tester);
+
+    expect(find.textContaining('How was your pickup'), findsNothing);
+  });
 }

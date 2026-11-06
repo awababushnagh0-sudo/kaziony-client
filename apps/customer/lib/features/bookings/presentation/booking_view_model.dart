@@ -3,7 +3,8 @@ import 'package:kernel/kernel.dart';
 import '../domain/booking.dart';
 import 'bookings_view_model.dart';
 
-/// One booking, for its pickup code page, and cancelling it.
+/// One booking, for its pickup code page: cancelling it, and rating the
+/// store once it's picked up.
 class BookingViewModel extends AsyncViewModel<Booking> {
   BookingViewModel(this.bookingId);
 
@@ -17,8 +18,18 @@ class BookingViewModel extends AsyncViewModel<Booking> {
       };
 
   /// What went wrong, or null when it's cancelled.
-  Future<AppFailure?> cancel() async {
-    final result = await ref.read(bookingsRepositoryProvider).cancel(bookingId);
+  Future<AppFailure?> cancel() =>
+      _change((bookings) => bookings.cancel(bookingId));
+
+  /// What went wrong, or null when the store is rated [stars].
+  Future<AppFailure?> rate(int stars) =>
+      _change((bookings) => bookings.rate(bookingId, stars));
+
+  /// Shows the booking as it is after [change], here and in the list.
+  Future<AppFailure?> _change(
+    Future<Result<Booking>> Function(BookingsRepository) change,
+  ) async {
+    final result = await change(ref.read(bookingsRepositoryProvider));
     if (!ref.mounted) return null;
     switch (result) {
       case Ok(:final value):

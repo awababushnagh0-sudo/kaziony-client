@@ -10,6 +10,253 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   CustomerLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
+  String branchCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count فرع',
+      many: '$count فرعًا',
+      few: '$count فروع',
+      two: 'فرعان',
+      one: 'فرع واحد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get branchClosest => 'الأقرب';
+
+  @override
+  String offerInfoPickupBetween(String start, String end) {
+    return 'الاستلام $start – $end';
+  }
+
+  @override
+  String offerInfoPickupUntil(String time) {
+    return 'الاستلام حتى $time';
+  }
+
+  @override
+  String get offerInfoToday => 'اليوم';
+
+  @override
+  String cardPickupBetween(String day, String start, String end) {
+    return '$day $start – $end';
+  }
+
+  @override
+  String cardPickupUntil(String day, String time) {
+    return '$day حتى $time';
+  }
+
+  @override
+  String get offerInfoTomorrow => 'غدًا';
+
+  @override
+  String ratingLabel(String average, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count تقييم',
+      few: '$count تقييمات',
+      two: 'تقييمان',
+      one: 'تقييم واحد',
+    );
+    return 'التقييم $average من 5، $_temp0';
+  }
+
+  @override
+  String ratingStars(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count نجمة',
+      few: '$count نجوم',
+      two: 'نجمتان',
+      one: 'نجمة واحدة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String ratingPrompt(String store) {
+    return 'كيف كان الاستلام من $store؟';
+  }
+
+  @override
+  String get ratingPromptMessage =>
+      'قيّم المحل، تقييمك يساعد غيرك في الاختيار.';
+
+  @override
+  String ratingGiven(String store) {
+    return 'قيّمت $store';
+  }
+
+  @override
+  String get ratingThanks => 'شكرًا على تقييمك!';
+
+  @override
+  String get ratingNotPickedUp => 'تقدر تقيّم المحل بعد ما تستلم طلبك.';
+
+  @override
+  String get ratingAlreadyRated => 'قيّمت هذا الاستلام من قبل.';
+
+  @override
+  String get ratingListHint => 'قيّم';
+
+  @override
+  String get pickupInstructionsTitle => 'طريقة الاستلام';
+
+  @override
+  String get pickupInstructionsDefault =>
+      'اعرض رمز الاستلام على أحد العاملين في المحل، ويسلّمك طلبك.';
+
+  @override
+  String get homeStoresNearby => 'محلات قريبة منك';
+
+  @override
+  String get homeStoresFollowed => 'محلات تتابعها';
+
+  @override
+  String get homeAllOffersTitle => 'تصفّح كل العروض حولك';
+
+  @override
+  String homeAllOffersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count عرضًا يستنوك، الأحدث أولًا',
+      few: '$count عروض تستناك، الأحدث أولًا',
+      two: 'عرضان يستنوك، الأحدث أولًا',
+      one: 'عرض واحد يستناك، الأحدث أولًا',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeBannerRescueTitle => 'أكل طيب.. قبل ما يسكّر المحل';
+
+  @override
+  String get homeBannerRescueMessage =>
+      'اللي فاضل في المحلات آخر النهار، بسعر أقل بكثير.';
+
+  @override
+  String get homeBannerPickupTitle => 'احجز من هنا، واستلم من المحل';
+
+  @override
+  String get homeBannerPickupMessage =>
+      'عرضك محجوز ويستناك في المحل، تعال خوذه بس.';
+
+  @override
+  String get homeBannerCashTitle => 'ادفع كاش في المحل';
+
+  @override
+  String get homeBannerCashMessage => 'ما تحتاجش بطاقة: تدفع وقت الاستلام.';
+
+  @override
+  String offerPageReserveCount(int count) {
+    return 'احجز $count';
+  }
+
+  @override
+  String offerPageConfirmTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'تحجز $count قطعة؟',
+      few: 'تحجز $count قطع؟',
+      two: 'تحجز قطعتين؟',
+      one: 'تحجز قطعة واحدة؟',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get offerPageAbout => 'عن العرض';
+
+  @override
+  String get offerPageGoodToKnow => 'قبل أن تحجز';
+
+  @override
+  String get storeDirections => 'الاتجاهات';
+
+  @override
+  String get storeGetDirections => 'عرض الاتجاهات';
+
+  @override
+  String get storeDirectionsFailed => 'تعذّر فتح الخريطة. حاول مرة أخرى.';
+
+  @override
+  String get storeFollow => 'متابعة';
+
+  @override
+  String get storeFollowing => 'تتابعه';
+
+  @override
+  String storeFollowers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count متابع',
+      few: '$count متابعين',
+      two: 'متابعان',
+      one: 'متابع واحد',
+      zero: 'لا متابعين',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get storeFollowSignInTitle => 'سجّل الدخول لتتابع المحلات';
+
+  @override
+  String get storeFollowSignInMessage =>
+      'تابع محلاتك المفضلة لتجد عروضها في مكان واحد.';
+
+  @override
+  String get storeOffersNow => 'العروض الآن';
+
+  @override
+  String get storeNoOffers => 'لا عروض الآن. عُد لاحقًا.';
+
+  @override
+  String get storeBranches => 'الفروع';
+
+  @override
+  String get searchCraving => 'ماذا تشتهي اليوم؟';
+
+  @override
+  String get searchRecent => 'عمليات بحث سابقة';
+
+  @override
+  String get searchClearRecent => 'مسح';
+
+  @override
+  String get searchStoresNear => 'المحلات القريبة';
+
+  @override
+  String get searchStores => 'المحلات';
+
+  @override
+  String get searchOffers => 'العروض';
+
+  @override
+  String get searchNoOffers => 'لا توجد عروض مطابقة الآن.';
+
+  @override
+  String searchOffersNow(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count عرضًا الآن',
+      few: '$count عروض الآن',
+      two: 'عرضان الآن',
+      one: 'عرض واحد الآن',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appTitle => 'كزيوني';
 
   @override
@@ -195,15 +442,6 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get allCategories => 'الكل';
 
   @override
-  String get bannerTitle => 'أكل لذيذ.. بسعر أقل';
-
-  @override
-  String get bannerMessage => 'احجز العرض، استلمه من المحل، وادفع نقدًا هناك.';
-
-  @override
-  String get bannerTag => 'لأن الخير ما يتلوحش';
-
-  @override
   String get sectionEndingSoon => 'ينتهي قريبًا';
 
   @override
@@ -214,6 +452,12 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String get sectionAllOffers => 'كل العروض';
+
+  @override
+  String get viewAsCards => 'عرض كبطاقات';
+
+  @override
+  String get viewAsList => 'عرض كقائمة';
 
   @override
   String get seeAll => 'عرض الكل';
@@ -256,16 +500,6 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   @override
   String endsOnDay(String day) {
     return 'حتى $day';
-  }
-
-  @override
-  String endsTodayAt(String time) {
-    return 'ينتهي اليوم $time';
-  }
-
-  @override
-  String endsOn(String date) {
-    return 'ينتهي $date';
   }
 
   @override
@@ -333,9 +567,6 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String get soldOut => 'نفدت الكمية';
-
-  @override
-  String get reserveTitle => 'كم قطعة تريد؟';
 
   @override
   String pricePerPiece(String price) {

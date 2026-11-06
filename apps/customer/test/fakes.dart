@@ -4,6 +4,7 @@ import 'package:customer/features/auth/domain/auth_repository.dart';
 import 'package:customer/features/bookings/domain/booking.dart';
 import 'package:customer/features/location/domain/browse_location.dart';
 import 'package:customer/features/offers/domain/offer.dart';
+import 'package:customer/features/stores/domain/store.dart';
 import 'package:kernel/kernel.dart';
 
 SessionUser customer({String? name = 'Ahmed', String? email = 'a@gmail.com'}) =>
@@ -96,7 +97,9 @@ Offer offer({
   int? remaining = 3,
   int? maxPerUser = 2,
   bool limited = true,
+  DateTime? startsAt,
   DateTime? endsAt,
+  StoreRating? rating,
 }) => Offer(
   id: id,
   title: title,
@@ -108,8 +111,14 @@ Offer offer({
   total: limited ? 10 : null,
   maxPerUser: maxPerUser,
   claimWindowMinutes: 60,
+  startsAt: startsAt ?? now.subtract(const Duration(hours: 1)),
   endsAt: endsAt ?? now.add(const Duration(hours: 5)),
-  store: const OfferStore(id: 's1', name: 'Sweet shop', category: bakery),
+  store: OfferStore(
+    id: 's1',
+    name: 'Sweet shop',
+    category: bakery,
+    rating: rating,
+  ),
   nearestBranch: branch,
   branchCount: 1,
 );
@@ -120,6 +129,8 @@ Booking booking({
   Duration left = const Duration(minutes: 42, seconds: 5),
   bool canCancel = true,
   bool limited = true,
+  bool canRate = false,
+  int? myRating,
 }) => Booking(
   id: id,
   code: 'A2GUGPJ7',
@@ -135,6 +146,8 @@ Booking booking({
   branches: const [branch],
   canCancel: canCancel,
   limited: limited,
+  canRate: canRate,
+  myRating: myRating,
 );
 
 class FakeOffersRepository implements OffersRepository {
@@ -175,8 +188,10 @@ class FakeBookingsRepository implements BookingsRepository {
   List<Booking> bookings = [booking()];
   Result<Booking>? reserveResult;
   Result<Booking>? cancelResult;
+  Result<Booking>? rateResult;
   final reserved = <(String, int)>[];
   var cancels = 0;
+  final rated = <(String, int)>[];
 
   @override
   Future<Result<Booking>> reserve(
@@ -202,5 +217,73 @@ class FakeBookingsRepository implements BookingsRepository {
     cancels++;
     return cancelResult ??
         Ok(booking(id: bookingId, status: BookingStatus.cancelled));
+  }
+
+  @override
+  Future<Result<Booking>> rate(String bookingId, int stars) async {
+    rated.add((bookingId, stars));
+    return rateResult ??
+        Ok(
+          booking(
+            id: bookingId,
+            status: BookingStatus.pickedUp,
+            myRating: stars,
+          ),
+        );
+  }
+}
+
+const storeSummary = StoreSummary(
+  id: 's1',
+  name: 'Sweet shop',
+  category: bakery,
+  liveOfferCount: 2,
+  nearestBranch: branch,
+);
+
+class FakeStoresRepository implements StoresRepository {
+  List<StoreSummary> stores = const [storeSummary];
+  StoreRating? rating;
+  String? pickupInstructions;
+  List<StoreSummary> followedStores = const [];
+  final follows = <String>[];
+  final unfollows = <String>[];
+
+  @override
+  Future<Result<PageResult<StoreSummary>>> nearby(
+    StoresQuery query, {
+    required int page,
+    required int pageSize,
+  }) async => Ok(PageResult(items: stores, total: stores.length));
+
+  @override
+  Future<Result<StoreDetail>> get(String storeId, {GeoPoint? around}) async =>
+      Ok(
+        StoreDetail(
+          id: storeId,
+          name: 'Sweet shop',
+          category: bakery,
+          branches: const [branch],
+          followerCount: 3,
+          rating: rating,
+          pickupInstructions: pickupInstructions,
+          isFollowing: false,
+          offers: [offer()],
+        ),
+      );
+
+  @override
+  Future<Result<List<StoreSummary>>> followed() async => Ok(followedStores);
+
+  @override
+  Future<Result<void>> follow(String storeId) async {
+    follows.add(storeId);
+    return const Ok(null);
+  }
+
+  @override
+  Future<Result<void>> unfollow(String storeId) async {
+    unfollows.add(storeId);
+    return const Ok(null);
   }
 }

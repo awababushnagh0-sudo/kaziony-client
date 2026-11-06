@@ -8,7 +8,8 @@ import 'booking_texts.dart';
 import 'booking_view_model.dart';
 
 /// A booking's pickup code: the QR code and the code to read out, the time
-/// left, what to pay and where. Once it's over, what became of it.
+/// left, what to pay and where. Once it's over, what became of it, and
+/// once picked up, the way to rate the store.
 class BookingScreen extends AppView {
   const BookingScreen({required this.bookingId, super.key});
 
@@ -25,6 +26,7 @@ class BookingScreen extends AppView {
       body: SAsyncView(
         value: ref.watch(provider),
         onRetry: () => ref.invalidate(provider),
+        loading: const SSkeleton.page(),
         builder: (context, booking) => _Booking(booking: booking),
       ),
     );
@@ -55,6 +57,8 @@ class _Booking extends AppView {
           note: '${s.quantityTimes(booking.quantity)} · ${booking.storeName}',
           dimmed: !active,
         ),
+        if (booking.canRate || booking.myRating != null)
+          _Rating(booking: booking),
         if (active) ...[
           Center(child: SQrCode(booking.code, label: s.qrLabel)),
           SCodeCard(
@@ -100,6 +104,66 @@ class _Booking extends AppView {
           if (booking.canCancel) _Cancel(booking: booking),
         ],
       ],
+    );
+  }
+}
+
+/// After a pickup, how it went: five stars to rate the store, once; then
+/// the stars given.
+class _Rating extends AppStatefulView {
+  const _Rating({required this.booking});
+
+  final Booking booking;
+
+  @override
+  AppViewState<_Rating> createState() => _RatingState();
+}
+
+class _RatingState extends AppViewState<_Rating> {
+  /// The stars on their way: shown, and not tappable again meanwhile.
+  int? _sending;
+
+  Future<void> _rate(int stars) async {
+    final s = CustomerLocalizations.of(context);
+    final id = widget.booking.id;
+    setState(() => _sending = stars);
+    final failure = await ref.read(bookingViewModel(id).notifier).rate(stars);
+    if (!mounted) return;
+    setState(() => _sending = null);
+    if (failure == null) {
+      SSnack.success(context, s.ratingThanks);
+      return;
+    }
+    SSnack.error(context, ratingFailureMessage(context, failure));
+    // Rated already, or not picked up after all: show it as it is.
+    if (failure is ConflictFailure) ref.invalidate(bookingViewModel(id));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final s = CustomerLocalizations.of(context);
+    final booking = widget.booking;
+    final given = booking.myRating;
+    return SCard(
+      child: Column(
+        spacing: Space.sm,
+        children: [
+          SText(
+            given == null
+                ? s.ratingPrompt(booking.storeName)
+                : s.ratingGiven(booking.storeName),
+            weight: SFontWeight.semibold,
+            align: TextAlign.center,
+          ),
+          if (given == null)
+            SText.caption(s.ratingPromptMessage, align: TextAlign.center),
+          SStarInput(
+            value: given ?? _sending ?? 0,
+            starLabel: s.ratingStars,
+            onChanged: given == null && _sending == null ? _rate : null,
+          ),
+        ],
+      ),
     );
   }
 }

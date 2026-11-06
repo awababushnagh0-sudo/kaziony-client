@@ -11,9 +11,21 @@ enum CustomerIllustrations implements Illustration {
   /// A green pin with the bag in it, on a folded map: on the location page.
   location('location', Size(160, 130)),
 
+  /// A little street map with a red pin, in a map app's own colors: a
+  /// store's branches and the way to them.
+  map('map', Size(56, 56)),
+
   /// A hand holding up the brand bag among sparkles: on the account tab
   /// when nobody's signed in.
   guest('guest', Size(240, 180)),
+
+  /// The bag asleep under the moon: food saved as stores close, on a home
+  /// banner.
+  bagSleep('bag_sleep', Size(140, 120)),
+
+  /// A paper bag full of bread, with the brand's bag on it: every offer
+  /// around, on the home page.
+  kraftBag('kraft_bag', Size(96, 96)),
 
   /// The kinds of store on the home page: every offer (the bag), bakeries,
   /// sweets and cafés.
@@ -23,6 +35,15 @@ enum CustomerIllustrations implements Illustration {
   categoryCafe('category_coffee', Size(64, 64));
 
   const CustomerIllustrations(this.file, this.size);
+
+  /// The picture for a kind of store, by its slug; null for kinds the app
+  /// has none for (they show the admins' icon).
+  static CustomerIllustrations? forCategory(String slug) => switch (slug) {
+    'bakery' => categoryBakery,
+    'sweet' => categorySweets,
+    'cafe' => categoryCafe,
+    _ => null,
+  };
 
   @override
   final String file;

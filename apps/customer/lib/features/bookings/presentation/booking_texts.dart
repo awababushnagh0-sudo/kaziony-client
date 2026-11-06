@@ -36,6 +36,16 @@ String reserveFailureMessage(BuildContext context, AppFailure failure) {
   };
 }
 
+/// Why a rating was refused, in the app's words.
+String ratingFailureMessage(BuildContext context, AppFailure failure) {
+  final s = CustomerLocalizations.of(context);
+  return switch (failure) {
+    ConflictFailure(code: 'NotPickedUp') => s.ratingNotPickedUp,
+    ConflictFailure(code: 'AlreadyRated') => s.ratingAlreadyRated,
+    _ => failureMessage(context, failure),
+  };
+}
+
 /// "12:34" or "1:02:34": the time left to pick up.
 String countdown(Duration left) {
   final clamped = left.isNegative ? Duration.zero : left;

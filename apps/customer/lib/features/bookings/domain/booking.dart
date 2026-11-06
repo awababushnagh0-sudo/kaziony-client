@@ -29,9 +29,11 @@ class Booking {
     required this.branches,
     required this.canCancel,
     required this.limited,
+    this.canRate = false,
     this.thumbUrl,
     this.storeLogoUrl,
     this.pickedUpAt,
+    this.myRating,
   });
 
   final String id;
@@ -63,6 +65,12 @@ class Booking {
   /// ends.
   final bool limited;
 
+  /// Picked up and not rated yet: the customer can rate the store, once.
+  final bool canRate;
+
+  /// The stars (1 to 5) the customer gave the store for this pickup.
+  final int? myRating;
+
   /// Still to be picked up: reserved and not past its time.
   bool isActiveAt(DateTime now) =>
       status == BookingStatus.reserved && expiresAt.isAfter(now);
@@ -81,6 +89,9 @@ abstract interface class BookingsRepository {
   Future<Result<Booking>> get(String bookingId);
 
   Future<Result<Booking>> cancel(String bookingId);
+
+  /// Rates the store [stars] from 1 to 5, once the booking is picked up.
+  Future<Result<Booking>> rate(String bookingId, int stars);
 }
 
 final bookingsRepositoryProvider = Provider<BookingsRepository>(

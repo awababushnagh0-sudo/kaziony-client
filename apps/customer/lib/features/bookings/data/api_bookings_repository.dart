@@ -44,6 +44,14 @@ class ApiBookingsRepository implements BookingsRepository {
   Future<Result<Booking>> cancel(String bookingId) =>
       _one(() => _claims.cancel(claimId: bookingId));
 
+  @override
+  Future<Result<Booking>> rate(String bookingId, int stars) => _one(
+    () => _claims.rate(
+      claimId: bookingId,
+      body: api.RateClaimDto(stars: stars),
+    ),
+  );
+
   Future<Result<Booking>> _one(
     Future<api.CustomerClaimDto> Function() call,
   ) async => (await _api.guard(call)).map(_toBooking);
@@ -72,5 +80,7 @@ class ApiBookingsRepository implements BookingsRepository {
     branches: [for (final branch in claim.branches) toBranch(branch)],
     canCancel: claim.canCancel,
     limited: claim.offer.type == api.OfferType.limited,
+    canRate: claim.canRate,
+    myRating: claim.myRating?.toInt(),
   );
 }

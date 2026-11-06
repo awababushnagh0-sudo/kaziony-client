@@ -10,6 +10,238 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   CustomerLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String branchCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count branches',
+      one: '1 branch',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get branchClosest => 'Closest';
+
+  @override
+  String offerInfoPickupBetween(String start, String end) {
+    return 'Pick up $start – $end';
+  }
+
+  @override
+  String offerInfoPickupUntil(String time) {
+    return 'Pick up until $time';
+  }
+
+  @override
+  String get offerInfoToday => 'Today';
+
+  @override
+  String cardPickupBetween(String day, String start, String end) {
+    return '$day $start – $end';
+  }
+
+  @override
+  String cardPickupUntil(String day, String time) {
+    return '$day until $time';
+  }
+
+  @override
+  String get offerInfoTomorrow => 'Tomorrow';
+
+  @override
+  String ratingLabel(String average, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count people',
+      one: '1 person',
+    );
+    return 'Rated $average out of 5 by $_temp0';
+  }
+
+  @override
+  String ratingStars(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count stars',
+      one: '1 star',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String ratingPrompt(String store) {
+    return 'How was your pickup at $store?';
+  }
+
+  @override
+  String get ratingPromptMessage => 'Rate the store. It helps others choose.';
+
+  @override
+  String ratingGiven(String store) {
+    return 'You rated $store';
+  }
+
+  @override
+  String get ratingThanks => 'Thanks for rating!';
+
+  @override
+  String get ratingNotPickedUp =>
+      'You can rate the store once you\'ve picked up.';
+
+  @override
+  String get ratingAlreadyRated => 'You\'ve already rated this pickup.';
+
+  @override
+  String get ratingListHint => 'Rate';
+
+  @override
+  String get pickupInstructionsTitle => 'Pickup instructions';
+
+  @override
+  String get pickupInstructionsDefault =>
+      'Show your pickup code to a staff member at the store, and they\'ll hand you your order.';
+
+  @override
+  String get homeStoresNearby => 'Stores near you';
+
+  @override
+  String get homeStoresFollowed => 'Stores you follow';
+
+  @override
+  String get homeAllOffersTitle => 'Browse every offer around you';
+
+  @override
+  String homeAllOffersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count offers waiting, newest first',
+      one: '1 offer waiting, newest first',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeBannerRescueTitle => 'Good food, saved before closing';
+
+  @override
+  String get homeBannerRescueMessage =>
+      'What stores have left at the end of the day, for much less.';
+
+  @override
+  String get homeBannerPickupTitle => 'Reserve here, pick up there';
+
+  @override
+  String get homeBannerPickupMessage =>
+      'Your offer waits for you at the store, just come and get it.';
+
+  @override
+  String get homeBannerCashTitle => 'Pay cash at the store';
+
+  @override
+  String get homeBannerCashMessage =>
+      'No card needed: pay when you pick it up.';
+
+  @override
+  String offerPageReserveCount(int count) {
+    return 'Reserve $count';
+  }
+
+  @override
+  String offerPageConfirmTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Reserve $count pieces?',
+      one: 'Reserve 1 piece?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get offerPageAbout => 'About this offer';
+
+  @override
+  String get offerPageGoodToKnow => 'Good to know';
+
+  @override
+  String get storeDirections => 'Directions';
+
+  @override
+  String get storeGetDirections => 'Get directions';
+
+  @override
+  String get storeDirectionsFailed => 'We couldn\'t open the map. Try again.';
+
+  @override
+  String get storeFollow => 'Follow';
+
+  @override
+  String get storeFollowing => 'Following';
+
+  @override
+  String storeFollowers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count followers',
+      one: '1 follower',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get storeFollowSignInTitle => 'Sign in to follow stores';
+
+  @override
+  String get storeFollowSignInMessage =>
+      'Follow your favorite stores and find their offers in one place.';
+
+  @override
+  String get storeOffersNow => 'Offers now';
+
+  @override
+  String get storeNoOffers => 'No offers right now. Check back later.';
+
+  @override
+  String get storeBranches => 'Branches';
+
+  @override
+  String get searchCraving => 'What are you craving?';
+
+  @override
+  String get searchRecent => 'Recent searches';
+
+  @override
+  String get searchClearRecent => 'Clear';
+
+  @override
+  String get searchStoresNear => 'Stores near you';
+
+  @override
+  String get searchStores => 'Stores';
+
+  @override
+  String get searchOffers => 'Offers';
+
+  @override
+  String get searchNoOffers => 'No offers match right now.';
+
+  @override
+  String searchOffersNow(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count offers now',
+      one: '1 offer now',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get appTitle => 'Kaziony';
 
   @override
@@ -198,16 +430,6 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get allCategories => 'All';
 
   @override
-  String get bannerTitle => 'Good food, for less';
-
-  @override
-  String get bannerMessage =>
-      'Reserve an offer, pick it up at the store and pay cash there.';
-
-  @override
-  String get bannerTag => 'Because good food shouldn\'t go to waste';
-
-  @override
   String get sectionEndingSoon => 'Ending soon';
 
   @override
@@ -218,6 +440,12 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String get sectionAllOffers => 'All offers';
+
+  @override
+  String get viewAsCards => 'Show as cards';
+
+  @override
+  String get viewAsList => 'Show as a list';
 
   @override
   String get seeAll => 'See all';
@@ -260,16 +488,6 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   @override
   String endsOnDay(String day) {
     return 'Until $day';
-  }
-
-  @override
-  String endsTodayAt(String time) {
-    return 'Ends today at $time';
-  }
-
-  @override
-  String endsOn(String date) {
-    return 'Ends $date';
   }
 
   @override
@@ -338,9 +556,6 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String get soldOut => 'Sold out';
-
-  @override
-  String get reserveTitle => 'How many?';
 
   @override
   String pricePerPiece(String price) {

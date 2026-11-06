@@ -58,6 +58,16 @@ void main() {
     expect(find.text('pickup code page'), findsOneWidget);
   });
 
+  testWidgets('a pickup not rated yet asks for a rating', (tester) async {
+    bookings.bookings = [
+      booking(status: BookingStatus.pickedUp, canRate: true),
+      booking(id: 'k2', status: BookingStatus.pickedUp, myRating: 4),
+    ];
+    await open(tester);
+
+    expect(find.text('Rate'), findsOneWidget);
+  });
+
   testWidgets('with none yet, it leads to the offers', (tester) async {
     bookings.bookings = [];
     await open(tester);

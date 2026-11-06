@@ -38,7 +38,7 @@ class ApiOffersRepository implements OffersRepository {
     );
     return result.map(
       (list) => PageResult(
-        items: [for (final offer in list.items) _toOffer(offer)],
+        items: [for (final offer in list.items) toOffer(offer)],
         total: list.meta.total.toInt(),
       ),
     );
@@ -57,12 +57,13 @@ class ApiOffersRepository implements OffersRepository {
       (offer) => OfferDetail(
         // The list's offer and more: read through JSON as one, so both map
         // the same way (toJson leaves nested objects as they are).
-        offer: _toOffer(
+        offer: toOffer(
           api.PublicOfferDto.fromJson(
             jsonDecode(jsonEncode(offer)) as Map<String, Object?>,
           ),
         ),
         branches: [for (final branch in offer.branches) toBranch(branch)],
+        pickupInstructions: storeWords(offer.pickupInstructions),
         myBookingId: offer.myActiveClaimId,
       ),
     );
@@ -74,44 +75,58 @@ class ApiOffersRepository implements OffersRepository {
     return result.map(
       (list) => [
         for (final category in list)
-          if (category.isActive) _toCategory(category),
+          if (category.isActive) toCategory(category),
       ],
     );
   }
-
-  static Offer _toOffer(api.PublicOfferDto offer) => Offer(
-    id: offer.id,
-    title: offer.title,
-    description: offer.description,
-    imageUrl: offer.imageUrl,
-    thumbUrl: offer.thumbUrl,
-    originalPrice: offer.originalPrice,
-    offerPrice: offer.offerPrice,
-    discountPercent: offer.discountPercent.toInt(),
-    limited: offer.type == api.OfferType.limited,
-    remaining: offer.remainingQuantity?.toInt(),
-    total: offer.totalQuantity?.toInt(),
-    maxPerUser: offer.maxPerUser?.toInt(),
-    claimWindowMinutes: offer.claimWindowMinutes.toInt(),
-    endsAt: offer.endsAt.toLocal(),
-    store: OfferStore(
-      id: offer.store.id,
-      name: offer.store.name,
-      logoUrl: offer.store.logoUrl,
-      category: _toCategory(offer.store.category),
-    ),
-    nearestBranch: toBranch(offer.nearestBranch),
-    branchCount: offer.branchCount.toInt(),
-  );
-
-  static Category _toCategory(api.CategoryDto category) => Category(
-    id: category.id,
-    slug: category.slug,
-    nameAr: category.nameAr,
-    nameEn: category.nameEn,
-    iconUrl: category.iconUrl,
-  );
 }
+
+/// Shared with stores, whose page lists their offers.
+Offer toOffer(api.PublicOfferDto offer) => Offer(
+  id: offer.id,
+  title: offer.title,
+  description: offer.description,
+  imageUrl: offer.imageUrl,
+  thumbUrl: offer.thumbUrl,
+  originalPrice: offer.originalPrice,
+  offerPrice: offer.offerPrice,
+  discountPercent: offer.discountPercent.toInt(),
+  limited: offer.type == api.OfferType.limited,
+  remaining: offer.remainingQuantity?.toInt(),
+  total: offer.totalQuantity?.toInt(),
+  maxPerUser: offer.maxPerUser?.toInt(),
+  claimWindowMinutes: offer.claimWindowMinutes.toInt(),
+  startsAt: offer.startsAt.toLocal(),
+  endsAt: offer.endsAt.toLocal(),
+  store: OfferStore(
+    id: offer.store.id,
+    name: offer.store.name,
+    logoUrl: offer.store.logoUrl,
+    category: toCategory(offer.store.category),
+    rating: toRating(offer.store.ratingAverage, offer.store.ratingCount),
+  ),
+  nearestBranch: toBranch(offer.nearestBranch),
+  branchCount: offer.branchCount.toInt(),
+);
+
+/// Shared with stores. Null before the first rating.
+StoreRating? toRating(num? average, num count) => average == null || count < 1
+    ? null
+    : StoreRating(average: average.toDouble(), count: count.toInt());
+
+/// What a store wrote, or null when it's only blanks. Shared with stores.
+String? storeWords(String? text) {
+  final words = text?.trim();
+  return words == null || words.isEmpty ? null : words;
+}
+
+Category toCategory(api.CategoryDto category) => Category(
+  id: category.id,
+  slug: category.slug,
+  nameAr: category.nameAr,
+  nameEn: category.nameEn,
+  iconUrl: category.iconUrl,
+);
 
 /// Shared with bookings, which list the branches to pick up from.
 Branch toBranch(api.PublicBranchDto branch) => Branch(

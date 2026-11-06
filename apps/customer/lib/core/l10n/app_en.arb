@@ -1,5 +1,143 @@
 {
   "@@locale": "en",
+  "branchCount": "{count, plural, =1{1 branch} other{{count} branches}}",
+  "@branchCount": {"placeholders": {"count": {"type": "int"}}},
+  "branchClosest": "Closest",
+  "offerInfoPickupBetween": "Pick up {start} – {end}",
+  "@offerInfoPickupBetween": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "offerInfoPickupUntil": "Pick up until {time}",
+  "@offerInfoPickupUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "offerInfoToday": "Today",
+  "cardPickupBetween": "{day} {start} – {end}",
+  "@cardPickupBetween": {"placeholders": {"day": {"type": "String"}, "start": {"type": "String"}, "end": {"type": "String"}}},
+  "cardPickupUntil": "{day} until {time}",
+  "@cardPickupUntil": {"placeholders": {"day": {"type": "String"}, "time": {"type": "String"}}},
+  "offerInfoTomorrow": "Tomorrow",
+  "ratingLabel": "Rated {average} out of 5 by {count, plural, =1{1 person} other{{count} people}}",
+  "@ratingLabel": {
+    "placeholders": {
+      "average": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ratingStars": "{count, plural, =1{1 star} other{{count} stars}}",
+  "@ratingStars": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ratingPrompt": "How was your pickup at {store}?",
+  "@ratingPrompt": {
+    "placeholders": {
+      "store": {
+        "type": "String"
+      }
+    }
+  },
+  "ratingPromptMessage": "Rate the store. It helps others choose.",
+  "ratingGiven": "You rated {store}",
+  "@ratingGiven": {
+    "placeholders": {
+      "store": {
+        "type": "String"
+      }
+    }
+  },
+  "ratingThanks": "Thanks for rating!",
+  "ratingNotPickedUp": "You can rate the store once you've picked up.",
+  "ratingAlreadyRated": "You've already rated this pickup.",
+  "ratingListHint": "Rate",
+  "pickupInstructionsTitle": "Pickup instructions",
+  "pickupInstructionsDefault": "Show your pickup code to a staff member at the store, and they'll hand you your order.",
+  "homeStoresNearby": "Stores near you",
+  "homeStoresFollowed": "Stores you follow",
+  "homeAllOffersTitle": "Browse every offer around you",
+  "homeAllOffersCount": "{count, plural, =1{1 offer waiting, newest first} other{{count} offers waiting, newest first}}",
+  "@homeAllOffersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeBannerRescueTitle": "Good food, saved before closing",
+  "homeBannerRescueMessage": "What stores have left at the end of the day, for much less.",
+  "homeBannerPickupTitle": "Reserve here, pick up there",
+  "homeBannerPickupMessage": "Your offer waits for you at the store, just come and get it.",
+  "homeBannerCashTitle": "Pay cash at the store",
+  "homeBannerCashMessage": "No card needed: pay when you pick it up.",
+  "offerPageReserveCount": "Reserve {count}",
+  "@offerPageReserveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "offerPageConfirmTitle": "{count, plural, =1{Reserve 1 piece?} other{Reserve {count} pieces?}}",
+  "@offerPageConfirmTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "offerPageAbout": "About this offer",
+  "offerPageGoodToKnow": "Good to know",
+  "storeDirections": "Directions",
+  "storeGetDirections": "Get directions",
+  "storeDirectionsFailed": "We couldn't open the map. Try again.",
+  "storeFollow": "Follow",
+  "storeFollowing": "Following",
+  "storeFollowers": "{count, plural, =1{1 follower} other{{count} followers}}",
+  "@storeFollowers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "storeFollowSignInTitle": "Sign in to follow stores",
+  "storeFollowSignInMessage": "Follow your favorite stores and find their offers in one place.",
+  "storeOffersNow": "Offers now",
+  "storeNoOffers": "No offers right now. Check back later.",
+  "storeBranches": "Branches",
+  "searchCraving": "What are you craving?",
+  "searchRecent": "Recent searches",
+  "searchClearRecent": "Clear",
+  "searchStoresNear": "Stores near you",
+  "searchStores": "Stores",
+  "searchOffers": "Offers",
+  "searchNoOffers": "No offers match right now.",
+  "searchOffersNow": "{count, plural, =1{1 offer now} other{{count} offers now}}",
+  "@searchOffersNow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "appTitle": "Kaziony",
   "homeTitle": "Home",
   "searchTitle": "Search",
@@ -66,13 +204,12 @@
   "offersNear": "Offers near",
   "searchHint": "Search for a store or an offer",
   "allCategories": "All",
-  "bannerTitle": "Good food, for less",
-  "bannerMessage": "Reserve an offer, pick it up at the store and pay cash there.",
-  "bannerTag": "Because good food shouldn't go to waste",
   "sectionEndingSoon": "Ending soon",
   "sectionNearby": "Near you",
   "sectionBiggestDiscount": "Biggest discounts",
   "sectionAllOffers": "All offers",
+  "viewAsCards": "Show as cards",
+  "viewAsList": "Show as a list",
   "seeAll": "See all",
   "noOffersTitle": "No offers near you right now",
   "noOffersMessage": "Stores post offers during the day. Check back soon or change the place.",
@@ -128,22 +265,6 @@
       }
     }
   },
-  "endsTodayAt": "Ends today at {time}",
-  "@endsTodayAt": {
-    "placeholders": {
-      "time": {
-        "type": "String"
-      }
-    }
-  },
-  "endsOn": "Ends {date}",
-  "@endsOn": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      }
-    }
-  },
   "distanceKm": "{km} km",
   "@distanceKm": {
     "placeholders": {
@@ -185,7 +306,6 @@
   "reserveNow": "Reserve now",
   "showMyCode": "Show my pickup code",
   "soldOut": "Sold out",
-  "reserveTitle": "How many?",
   "pricePerPiece": "{price} each",
   "@pricePerPiece": {
     "placeholders": {

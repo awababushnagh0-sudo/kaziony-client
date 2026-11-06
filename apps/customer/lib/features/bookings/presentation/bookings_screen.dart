@@ -43,6 +43,7 @@ class _List extends AppView {
     return SAsyncView(
       value: ref.watch(bookingsViewModel),
       onRetry: () => ref.invalidate(bookingsViewModel),
+      loading: const SSkeleton.list(),
       builder: (context, page) {
         if (page.items.isEmpty) {
           return SEmptyView(
@@ -67,6 +68,8 @@ class _List extends AppView {
               code: booking.isActiveAt(now)
                   ? formatPickupCode(booking.code)
                   : null,
+              // Its page has the stars.
+              value: booking.canRate ? s.ratingListHint : null,
               onTap: () => context.push(Routes.booking(booking.id)),
             );
           },
@@ -80,6 +83,7 @@ class _List extends AppView {
           hasMore: page.hasMore,
           loadingMore: page.loadingMore,
           moreFailure: page.moreFailure,
+          placeholder: const SSkeleton.list(rows: 1),
         );
       },
     );

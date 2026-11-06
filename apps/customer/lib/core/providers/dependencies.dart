@@ -8,6 +8,8 @@ import '../../features/location/data/api_service_area_repository.dart';
 import '../../features/location/domain/browse_location.dart';
 import '../../features/offers/data/api_offers_repository.dart';
 import '../../features/offers/domain/offer.dart';
+import '../../features/stores/data/api_stores_repository.dart';
+import '../../features/stores/domain/store.dart';
 
 final List<Override> dependencies = [
   authRepositoryProvider.overrideWith(SessionAuthRepository.new),
@@ -19,5 +21,8 @@ final List<Override> dependencies = [
   ),
   bookingsRepositoryProvider.overrideWith(
     (ref) => ApiBookingsRepository(ref.watch(apiProvider)),
+  ),
+  storesRepositoryProvider.overrideWith(
+    (ref) => ApiStoresRepository(ref.watch(apiProvider)),
   ),
 ];

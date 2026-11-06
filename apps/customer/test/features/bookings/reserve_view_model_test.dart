@@ -63,5 +63,8 @@ void main() {
       container.read(reserveViewModel(deal)).failure,
       isA<ConflictFailure>().having((f) => f.code, 'code', 'SoldOut'),
     );
+
+    viewModel.clearFailure();
+    expect(container.read(reserveViewModel(deal)).failure, isNull);
   });
 }

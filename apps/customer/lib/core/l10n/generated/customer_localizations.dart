@@ -101,6 +101,318 @@ abstract class CustomerLocalizations {
     Locale('en'),
   ];
 
+  /// No description provided for @branchCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 branch} other{{count} branches}}'**
+  String branchCount(int count);
+
+  /// No description provided for @branchClosest.
+  ///
+  /// In en, this message translates to:
+  /// **'Closest'**
+  String get branchClosest;
+
+  /// No description provided for @offerInfoPickupBetween.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up {start} – {end}'**
+  String offerInfoPickupBetween(String start, String end);
+
+  /// No description provided for @offerInfoPickupUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up until {time}'**
+  String offerInfoPickupUntil(String time);
+
+  /// No description provided for @offerInfoToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get offerInfoToday;
+
+  /// No description provided for @cardPickupBetween.
+  ///
+  /// In en, this message translates to:
+  /// **'{day} {start} – {end}'**
+  String cardPickupBetween(String day, String start, String end);
+
+  /// No description provided for @cardPickupUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'{day} until {time}'**
+  String cardPickupUntil(String day, String time);
+
+  /// No description provided for @offerInfoTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get offerInfoTomorrow;
+
+  /// No description provided for @ratingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rated {average} out of 5 by {count, plural, =1{1 person} other{{count} people}}'**
+  String ratingLabel(String average, int count);
+
+  /// No description provided for @ratingStars.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 star} other{{count} stars}}'**
+  String ratingStars(int count);
+
+  /// No description provided for @ratingPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'How was your pickup at {store}?'**
+  String ratingPrompt(String store);
+
+  /// No description provided for @ratingPromptMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate the store. It helps others choose.'**
+  String get ratingPromptMessage;
+
+  /// No description provided for @ratingGiven.
+  ///
+  /// In en, this message translates to:
+  /// **'You rated {store}'**
+  String ratingGiven(String store);
+
+  /// No description provided for @ratingThanks.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks for rating!'**
+  String get ratingThanks;
+
+  /// No description provided for @ratingNotPickedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'You can rate the store once you\'ve picked up.'**
+  String get ratingNotPickedUp;
+
+  /// No description provided for @ratingAlreadyRated.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve already rated this pickup.'**
+  String get ratingAlreadyRated;
+
+  /// No description provided for @ratingListHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate'**
+  String get ratingListHint;
+
+  /// No description provided for @pickupInstructionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup instructions'**
+  String get pickupInstructionsTitle;
+
+  /// No description provided for @pickupInstructionsDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Show your pickup code to a staff member at the store, and they\'ll hand you your order.'**
+  String get pickupInstructionsDefault;
+
+  /// No description provided for @homeStoresNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Stores near you'**
+  String get homeStoresNearby;
+
+  /// No description provided for @homeStoresFollowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Stores you follow'**
+  String get homeStoresFollowed;
+
+  /// No description provided for @homeAllOffersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse every offer around you'**
+  String get homeAllOffersTitle;
+
+  /// No description provided for @homeAllOffersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 offer waiting, newest first} other{{count} offers waiting, newest first}}'**
+  String homeAllOffersCount(int count);
+
+  /// No description provided for @homeBannerRescueTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Good food, saved before closing'**
+  String get homeBannerRescueTitle;
+
+  /// No description provided for @homeBannerRescueMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'What stores have left at the end of the day, for much less.'**
+  String get homeBannerRescueMessage;
+
+  /// No description provided for @homeBannerPickupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserve here, pick up there'**
+  String get homeBannerPickupTitle;
+
+  /// No description provided for @homeBannerPickupMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your offer waits for you at the store, just come and get it.'**
+  String get homeBannerPickupMessage;
+
+  /// No description provided for @homeBannerCashTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay cash at the store'**
+  String get homeBannerCashTitle;
+
+  /// No description provided for @homeBannerCashMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No card needed: pay when you pick it up.'**
+  String get homeBannerCashMessage;
+
+  /// No description provided for @offerPageReserveCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserve {count}'**
+  String offerPageReserveCount(int count);
+
+  /// No description provided for @offerPageConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Reserve 1 piece?} other{Reserve {count} pieces?}}'**
+  String offerPageConfirmTitle(int count);
+
+  /// No description provided for @offerPageAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About this offer'**
+  String get offerPageAbout;
+
+  /// No description provided for @offerPageGoodToKnow.
+  ///
+  /// In en, this message translates to:
+  /// **'Good to know'**
+  String get offerPageGoodToKnow;
+
+  /// No description provided for @storeDirections.
+  ///
+  /// In en, this message translates to:
+  /// **'Directions'**
+  String get storeDirections;
+
+  /// No description provided for @storeGetDirections.
+  ///
+  /// In en, this message translates to:
+  /// **'Get directions'**
+  String get storeGetDirections;
+
+  /// No description provided for @storeDirectionsFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t open the map. Try again.'**
+  String get storeDirectionsFailed;
+
+  /// No description provided for @storeFollow.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get storeFollow;
+
+  /// No description provided for @storeFollowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get storeFollowing;
+
+  /// No description provided for @storeFollowers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 follower} other{{count} followers}}'**
+  String storeFollowers(int count);
+
+  /// No description provided for @storeFollowSignInTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to follow stores'**
+  String get storeFollowSignInTitle;
+
+  /// No description provided for @storeFollowSignInMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow your favorite stores and find their offers in one place.'**
+  String get storeFollowSignInMessage;
+
+  /// No description provided for @storeOffersNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers now'**
+  String get storeOffersNow;
+
+  /// No description provided for @storeNoOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'No offers right now. Check back later.'**
+  String get storeNoOffers;
+
+  /// No description provided for @storeBranches.
+  ///
+  /// In en, this message translates to:
+  /// **'Branches'**
+  String get storeBranches;
+
+  /// No description provided for @searchCraving.
+  ///
+  /// In en, this message translates to:
+  /// **'What are you craving?'**
+  String get searchCraving;
+
+  /// No description provided for @searchRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent searches'**
+  String get searchRecent;
+
+  /// No description provided for @searchClearRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get searchClearRecent;
+
+  /// No description provided for @searchStoresNear.
+  ///
+  /// In en, this message translates to:
+  /// **'Stores near you'**
+  String get searchStoresNear;
+
+  /// No description provided for @searchStores.
+  ///
+  /// In en, this message translates to:
+  /// **'Stores'**
+  String get searchStores;
+
+  /// No description provided for @searchOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers'**
+  String get searchOffers;
+
+  /// No description provided for @searchNoOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'No offers match right now.'**
+  String get searchNoOffers;
+
+  /// No description provided for @searchOffersNow.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 offer now} other{{count} offers now}}'**
+  String searchOffersNow(int count);
+
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
@@ -449,24 +761,6 @@ abstract class CustomerLocalizations {
   /// **'All'**
   String get allCategories;
 
-  /// No description provided for @bannerTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Good food, for less'**
-  String get bannerTitle;
-
-  /// No description provided for @bannerMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Reserve an offer, pick it up at the store and pay cash there.'**
-  String get bannerMessage;
-
-  /// No description provided for @bannerTag.
-  ///
-  /// In en, this message translates to:
-  /// **'Because good food shouldn\'t go to waste'**
-  String get bannerTag;
-
   /// No description provided for @sectionEndingSoon.
   ///
   /// In en, this message translates to:
@@ -490,6 +784,18 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'All offers'**
   String get sectionAllOffers;
+
+  /// No description provided for @viewAsCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Show as cards'**
+  String get viewAsCards;
+
+  /// No description provided for @viewAsList.
+  ///
+  /// In en, this message translates to:
+  /// **'Show as a list'**
+  String get viewAsList;
 
   /// No description provided for @seeAll.
   ///
@@ -550,18 +856,6 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'Until {day}'**
   String endsOnDay(String day);
-
-  /// No description provided for @endsTodayAt.
-  ///
-  /// In en, this message translates to:
-  /// **'Ends today at {time}'**
-  String endsTodayAt(String time);
-
-  /// No description provided for @endsOn.
-  ///
-  /// In en, this message translates to:
-  /// **'Ends {date}'**
-  String endsOn(String date);
 
   /// No description provided for @distanceKm.
   ///
@@ -682,12 +976,6 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'Sold out'**
   String get soldOut;
-
-  /// No description provided for @reserveTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'How many?'**
-  String get reserveTitle;
 
   /// No description provided for @pricePerPiece.
   ///

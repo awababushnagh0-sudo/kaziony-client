@@ -26,21 +26,21 @@ final homeCategoryProvider = NotifierProvider<HomeCategory, String?>(
 );
 
 /// The home page's rows, each a different sort of the offers around, and
-/// the newest under them.
+/// how many there are in all.
 class HomeFeed {
   const HomeFeed({
     required this.nearby,
     required this.endingSoon,
     required this.biggestDiscount,
-    required this.newest,
+    required this.total,
   });
 
   final List<Offer> nearby;
   final List<Offer> endingSoon;
   final List<Offer> biggestDiscount;
 
-  /// The start of every offer, newest first; "See all" has the rest.
-  final List<Offer> newest;
+  /// Every offer in reach, for the way to all of them.
+  final int total;
 
   /// [nearby] holds every offer in reach, so empty means none at all.
   bool get isEmpty => nearby.isEmpty;
@@ -49,9 +49,6 @@ class HomeFeed {
 class HomeViewModel extends AsyncViewModel<HomeFeed> {
   /// Enough to fill a row that scrolls sideways; "See all" has the rest.
   static const rowSize = 10;
-
-  /// The newest offers shown down the page, before "See all".
-  static const newestSize = 5;
 
   @override
   Future<HomeFeed> build() {
@@ -79,14 +76,14 @@ class HomeViewModel extends AsyncViewModel<HomeFeed> {
 
   Future<HomeFeed> _load(GeoPoint around, String? categoryId) async {
     final repository = ref.read(offersRepositoryProvider);
-    Future<List<Offer>> row(OfferSort sort, {int size = rowSize}) async {
+    Future<PageResult<Offer>> row(OfferSort sort) async {
       final result = await repository.browse(
         OffersQuery(around: around, sort: sort, categoryId: categoryId),
         page: 1,
-        pageSize: size,
+        pageSize: rowSize,
       );
       return switch (result) {
-        Ok(:final value) => value.items,
+        Ok(:final value) => value,
         Err(:final failure) => throw failure,
       };
     }
@@ -97,13 +94,12 @@ class HomeViewModel extends AsyncViewModel<HomeFeed> {
       row(OfferSort.nearest),
       row(OfferSort.endingSoon),
       row(OfferSort.biggestDiscount),
-      row(OfferSort.newest, size: newestSize),
     ]);
     return HomeFeed(
-      nearby: rows[0],
-      endingSoon: rows[1],
-      biggestDiscount: rows[2],
-      newest: rows[3],
+      nearby: rows[0].items,
+      endingSoon: rows[1].items,
+      biggestDiscount: rows[2].items,
+      total: rows[0].total,
     );
   }
 }

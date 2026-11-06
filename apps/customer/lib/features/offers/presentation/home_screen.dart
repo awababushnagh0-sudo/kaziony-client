@@ -6,14 +6,20 @@ import '../../../core/routes/routes.dart';
 import '../../../core/widgets/customer_illustrations.dart';
 import '../../../core/widgets/no_offers_view.dart';
 import '../../location/domain/browse_location.dart';
+import '../../stores/domain/store.dart';
+import '../../stores/presentation/stores_view_model.dart';
+import '../../stores/presentation/widgets/store_logo_row.dart';
+import '../../stores/presentation/widgets/store_logo_row_skeleton.dart';
 import '../domain/offer.dart';
 import 'home_view_model.dart';
 import 'offer_texts.dart';
-import 'widgets/offer_poster.dart';
+import 'widgets/offer_card.dart';
+import 'widgets/offer_card_skeleton.dart';
 
 /// The Home tab: where offers are shown from, search, the kinds of store,
-/// then rows of offers around (nearest, ending soon, biggest discount),
-/// then the newest, down the page.
+/// a few words about the app, then rows of offers around (ending soon,
+/// nearest, biggest discount) between rows of stores (near you, followed),
+/// and the way to every offer.
 class HomeScreen extends AppView {
   const HomeScreen({super.key});
 
@@ -26,87 +32,84 @@ class HomeScreen extends AppView {
     return SScaffold(
       showAppBar: false,
       padded: false,
-      scrollable: true,
-      onRefresh: feed.hasValue
-          ? () async {
-              ref.invalidate(categoriesProvider);
-              final failure = await ref
-                  .read(homeFeedProvider.notifier)
-                  .refresh();
-              if (failure != null && context.mounted) {
-                SSnack.error(context, failureMessage(context, failure));
+      body: SSliverView(
+        onRefresh: feed.hasValue
+            ? () async {
+                ref
+                  ..invalidate(categoriesProvider)
+                  ..invalidate(nearbyStoresProvider)
+                  ..invalidate(followedStoresProvider);
+                final failure = await ref
+                    .read(homeFeedProvider.notifier)
+                    .refresh();
+                if (failure != null && context.mounted) {
+                  SSnack.error(context, failureMessage(context, failure));
+                }
               }
-            }
-          : null,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
+            : null,
+        slivers: [
+          SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: Space.lg),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: Space.md,
-              children: [
-                SPlaceHeader(
-                  caption: s.offersNear,
-                  place: pinned ? s.pinnedLocation : s.myLocation,
-                  onTap: () => context.push(Routes.location),
-                ),
-                SSearchField.button(
-                  hint: s.searchHint,
-                  onTap: () => context.go(Routes.search),
-                ),
-              ],
-            ),
-          ),
-          const Gap(Space.lg),
-          if (ref.watch(categoriesProvider).value case final categories?
-              when categories.isNotEmpty)
-            _Categories(categories: categories, selected: categoryId),
-          const Gap(Space.lg),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
-            child: SPromoBanner(
-              title: s.bannerTitle,
-              message: s.bannerMessage,
-              tag: s.bannerTag,
-            ),
-          ),
-          const Gap(Space.xl),
-          SAsyncView(
-            value: feed,
-            onRetry: () => ref.invalidate(homeFeedProvider),
-            builder: (context, feed) => feed.isEmpty
-                ? const NoOffersView()
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    spacing: Space.xl,
-                    children: [
-                      _Row(
-                        sort: OfferSort.endingSoon,
-                        categoryId: categoryId,
-                        offers: feed.endingSoon,
-                      ),
-                      _Row(
-                        sort: OfferSort.nearest,
-                        categoryId: categoryId,
-                        offers: feed.nearby,
-                      ),
-                      _Row(
-                        sort: OfferSort.biggestDiscount,
-                        categoryId: categoryId,
-                        offers: feed.biggestDiscount,
-                      ),
-                      _Row(
-                        sort: OfferSort.newest,
-                        categoryId: categoryId,
-                        offers: feed.newest,
-                        down: true,
-                      ),
-                    ],
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: Space.md,
+                children: [
+                  SPlaceHeader(
+                    caption: s.offersNear,
+                    place: pinned ? s.pinnedLocation : s.myLocation,
+                    onTap: () => context.push(Routes.location),
                   ),
+                  SSearchField.button(
+                    hint: s.searchHint,
+                    onTap: () => context.go(Routes.search),
+                  ),
+                ],
+              ),
+            ),
           ),
-          const Gap(Space.xl),
+          switch (ref.watch(categoriesProvider)) {
+            AsyncValue(value: final categories?) when categories.isNotEmpty =>
+              SliverPadding(
+                padding: const EdgeInsets.only(top: Space.lg),
+                sliver: SliverToBoxAdapter(
+                  child: _Categories(
+                    categories: categories,
+                    selected: categoryId,
+                  ),
+                ),
+              ),
+            AsyncValue(isLoading: true, hasValue: false) => const SliverPadding(
+              padding: EdgeInsets.only(top: Space.lg),
+              sliver: SliverToBoxAdapter(child: _CategoriesSkeleton()),
+            ),
+            _ => const SliverToBoxAdapter(),
+          },
+          const SliverPadding(
+            padding: EdgeInsets.only(top: Space.lg),
+            sliver: SliverToBoxAdapter(child: _AboutBanners()),
+          ),
+          switch (feed) {
+            AsyncData(:final value) when !value.isEmpty => SliverPadding(
+              padding: const EdgeInsets.symmetric(vertical: Space.xl),
+              sliver: _Sections(feed: value, categoryId: categoryId),
+            ),
+            AsyncValue(isLoading: true, hasValue: false) => const SliverPadding(
+              padding: EdgeInsets.symmetric(vertical: Space.xl),
+              sliver: SliverToBoxAdapter(child: _SectionsSkeleton()),
+            ),
+            _ => SliverFillRemaining(
+              hasScrollBody: false,
+              child: Padding(
+                padding: const EdgeInsets.only(top: Space.xl),
+                child: SAsyncView(
+                  value: feed,
+                  onRetry: () => ref.invalidate(homeFeedProvider),
+                  builder: (_, _) => const NoOffersView(),
+                ),
+              ),
+            ),
+          },
         ],
       ),
     );
@@ -152,24 +155,180 @@ class _Categories extends AppView {
   }
 }
 
-/// One sort of the offers, in a row that scrolls sideways (or [down] the
-/// page, full width), with the way to all of them.
-class _Row extends StatelessWidget {
-  const _Row({
+/// The kinds of store while they load: their pictures and names, in the
+/// middle.
+class _CategoriesSkeleton extends StatelessWidget {
+  const _CategoriesSkeleton();
+
+  /// About what a phone shows across.
+  static const _count = 4;
+
+  @override
+  Widget build(BuildContext context) => SSkeleton(
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        for (var i = 0; i < _count; i++)
+          const Column(
+            spacing: Space.xs,
+            children: [
+              SBone.image(size: SImageSize.deal),
+              SBone.badge(),
+            ],
+          ),
+      ],
+    ),
+  );
+}
+
+/// How the app works, in a few banners. A plain list, so ads from the
+/// server can take their place.
+class _AboutBanners extends StatelessWidget {
+  const _AboutBanners();
+
+  @override
+  Widget build(BuildContext context) {
+    final s = CustomerLocalizations.of(context);
+    return SPromoCarousel(
+      banners: [
+        PromoBanner(
+          title: s.homeBannerRescueTitle,
+          message: s.homeBannerRescueMessage,
+          illustration: CustomerIllustrations.bagSleep,
+        ),
+        PromoBanner(
+          title: s.homeBannerPickupTitle,
+          message: s.homeBannerPickupMessage,
+          illustration: CustomerIllustrations.location,
+          tone: PromoTone.green,
+        ),
+        PromoBanner(
+          title: s.homeBannerCashTitle,
+          message: s.homeBannerCashMessage,
+          illustration: CustomerIllustrations.guest,
+          tone: PromoTone.orange,
+        ),
+      ],
+    );
+  }
+}
+
+/// The rows of offers with the rows of stores between them (the stores
+/// follow the category too), and the way to every offer at the end. A row
+/// with nothing in it is left out.
+class _Sections extends AppView {
+  const _Sections({required this.feed, required this.categoryId});
+
+  final HomeFeed feed;
+  final String? categoryId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final s = CustomerLocalizations.of(context);
+    // Stores add to the offers: while they load, or if they fail, the
+    // page goes on without them.
+    final nearbyStores =
+        ref.watch(nearbyStoresProvider(categoryId)).value ??
+        const <StoreSummary>[];
+    final followedStores =
+        ref.watch(followedStoresProvider).value ?? const <StoreSummary>[];
+    final sections = [
+      if (feed.endingSoon.isNotEmpty)
+        _OfferRow(
+          sort: OfferSort.endingSoon,
+          categoryId: categoryId,
+          offers: feed.endingSoon,
+        ),
+      if (nearbyStores.isNotEmpty)
+        StoreLogoRow(title: s.homeStoresNearby, stores: nearbyStores),
+      _OfferRow(
+        sort: OfferSort.nearest,
+        categoryId: categoryId,
+        offers: feed.nearby,
+      ),
+      if (followedStores.isNotEmpty)
+        StoreLogoRow(title: s.homeStoresFollowed, stores: followedStores),
+      if (feed.biggestDiscount.isNotEmpty)
+        _OfferRow(
+          sort: OfferSort.biggestDiscount,
+          categoryId: categoryId,
+          offers: feed.biggestDiscount,
+        ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+        child: _AllOffers(total: feed.total, categoryId: categoryId),
+      ),
+    ];
+    return SliverList.separated(
+      itemCount: sections.length,
+      itemBuilder: (_, i) => sections[i],
+      separatorBuilder: (_, _) => const Gap(Space.xl),
+    );
+  }
+}
+
+/// The rows while the offers load: two rows of offers with a row of
+/// stores between them.
+class _SectionsSkeleton extends StatelessWidget {
+  const _SectionsSkeleton();
+
+  @override
+  Widget build(BuildContext context) => const SSkeleton(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: Space.xl,
+      children: [
+        _OfferRowSkeleton(),
+        StoreLogoRowSkeleton(),
+        _OfferRowSkeleton(),
+      ],
+    ),
+  );
+}
+
+class _OfferRowSkeleton extends StatelessWidget {
+  const _OfferRowSkeleton();
+
+  /// More than a phone shows across.
+  static const _count = 3;
+
+  @override
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    spacing: Space.md,
+    children: [
+      const Padding(
+        padding: EdgeInsets.symmetric(horizontal: Space.lg),
+        child: SBone.text(
+          variant: TextVariant.subtitle,
+          length: BoneLength.medium,
+        ),
+      ),
+      SCarousel(
+        children: [
+          for (var i = 0; i < _count; i++)
+            const OfferCardSkeleton(shape: OfferCardShape.card),
+        ],
+      ),
+    ],
+  );
+}
+
+/// One sort of the offers, in a row that scrolls sideways, with the way
+/// to all of them.
+class _OfferRow extends StatelessWidget {
+  const _OfferRow({
     required this.sort,
     required this.categoryId,
     required this.offers,
-    this.down = false,
   });
 
   final OfferSort sort;
   final String? categoryId;
   final List<Offer> offers;
-  final bool down;
 
   @override
   Widget build(BuildContext context) {
-    if (offers.isEmpty) return const SizedBox.shrink();
     final s = CustomerLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -185,28 +344,61 @@ class _Row extends StatelessWidget {
             ),
           ),
         ),
-        if (down)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+        SCarousel(
+          children: [
+            for (final offer in offers)
+              OfferCard(offer, shape: OfferCardShape.card),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+/// The way to every offer around, newest first: a picture and how many
+/// there are, instead of a long list down the page.
+class _AllOffers extends StatelessWidget {
+  const _AllOffers({required this.total, required this.categoryId});
+
+  final int total;
+  final String? categoryId;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = CustomerLocalizations.of(context);
+    return SCard(
+      onTap: () => context.push(
+        Routes.offersQuery(sort: OfferSort.newest.name, categoryId: categoryId),
+      ),
+      child: Row(
+        spacing: Space.md,
+        children: [
+          const SIllustration(CustomerIllustrations.kraftBag),
+          Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: Space.xl,
-              children: [for (final offer in offers) OfferPoster(offer)],
-            ),
-          )
-        else
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
-            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: Space.md,
+              spacing: Space.xs,
               children: [
-                for (final offer in offers) OfferPoster(offer, inRow: true),
+                SText(
+                  s.homeAllOffersTitle,
+                  variant: TextVariant.subtitle,
+                  weight: SFontWeight.bold,
+                ),
+                SText(
+                  s.homeAllOffersCount(total),
+                  variant: TextVariant.caption,
+                  color: SColor.textMuted,
+                ),
               ],
             ),
           ),
-      ],
+          const SIcon(
+            SIcons.chevron,
+            size: SIconSize.sm,
+            color: SColor.textSubtle,
+          ),
+        ],
+      ),
     );
   }
 }

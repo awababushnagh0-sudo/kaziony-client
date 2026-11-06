@@ -11,15 +11,18 @@ import 'booking_texts.dart';
 import 'bookings_view_model.dart';
 import 'reserve_view_model.dart';
 
-/// Asks how many pieces of [offer] to reserve, reserves them, and opens
-/// the pickup code.
+/// Asks to confirm the pieces of [offer] picked on its page
+/// ([reserveViewModel]), reserves them, and opens the pickup code. The
+/// sheet says how long they're held and, when refused, why.
 Future<void> reserve(BuildContext context, WidgetRef ref, Offer offer) async {
   final s = CustomerLocalizations.of(context);
+  final provider = reserveViewModel(offer);
+  ref.read(provider.notifier).clearFailure();
   final booking = await SSheet.show<String>(
     context,
-    title: s.reserveTitle,
+    title: s.offerPageConfirmTitle(ref.read(provider).quantity),
     subtitle: s.pricePerPiece(s.price(context, offer.offerPrice)),
-    builder: (_) => _ReserveForm(offer: offer),
+    builder: (_) => _Confirm(offer: offer),
   );
   if (booking == null || !context.mounted) return;
   // What's left changed, and the offer now has the customer's booking.
@@ -31,8 +34,8 @@ Future<void> reserve(BuildContext context, WidgetRef ref, Offer offer) async {
   await context.push(Routes.booking(booking));
 }
 
-class _ReserveForm extends AppView {
-  const _ReserveForm({required this.offer});
+class _Confirm extends AppView {
+  const _Confirm({required this.offer});
 
   final Offer offer;
 
@@ -46,12 +49,6 @@ class _ReserveForm extends AppView {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: Space.lg,
       children: [
-        if (offer.maxReservable > 1)
-          SQuantityInput(
-            value: state.quantity,
-            max: offer.maxReservable,
-            onChanged: viewModel.setQuantity,
-          ),
         SText(
           offer.limited
               ? s.reserveHoldNote(offer.claimWindowMinutes)

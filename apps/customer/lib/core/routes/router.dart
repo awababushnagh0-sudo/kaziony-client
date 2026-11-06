@@ -14,6 +14,7 @@ import '../../features/offers/presentation/home_screen.dart';
 import '../../features/offers/presentation/offer_screen.dart';
 import '../../features/offers/presentation/search_screen.dart';
 import '../../features/offers/presentation/section_offers_screen.dart';
+import '../../features/stores/presentation/store_screen.dart';
 import '../../features/welcome/presentation/welcome_screen.dart';
 import '../l10n/generated/customer_localizations.dart';
 import '../widgets/coming_soon_screen.dart';
@@ -70,6 +71,11 @@ final routerProvider = Provider<GoRouter>((ref) {
               OfferSort.nearest,
           categoryId: state.uri.queryParameters['category'],
         ),
+      ),
+      GoRoute(
+        path: Routes.storePattern,
+        builder: (_, state) =>
+            StoreScreen(storeId: state.pathParameters['storeId']!),
       ),
       GoRoute(
         path: Routes.offerPattern,

@@ -68,4 +68,12 @@ void main() {
     expect((await lastQuery()).search, 'kunafa');
     expect(offers.queries.where((q) => q.search == 'kun'), isEmpty);
   });
+
+  test('an emptied field, or the search key, searches at once', () async {
+    filter().searchNow('kunafa');
+    expect((await lastQuery()).search, 'kunafa');
+
+    filter().setSearch('');
+    expect((await lastQuery()).search, '');
+  });
 }

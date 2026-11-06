@@ -21,18 +21,33 @@ class Category {
   String name(String languageCode) => languageCode == 'ar' ? nameAr : nameEn;
 }
 
+/// What customers thought of a store after picking up there.
+class StoreRating {
+  const StoreRating({required this.average, required this.count});
+
+  /// From 1 to 5, with one decimal.
+  final double average;
+
+  /// How many pickups were rated.
+  final int count;
+}
+
 class OfferStore {
   const OfferStore({
     required this.id,
     required this.name,
     required this.category,
     this.logoUrl,
+    this.rating,
   });
 
   final String id;
   final String name;
   final String? logoUrl;
   final Category category;
+
+  /// Null before its first rating.
+  final StoreRating? rating;
 }
 
 /// A branch where an offer can be picked up.
@@ -68,6 +83,7 @@ class Offer {
     required this.discountPercent,
     required this.limited,
     required this.claimWindowMinutes,
+    required this.startsAt,
     required this.endsAt,
     required this.store,
     required this.nearestBranch,
@@ -100,6 +116,9 @@ class Offer {
   /// The most one customer can take; null for no limit.
   final int? maxPerUser;
   final int claimWindowMinutes;
+
+  /// When it can be picked up: from [startsAt] until [endsAt].
+  final DateTime startsAt;
   final DateTime endsAt;
   final OfferStore store;
   final Branch nearestBranch;
@@ -130,6 +149,7 @@ class OfferDetail {
   const OfferDetail({
     required this.offer,
     required this.branches,
+    this.pickupInstructions,
     this.myBookingId,
   });
 
@@ -137,6 +157,10 @@ class OfferDetail {
 
   /// Closest first.
   final List<Branch> branches;
+
+  /// What the store asks of customers picking up, in its own words; null
+  /// when it hasn't said.
+  final String? pickupInstructions;
 
   /// The signed-in customer's active reservation for it.
   final String? myBookingId;

@@ -13,11 +13,12 @@ class ReserveState {
   final int quantity;
   final bool sending;
 
-  /// Why the last try was refused, said in the sheet.
+  /// Why the last try was refused, said in the confirmation sheet.
   final AppFailure? failure;
 }
 
-/// How many pieces of [offer] to reserve, and reserving them.
+/// How many pieces of [offer] to reserve, picked on its page, and
+/// reserving them once confirmed.
 class ReserveViewModel extends ViewModel<ReserveState> {
   ReserveViewModel(this.offer);
 
@@ -28,6 +29,9 @@ class ReserveViewModel extends ViewModel<ReserveState> {
 
   void setQuantity(int quantity) =>
       state = ReserveState(quantity: quantity.clamp(1, offer.maxReservable));
+
+  /// A fresh try: the last refusal isn't said again.
+  void clearFailure() => state = ReserveState(quantity: state.quantity);
 
   /// The booking made, or null when it was refused ([ReserveState.failure]
   /// says why).

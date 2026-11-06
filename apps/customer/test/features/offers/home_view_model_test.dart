@@ -32,12 +32,12 @@ void main() {
     final feed = await container.read(homeFeedProvider.future);
 
     expect(feed.nearby, hasLength(1));
+    expect(feed.total, 1);
     expect(feed.isEmpty, isFalse);
     expect(offers.queries.map((q) => q.sort), [
       OfferSort.nearest,
       OfferSort.endingSoon,
       OfferSort.biggestDiscount,
-      OfferSort.newest,
     ]);
     expect(offers.queries.every((q) => q.around == souqAlJuma), isTrue);
   });
@@ -49,7 +49,7 @@ void main() {
     container.read(homeCategoryProvider.notifier).select(bakery.id);
     await container.read(homeFeedProvider.future);
 
-    expect(offers.queries, hasLength(4));
+    expect(offers.queries, hasLength(3));
     expect(offers.queries.every((q) => q.categoryId == bakery.id), isTrue);
   });
 
