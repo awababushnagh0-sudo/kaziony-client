@@ -267,9 +267,6 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get storeEmail => 'Store email';
 
   @override
-  String get storeDescription => 'Description';
-
-  @override
   String get tabDetails => 'Details';
 
   @override

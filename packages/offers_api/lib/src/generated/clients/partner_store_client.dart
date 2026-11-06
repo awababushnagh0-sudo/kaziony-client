@@ -26,7 +26,7 @@ abstract class PartnerStoreClient {
     @Path('storeId') required String storeId,
   });
 
-  /// Edit description and contact details (owner)
+  /// Edit pickup instructions and contact details (owner)
   @PATCH('/api/v1/partner/stores/{storeId}')
   Future<StoreDetailDto> updateProfile({
     @Path('storeId') required String storeId,

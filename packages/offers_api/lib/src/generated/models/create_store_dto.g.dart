@@ -14,7 +14,6 @@ CreateStoreDto _$CreateStoreDtoFromJson(Map<String, dynamic> json) =>
           .map((e) => CreateBranchDto.fromJson(e as Map<String, dynamic>))
           .toList(),
       owner: NewMerchantDto.fromJson(json['owner'] as Map<String, dynamic>),
-      description: json['description'] as String?,
       pickupInstructions: json['pickupInstructions'] as String?,
       phone: json['phone'] as String?,
       email: json['email'] as String?,
@@ -26,7 +25,6 @@ Map<String, dynamic> _$CreateStoreDtoToJson(CreateStoreDto instance) =>
     <String, dynamic>{
       'categoryId': instance.categoryId,
       'name': instance.name,
-      'description': ?instance.description,
       'pickupInstructions': ?instance.pickupInstructions,
       'phone': ?instance.phone,
       'email': ?instance.email,

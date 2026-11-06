@@ -55,15 +55,12 @@ class StoreMember {
 /// it; the name and category stay with our team.
 class StoreProfile {
   const StoreProfile({
-    required this.description,
     required this.pickupInstructions,
     required this.phone,
     required this.email,
     required this.facebookUrl,
     required this.instagramUrl,
   });
-
-  final String? description;
 
   /// Shown on every offer's page: where to go in the shop, what to bring.
   final String? pickupInstructions;

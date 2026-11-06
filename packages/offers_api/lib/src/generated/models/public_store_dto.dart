@@ -15,7 +15,6 @@ class PublicStoreDto {
   const PublicStoreDto({
     required this.id,
     required this.name,
-    required this.description,
     required this.logoUrl,
     required this.coverUrl,
     required this.phone,
@@ -36,7 +35,6 @@ class PublicStoreDto {
   
   final String id;
   final String name;
-  final String? description;
   final String? logoUrl;
   final String? coverUrl;
   final String? phone;

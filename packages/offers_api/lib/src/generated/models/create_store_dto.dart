@@ -16,7 +16,6 @@ class CreateStoreDto {
     required this.name,
     required this.branches,
     required this.owner,
-    this.description,
     this.pickupInstructions,
     this.phone,
     this.email,
@@ -28,7 +27,6 @@ class CreateStoreDto {
   
   final String categoryId;
   final String name;
-  final String? description;
 
   /// Shown to customers on every offer's page: where to go in the shop,.
   /// what to bring.

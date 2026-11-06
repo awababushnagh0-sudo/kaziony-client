@@ -50,7 +50,7 @@ abstract class AdminStoresClient {
 
   /// Edit, disable or enable a store.
   ///
-  /// Send only the fields to change. An empty string clears an optional field (description, phone, email, links).
+  /// Send only the fields to change. An empty string clears an optional field (phone, email, links).
   @PATCH('/api/v1/admin/stores/{id}')
   Future<StoreDetailDto> update({
     @Path('id') required String id,

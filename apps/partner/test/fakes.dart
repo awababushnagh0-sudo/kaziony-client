@@ -64,7 +64,6 @@ Store storeDetails({
   profile:
       profile ??
       const StoreProfile(
-        description: 'Fresh every morning',
         pickupInstructions: 'Show your code at the cashier',
         phone: '+218910000001',
         email: null,

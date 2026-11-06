@@ -22,10 +22,6 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
     final profile = ref.read(storeViewModel).requireValue.profile;
     final phone = profile.phone;
     form = FormGroup({
-      'description': FormControl<String>(
-        value: profile.description,
-        validators: [Validators.maxLength(1000)],
-      ),
       'pickupInstructions': FormControl<String>(
         value: profile.pickupInstructions,
         validators: [Validators.maxLength(500)],
@@ -68,7 +64,6 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
         .updateProfile(
           storeId,
           StoreProfile(
-            description: _text('description'),
             pickupInstructions: _text('pickupInstructions'),
             phone: phone == null ? null : normalizeLibyanPhone(phone),
             email: _text('email'),

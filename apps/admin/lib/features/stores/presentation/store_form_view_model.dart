@@ -21,9 +21,6 @@ class StoreFormViewModel extends RecordForm<StoreDetails> {
       validators: [Validators.required, Validators.maxLength(100)],
     ),
     'categoryId': FormControl<String>(validators: [Validators.required]),
-    'description': FormControl<String>(
-      validators: [Validators.maxLength(1000)],
-    ),
     'pickupInstructions': FormControl<String>(
       validators: [Validators.maxLength(500)],
     ),
@@ -41,7 +38,6 @@ class StoreFormViewModel extends RecordForm<StoreDetails> {
     return {
       'name': store.name,
       'categoryId': store.category.id,
-      'description': store.description,
       'pickupInstructions': store.pickupInstructions,
       'phone': phone == null ? null : formatLibyanPhone(phone),
       'email': store.email,
@@ -59,7 +55,6 @@ class StoreFormViewModel extends RecordForm<StoreDetails> {
           EditedStore(
             name: text('name')!,
             categoryId: form.control('categoryId').value as String,
-            description: text('description'),
             pickupInstructions: text('pickupInstructions'),
             phone: phone == null ? null : normalizeLibyanPhone(phone),
             email: text('email'),

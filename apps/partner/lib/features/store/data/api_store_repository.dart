@@ -28,7 +28,6 @@ class ApiStoreRepository implements StoreRepository {
         storeId: storeId,
         // An empty value clears the field on the server.
         body: UpdateStoreProfileDto(
-          description: profile.description ?? '',
           pickupInstructions: profile.pickupInstructions ?? '',
           phone: profile.phone ?? '',
           email: profile.email ?? '',
@@ -71,7 +70,6 @@ Store _toStore(StoreDetailDto dto) => Store(
     nameEn: dto.category.nameEn,
   ),
   profile: StoreProfile(
-    description: dto.description,
     pickupInstructions: dto.pickupInstructions,
     phone: dto.phone,
     email: dto.email,

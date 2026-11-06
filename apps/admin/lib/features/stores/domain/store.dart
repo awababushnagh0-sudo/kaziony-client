@@ -53,7 +53,6 @@ class StoreDetails {
     required this.branchCount,
     required this.teamCount,
     required this.ratingCount,
-    this.description,
     this.pickupInstructions,
     this.ratingAverage,
     this.logoUrl,
@@ -72,7 +71,6 @@ class StoreDetails {
 
   /// Owners and staff.
   final int teamCount;
-  final String? description;
 
   /// Shown to customers on every offer's page: where to go in the shop,
   /// what to bring.
@@ -97,7 +95,6 @@ class EditedStore {
   const EditedStore({
     required this.name,
     required this.categoryId,
-    this.description,
     this.pickupInstructions,
     this.phone,
     this.email,
@@ -107,7 +104,6 @@ class EditedStore {
 
   final String name;
   final String categoryId;
-  final String? description;
   final String? pickupInstructions;
 
   /// Normalized (+2189XXXXXXXX).
@@ -127,7 +123,6 @@ class NewStore {
     required this.ownerPhone,
     this.phone,
     this.email,
-    this.description,
   });
 
   final String name;
@@ -136,7 +131,6 @@ class NewStore {
   /// Normalized (+2189XXXXXXXX).
   final String? phone;
   final String? email;
-  final String? description;
   final NewBranch branch;
   final String ownerName;
 

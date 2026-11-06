@@ -206,11 +206,6 @@ class _StoreRecord extends AppView {
                   ],
                 ),
                 STextInput(
-                  controlName: 'description',
-                  label: s.storeDescription,
-                  kind: TextInputKind.multiline,
-                ),
-                STextInput(
                   controlName: 'pickupInstructions',
                   label: s.storePickupInstructions,
                   hint: s.storePickupInstructionsHint,

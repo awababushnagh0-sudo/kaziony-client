@@ -51,7 +51,6 @@ void main() {
 
     expect(find.text('Store a'), findsOneWidget);
     expect(find.text('Sweets'), findsOneWidget);
-    expect(find.text('Fresh every morning'), findsOneWidget);
     expect(find.text('Show your code at the cashier'), findsOneWidget);
     expect(find.text('0910000001'), findsOneWidget);
     expect(find.text('Not set'), findsNWidgets(3));
@@ -70,7 +69,7 @@ void main() {
   testWidgets('staff can see it but not edit it', (tester) async {
     await open(tester, isOwner: false);
 
-    expect(find.text('Fresh every morning'), findsOneWidget);
+    expect(find.text('Show your code at the cashier'), findsOneWidget);
     expect(find.byTooltip('Edit'), findsNothing);
     expect(find.text('Add your logo'), findsNothing);
   });
@@ -123,7 +122,6 @@ void main() {
     final saved = stores.updates.single;
     expect(saved.email, 'hello@store.ly');
     expect(saved.phone, isNull);
-    expect(saved.description, 'Fresh every morning');
     expect(saved.pickupInstructions, 'Ask at the counter; bring a bag');
     // Back on the info page, with the saved values.
     expect(find.text('hello@store.ly'), findsOneWidget);
@@ -149,6 +147,6 @@ void main() {
     stores.getResult = Ok(storeDetails());
     await tester.tap(find.text('Try again'));
     await tester.pumpAndSettle();
-    expect(find.text('Fresh every morning'), findsOneWidget);
+    expect(find.text('Show your code at the cashier'), findsOneWidget);
   });
 }

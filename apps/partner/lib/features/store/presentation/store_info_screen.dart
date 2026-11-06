@@ -85,10 +85,6 @@ class StoreInfoScreen extends AppView {
                 SListGroup(
                   children: [
                     SListTile(
-                      title: s.descriptionLabel,
-                      subtitle: shown(profile.description),
-                    ),
-                    SListTile(
                       title: s.pickupInstructionsLabel,
                       subtitle: shown(profile.pickupInstructions),
                     ),

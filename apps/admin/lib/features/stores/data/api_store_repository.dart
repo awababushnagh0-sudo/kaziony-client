@@ -60,7 +60,6 @@ class ApiStoreRepository implements StoreRepository {
         body: UpdateStoreDto(
           name: store.name,
           categoryId: store.categoryId,
-          description: store.description ?? '',
           pickupInstructions: store.pickupInstructions ?? '',
           phone: store.phone ?? '',
           email: store.email ?? '',
@@ -111,7 +110,6 @@ class ApiStoreRepository implements StoreRepository {
           categoryId: store.categoryId,
           phone: store.phone,
           email: store.email,
-          description: store.description,
           branches: [
             CreateBranchDto(
               name: branch.name,
@@ -165,7 +163,6 @@ StoreDetails _toDetails(StoreDetailDto dto) => StoreDetails(
   teamCount: dto.members.length,
   ratingAverage: dto.ratingAverage?.toDouble(),
   ratingCount: dto.ratingCount.toInt(),
-  description: dto.description,
   pickupInstructions: dto.pickupInstructions,
   logoUrl: dto.logoUrl,
   phone: dto.phone,

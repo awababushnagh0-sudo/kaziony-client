@@ -536,12 +536,6 @@ abstract class AdminLocalizations {
   /// **'Store email'**
   String get storeEmail;
 
-  /// No description provided for @storeDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Description'**
-  String get storeDescription;
-
   /// No description provided for @tabDetails.
   ///
   /// In en, this message translates to:

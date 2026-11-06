@@ -36,12 +36,6 @@ class EditStoreInfoScreen extends AppView {
           spacing: Space.lg,
           children: [
             STextInput(
-              controlName: 'description',
-              label: s.descriptionLabel,
-              kind: TextInputKind.multiline,
-              maxLength: 1000,
-            ),
-            STextInput(
               controlName: 'pickupInstructions',
               label: s.pickupInstructionsLabel,
               hint: s.pickupInstructionsHint,

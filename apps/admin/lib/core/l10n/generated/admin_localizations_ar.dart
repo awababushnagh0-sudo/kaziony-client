@@ -271,9 +271,6 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get storeEmail => 'بريد المتجر';
 
   @override
-  String get storeDescription => 'الوصف';
-
-  @override
   String get tabDetails => 'البيانات الأساسية';
 
   @override

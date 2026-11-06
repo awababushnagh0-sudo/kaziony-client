@@ -11,7 +11,6 @@ class UpdateStoreDto {
   const UpdateStoreDto({
     this.categoryId,
     this.name,
-    this.description,
     this.pickupInstructions,
     this.phone,
     this.email,
@@ -24,7 +23,6 @@ class UpdateStoreDto {
   
   final String? categoryId;
   final String? name;
-  final String? description;
 
   /// Shown to customers on every offer's page: where to go in the shop,.
   /// what to bring.

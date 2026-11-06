@@ -10,7 +10,6 @@ StoreDetailDto _$StoreDetailDtoFromJson(Map<String, dynamic> json) =>
     StoreDetailDto(
       id: json['id'] as String,
       name: json['name'] as String,
-      description: json['description'] as String?,
       logoUrl: json['logoUrl'] as String?,
       coverUrl: json['coverUrl'] as String?,
       phone: json['phone'] as String?,
@@ -35,7 +34,6 @@ Map<String, dynamic> _$StoreDetailDtoToJson(StoreDetailDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'description': ?instance.description,
       'logoUrl': ?instance.logoUrl,
       'coverUrl': ?instance.coverUrl,
       'phone': ?instance.phone,

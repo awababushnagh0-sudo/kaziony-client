@@ -80,7 +80,6 @@ void main() {
     expect(find.text('Sweet Coast'), findsWidgets);
     expect(find.text('★ 4.5 · 37 ratings'), findsOneWidget);
     expect(find.text('Active'), findsOneWidget);
-    expect(find.text('Fresh sweets every morning.'), findsOneWidget);
     expect(find.text('Show your code at the cashier.'), findsOneWidget);
     expect(find.text('Sweets'), findsWidgets);
     expect(find.text('Oct 15, 2026'), findsOneWidget);
@@ -124,7 +123,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(stores.opened, ['store-1', 'store-1']);
-    expect(find.text('Fresh sweets every morning.'), findsOneWidget);
+    expect(find.text('Show your code at the cashier.'), findsOneWidget);
   });
 
   Future<void> chooseAction(WidgetTester tester, String action) async {
@@ -241,7 +240,6 @@ void main() {
     await tester.pumpWidget(harness(stores));
     await tester.pumpAndSettle();
 
-    await tester.enterText(field('Description'), 'Open late.');
     await tester.enterText(field('Pickup instructions'), ' Ask at the door. ');
     await tester.tap(find.text('Contact'));
     await tester.pumpAndSettle();
@@ -254,7 +252,6 @@ void main() {
     expect(id, 'store-1');
     expect(edited.name, 'Sweet Coast');
     expect(edited.categoryId, 'cat-sweets');
-    expect(edited.description, 'Open late.');
     expect(edited.pickupInstructions, 'Ask at the door.');
     expect(edited.phone, '+218921234567');
     expect(edited.email, isNull);
