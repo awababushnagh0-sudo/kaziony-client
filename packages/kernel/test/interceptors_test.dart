@@ -79,6 +79,40 @@ void main() {
     );
   });
 
+  test('a request sent at launch waits for the saved tokens', () async {
+    // The last run's session, saved; this run hasn't read it yet.
+    final storage = MemorySecureStore();
+    await TokenStore(storage)
+        .save(const AuthTokens(accessToken: 'new', refreshToken: 'r1'));
+    dio.interceptors
+      ..clear()
+      ..add(
+        AuthInterceptor(
+          dio: dio,
+          tokens: TokenStore(storage),
+          refresh: () async => false,
+        ),
+      );
+
+    final response = await dio.get<Object?>('/me');
+
+    expect(response.statusCode, 200);
+    expect(adapter.authHeaders, ['Bearer new']);
+  });
+
+  test('a sign-in while the saved tokens load is kept', () async {
+    final storage = MemorySecureStore();
+    await TokenStore(storage)
+        .save(const AuthTokens(accessToken: 'saved', refreshToken: 'r1'));
+    final fresh = TokenStore(storage);
+
+    final loading = fresh.load();
+    await fresh.save(const AuthTokens(accessToken: 'new', refreshToken: 'r2'));
+
+    expect((await loading)?.accessToken, 'new');
+    expect(fresh.current?.accessToken, 'new');
+  });
+
   test('refreshes an expired token and retries the request', () async {
     final response = await dio.get<Object?>('/me');
     expect(response.statusCode, 200);

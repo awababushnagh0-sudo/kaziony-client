@@ -27,8 +27,14 @@ class AuthInterceptor extends QueuedInterceptor {
   final Future<bool> Function() refresh;
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    final token = tokens.current?.accessToken;
+  Future<void> onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
+    // Sent before the saved session is read (a page opened straight at
+    // launch), a request would go out unsigned and come back as if the
+    // customer were signed out.
+    final token = (await tokens.load())?.accessToken;
     if (options.extra[skipAuthKey] != true && token != null) {
       options.headers['Authorization'] = 'Bearer $token';
     }

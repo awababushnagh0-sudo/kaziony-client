@@ -31,27 +31,40 @@ class TokenStore {
   final SecureStore _storage;
   AuthTokens? _current;
 
+  /// The read of the saved tokens, made once.
+  Future<void>? _loading;
+
+  /// Signed in or out since the app started: newer than what's saved.
+  var _changed = false;
+
   AuthTokens? get current => _current;
 
+  /// The tokens saved by the last run, read the first time it's called;
+  /// every request waits on it, so none made at startup goes out without
+  /// its token. Later calls answer at once with [current].
   Future<AuthTokens?> load() async {
+    await (_loading ??= _read());
+    return _current;
+  }
+
+  Future<void> _read() async {
     final raw = await _storage.read(_key);
-    if (raw == null) return _current = null;
+    if (_changed || raw == null) return;
     try {
-      return _current = AuthTokens.fromJson(
-        jsonDecode(raw) as Map<String, Object?>,
-      );
+      _current = AuthTokens.fromJson(jsonDecode(raw) as Map<String, Object?>);
     } on Object {
       await clear();
-      return null;
     }
   }
 
   Future<void> save(AuthTokens tokens) async {
+    _changed = true;
     _current = tokens;
     await _storage.write(_key, jsonEncode(tokens.toJson()));
   }
 
   Future<void> clear() async {
+    _changed = true;
     _current = null;
     await _storage.delete(_key);
   }
