@@ -2,6 +2,7 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../../core/l10n/generated/customer_localizations.dart';
+import '../../../../core/widgets/customer_illustrations.dart';
 import '../../../../core/widgets/no_offers_view.dart';
 import '../../domain/offer.dart';
 import '../offers_layout.dart';
@@ -36,7 +37,7 @@ class OffersList extends AppView {
           return ref.watch(offersFilterProvider(initial)).search.isEmpty
               ? const NoOffersView()
               : SEmptyView(
-                  icon: SIcons.noResults,
+                  illustration: CustomerIllustrations.noResults,
                   title: s.noResultsTitle,
                   message: s.noResultsMessage,
                 );

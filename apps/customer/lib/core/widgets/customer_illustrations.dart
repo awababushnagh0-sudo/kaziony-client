@@ -24,6 +24,10 @@ enum CustomerIllustrations implements Illustration {
   /// green, as people know a favorite by.
   favorites('favorites', Size(240, 180)),
 
+  /// The brand bag, puzzled, beside a magnifying glass with a question
+  /// mark in it: a search or a filter that found nothing.
+  noResults('no_results', Size(240, 180)),
+
   /// The bag asleep under the moon: food saved as stores close, on a home
   /// banner.
   bagSleep('bag_sleep', Size(140, 120)),

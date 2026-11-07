@@ -217,7 +217,7 @@ class _Results extends AppView {
               _Filters(filter: filter, offersFound: false),
               Expanded(
                 child: SEmptyView(
-                  icon: SIcons.noResults,
+                  illustration: CustomerIllustrations.noResults,
                   title: s.noResultsTitle,
                   message: s.noResultsMessage,
                 ),
