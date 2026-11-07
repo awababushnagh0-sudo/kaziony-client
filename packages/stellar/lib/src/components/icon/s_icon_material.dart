@@ -186,6 +186,11 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // heart
+  SIcons.ratings => const IconData(
+    0xe176,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // star
   SIcons.leaf => const IconData(
     0xe2de,
     fontFamily: _f,
@@ -307,11 +312,11 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontPackage: _p,
   ), // layout-list
   SIcons.logout => const IconData(
-    0xe10e,
+    0xe3d6,
     fontFamily: _f,
     fontPackage: _p,
     matchTextDirection: true,
-  ), // log-out
+  ), // door-open
   SIcons.disable => const IconData(
     0xe051,
     fontFamily: _f,

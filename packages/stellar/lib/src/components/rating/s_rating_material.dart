@@ -73,12 +73,14 @@ class SStarInputMaterial extends StatelessWidget implements SStarInput {
     required this.value,
     required this.starLabel,
     this.onChanged,
+    this.small = false,
     super.key,
   });
 
   final int value;
   final String Function(int stars) starLabel;
   final ValueChanged<int>? onChanged;
+  final bool small;
 
   static const _stars = 5;
 
@@ -91,10 +93,13 @@ class SStarInputMaterial extends StatelessWidget implements SStarInput {
         excludeSemantics: true,
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          spacing: Space.xs,
+          spacing: small ? Space.xxs : Space.xs,
           children: [
             for (var star = 1; star <= _stars; star++)
-              _Star(size: SIconSize.lg, filled: star <= value),
+              _Star(
+                size: small ? SIconSize.sm : SIconSize.lg,
+                filled: star <= value,
+              ),
           ],
         ),
       );

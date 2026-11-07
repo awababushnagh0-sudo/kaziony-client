@@ -48,6 +48,9 @@ enum SIcons {
   /// Offers and stores a customer saved.
   favorites,
 
+  /// The stars a customer gave stores.
+  ratings,
+
   /// Food not thrown away.
   leaf,
 

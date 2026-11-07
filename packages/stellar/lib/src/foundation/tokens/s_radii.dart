@@ -9,5 +9,9 @@ abstract final class Radii {
 
   /// Panels that group cards ([SStatGrid]).
   static const xxl = 20.0;
+
+  /// The rounded foot of a colored band across a page's top
+  /// ([SProfileHeader.greeting]).
+  static const band = 32.0;
   static const pill = 999.0;
 }
