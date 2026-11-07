@@ -56,12 +56,14 @@ class _ClaimsClient implements ClaimsClient {
     required num page,
     required num pageSize,
     bool? active,
+    bool? rated,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
       r'pageSize': pageSize,
       r'active': active,
+      r'rated': rated,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

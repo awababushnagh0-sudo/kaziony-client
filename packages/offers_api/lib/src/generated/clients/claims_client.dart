@@ -25,14 +25,17 @@ abstract class ClaimsClient {
     @Body() required CreateClaimDto body,
   });
 
-  /// My claims (newest first, or active ones).
+  /// My claims (newest first, the active ones, or the rated ones).
   ///
   /// [active] - true: only reservations that can still be used.
+  ///
+  /// [rated] - true: only pickups I rated, the latest rating first.
   @GET('/api/v1/me/claims')
   Future<CustomerClaimListDto> list({
     @Query('page') required num page,
     @Query('pageSize') required num pageSize,
     @Query('active') bool? active,
+    @Query('rated') bool? rated,
   });
 
   /// One claim, with the code for the QR
