@@ -691,6 +691,9 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get bookingCancelled => 'Reservation cancelled';
 
   @override
+  String get bookingPickedUp => 'Picked up. Enjoy!';
+
+  @override
   String get statusReserved => 'Waiting for pickup';
 
   @override

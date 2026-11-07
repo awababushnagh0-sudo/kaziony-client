@@ -1,6 +1,7 @@
 import 'package:customer/core/routes/routes.dart';
 import 'package:customer/features/bookings/domain/booking.dart';
 import 'package:customer/features/bookings/presentation/booking_screen.dart';
+import 'package:customer/features/bookings/presentation/booking_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kernel/kernel.dart';
 
@@ -52,6 +53,24 @@ void main() {
     expect(find.text('Hay Al Andalus · 1.2 km'), findsOneWidget);
     expect(find.text('Directions'), findsOneWidget);
     expect(find.byTooltip('Close'), findsOneWidget);
+  });
+
+  testWidgets('scanned at the counter, the pass turns to the stars', (
+    tester,
+  ) async {
+    bookings.bookings = [booking(canRate: true)];
+    await open(tester);
+    expect(find.text('Your booking is ready'), findsOneWidget);
+
+    bookings.bookings = [
+      booking(status: BookingStatus.pickedUp, canRate: true),
+    ];
+    await tester.pump(BookingViewModel.checkEvery);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Picked up. Enjoy!'), findsOneWidget);
+    expect(find.text('Your booking is ready'), findsNothing);
+    expect(find.text('How was your pickup at Sweet shop?'), findsOneWidget);
   });
 
   testWidgets('cancels after asking', (tester) async {

@@ -323,6 +323,7 @@
   "cancelBookingMessage": "The pieces go back to the offer, and it doesn't count against you.",
   "keepBooking": "Keep it",
   "bookingCancelled": "Reservation cancelled",
+  "bookingPickedUp": "Picked up. Enjoy!",
   "statusReserved": "Waiting for pickup",
   "statusPickedUp": "Picked up",
   "statusExpired": "Time ran out",

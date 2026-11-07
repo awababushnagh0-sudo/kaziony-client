@@ -187,6 +187,7 @@
   "cancelBookingMessage": "ترجع القطع للعرض، ولا يُحسب عليك.",
   "keepBooking": "لا، أبقِه",
   "bookingCancelled": "تم إلغاء الحجز",
+  "bookingPickedUp": "تم الاستلام، بالهناء والعافية!",
   "statusReserved": "بانتظار الاستلام",
   "statusPickedUp": "تم الاستلام",
   "statusExpired": "انتهى الوقت",

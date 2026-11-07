@@ -25,6 +25,14 @@ class BookingScreen extends AppView {
     final s = CustomerLocalizations.of(context);
     final provider = bookingViewModel(bookingId);
     final booking = ref.watch(provider);
+    // Scanned at the counter while the pass is up: said, as the page turns
+    // to the stars.
+    ref.listen(provider, (before, after) {
+      if (before?.value?.status == BookingStatus.reserved &&
+          after.value?.status == BookingStatus.pickedUp) {
+        SSnack.success(context, s.bookingPickedUp);
+      }
+    });
     // Every second: the countdown moves, and the pass gives way to the
     // plain page the moment the time is up.
     final now = ref.watch(secondClockProvider).value ?? DateTime.now();

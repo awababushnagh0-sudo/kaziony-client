@@ -1,6 +1,7 @@
 import 'package:customer/core/routes/routes.dart';
 import 'package:customer/features/bookings/domain/booking.dart';
 import 'package:customer/features/bookings/presentation/bookings_screen.dart';
+import 'package:customer/features/bookings/presentation/bookings_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kernel/kernel.dart';
 
@@ -61,6 +62,18 @@ void main() {
     await tester.tap(find.text('Show pickup code'));
     await tester.pumpAndSettle();
     expect(find.text('pickup code page'), findsOneWidget);
+  });
+
+  testWidgets('picked up meanwhile, it moves to the past ones', (tester) async {
+    await open(tester);
+    expect(find.text('Now'), findsOneWidget);
+
+    bookings.bookings = [booking(status: BookingStatus.pickedUp)];
+    await tester.pump(BookingsViewModel.checkEvery);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Now'), findsNothing);
+    expect(find.text('Picked up'), findsOneWidget);
   });
 
   testWidgets('a past booking opens its page', (tester) async {

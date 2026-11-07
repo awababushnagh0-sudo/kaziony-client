@@ -698,6 +698,9 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get bookingCancelled => 'تم إلغاء الحجز';
 
   @override
+  String get bookingPickedUp => 'تم الاستلام، بالهناء والعافية!';
+
+  @override
   String get statusReserved => 'بانتظار الاستلام';
 
   @override

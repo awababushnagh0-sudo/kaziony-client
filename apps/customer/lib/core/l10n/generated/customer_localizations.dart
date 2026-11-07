@@ -1205,6 +1205,12 @@ abstract class CustomerLocalizations {
   /// **'Reservation cancelled'**
   String get bookingCancelled;
 
+  /// No description provided for @bookingPickedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up. Enjoy!'**
+  String get bookingPickedUp;
+
   /// No description provided for @statusReserved.
   ///
   /// In en, this message translates to:
