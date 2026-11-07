@@ -8,6 +8,7 @@ import '../../offers/presentation/offer_texts.dart';
 import '../domain/booking.dart';
 import 'booking_texts.dart';
 import 'bookings_view_model.dart';
+import 'widgets/booking_tiles_skeleton.dart';
 
 /// The Bookings tab: the bookings to pick up now first, each a card with
 /// its time left and the way to its code; then the past ones, newest
@@ -51,7 +52,7 @@ class _List extends AppView {
       onRetry: () => ref.invalidate(bookingsViewModel),
       loading: const Padding(
         padding: EdgeInsets.all(Space.lg),
-        child: _TilesSkeleton(count: 5),
+        child: BookingTilesSkeleton(count: 5),
       ),
       builder: (context, page) {
         if (page.items.isEmpty) {
@@ -111,7 +112,7 @@ class _List extends AppView {
           moreFailure: page.moreFailure,
           placeholder: const Padding(
             padding: EdgeInsets.symmetric(horizontal: Space.lg),
-            child: _TilesSkeleton(count: 1),
+            child: BookingTilesSkeleton(count: 1),
           ),
         );
       },
@@ -278,44 +279,4 @@ class _PastTile extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Booking tiles while they load, [count] of them down the page.
-class _TilesSkeleton extends StatelessWidget {
-  const _TilesSkeleton({required this.count});
-
-  final int count;
-
-  @override
-  Widget build(BuildContext context) => SSkeleton(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: Space.sm,
-      children: [
-        for (var i = 0; i < count; i++)
-          const SCard(
-            child: Row(
-              spacing: Space.md,
-              children: [
-                SBone.image(),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: Space.xxs,
-                    children: [
-                      SBone.text(length: BoneLength.medium),
-                      SBone.text(
-                        variant: TextVariant.caption,
-                        length: BoneLength.long,
-                      ),
-                    ],
-                  ),
-                ),
-                SBone.badge(),
-              ],
-            ),
-          ),
-      ],
-    ),
-  );
 }

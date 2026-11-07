@@ -8,7 +8,7 @@ import '../l10n/generated/customer_localizations.dart';
 import '../routes/routes.dart';
 
 /// The tabs, in the order of the router's branches.
-enum CustomerTab { home, search, bookings, favorites, account }
+enum CustomerTab { home, search, bookings, account }
 
 /// The tabs around the app's pages. Each tab keeps its own history. A
 /// booking to pick up floats above them, on every tab but Bookings, and
@@ -48,10 +48,6 @@ class CustomerShell extends AppView {
               label: s.bookingsTitle,
               icon: SIcons.bookings,
               count: toPickUp.length,
-            ),
-            CustomerTab.favorites => NavBarItem(
-              label: s.favoritesTitle,
-              icon: SIcons.favorites,
             ),
             CustomerTab.account => NavBarItem(
               label: s.accountTitle,

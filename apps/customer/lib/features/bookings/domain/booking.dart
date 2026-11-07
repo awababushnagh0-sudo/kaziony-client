@@ -81,9 +81,12 @@ abstract interface class BookingsRepository {
   Future<Result<Booking>> reserve(String offerId, {required int quantity});
 
   /// Newest first.
+  /// Newest first; [rated], only the pickups the customer rated, the
+  /// latest rating first.
   Future<Result<PageResult<Booking>>> list({
     required int page,
     required int pageSize,
+    bool rated = false,
   });
 
   Future<Result<Booking>> get(String bookingId);

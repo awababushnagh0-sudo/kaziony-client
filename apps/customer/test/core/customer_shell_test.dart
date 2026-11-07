@@ -28,7 +28,6 @@ void main() {
               tab(Routes.home),
               tab(Routes.search),
               tab(Routes.bookings),
-              tab(Routes.favorites),
               tab(Routes.account),
             ],
           ),

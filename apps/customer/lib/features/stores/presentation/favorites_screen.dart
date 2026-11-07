@@ -9,7 +9,7 @@ import 'stores_view_model.dart';
 import 'widgets/store_tile.dart';
 import 'widgets/store_tile_skeleton.dart';
 
-/// The Favorites tab: the stores the customer saved with the heart on a
+/// The favorites, opened from the account tab: the stores the customer saved with the heart on a
 /// store's page, the last saved first, each with how many offers it has
 /// now and a heart that takes it out. Signed out, the way to sign in.
 class FavoritesScreen extends AppView {

@@ -3,11 +3,16 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/customer_localizations.dart';
 import '../../../core/routes/routes.dart';
+import '../../../core/widgets/customer_illustrations.dart';
 import '../../../core/widgets/sign_in_prompt.dart';
 import '../../auth/domain/auth_repository.dart';
+import '../../bookings/presentation/booking_texts.dart';
+import '../../bookings/presentation/bookings_view_model.dart';
 import '../../location/domain/browse_location.dart';
 
-/// Who's signed in, or the way to sign in; then the app's settings, which
+/// Signed in, a greeting on a soft orange band, then the way to the
+/// bookings (with how many wait), the favorite stores and the ratings
+/// given. Signed out, the way to sign in. Then the app's settings, which
 /// work signed out too.
 class AccountScreen extends AppView {
   const AccountScreen({super.key});
@@ -15,69 +20,150 @@ class AccountScreen extends AppView {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = CustomerLocalizations.of(context);
-    final stellar = StellarLocalizations.of(context);
     final user = switch (ref.watch(sessionProvider)) {
       SignedIn(:final user) => user,
       _ => null,
     };
+    if (user == null) {
+      return const SScaffold(
+        showAppBar: false,
+        scrollable: true,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: Space.xl,
+          children: [SignInPrompt(), _Settings()],
+        ),
+      );
+    }
+    final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
+    final waiting = toPickUpAt(
+      ref.watch(bookingsViewModel).value?.items ?? const [],
+      now,
+    ).length;
+    final name = user.name?.trim();
+    return SScaffold(
+      showAppBar: false,
+      scrollable: true,
+      padded: false,
+      underStatusBar: true,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: Space.xl,
+        children: [
+          SProfileHeader.greeting(
+            greeting: _greetingAt(s, now),
+            // The first name is enough to be greeted by.
+            name: name == null || name.isEmpty
+                ? user.email ?? s.accountTitle
+                : name.split(' ').first,
+            subtitle: name == null || name.isEmpty ? null : user.email,
+            illustration: CustomerIllustrations.bagHello,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(Space.lg, 0, Space.lg, Space.lg),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: Space.xl,
+              children: [
+                SShortcuts.pills([
+                  ShortcutPill(
+                    label: s.bookingsTitle,
+                    icon: SIcons.bookings,
+                    count: waiting,
+                    onTap: () => context.go(Routes.bookings),
+                  ),
+                  ShortcutPill(
+                    label: s.favoritesTitle,
+                    icon: SIcons.favorites,
+                    color: SColor.favorite,
+                    onTap: () => context.push(Routes.favorites),
+                  ),
+                  ShortcutPill(
+                    label: s.ratingsTitle,
+                    icon: SIcons.ratings,
+                    color: SColor.accent,
+                    onTap: () => context.push(Routes.ratings),
+                  ),
+                ]),
+                const _Settings(),
+                // No question first: signing back in is one tap.
+                SButton.dangerSecondary(
+                  label: s.logout,
+                  icon: SIcons.logout,
+                  expand: true,
+                  onPressed: ref.read(authRepositoryProvider).signOut,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// "Good morning" until noon, then "good evening", as said in Libya.
+String _greetingAt(CustomerLocalizations s, DateTime now) =>
+    now.hour >= _morningFrom && now.hour < _eveningFrom
+    ? s.greetingMorning
+    : s.greetingEvening;
+
+const _morningFrom = 4;
+const _eveningFrom = 12;
+
+/// Where offers are shown from, the language and look, and the terms.
+class _Settings extends AppView {
+  const _Settings();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final s = CustomerLocalizations.of(context);
+    final stellar = StellarLocalizations.of(context);
     final place = switch (ref.watch(browseLocationProvider)) {
       null => null,
       BrowseLocation(pinned: true) => s.pinnedLocation,
       BrowseLocation() => s.myLocation,
     };
-    return SScaffold(
-      showAppBar: false,
-      scrollable: true,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: Space.xl,
-        children: [
-          if (user == null)
-            const SignInPrompt()
-          else
-            SProfileHeader(
-              title: user.name ?? user.email ?? s.accountTitle,
-              subtitle: user.name == null ? null : user.email,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: Space.xl,
+      children: [
+        SListGroup(
+          title: s.appSection,
+          separated: true,
+          children: [
+            SListTile(
+              icon: SIcons.location,
+              title: s.locationRow,
+              value: place,
+              onTap: () => context.push(Routes.location),
             ),
-          SListGroup(
-            title: s.appSection,
-            separated: true,
-            children: [
-              SListTile(
-                icon: SIcons.location,
-                title: s.locationRow,
-                value: place,
-                onTap: () => context.push(Routes.location),
-              ),
-              SListTile(
-                icon: SIcons.language,
-                title: stellar.language,
-                value: languageName(ref.watch(localeProvider)),
-                onTap: () => chooseLanguage(context, ref),
-              ),
-              SListTile(
-                icon: SIcons.appearance,
-                title: stellar.theme,
-                value: themeName(context, ref.watch(themeChoiceProvider)),
-                onTap: () => chooseTheme(context, ref),
-              ),
-              SListTile(
-                icon: SIcons.document,
-                title: s.termsTitle,
-                onTap: () => context.push(Routes.terms),
-              ),
-            ],
-          ),
-          // No question first: signing back in is one tap.
-          if (user != null)
-            SButton.dangerSecondary(
-              label: s.logout,
-              icon: SIcons.logout,
-              expand: true,
-              onPressed: ref.read(authRepositoryProvider).signOut,
+            SListTile(
+              icon: SIcons.language,
+              title: stellar.language,
+              value: languageName(ref.watch(localeProvider)),
+              onTap: () => chooseLanguage(context, ref),
             ),
-        ],
-      ),
+            SListTile(
+              icon: SIcons.appearance,
+              title: stellar.theme,
+              value: themeName(context, ref.watch(themeChoiceProvider)),
+              onTap: () => chooseTheme(context, ref),
+            ),
+          ],
+        ),
+        SListGroup(
+          title: s.aboutSection,
+          separated: true,
+          children: [
+            SListTile(
+              icon: SIcons.document,
+              title: s.termsTitle,
+              onTap: () => context.push(Routes.terms),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

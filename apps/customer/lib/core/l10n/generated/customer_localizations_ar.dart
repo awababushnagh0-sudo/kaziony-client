@@ -302,6 +302,25 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get appSection => 'التطبيق';
 
   @override
+  String get aboutSection => 'عن كزيوني';
+
+  @override
+  String get greetingMorning => 'صباح الخير،';
+
+  @override
+  String get greetingEvening => 'مساء الخير،';
+
+  @override
+  String get ratingsTitle => 'تقييماتي';
+
+  @override
+  String get ratingsEmptyTitle => 'ما قيّمت أي محل بعد';
+
+  @override
+  String get ratingsEmptyMessage =>
+      'بعد ما تستلم طلبك، قيّم المحل من صفحة الحجز.';
+
+  @override
   String get logout => 'تسجيل الخروج';
 
   @override

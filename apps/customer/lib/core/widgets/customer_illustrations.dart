@@ -20,13 +20,17 @@ enum CustomerIllustrations implements Illustration {
   guest('guest', Size(240, 180)),
 
   /// The brand bag with a pink heart on its corner, among little hearts:
-  /// the Favorites tab before any store is saved. Pink, not the brand's
+  /// the favorites before any store is saved. Pink, not the brand's
   /// green, as people know a favorite by.
   favorites('favorites', Size(240, 180)),
 
   /// The brand bag, puzzled, beside a magnifying glass with a question
   /// mark in it: a search or a filter that found nothing.
   noResults('no_results', Size(240, 180)),
+
+  /// The bag waving hello among sparkles: at the top of the account tab,
+  /// beside the greeting.
+  bagHello('bag_hello', Size(146, 120)),
 
   /// The bag asleep under the moon: food saved as stores close, on a home
   /// banner.

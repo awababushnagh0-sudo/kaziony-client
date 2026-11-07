@@ -521,6 +521,42 @@ abstract class CustomerLocalizations {
   /// **'App'**
   String get appSection;
 
+  /// No description provided for @aboutSection.
+  ///
+  /// In en, this message translates to:
+  /// **'About Kaziony'**
+  String get aboutSection;
+
+  /// No description provided for @greetingMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning,'**
+  String get greetingMorning;
+
+  /// No description provided for @greetingEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening,'**
+  String get greetingEvening;
+
+  /// No description provided for @ratingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My ratings'**
+  String get ratingsTitle;
+
+  /// No description provided for @ratingsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No ratings yet'**
+  String get ratingsEmptyTitle;
+
+  /// No description provided for @ratingsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Once you pick up, rate the store from your booking.'**
+  String get ratingsEmptyMessage;
+
   /// No description provided for @logout.
   ///
   /// In en, this message translates to:

@@ -24,9 +24,10 @@ class ApiBookingsRepository implements BookingsRepository {
   Future<Result<PageResult<Booking>>> list({
     required int page,
     required int pageSize,
+    bool rated = false,
   }) async {
     final result = await _api.guard(
-      () => _claims.list(page: page, pageSize: pageSize),
+      () => _claims.list(page: page, pageSize: pageSize, rated: rated),
     );
     return result.map(
       (list) => PageResult(

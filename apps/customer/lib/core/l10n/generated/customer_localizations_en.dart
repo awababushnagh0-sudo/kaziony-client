@@ -291,6 +291,25 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get appSection => 'App';
 
   @override
+  String get aboutSection => 'About Kaziony';
+
+  @override
+  String get greetingMorning => 'Good morning,';
+
+  @override
+  String get greetingEvening => 'Good evening,';
+
+  @override
+  String get ratingsTitle => 'My ratings';
+
+  @override
+  String get ratingsEmptyTitle => 'No ratings yet';
+
+  @override
+  String get ratingsEmptyMessage =>
+      'Once you pick up, rate the store from your booking.';
+
+  @override
   String get logout => 'Log out';
 
   @override

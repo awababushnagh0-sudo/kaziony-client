@@ -6,6 +6,7 @@ import '../../features/account/presentation/terms_screen.dart';
 import '../../features/auth/presentation/sign_in_screen.dart';
 import '../../features/bookings/presentation/booking_screen.dart';
 import '../../features/bookings/presentation/bookings_screen.dart';
+import '../../features/bookings/presentation/ratings_screen.dart';
 import '../../features/location/domain/browse_location.dart';
 import '../../features/location/presentation/location_screen.dart';
 import '../../features/location/presentation/map_picker_screen.dart';
@@ -82,6 +83,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             OfferScreen(offerId: state.pathParameters['offerId']!),
       ),
       GoRoute(
+        path: Routes.favorites,
+        builder: (_, _) => const FavoritesScreen(),
+      ),
+      GoRoute(path: Routes.ratings, builder: (_, _) => const RatingsScreen()),
+      GoRoute(
         path: Routes.bookingPattern,
         builder: (_, state) =>
             BookingScreen(bookingId: state.pathParameters['bookingId']!),
@@ -102,7 +108,6 @@ final routerProvider = Provider<GoRouter>((ref) {
           _tab(Routes.home, const HomeScreen()),
           _tab(Routes.search, const SearchScreen()),
           _tab(Routes.bookings, const BookingsScreen()),
-          _tab(Routes.favorites, const FavoritesScreen()),
           _tab(Routes.account, const AccountScreen()),
         ],
       ),

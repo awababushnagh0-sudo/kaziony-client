@@ -29,6 +29,11 @@ abstract final class Routes {
   static const storePattern = '/store/:storeId';
   static String store(String storeId) => '/store/$storeId';
 
+  /// The stores the customer saved, and the stars they gave: from the
+  /// account tab.
+  static const favorites = '/favorites';
+  static const ratings = '/ratings';
+
   /// A reservation's pickup code.
   static const bookingPattern = '/booking/:bookingId';
   static String booking(String bookingId) => '/booking/$bookingId';
@@ -37,6 +42,5 @@ abstract final class Routes {
   static const home = '/home';
   static const search = '/search';
   static const bookings = '/bookings';
-  static const favorites = '/favorites';
   static const account = '/account';
 }

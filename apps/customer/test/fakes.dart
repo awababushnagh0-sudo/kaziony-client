@@ -210,7 +210,14 @@ class FakeBookingsRepository implements BookingsRepository {
   Future<Result<PageResult<Booking>>> list({
     required int page,
     required int pageSize,
-  }) async => Ok(PageResult(items: bookings, total: bookings.length));
+    bool rated = false,
+  }) async {
+    final items = [
+      for (final booking in bookings)
+        if (!rated || booking.myRating != null) booking,
+    ];
+    return Ok(PageResult(items: items, total: items.length));
+  }
 
   @override
   Future<Result<Booking>> get(String bookingId) async =>
