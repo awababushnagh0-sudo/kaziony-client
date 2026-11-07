@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 's_countdown_material.dart';
 
 /// The time left for something held (a booking to pick up): a small
-/// [label] over the [time] in big green figures, which turn orange once
+/// [label] over the [time] in big green figures, which turn red once
 /// little is left.
 abstract interface class SCountdown implements Widget {
   /// [time] comes written ("47:08"); [left] of [total] says how little

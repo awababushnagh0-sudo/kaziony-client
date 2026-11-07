@@ -3,10 +3,9 @@ import 'package:flutter/widgets.dart';
 import 's_colors.dart';
 
 /// The brand's colors (كزيوني): its deep green on the main buttons, the open
-/// tab and focused fields, its orange for highlights, on white with grays
-/// warmed toward the brand's cream. Every app shares them; the dashboard
-/// keeps ERPNext's layout and neutral rows. Change a color here and every
-/// app follows.
+/// tab and focused fields, its orange for highlights, on white with plain
+/// grays. Every app shares them; the dashboard keeps ERPNext's layout and
+/// neutral rows. Change a color here and every app follows.
 const lightColors = StellarColors(
   brightness: Brightness.light,
   primary: Color(0xFF0C4E3B),
@@ -17,7 +16,7 @@ const lightColors = StellarColors(
   accentSoft: Color(0xFFFFEFE3),
   accentWash: Color(0xFFFFF8F2),
   accentInk: Color(0xFF9A4A0E),
-  primarySoft: Color(0xFFF3F2EE),
+  primarySoft: Color(0xFFF2F2F2),
   primaryTint: Color(0xFFE6F2EC),
   discountFrom: Color(0xFFFF8A3D),
   discountTo: Color(0xFFDD5A0A),
@@ -39,9 +38,9 @@ const lightColors = StellarColors(
   codePaper: Color(0xFFFFFFFF),
   background: Color(0xFFFFFFFF),
   surface: Color(0xFFFFFFFF),
-  surfaceMuted: Color(0xFFF9F8F3),
-  fieldFill: Color(0xFFF3F2EE),
-  border: Color(0xFFE6E4DC),
+  surfaceMuted: Color(0xFFF8F8F8),
+  fieldFill: Color(0xFFF2F2F2),
+  border: Color(0xFFE5E5E5),
   text: Color(0xFF18201D),
   textMuted: Color(0xFF4F5753),
   textSubtle: Color(0xFF7C837F),
@@ -59,8 +58,8 @@ const lightColors = StellarColors(
   cameraGlass: Color(0x29FFFFFF),
   scanLine: Color(0xFF6EE7B7),
   scanGlow: Color(0xFF34D399),
-  bone: Color(0xFFECEAE3),
-  boneShine: Color(0xFFF8F7F3),
+  bone: Color(0xFFEBEBEB),
+  boneShine: Color(0xFFF7F7F7),
 );
 
 /// The same colors at night: dark grays, the brand's green and orange

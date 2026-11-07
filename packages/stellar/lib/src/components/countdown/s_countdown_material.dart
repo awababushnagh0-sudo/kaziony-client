@@ -53,7 +53,7 @@ class SCountdownMaterial extends StatelessWidget implements SCountdown {
               // Figures of one width, so the time doesn't jiggle as it
               // counts down.
               fontFeatures: const [FontFeature.tabularFigures()],
-              color: share < _urgent ? c.accentInk : c.primary,
+              color: share < _urgent ? c.danger : c.primary,
             ),
           ),
         ],
