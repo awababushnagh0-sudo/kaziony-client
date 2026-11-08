@@ -706,4 +706,69 @@ class AdminLocalizationsAr extends AdminLocalizations {
   @override
   String get deleteServiceAreaMessage =>
       'الزبائن داخلها لن يقدروا يتصفحوا العروض. لإيقافها مؤقتًا اجعلها متوقفة بدل الحذف.';
+
+  @override
+  String get navSearches => 'عمليات البحث';
+
+  @override
+  String get searchesTitle => 'ما يبحث عنه الزبائن';
+
+  @override
+  String get searchesSearch => 'ابحث في عمليات البحث';
+
+  @override
+  String searchesTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count عملية بحث',
+      few: '$count عمليات بحث',
+      two: 'عمليتا بحث',
+      one: 'عملية بحث واحدة',
+      zero: 'لا عمليات بحث',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get searchesEmpty => 'لا توجد عمليات بحث بعد';
+
+  @override
+  String get searchesEmptyMessage =>
+      'هنا يظهر ما يبحث عنه الزبائن في التطبيق، الأكثر بحثًا أولًا.';
+
+  @override
+  String get filterNothingFound => 'لم يجد شيئًا';
+
+  @override
+  String get filterFound => 'وجد عروضًا';
+
+  @override
+  String get columnSearch => 'البحث';
+
+  @override
+  String get columnSearchCount => 'مرات البحث';
+
+  @override
+  String get columnFound => 'آخر ما وجده';
+
+  @override
+  String get columnLastSearched => 'آخر بحث';
+
+  @override
+  String get foundNothing => 'لا شيء';
+
+  @override
+  String foundOffers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count عرضًا',
+      few: '$count عروض',
+      two: 'عرضان',
+      one: 'عرض واحد',
+      zero: 'لا عروض',
+    );
+    return '$_temp0';
+  }
 }

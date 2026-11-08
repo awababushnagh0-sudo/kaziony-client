@@ -699,4 +699,63 @@ class AdminLocalizationsEn extends AdminLocalizations {
   @override
   String get deleteServiceAreaMessage =>
       'Customers there won\'t be able to browse offers. To pause it, turn it off instead.';
+
+  @override
+  String get navSearches => 'Searches';
+
+  @override
+  String get searchesTitle => 'What customers search for';
+
+  @override
+  String get searchesSearch => 'Search the searches';
+
+  @override
+  String searchesTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count searches',
+      one: '1 search',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get searchesEmpty => 'No searches yet';
+
+  @override
+  String get searchesEmptyMessage =>
+      'What customers search for in the app shows here, the most searched first.';
+
+  @override
+  String get filterNothingFound => 'Found nothing';
+
+  @override
+  String get filterFound => 'Found offers';
+
+  @override
+  String get columnSearch => 'Search';
+
+  @override
+  String get columnSearchCount => 'Times searched';
+
+  @override
+  String get columnFound => 'Last found';
+
+  @override
+  String get columnLastSearched => 'Last searched';
+
+  @override
+  String get foundNothing => 'Nothing';
+
+  @override
+  String foundOffers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count offers',
+      one: '1 offer',
+    );
+    return '$_temp0';
+  }
 }

@@ -8,6 +8,8 @@ import '../../features/platform/data/api_platform_settings_repository.dart';
 import '../../features/platform/data/api_service_area_repository.dart';
 import '../../features/platform/domain/platform_settings.dart';
 import '../../features/platform/domain/service_area.dart';
+import '../../features/search/data/api_search_term_repository.dart';
+import '../../features/search/domain/search_term.dart';
 import '../../features/stores/data/api_store_repository.dart';
 import '../../features/stores/domain/store.dart';
 import '../../features/users/data/api_dashboard_user_repository.dart';
@@ -32,5 +34,8 @@ final List<Override> dependencies = [
   ),
   serviceAreaRepositoryProvider.overrideWith(
     (ref) => ApiServiceAreaRepository(ref.watch(apiProvider)),
+  ),
+  searchTermRepositoryProvider.overrideWith(
+    (ref) => ApiSearchTermRepository(ref.watch(apiProvider)),
   ),
 ];

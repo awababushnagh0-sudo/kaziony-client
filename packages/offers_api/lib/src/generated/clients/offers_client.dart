@@ -30,7 +30,10 @@ abstract class OffersClient {
   /// [radiusKm] - Only offers within this distance (needs lat/lng). Default and most: the.
   /// radius in our settings (`GET /app-config` → `browse.radiusKm`).
   ///
-  /// [search] - Search offer titles and store names.
+  /// [search] - Words to find, in offer titles, store names, kinds of store and.
+  /// descriptions: forgiving how Arabic is spelled, typos, and finding words.
+  /// that mean the same ("cake" finds "تورتة"). The best matches come first,.
+  /// in `sort`'s order among them.
   @GET('/api/v1/offers')
   Future<PublicOfferListDto> browse({
     @Query('page') required num page,

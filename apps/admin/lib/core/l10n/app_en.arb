@@ -363,5 +363,33 @@
       }
     }
   },
-  "deleteServiceAreaMessage": "Customers there won't be able to browse offers. To pause it, turn it off instead."
+  "deleteServiceAreaMessage": "Customers there won't be able to browse offers. To pause it, turn it off instead.",
+  "navSearches": "Searches",
+  "searchesTitle": "What customers search for",
+  "searchesSearch": "Search the searches",
+  "searchesTotal": "{count, plural, =1{1 search} other{{count} searches}}",
+  "@searchesTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchesEmpty": "No searches yet",
+  "searchesEmptyMessage": "What customers search for in the app shows here, the most searched first.",
+  "filterNothingFound": "Found nothing",
+  "filterFound": "Found offers",
+  "columnSearch": "Search",
+  "columnSearchCount": "Times searched",
+  "columnFound": "Last found",
+  "columnLastSearched": "Last searched",
+  "foundNothing": "Nothing",
+  "foundOffers": "{count, plural, =1{1 offer} other{{count} offers}}",
+  "@foundOffers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

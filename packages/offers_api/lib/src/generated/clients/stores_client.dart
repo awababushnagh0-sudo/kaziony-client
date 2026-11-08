@@ -22,7 +22,9 @@ abstract class StoresClient {
   /// [lat] - Where the customer is (or the place they set on the map), inside a.
   /// service area: 400 with error "OutsideServiceArea".
   ///
-  /// [search] - Search store names.
+  /// [search] - Words to find in store names, kinds of store and what they sell now.
+  /// (their live offers' titles), searched like offers (`GET /offers`): the.
+  /// best matches first, closest first among them.
   @GET('/api/v1/stores')
   Future<PublicStoreListDto> nearby({
     @Query('lat') required num lat,

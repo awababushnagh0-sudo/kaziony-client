@@ -5,6 +5,7 @@ import '../../features/auth/presentation/change_password/change_password_screen.
 import '../../features/auth/presentation/login/login_screen.dart';
 import '../../features/dashboard/presentation/dashboard_screen.dart';
 import '../../features/platform/presentation/platform_settings_screen.dart';
+import '../../features/search/presentation/search_terms_screen.dart';
 import '../../features/stores/presentation/store_details_screen.dart';
 import '../../features/stores/presentation/stores_screen.dart';
 import '../../features/users/presentation/user_details_screen.dart';
@@ -97,6 +98,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             ),
           ),
           page(Routes.platform, (_, _) => const PlatformSettingsScreen()),
+          page(Routes.searches, (_, _) => const SearchTermsScreen()),
         ],
       ),
     ],

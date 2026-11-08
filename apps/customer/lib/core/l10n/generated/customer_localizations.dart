@@ -899,6 +899,18 @@ abstract class CustomerLocalizations {
   /// **'Try another word or category.'**
   String get noResultsMessage;
 
+  /// No description provided for @noResultsFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing for “{words}” near you'**
+  String noResultsFor(String words);
+
+  /// No description provided for @noResultsNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Stores post new offers every day. Here\'s what\'s near you now.'**
+  String get noResultsNearby;
+
   /// No description provided for @holdTitle.
   ///
   /// In en, this message translates to:

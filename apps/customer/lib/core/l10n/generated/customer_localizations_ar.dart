@@ -506,6 +506,15 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get noResultsMessage => 'جرّب كلمة أخرى أو قسمًا آخر.';
 
   @override
+  String noResultsFor(String words) {
+    return 'لا توجد نتائج لـ«$words» قريبًا منك';
+  }
+
+  @override
+  String get noResultsNearby =>
+      'المحلات تنشر عروضًا جديدة كل يوم. إليك العروض القريبة منك الآن.';
+
+  @override
   String holdTitle(int minutes) {
     return 'نحجزه لك $minutes دقيقة';
   }

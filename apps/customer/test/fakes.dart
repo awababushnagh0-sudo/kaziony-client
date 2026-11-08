@@ -198,6 +198,9 @@ Booking booking({
 
 class FakeOffersRepository implements OffersRepository {
   List<Offer> offers = [offer()];
+
+  /// What a search finds; [offers] when not set.
+  List<Offer>? found;
   AppFailure? browseFailure;
   final queries = <OffersQuery>[];
 
@@ -217,7 +220,8 @@ class FakeOffersRepository implements OffersRepository {
     queries.add(query);
     await browseGate?.future;
     if (browseFailure case final failure?) return Err(failure);
-    return Ok(PageResult(items: offers, total: offers.length));
+    final items = query.search.isEmpty ? offers : found ?? offers;
+    return Ok(PageResult(items: items, total: items.length));
   }
 
   @override

@@ -1279,6 +1279,90 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'Customers there won\'t be able to browse offers. To pause it, turn it off instead.'**
   String get deleteServiceAreaMessage;
+
+  /// No description provided for @navSearches.
+  ///
+  /// In en, this message translates to:
+  /// **'Searches'**
+  String get navSearches;
+
+  /// No description provided for @searchesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What customers search for'**
+  String get searchesTitle;
+
+  /// No description provided for @searchesSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search the searches'**
+  String get searchesSearch;
+
+  /// No description provided for @searchesTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 search} other{{count} searches}}'**
+  String searchesTotal(int count);
+
+  /// No description provided for @searchesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No searches yet'**
+  String get searchesEmpty;
+
+  /// No description provided for @searchesEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'What customers search for in the app shows here, the most searched first.'**
+  String get searchesEmptyMessage;
+
+  /// No description provided for @filterNothingFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Found nothing'**
+  String get filterNothingFound;
+
+  /// No description provided for @filterFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Found offers'**
+  String get filterFound;
+
+  /// No description provided for @columnSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get columnSearch;
+
+  /// No description provided for @columnSearchCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Times searched'**
+  String get columnSearchCount;
+
+  /// No description provided for @columnFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Last found'**
+  String get columnFound;
+
+  /// No description provided for @columnLastSearched.
+  ///
+  /// In en, this message translates to:
+  /// **'Last searched'**
+  String get columnLastSearched;
+
+  /// No description provided for @foundNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing'**
+  String get foundNothing;
+
+  /// No description provided for @foundOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 offer} other{{count} offers}}'**
+  String foundOffers(int count);
 }
 
 class _AdminLocalizationsDelegate

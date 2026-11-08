@@ -80,6 +80,8 @@ export 'generated/models/reset_password_response_dto.dart';
 export 'generated/models/resolve_location_dto.dart';
 export 'generated/models/resolved_location_dto.dart';
 export 'generated/models/saved_place_dto.dart';
+export 'generated/models/search_term_dto.dart';
+export 'generated/models/search_term_list_dto.dart';
 export 'generated/models/service_area_dto.dart';
 export 'generated/models/set_user_status_dto.dart';
 export 'generated/models/status.dart';

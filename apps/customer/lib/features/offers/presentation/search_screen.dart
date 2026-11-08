@@ -211,19 +211,7 @@ class _Results extends AppView {
         final offersFound = page.items.isNotEmpty;
         if (!offersFound && found.isEmpty) {
           if (stores.isLoading) return const _ResultsSkeleton();
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _Filters(filter: filter, offersFound: false),
-              Expanded(
-                child: SEmptyView(
-                  illustration: CustomerIllustrations.noResults,
-                  title: s.noResultsTitle,
-                  message: s.noResultsMessage,
-                ),
-              ),
-            ],
-          );
+          return _NothingFound(filter: filter);
         }
         // Typed words that found something worth opening are worth
         // keeping.
@@ -264,6 +252,77 @@ class _Results extends AppView {
                       : SText(s.searchNoOffers, color: SColor.textMuted),
                 ),
               ],
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Nothing found: says so, then the offers near them, of the kind chosen
+/// if one is, so the search never ends on an empty page. Empty only when
+/// nothing is near either.
+class _NothingFound extends AppView {
+  const _NothingFound({required this.filter});
+
+  final OffersFilter filter;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final s = CustomerLocalizations.of(context);
+    final nearby = offersViewModel(OffersFilter(categoryId: filter.categoryId));
+    final title = filter.search.isEmpty
+        ? s.noResultsTitle
+        : s.noResultsFor(filter.search);
+    return SAsyncView(
+      value: ref.watch(nearby),
+      onRetry: () => ref.invalidate(nearby),
+      loading: const _ResultsSkeleton(),
+      builder: (context, page) {
+        if (page.items.isEmpty) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _Filters(filter: filter, offersFound: false),
+              Expanded(
+                child: SEmptyView(
+                  illustration: CustomerIllustrations.noResults,
+                  title: title,
+                  message: s.noResultsMessage,
+                ),
+              ),
+            ],
+          );
+        }
+        return OffersPagedList(
+          offers: nearby,
+          page: page,
+          header: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            spacing: Space.md,
+            children: [
+              _Filters(filter: filter, offersFound: false),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: Space.xs,
+                  children: [
+                    SText.title(title),
+                    SText(s.noResultsNearby, color: SColor.textMuted),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  Space.lg,
+                  Space.md,
+                  Space.lg,
+                  0,
+                ),
+                child: SSectionHeader(s.sectionNearby),
+              ),
             ],
           ),
         );

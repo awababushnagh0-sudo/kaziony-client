@@ -5,6 +5,7 @@ library;
 export 'src/generated/clients/admin_categories_client.dart';
 export 'src/generated/clients/admin_locations_client.dart';
 export 'src/generated/clients/admin_offers_client.dart';
+export 'src/generated/clients/admin_search_client.dart';
 export 'src/generated/clients/admin_service_areas_client.dart';
 export 'src/generated/clients/admin_settings_client.dart';
 export 'src/generated/clients/admin_stats_client.dart';

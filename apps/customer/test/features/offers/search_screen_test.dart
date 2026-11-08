@@ -100,8 +100,23 @@ void main() {
 
     await submit(tester, 'pizza');
 
-    expect(find.text('Nothing found'), findsOneWidget);
+    expect(find.text('Nothing for “pizza” near you'), findsOneWidget);
     expect(find.byType(OffersLayoutSwitch), findsNothing);
+  });
+
+  testWidgets('with nothing found, shows the offers near instead', (
+    tester,
+  ) async {
+    offers.found = [];
+    stores.stores = [];
+    await open(tester);
+
+    await submit(tester, 'pizza');
+
+    expect(find.text('Nothing for “pizza” near you'), findsOneWidget);
+    expect(find.text('Near you'), findsOneWidget);
+    expect(find.byType(OfferCard), findsOneWidget);
+    expect(offers.queries.last.search, isEmpty);
   });
 
   testWidgets('a submitted search comes back as a recent one, and goes', (

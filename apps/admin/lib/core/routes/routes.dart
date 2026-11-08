@@ -13,8 +13,11 @@ abstract final class Routes {
   static const categories = '/categories';
   static const platform = '/platform';
 
+  /// What customers search for in the app.
+  static const searches = '/searches';
+
   /// Pages only admins open, not editors.
-  static const adminOnly = {users};
+  static const adminOnly = {users, searches};
 
   /// Pages for signed-out users (and the update gate).
   static const entry = {splash, update, login, changePassword};

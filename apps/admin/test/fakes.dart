@@ -2,6 +2,7 @@ import 'package:admin/features/auth/domain/auth_repository.dart';
 import 'package:admin/features/dashboard/domain/dashboard_stats.dart';
 import 'package:admin/features/platform/domain/platform_settings.dart';
 import 'package:admin/features/platform/domain/service_area.dart';
+import 'package:admin/features/search/domain/search_term.dart';
 import 'package:admin/features/stores/domain/location.dart';
 import 'package:admin/features/stores/domain/store.dart';
 import 'package:admin/features/users/domain/dashboard_user.dart';
@@ -390,4 +391,37 @@ class FakeServiceAreaRepository implements ServiceAreaRepository {
 class EnglishLocale extends LocaleController {
   @override
   Locale build() => const Locale('en');
+}
+
+class FakeSearchTermRepository implements SearchTermRepository {
+  List<SearchTerm> terms = [
+    SearchTerm(
+      query: 'كيك',
+      searchCount: 12,
+      lastResultCount: 4,
+      lastSearchedAt: DateTime.utc(2026, 11, 8),
+    ),
+    SearchTerm(
+      query: 'بازين',
+      searchCount: 3,
+      lastResultCount: 0,
+      lastSearchedAt: DateTime.utc(2026, 11, 7),
+    ),
+  ];
+  final queries = <SearchTermQuery>[];
+
+  @override
+  Future<Result<SearchTermPage>> list(SearchTermQuery query) async {
+    queries.add(query);
+    final shown = [
+      for (final term in terms)
+        if (switch (query.filter) {
+          null => true,
+          SearchTermFilter.nothingFound => term.lastResultCount == 0,
+          SearchTermFilter.found => term.lastResultCount > 0,
+        })
+          term,
+    ];
+    return Ok(SearchTermPage(total: shown.length, items: shown));
+  }
 }

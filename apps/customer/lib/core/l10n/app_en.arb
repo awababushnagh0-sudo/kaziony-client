@@ -225,6 +225,9 @@
   "sortTitle": "Sort offers",
   "noResultsTitle": "Nothing found",
   "noResultsMessage": "Try another word or category.",
+  "noResultsFor": "Nothing for “{words}” near you",
+  "@noResultsFor": {"placeholders": {"words": {"type": "String"}}},
+  "noResultsNearby": "Stores post new offers every day. Here's what's near you now.",
   "holdTitle": "Held for you for {minutes} min",
   "@holdTitle": {
     "placeholders": {

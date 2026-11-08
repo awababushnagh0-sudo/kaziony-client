@@ -497,6 +497,15 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get noResultsMessage => 'Try another word or category.';
 
   @override
+  String noResultsFor(String words) {
+    return 'Nothing for “$words” near you';
+  }
+
+  @override
+  String get noResultsNearby =>
+      'Stores post new offers every day. Here\'s what\'s near you now.';
+
+  @override
   String holdTitle(int minutes) {
     return 'Held for you for $minutes min';
   }

@@ -196,5 +196,19 @@
   "serviceAreasTotal": "{count, plural, =0{لا مناطق} =1{منطقة واحدة} =2{منطقتان} few{{count} مناطق} other{{count} منطقة}}",
   "deleteServiceArea": "حذف المنطقة",
   "deleteServiceAreaTitle": "حذف {area}؟",
-  "deleteServiceAreaMessage": "الزبائن داخلها لن يقدروا يتصفحوا العروض. لإيقافها مؤقتًا اجعلها متوقفة بدل الحذف."
+  "deleteServiceAreaMessage": "الزبائن داخلها لن يقدروا يتصفحوا العروض. لإيقافها مؤقتًا اجعلها متوقفة بدل الحذف.",
+  "navSearches": "عمليات البحث",
+  "searchesTitle": "ما يبحث عنه الزبائن",
+  "searchesSearch": "ابحث في عمليات البحث",
+  "searchesTotal": "{count, plural, =0{لا عمليات بحث} =1{عملية بحث واحدة} =2{عمليتا بحث} few{{count} عمليات بحث} other{{count} عملية بحث}}",
+  "searchesEmpty": "لا توجد عمليات بحث بعد",
+  "searchesEmptyMessage": "هنا يظهر ما يبحث عنه الزبائن في التطبيق، الأكثر بحثًا أولًا.",
+  "filterNothingFound": "لم يجد شيئًا",
+  "filterFound": "وجد عروضًا",
+  "columnSearch": "البحث",
+  "columnSearchCount": "مرات البحث",
+  "columnFound": "آخر ما وجده",
+  "columnLastSearched": "آخر بحث",
+  "foundNothing": "لا شيء",
+  "foundOffers": "{count, plural, =0{لا عروض} =1{عرض واحد} =2{عرضان} few{{count} عروض} other{{count} عرضًا}}"
 }
