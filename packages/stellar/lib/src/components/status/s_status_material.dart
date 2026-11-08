@@ -141,19 +141,10 @@ class SSuccessViewMaterial extends StatelessWidget implements SSuccessView {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: colors.successSoft,
-                shape: BoxShape.circle,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(Space.xl),
-                child: Icon(
-                  materialIcon(icon),
-                  size: SIconSize.xl.pixels,
-                  color: colors.success,
-                ),
-              ),
+            Icon(
+              materialIcon(icon),
+              size: SIconSize.xl.pixels,
+              color: colors.success,
             ),
             const Gap(Space.xl),
             Text(

@@ -59,4 +59,15 @@ abstract interface class SBadge implements Widget {
     BadgeSize size,
     Key? key,
   }) = SBadgeMaterial;
+
+  /// [label] after a small dot, without a pill: a status quiet enough for a
+  /// line of its own over a title. [tone] is success, warning, danger or
+  /// neutral.
+  const factory SBadge.dot(String label, {BadgeTone tone, Key? key}) =
+      SBadgeDotMaterial;
+
+  /// "● Live": [label] after a dot in its [tone]'s color, in a white pill,
+  /// so it reads on any photo (an offer's state on its page's photo).
+  const factory SBadge.status(String label, {BadgeTone tone, Key? key}) =
+      SBadgeStatusMaterial;
 }

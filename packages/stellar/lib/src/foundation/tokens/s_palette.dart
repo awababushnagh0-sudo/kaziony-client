@@ -62,8 +62,10 @@ const lightColors = StellarColors(
   boneShine: Color(0xFFF7F7F7),
 );
 
-/// The same colors at night: dark grays, the brand's green and orange
-/// brightened to read on them, and brighter status colors on dark badges.
+/// The same colors at night: a near-black page with plain gray raised
+/// surfaces, the brand's green and orange brightened to read on them, and
+/// brighter status colors on dark badges. The soft orange and cream fills
+/// turn gray here, since a dark orange reads as brown.
 const darkColors = StellarColors(
   brightness: Brightness.dark,
   primary: Color(0xFF4CC08E),
@@ -71,10 +73,10 @@ const darkColors = StellarColors(
   onPrimaryMuted: Color(0xFF1E4D3A),
   accent: Color(0xFFFF8C42),
   onAccent: Color(0xFF1F1209),
-  accentSoft: Color(0xFF3A2414),
-  accentWash: Color(0xFF261A11),
+  accentSoft: Color(0xFF262626),
+  accentWash: Color(0xFF1A1A1A),
   accentInk: Color(0xFFFFB27A),
-  primarySoft: Color(0xFF2C2C2C),
+  primarySoft: Color(0xFF242424),
   primaryTint: Color(0xFF1D2F27),
   discountFrom: Color(0xFFFFA45E),
   discountTo: Color(0xFFF07425),
@@ -82,26 +84,26 @@ const darkColors = StellarColors(
   brandFrom: Color(0xFF2E8D68),
   brandTo: Color(0xFF135A43),
   onBrand: Color(0xFFFFFFFF),
-  cream: Color(0xFF2A2620),
+  cream: Color(0xFF1F1F1F),
   shadow: Color(0x66000000),
   scrim: Color(0x99000000),
   onScrim: Color(0xFFFFFFFF),
   onScrimBrand: Color(0xFF4CC08E),
   favorite: Color(0xFFFF5C80),
-  inverseSurface: Color(0xFF303833),
+  inverseSurface: Color(0xFF2A2A2A),
   onInverse: Color(0xFFF3F3F3),
-  onInverseMuted: Color(0xFFB5BDB9),
+  onInverseMuted: Color(0xFFB3B3B3),
   onInverseAccent: Color(0xFFFFA25C),
   codeInk: Color(0xFF18201D),
   codePaper: Color(0xFFFFFFFF),
-  background: Color(0xFF1C1C1C),
-  surface: Color(0xFF1C1C1C),
-  surfaceMuted: Color(0xFF171717),
-  fieldFill: Color(0xFF2C2C2C),
-  border: Color(0xFF343434),
+  background: Color(0xFF121212),
+  surface: Color(0xFF121212),
+  surfaceMuted: Color(0xFF1A1A1A),
+  fieldFill: Color(0xFF242424),
+  border: Color(0xFF2E2E2E),
   text: Color(0xFFF3F3F3),
   textMuted: Color(0xFFC7C7C7),
-  textSubtle: Color(0xFF999999),
+  textSubtle: Color(0xFF949494),
   success: Color(0xFF5FD39A),
   successSoft: Color(0xFF173326),
   warning: Color(0xFFF5B656),
@@ -116,8 +118,8 @@ const darkColors = StellarColors(
   cameraGlass: Color(0x29FFFFFF),
   scanLine: Color(0xFF6EE7B7),
   scanGlow: Color(0xFF34D399),
-  bone: Color(0xFF2A2A2A),
-  boneShine: Color(0xFF3A3A3A),
+  bone: Color(0xFF212121),
+  boneShine: Color(0xFF2E2E2E),
 );
 
 /// The red, yellow and green dots of a Mac window, in the small window

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
+import '../../l10n/generated/stellar_localizations.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import 's_fact_tile.dart';
@@ -10,7 +11,7 @@ import 's_list_tile.dart';
 import 's_radio_tile.dart';
 
 const _radioHeight = 56.0;
-const _leadingSize = 40.0;
+const _leadingSize = 28.0;
 const _checkSize = 22.0;
 
 // A little air between a code's characters, so it's easy to read out.
@@ -246,7 +247,8 @@ class SFactTileMaterial extends StatelessWidget implements SFactTile {
 
 /// [SRadioTile] as a white card per choice: the chosen one outlined in the
 /// brand's green, with a filled check; the others with an empty ring, so
-/// each reads as one of a set.
+/// each reads as one of a set. The check sits at the end after an icon or
+/// a mark, and leads in their place.
 class SRadioTileMaterial extends StatelessWidget implements SRadioTile {
   const SRadioTileMaterial({
     required this.title,
@@ -255,6 +257,8 @@ class SRadioTileMaterial extends StatelessWidget implements SRadioTile {
     this.subtitle,
     this.icon,
     this.mark,
+    this.onEdit,
+    this.onDelete,
     super.key,
   }) : assert(icon == null || mark == null, 'An icon or a mark, not both');
 
@@ -262,82 +266,143 @@ class SRadioTileMaterial extends StatelessWidget implements SRadioTile {
   final String? subtitle;
   final SIcons? icon;
 
-  /// A letter or two in the circle instead of an icon ("ع", "En").
+  /// A letter or two in place of an icon ("ع", "En").
   final String? mark;
 
   /// The chosen one of its group: outlined, with a check.
   final bool selected;
   final VoidCallback onTap;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
+    final onEdit = this.onEdit;
+    final onDelete = this.onDelete;
+    final hasActions = onEdit != null || onDelete != null;
+    final leads = icon != null || mark != null;
     final shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(Radii.xl),
       side: selected
           ? BorderSide(color: c.primary, width: 1.5)
           : BorderSide(color: c.border),
     );
-    // Read as one item: its title, subtitle and whether it's chosen.
-    return MergeSemantics(
-      child: Semantics(
-        inMutuallyExclusiveGroup: true,
-        checked: selected,
-        button: true,
-        child: Material(
-          color: c.surface,
-          shape: shape,
-          child: InkWell(
-            customBorder: shape,
-            onTap: onTap,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: _radioHeight),
-              child: Padding(
-                padding: const EdgeInsets.all(Space.md),
-                child: Row(
-                  children: [
-                    if (icon != null || mark != null) ...[
-                      _RadioLeading(icon: icon, mark: mark, selected: selected),
-                      const Gap(Space.md),
-                    ],
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+    return Material(
+      color: c.surface,
+      shape: shape,
+      clipBehavior: Clip.antiAlias,
+      child: Row(
+        children: [
+          Expanded(
+            // Read as one item: its title, subtitle and whether it's
+            // chosen. The pencil and the bin stay buttons of their own.
+            child: MergeSemantics(
+              child: Semantics(
+                inMutuallyExclusiveGroup: true,
+                checked: selected,
+                button: true,
+                child: InkWell(
+                  onTap: onTap,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: _radioHeight),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        start: Space.md,
+                        top: Space.md,
+                        bottom: Space.md,
+                        end: hasActions ? Space.xs : Space.md,
+                      ),
+                      child: Row(
                         children: [
-                          Text(
-                            title,
-                            style: TextStyle(
-                              fontSize: text.body,
-                              fontWeight: SFontWeight.semibold.value,
-                              color: c.text,
+                          if (leads)
+                            _RadioLeading(
+                              icon: icon,
+                              mark: mark,
+                              selected: selected,
+                            )
+                          else
+                            _RadioCheck(selected: selected),
+                          const Gap(Space.md),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  title,
+                                  style: TextStyle(
+                                    fontSize: text.body,
+                                    fontWeight: SFontWeight.semibold.value,
+                                    color: c.text,
+                                  ),
+                                ),
+                                if (subtitle case final subtitle?)
+                                  Text(
+                                    subtitle,
+                                    style: TextStyle(
+                                      fontSize: text.small,
+                                      color: c.textMuted,
+                                    ),
+                                  ),
+                              ],
                             ),
                           ),
-                          if (subtitle case final subtitle?)
-                            Text(
-                              subtitle,
-                              style: TextStyle(
-                                fontSize: text.small,
-                                color: c.textMuted,
-                              ),
-                            ),
+                          if (leads) ...[
+                            const Gap(Space.md),
+                            _RadioCheck(selected: selected),
+                          ],
                         ],
                       ),
                     ),
-                    const Gap(Space.md),
-                    _RadioCheck(selected: selected),
-                  ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
+          if (onEdit != null)
+            _TileAction(
+              icon: SIcons.edit,
+              tooltip: StellarLocalizations.of(context).edit,
+              onPressed: onEdit,
+            ),
+          if (onDelete != null)
+            _TileAction(
+              icon: SIcons.delete,
+              tooltip: StellarLocalizations.of(context).delete,
+              onPressed: onDelete,
+            ),
+        ],
       ),
     );
   }
 }
 
-/// The choice's icon or mark in a circle, green when it's the chosen one.
+/// A quiet icon button at the end of a radio tile (edit, delete).
+class _TileAction extends StatelessWidget {
+  const _TileAction({
+    required this.icon,
+    required this.tooltip,
+    required this.onPressed,
+  });
+
+  final SIcons icon;
+  final String tooltip;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => IconButton(
+    onPressed: onPressed,
+    tooltip: tooltip,
+    icon: Icon(
+      materialIcon(icon),
+      size: SIconSize.sm.pixels,
+      color: context.colors.textMuted,
+    ),
+  );
+}
+
+/// The choice's icon or mark on its own, green when it's the chosen one.
 class _RadioLeading extends StatelessWidget {
   const _RadioLeading({
     required this.icon,
@@ -352,27 +417,24 @@ class _RadioLeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final color = selected ? c.onPrimary : c.text;
+    final color = selected ? c.primary : c.text;
     final icon = this.icon;
-    return Container(
+    // Bare, no circle behind it; a fixed width keeps the titles in line.
+    return SizedBox(
       width: _leadingSize,
-      height: _leadingSize,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: selected ? c.primary : c.fieldFill,
-        shape: BoxShape.circle,
-      ),
-      child: icon != null
-          ? Icon(materialIcon(icon), size: SIconSize.md.pixels, color: color)
-          : Text(
-              mark ?? '',
-              maxLines: 1,
-              style: TextStyle(
-                fontSize: context.style.text.body,
-                fontWeight: SFontWeight.bold.value,
-                color: color,
+      child: Center(
+        child: icon != null
+            ? Icon(materialIcon(icon), size: SIconSize.md.pixels, color: color)
+            : Text(
+                mark ?? '',
+                maxLines: 1,
+                style: TextStyle(
+                  fontSize: context.style.text.body,
+                  fontWeight: SFontWeight.bold.value,
+                  color: color,
+                ),
               ),
-            ),
+      ),
     );
   }
 }

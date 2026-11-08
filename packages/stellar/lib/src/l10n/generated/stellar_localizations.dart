@@ -460,6 +460,18 @@ abstract class StellarLocalizations {
   /// In en, this message translates to:
   /// **'More'**
   String get quantityMore;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
 }
 
 class _StellarLocalizationsDelegate

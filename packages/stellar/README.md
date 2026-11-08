@@ -37,6 +37,8 @@ lib/src/
 | `scaffold` | `SScaffold` (`parent` for a breadcrumb, `status` for a badge after the title) |
 | `shell` | `SShell` (side menu layout for the dashboard) |
 | `deal` | `SDealTile` (an offer in a list: photo, offer price beside the crossed-out regular one, the discount in orange) |
+| `split_bar` | `SSplitBar` (a whole split into parts: one bar with a key under it) |
+| `fact_box` | `SFactBoxes` (the few facts to plan around, side by side in outlined boxes under a page's photo) |
 | `image` | `SImage` (a photo from the server, cached on the device, with a placeholder) |
 | `photo` | `SPhotoField` (a record's photo: add, change, upload progress, retry), `SPhoto.chooseSource`, `SPhoto.askToOpenSettings` |
 | `scanner` | `SScannerView` (a camera with a square to aim at, a hint and the light's button; `cover` for when the camera is off) |

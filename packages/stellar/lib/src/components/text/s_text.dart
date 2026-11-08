@@ -4,7 +4,7 @@ import '../../foundation/s_tokens.dart';
 import 's_text_material.dart';
 
 /// The size (and default weight) of a text, from the theme's type scale.
-enum TextVariant { display, title, subtitle, body, caption, label }
+enum TextVariant { figure, display, title, subtitle, body, caption, label }
 
 /// All text in the apps. Size, weight and color are stellar tokens
 /// ([TextVariant], [SFontWeight], [SColor]), never raw numbers or colors.

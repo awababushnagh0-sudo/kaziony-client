@@ -8,6 +8,7 @@ import 'package:reactive_forms/reactive_forms.dart'
 
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
+import '../input/s_input_material.dart' show fieldScrollPadding;
 import '../snack/s_snack.dart';
 import 's_code_card.dart';
 import 's_code_input.dart';
@@ -217,6 +218,7 @@ class _SCodeInputMaterialState extends State<SCodeInputMaterial> {
                 formControlName: widget.controlName,
                 focusNode: _focus,
                 autofocus: widget.autofocus,
+                scrollPadding: fieldScrollPadding,
                 maxLength: widget.length,
                 showErrors: (_) => false,
                 showCursor: false,

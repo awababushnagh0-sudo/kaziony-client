@@ -12,6 +12,7 @@ enum StellarStyle {
     radius: Radii.lg,
     text: TextSizes(
       code: 52,
+      figure: 60,
       hero: 44,
       display: 28,
       title: 22,
@@ -29,6 +30,7 @@ enum StellarStyle {
     radius: Radii.md,
     text: TextSizes(
       code: 40,
+      figure: 48,
       hero: 36,
       display: 26,
       title: 20,

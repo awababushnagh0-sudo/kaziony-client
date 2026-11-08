@@ -21,9 +21,13 @@ class SPhotoHeaderMaterial extends StatelessWidget implements SPhotoHeader {
     this.imageUrl,
     this.discountLabel,
     this.favorite,
+    this.action,
     this.onBack,
     super.key,
-  });
+  }) : assert(
+         favorite == null || action == null,
+         'One button across from the back button: a heart or an action.',
+       );
 
   /// The photo's height, under the status bar.
   static const _photoHeight = 200.0;
@@ -43,6 +47,7 @@ class SPhotoHeaderMaterial extends StatelessWidget implements SPhotoHeader {
   final String? imageUrl;
   final String? discountLabel;
   final PhotoHeaderFavorite? favorite;
+  final PhotoHeaderAction? action;
   final VoidCallback? onBack;
 
   @override
@@ -114,6 +119,7 @@ class _PhotoHeaderDelegate extends SliverPersistentHeaderDelegate {
     final url = header.imageUrl;
     final onBack = header.onBack;
     final favorite = header.favorite;
+    final action = header.action;
     final discountLabel = header.discountLabel;
     final caption = header.caption;
     final folded = (shrinkOffset / (maxExtent - minExtent)).clamp(0.0, 1.0);
@@ -295,7 +301,8 @@ class _PhotoHeaderDelegate extends SliverPersistentHeaderDelegate {
                         ),
                       ),
                     ),
-                  if (words == 0 && favorite != null) const Spacer(),
+                  if (words == 0 && (favorite != null || action != null))
+                    const Spacer(),
                   if (words > 0 && header.trailing != null)
                     Opacity(opacity: words, child: header.trailing),
                   if (favorite != null)
@@ -304,6 +311,13 @@ class _PhotoHeaderDelegate extends SliverPersistentHeaderDelegate {
                       tooltip: favorite.tooltip,
                       onPressed: favorite.onPressed,
                       selected: favorite.saved,
+                      lift: 1 - bar,
+                    ),
+                  if (action != null)
+                    RoundPhotoButton(
+                      icon: action.icon,
+                      tooltip: action.tooltip,
+                      onPressed: action.onPressed,
                       lift: 1 - bar,
                     ),
                 ],

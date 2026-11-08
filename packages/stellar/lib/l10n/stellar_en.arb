@@ -90,5 +90,7 @@
   "continueWithGoogle": "Continue with Google",
   "continueWithApple": "Continue with Apple",
   "quantityFewer": "Fewer",
-  "quantityMore": "More"
+  "quantityMore": "More",
+  "edit": "Edit",
+  "delete": "Delete"
 }

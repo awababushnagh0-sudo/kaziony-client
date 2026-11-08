@@ -59,5 +59,7 @@
   "continueWithGoogle": "المتابعة مع Google",
   "continueWithApple": "المتابعة مع Apple",
   "quantityFewer": "أقل",
-  "quantityMore": "أكثر"
+  "quantityMore": "أكثر",
+  "edit": "عدّل",
+  "delete": "احذف"
 }

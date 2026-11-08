@@ -23,6 +23,7 @@ enum SFontWeight {
 class TextSizes {
   const TextSizes({
     required this.code,
+    required this.figure,
     required this.hero,
     required this.display,
     required this.title,
@@ -34,6 +35,9 @@ class TextSizes {
 
   /// A code held up across the counter to compare (a pickup code).
   final double code;
+
+  /// The one number a page is about: customers on their way.
+  final double figure;
 
   /// Figures read from across a counter: the amount to collect.
   final double hero;

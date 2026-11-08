@@ -84,6 +84,12 @@ ThemeData buildMaterialTheme(
             height: 1.5,
           ),
           bodySmall: TextStyle(fontSize: text.small, color: c.textSubtle),
+          displayLarge: TextStyle(
+            fontSize: text.figure,
+            fontWeight: SFontWeight.bold.value,
+            color: c.text,
+            height: 1.1,
+          ),
           headlineMedium: TextStyle(
             fontSize: text.display,
             fontWeight: SFontWeight.bold.value,

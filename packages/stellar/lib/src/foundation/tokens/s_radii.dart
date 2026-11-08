@@ -7,7 +7,7 @@ abstract final class Radii {
   /// Choice cards ([SRadioTile]): rounder than fields, not pills.
   static const xl = 16.0;
 
-  /// Panels that group cards ([SStatGrid]).
+  /// Panels that group things ([SFormSection]).
   static const xxl = 20.0;
 
   /// The rounded foot of a colored band across a page's top

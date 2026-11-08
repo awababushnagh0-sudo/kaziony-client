@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
+import '../../material/s_color_above.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import '../illustration/s_illustration.dart';
@@ -284,68 +285,71 @@ class SProfileGreetingMaterial extends StatelessWidget
     final text = context.style.text;
     final subtitle = this.subtitle;
     final illustration = this.illustration;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: c.accentSoft,
-        borderRadius: const BorderRadius.vertical(
-          bottom: Radius.circular(Radii.band),
+    return ColorAbove(
+      color: c.accentSoft,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: c.accentSoft,
+          borderRadius: const BorderRadius.vertical(
+            bottom: Radius.circular(Radii.band),
+          ),
         ),
-      ),
-      child: Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(
-          Space.lg,
-          MediaQuery.paddingOf(context).top + Space.xl,
-          Space.sm,
-          Space.lg,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          spacing: Space.sm,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: Space.sm),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      greeting,
-                      style: TextStyle(
-                        fontSize: text.subtitle,
-                        fontWeight: SFontWeight.medium.value,
-                        color: c.textMuted,
-                      ),
-                    ),
-                    Semantics(
-                      header: true,
-                      child: Text(
-                        name,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: text.hero,
-                          fontWeight: SFontWeight.bold.value,
-                          height: 1.2,
-                          color: c.primary,
-                        ),
-                      ),
-                    ),
-                    if (subtitle != null)
+        child: Padding(
+          padding: EdgeInsetsDirectional.fromSTEB(
+            Space.lg,
+            MediaQuery.paddingOf(context).top + Space.xl,
+            Space.sm,
+            Space.lg,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            spacing: Space.sm,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: Space.sm),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Text(
-                        subtitle,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        greeting,
                         style: TextStyle(
-                          fontSize: text.body,
+                          fontSize: text.subtitle,
+                          fontWeight: SFontWeight.medium.value,
                           color: c.textMuted,
                         ),
                       ),
-                  ],
+                      Semantics(
+                        header: true,
+                        child: Text(
+                          name,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: text.hero,
+                            fontWeight: SFontWeight.bold.value,
+                            height: 1.2,
+                            color: c.primary,
+                          ),
+                        ),
+                      ),
+                      if (subtitle != null)
+                        Text(
+                          subtitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: text.body,
+                            color: c.textMuted,
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            if (illustration != null) SIllustration(illustration),
-          ],
+              if (illustration != null) SIllustration(illustration),
+            ],
+          ),
         ),
       ),
     );

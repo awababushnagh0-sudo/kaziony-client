@@ -67,6 +67,108 @@ class SBadgeMaterial extends StatelessWidget implements SBadge {
   }
 }
 
+/// [SBadge.dot], drawn as a small circle and a [Text].
+class SBadgeDotMaterial extends StatelessWidget implements SBadge {
+  const SBadgeDotMaterial(
+    this.label, {
+    this.tone = BadgeTone.neutral,
+    super.key,
+  });
+
+  final String label;
+  final BadgeTone tone;
+
+  static const _dot = 8.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final (word, dot) = switch (tone) {
+      BadgeTone.success => (c.link, c.link),
+      BadgeTone.warning => (c.accentInk, c.accent),
+      BadgeTone.danger => (c.danger, c.danger),
+      _ => (c.textSubtle, c.textSubtle),
+    };
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      spacing: Space.xs,
+      children: [
+        Container(
+          width: _dot,
+          height: _dot,
+          decoration: BoxDecoration(color: dot, shape: BoxShape.circle),
+        ),
+        Flexible(
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: context.style.text.tiny,
+              fontWeight: SFontWeight.semibold.value,
+              color: word,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// [SBadge.status], drawn as a dot and a [Text] in a white pill.
+class SBadgeStatusMaterial extends StatelessWidget implements SBadge {
+  const SBadgeStatusMaterial(
+    this.label, {
+    this.tone = BadgeTone.neutral,
+    super.key,
+  });
+
+  static const _dot = 8.0;
+
+  final String label;
+  final BadgeTone tone;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final (ink, _) = badgeColors(c, tone);
+    // The solid orange tone's text is white: on white, the orange itself.
+    final color = tone == BadgeTone.accent ? c.accent : ink;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: c.surface,
+        borderRadius: BorderRadius.circular(Radii.pill),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: Space.md,
+          vertical: Space.xs,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          spacing: Space.xs,
+          children: [
+            SizedBox.square(
+              dimension: _dot,
+              child: DecoratedBox(
+                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+              ),
+            ),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: context.style.text.small,
+                fontWeight: SFontWeight.bold.value,
+                color: color,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 /// A [tone]'s text and background colors.
 (Color, Color) badgeColors(StellarColors c, BadgeTone tone) => switch (tone) {
   BadgeTone.success => (c.success, c.successSoft),

@@ -202,4 +202,10 @@ class StellarLocalizationsEn extends StellarLocalizations {
 
   @override
   String get quantityMore => 'More';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get delete => 'Delete';
 }

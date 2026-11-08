@@ -198,4 +198,10 @@ class StellarLocalizationsAr extends StellarLocalizations {
 
   @override
   String get quantityMore => 'أكثر';
+
+  @override
+  String get edit => 'عدّل';
+
+  @override
+  String get delete => 'احذف';
 }

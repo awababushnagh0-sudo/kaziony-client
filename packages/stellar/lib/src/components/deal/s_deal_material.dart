@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
-import '../badge/s_badge.dart';
 import '../badge/s_badge_material.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import '../image/s_image_material.dart';
 import '../photo_header/s_photo_header_material.dart';
-import '../stat/s_figures.dart';
 import 's_deal_tile.dart';
 
 /// [SDealTile], drawn as an [InkWell] row, in a bordered [Material] when
@@ -20,7 +18,6 @@ class SDealTileMaterial extends StatelessWidget implements SDealTile {
     required this.price,
     this.discountPercent,
     this.imageUrl,
-    this.stock,
     this.bordered = false,
     this.onTap,
     super.key,
@@ -30,7 +27,6 @@ class SDealTileMaterial extends StatelessWidget implements SDealTile {
   final String price;
   final int? discountPercent;
   final String? imageUrl;
-  final DealTileStock? stock;
   final bool bordered;
   final VoidCallback? onTap;
 
@@ -38,7 +34,6 @@ class SDealTileMaterial extends StatelessWidget implements SDealTile {
   Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    final stock = this.stock;
     final row = Padding(
       padding: bordered
           ? const EdgeInsets.all(Space.md)
@@ -90,7 +85,6 @@ class SDealTileMaterial extends StatelessWidget implements SDealTile {
               ],
             ),
           ),
-          if (stock != null) _StockCount(stock),
         ],
       ),
     );
@@ -204,7 +198,7 @@ class SDealHeaderMaterial extends StatelessWidget implements SDealHeader {
                 PositionedDirectional(
                   bottom: Space.md,
                   start: Space.lg,
-                  child: _StatusPill(status),
+                  child: SBadgeStatusMaterial(status.label, tone: status.tone),
                 ),
             ],
           ),
@@ -265,231 +259,6 @@ class SDealHeaderMaterial extends StatelessWidget implements SDealHeader {
   }
 }
 
-/// [SDealStock], drawn with Material's [LinearProgressIndicator].
-class SDealStockMaterial extends StatelessWidget implements SDealStock {
-  const SDealStockMaterial({
-    required this.label,
-    required this.left,
-    this.note,
-    super.key,
-  });
-
-  static const _barHeight = 10.0;
-
-  final String label;
-  final String? note;
-  final double left;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final text = context.style.text;
-    final note = this.note;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: c.accentWash,
-        borderRadius: BorderRadius.circular(Radii.xl),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(Space.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          spacing: Space.md,
-          children: [
-            Row(
-              spacing: Space.sm,
-              children: [
-                Expanded(
-                  child: Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: text.body,
-                      fontWeight: SFontWeight.bold.value,
-                      color: c.accentInk,
-                    ),
-                  ),
-                ),
-                if (note != null)
-                  Flexible(
-                    child: Text(
-                      note,
-                      textAlign: TextAlign.end,
-                      style: TextStyle(
-                        fontSize: text.small,
-                        fontWeight: SFontWeight.semibold.value,
-                        color: c.textMuted,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            _Bar(
-              left: left,
-              height: _barHeight,
-              fill: c.accent,
-              track: c.accentSoft,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// [SDealCard], drawn as a bordered [Material] with an [InkWell].
-class SDealCardMaterial extends StatelessWidget implements SDealCard {
-  const SDealCardMaterial({
-    required this.title,
-    required this.price,
-    this.originalPrice,
-    this.discountPercent,
-    this.imageUrl,
-    this.status,
-    this.when,
-    this.stock,
-    this.figures = const [],
-    this.onTap,
-    super.key,
-  });
-
-  static const _barHeight = 6.0;
-
-  final String title;
-  final String price;
-  final String? originalPrice;
-  final int? discountPercent;
-  final String? imageUrl;
-  final DealStatus? status;
-  final String? when;
-  final DealStockSpec? stock;
-  final List<Figure> figures;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final text = context.style.text;
-    final status = this.status;
-    final when = this.when;
-    final stock = this.stock;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Space.lg),
-      child: Material(
-        color: c.surface,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(Radii.xl),
-          side: BorderSide(color: c.border),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(Space.md),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: Space.md,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: Space.md,
-                  children: [
-                    _Photo(url: imageUrl, discountPercent: discountPercent),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: Space.xs,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            spacing: Space.sm,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  title,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: text.body,
-                                    fontWeight: SFontWeight.bold.value,
-                                    color: c.text,
-                                  ),
-                                ),
-                              ),
-                              if (status != null)
-                                SBadgeMaterial(status.label, tone: status.tone),
-                            ],
-                          ),
-                          _Prices(
-                            price: price,
-                            originalPrice: originalPrice,
-                            priceSize: text.body,
-                          ),
-                          if (when != null)
-                            Row(
-                              spacing: Space.xs,
-                              children: [
-                                Icon(
-                                  materialIcon(SIcons.clock),
-                                  size: SIconSize.xs.pixels,
-                                  color: c.textSubtle,
-                                ),
-                                Flexible(
-                                  child: Text(
-                                    when,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: text.small,
-                                      color: c.textMuted,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                if (stock != null)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    spacing: Space.xs,
-                    children: [
-                      Text(
-                        stock.label,
-                        style: TextStyle(
-                          fontSize: text.small,
-                          fontWeight: SFontWeight.semibold.value,
-                          color: c.text,
-                        ),
-                      ),
-                      _Bar(
-                        left: stock.left,
-                        height: _barHeight,
-                        fill: c.primary,
-                        track: c.primaryTint,
-                      ),
-                    ],
-                  ),
-                if (figures.isNotEmpty)
-                  // Sharing the card's width.
-                  Row(
-                    spacing: Space.sm,
-                    children: [
-                      for (final figure in figures)
-                        Expanded(child: _FigurePill(figure)),
-                    ],
-                  ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 /// [SDealFooter], drawn as a row: `SScaffold.bottom` gives it its room
 /// and keeps it clear of the home indicator.
 class SDealFooterMaterial extends StatelessWidget implements SDealFooter {
@@ -506,88 +275,6 @@ class SDealFooterMaterial extends StatelessWidget implements SDealFooter {
       Expanded(child: action),
     ],
   );
-}
-
-/// An offer's photo with its discount in the corner, cut by the rounding.
-class _Photo extends StatelessWidget {
-  const _Photo({required this.url, required this.discountPercent});
-
-  final String? url;
-  final int? discountPercent;
-
-  @override
-  Widget build(BuildContext context) => ClipRRect(
-    borderRadius: BorderRadius.circular(SImageSize.deal.radius),
-    child: Stack(
-      children: [
-        SImageMaterial(url, size: SImageSize.deal),
-        if (discountPercent case final percent?)
-          PositionedDirectional(
-            bottom: 0,
-            start: 0,
-            child: _DiscountTag(percent),
-          ),
-      ],
-    ),
-  );
-}
-
-/// One of a card's numbers in a gray pill: its icon, the number and what
-/// it counts.
-class _FigurePill extends StatelessWidget {
-  const _FigurePill(this.figure);
-
-  final Figure figure;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final text = context.style.text;
-    final icon = figure.icon;
-    return MergeSemantics(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: c.surface,
-          border: Border.all(color: c.border),
-          borderRadius: BorderRadius.circular(Radii.pill),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Space.sm,
-            vertical: Space.sm,
-          ),
-          // Smaller words, never cut, where the three don't fit.
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              spacing: Space.xs,
-              children: [
-                if (icon != null)
-                  Icon(
-                    materialIcon(icon),
-                    size: SIconSize.xs.pixels,
-                    color: c.textMuted,
-                  ),
-                Text(
-                  figure.value,
-                  style: TextStyle(
-                    fontSize: text.small,
-                    fontWeight: SFontWeight.bold.value,
-                    color: c.text,
-                  ),
-                ),
-                Text(
-                  figure.label,
-                  style: TextStyle(fontSize: text.small, color: c.textMuted),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 /// The price in the brand's green, and the regular one crossed out when
@@ -636,81 +323,6 @@ class _Prices extends StatelessWidget {
   }
 }
 
-/// What's left, in [fill] on [track].
-class _Bar extends StatelessWidget {
-  const _Bar({
-    required this.left,
-    required this.height,
-    required this.fill,
-    required this.track,
-  });
-
-  final double left;
-  final double height;
-  final Color fill;
-  final Color track;
-
-  @override
-  Widget build(BuildContext context) => ClipRRect(
-    borderRadius: BorderRadius.circular(Radii.pill),
-    child: LinearProgressIndicator(
-      value: left.clamp(0, 1),
-      minHeight: height,
-      color: fill,
-      backgroundColor: track,
-    ),
-  );
-}
-
-/// "● Live" in a white pill, so it reads on any photo.
-class _StatusPill extends StatelessWidget {
-  const _StatusPill(this.status);
-
-  static const _dot = 8.0;
-
-  final DealStatus status;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final (tone, _) = badgeColors(c, status.tone);
-    // The solid orange tone's text is white: on white, the orange itself.
-    final color = status.tone == BadgeTone.accent ? c.accent : tone;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: c.surface,
-        borderRadius: BorderRadius.circular(Radii.pill),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: Space.md,
-          vertical: Space.xs,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          spacing: Space.xs,
-          children: [
-            SizedBox.square(
-              dimension: _dot,
-              child: DecoratedBox(
-                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-              ),
-            ),
-            Text(
-              status.label,
-              style: TextStyle(
-                fontSize: context.style.text.small,
-                fontWeight: SFontWeight.bold.value,
-                color: color,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 /// The discount in a photo's corner: small, so the photo still shows, and
 /// rounded only on the side facing the photo.
 class _DiscountTag extends StatelessWidget {
@@ -743,51 +355,6 @@ class _DiscountTag extends StatelessWidget {
             color: c.onDiscount,
           ),
         ),
-      ),
-    );
-  }
-}
-
-/// How much is left at a tile's end: the pieces left in big figures, and
-/// "of 10" smaller under them, set off toward the end so the two read as a
-/// count, not a column; orange when almost gone.
-class _StockCount extends StatelessWidget {
-  const _StockCount(this.stock);
-
-  final DealTileStock stock;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final text = context.style.text;
-    return Semantics(
-      label: stock.label,
-      excludeSemantics: true,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '${stock.left}',
-            style: TextStyle(
-              fontSize: text.display,
-              fontWeight: SFontWeight.bold.value,
-              height: 1,
-              color: stock.hot ? c.accentInk : c.primary,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsetsDirectional.only(start: Space.md),
-            child: Text(
-              stock.note,
-              style: TextStyle(
-                fontSize: text.small,
-                fontWeight: SFontWeight.medium.value,
-                color: c.textMuted,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

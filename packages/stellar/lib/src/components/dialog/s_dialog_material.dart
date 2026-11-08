@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../../l10n/generated/stellar_localizations.dart';
+import '../button/s_button_material.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import 's_dialog.dart';
@@ -43,7 +44,10 @@ class SDialogMaterial extends StatelessWidget implements SDialog {
     builder: builder,
   );
 
-  /// [SDialog.confirm], as Material's [AlertDialog].
+  /// [SDialog.confirm]: on the phones, the question centered over the
+  /// action and the way back, one under the other and full width (a
+  /// destructive action soft red, never a loud one); on the dashboard,
+  /// Material's [AlertDialog].
   static Future<bool> confirm(
     BuildContext context, {
     required String title,
@@ -55,32 +59,21 @@ class SDialogMaterial extends StatelessWidget implements SDialog {
     final cancel = cancelLabel ?? StellarLocalizations.of(context).cancel;
     final result = await showDialog<bool>(
       context: context,
-      builder: (context) {
-        final c = context.colors;
-        return AlertDialog(
-          title: Text(title, style: Theme.of(context).textTheme.titleMedium),
-          content: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 400),
-            child: Text(message),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: Text(cancel),
+      builder: (context) => context.style == StellarStyle.app
+          ? _PhoneConfirm(
+              title: title,
+              message: message,
+              confirmLabel: confirmLabel,
+              cancelLabel: cancel,
+              destructive: destructive,
+            )
+          : _DashboardConfirm(
+              title: title,
+              message: message,
+              confirmLabel: confirmLabel,
+              cancelLabel: cancel,
+              destructive: destructive,
             ),
-            FilledButton(
-              style: destructive
-                  ? FilledButton.styleFrom(
-                      backgroundColor: c.danger,
-                      foregroundColor: c.onDanger,
-                    )
-                  : null,
-              onPressed: () => Navigator.pop(context, true),
-              child: Text(confirmLabel),
-            ),
-          ],
-        );
-      },
     );
     return result ?? false;
   }
@@ -165,6 +158,134 @@ class SDialogMaterial extends StatelessWidget implements SDialog {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// How wide a confirmation gets on a big phone or a tablet.
+const _confirmMaxWidth = 400.0;
+
+class _PhoneConfirm extends StatelessWidget {
+  const _PhoneConfirm({
+    required this.title,
+    required this.message,
+    required this.confirmLabel,
+    required this.cancelLabel,
+    required this.destructive,
+  });
+
+  final String title;
+  final String message;
+  final String confirmLabel;
+  final String cancelLabel;
+  final bool destructive;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final text = context.style.text;
+    void confirm() => Navigator.pop(context, true);
+    return Dialog(
+      insetPadding: const EdgeInsets.all(Space.xl),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Radii.xl),
+      ),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: _confirmMaxWidth),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+            Space.xl,
+            Space.xl,
+            Space.xl,
+            Space.md,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: text.title,
+                  fontWeight: SFontWeight.bold.value,
+                  color: c.text,
+                ),
+              ),
+              const Gap(Space.sm),
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: text.body, color: c.textMuted),
+              ),
+              const Gap(Space.xl),
+              if (destructive)
+                SButtonMaterial.dangerSoft(
+                  label: confirmLabel,
+                  expand: true,
+                  onPressed: confirm,
+                )
+              else
+                SButtonMaterial(
+                  label: confirmLabel,
+                  expand: true,
+                  onPressed: confirm,
+                ),
+              const Gap(Space.xs),
+              Center(
+                child: SButtonMaterial.text(
+                  label: cancelLabel,
+                  onPressed: () => Navigator.pop(context, false),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DashboardConfirm extends StatelessWidget {
+  const _DashboardConfirm({
+    required this.title,
+    required this.message,
+    required this.confirmLabel,
+    required this.cancelLabel,
+    required this.destructive,
+  });
+
+  final String title;
+  final String message;
+  final String confirmLabel;
+  final String cancelLabel;
+  final bool destructive;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return AlertDialog(
+      title: Text(title, style: Theme.of(context).textTheme.titleMedium),
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: _confirmMaxWidth),
+        child: Text(message),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: Text(cancelLabel),
+        ),
+        FilledButton(
+          style: destructive
+              ? FilledButton.styleFrom(
+                  backgroundColor: c.danger,
+                  foregroundColor: c.onDanger,
+                )
+              : null,
+          onPressed: () => Navigator.pop(context, true),
+          child: Text(confirmLabel),
+        ),
+      ],
     );
   }
 }

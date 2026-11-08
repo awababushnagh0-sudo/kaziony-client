@@ -357,6 +357,7 @@ class SBoneMaterial extends StatelessWidget implements SBone {
   Widget _line(BuildContext context, Widget bone) {
     final theme = Theme.of(context).textTheme;
     final style = switch (variant) {
+      TextVariant.figure => theme.displayLarge,
       TextVariant.display => theme.headlineMedium,
       TextVariant.title => theme.titleLarge,
       TextVariant.subtitle => theme.titleMedium,

@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
+import '../../material/s_color_above.dart';
 import '../illustration/s_illustration.dart';
 import '../scaffold/s_scaffold.dart';
 import '../text/s_text.dart';
@@ -185,30 +186,33 @@ class _HeroBand extends StatelessWidget {
   final List<Widget> actions;
 
   @override
-  Widget build(BuildContext context) => DecoratedBox(
-    decoration: BoxDecoration(
-      color: context.colors.cream,
-      borderRadius: const BorderRadius.vertical(
-        bottom: Radius.circular(_heroCorner),
+  Widget build(BuildContext context) => ColorAbove(
+    color: context.colors.cream,
+    child: DecoratedBox(
+      decoration: BoxDecoration(
+        color: context.colors.cream,
+        borderRadius: const BorderRadius.vertical(
+          bottom: Radius.circular(_heroCorner),
+        ),
       ),
-    ),
-    child: Padding(
-      // The band starts behind the status bar; its content under it.
-      padding: EdgeInsets.fromLTRB(
-        Space.lg,
-        MediaQuery.paddingOf(context).top + Space.sm,
-        Space.lg,
-        Space.sm,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [SIllustration(hero.mark), const Spacer(), ...actions],
-          ),
-          SIllustration(hero.illustration),
-        ],
+      child: Padding(
+        // The band starts behind the status bar; its content under it.
+        padding: EdgeInsets.fromLTRB(
+          Space.lg,
+          MediaQuery.paddingOf(context).top + Space.sm,
+          Space.lg,
+          Space.sm,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [SIllustration(hero.mark), const Spacer(), ...actions],
+            ),
+            SIllustration(hero.illustration),
+          ],
+        ),
       ),
     ),
   );

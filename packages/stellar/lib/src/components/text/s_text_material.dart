@@ -63,6 +63,7 @@ class STextMaterial extends StatelessWidget implements SText {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).textTheme;
     final base = switch (variant) {
+      TextVariant.figure => theme.displayLarge,
       TextVariant.display => theme.headlineMedium,
       TextVariant.title => theme.titleLarge,
       TextVariant.subtitle => theme.titleMedium,

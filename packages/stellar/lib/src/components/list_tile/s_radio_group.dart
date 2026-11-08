@@ -21,10 +21,10 @@ class RadioOption<T> {
   /// A quieter line under [label] (a branch's address).
   final String? subtitle;
 
-  /// At the start of the row, in a circle.
+  /// At the start of the row, on its own.
   final SIcons? icon;
 
-  /// A letter or two in the circle instead of an icon, where no icon fits
+  /// A letter or two in place of an icon, where no icon fits
   /// ("ع" and "En" for the languages).
   final String? mark;
 }

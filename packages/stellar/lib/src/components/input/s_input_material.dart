@@ -17,6 +17,11 @@ import 's_search_field.dart';
 import 's_select_input.dart';
 import 's_text_input.dart';
 
+/// How much of the page a field keeps in view around its cursor when the
+/// keyboard opens. Flutter's 20 under it leaves the field touching the
+/// keyboard; this also shows what comes next (the next field, the button).
+const fieldScrollPadding = EdgeInsets.fromLTRB(20, 20, 20, 160);
+
 /// [STextInput], drawn with reactive_forms' [ReactiveTextField].
 class STextInputMaterial extends StatelessWidget implements STextInput {
   const STextInputMaterial({
@@ -440,6 +445,7 @@ Widget _buildField(
       maxLines: input.kind == TextInputKind.multiline ? 4 : 1,
       autofillHints: input.autofillHints,
       autofocus: input.autofocus,
+      scrollPadding: fieldScrollPadding,
       inputFormatters: switch (input.kind) {
         TextInputKind.price => [_priceCharacters],
         TextInputKind.code => [_codeCharacters, _capitals],

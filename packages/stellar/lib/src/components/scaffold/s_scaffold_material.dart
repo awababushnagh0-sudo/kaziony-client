@@ -95,6 +95,8 @@ class SScaffoldMaterial extends StatelessWidget implements SScaffold {
       if (onRefresh != null) {
         body = RefreshIndicator(
           onRefresh: onRefresh,
+          // On a page under the status bar, it comes down below the notch.
+          edgeOffset: underStatusBar ? MediaQuery.paddingOf(context).top : 0,
           color: context.colors.primary,
           backgroundColor: context.colors.surface,
           child: body,

@@ -254,7 +254,7 @@ enum SColor {
   onScrimBrand,
   link,
 
-  // Behind things: panels and cards (SStatGrid).
+  // Behind things: panels and cards.
   surface,
   surfaceMuted,
 

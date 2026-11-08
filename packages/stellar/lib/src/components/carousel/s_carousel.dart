@@ -10,6 +10,11 @@ abstract interface class SCarousel implements Widget {
   const factory SCarousel({required List<Widget> children, Key? key}) =
       SCarouselMaterial;
 
+  /// Wider cards with only an edge of the next one showing, for cards with
+  /// more to read (a store's own offers with their numbers).
+  const factory SCarousel.wide({required List<Widget> children, Key? key}) =
+      SCarouselMaterial.wide;
+
   /// Small things at their own width, closer together, as many as fit
   /// (a row of stores' logos).
   const factory SCarousel.small({required List<Widget> children, Key? key}) =
