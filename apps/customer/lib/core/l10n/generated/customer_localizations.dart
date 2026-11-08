@@ -1300,6 +1300,150 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'Browse offers'**
   String get browseOffers;
+
+  /// No description provided for @placesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show offers near'**
+  String get placesTitle;
+
+  /// No description provided for @addPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a place'**
+  String get addPlace;
+
+  /// No description provided for @findingLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Finding where you are…'**
+  String get findingLocation;
+
+  /// No description provided for @addPlaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a place'**
+  String get addPlaceTitle;
+
+  /// No description provided for @addPlaceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Home, work, or family: save it once and switch with a tap.'**
+  String get addPlaceMessage;
+
+  /// No description provided for @placeNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get placeNameLabel;
+
+  /// No description provided for @placeNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Home, Work, Grandma\'s'**
+  String get placeNameHint;
+
+  /// No description provided for @savePlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get savePlace;
+
+  /// No description provided for @placeDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Name this place'**
+  String get placeDetailsTitle;
+
+  /// No description provided for @placeNoteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get placeNoteLabel;
+
+  /// No description provided for @placeNoteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Second floor, across from the mosque'**
+  String get placeNoteHint;
+
+  /// No description provided for @editPlaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit place'**
+  String get editPlaceTitle;
+
+  /// No description provided for @placeOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Spot on the map'**
+  String get placeOnMap;
+
+  /// No description provided for @placeMoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Moved'**
+  String get placeMoved;
+
+  /// No description provided for @deletePlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete place'**
+  String get deletePlace;
+
+  /// No description provided for @switchPlaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch place?'**
+  String get switchPlaceTitle;
+
+  /// No description provided for @switchPlaceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll show offers near “{name}”.'**
+  String switchPlaceMessage(String name);
+
+  /// No description provided for @switchPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch'**
+  String get switchPlace;
+
+  /// No description provided for @deletePlaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete “{name}”?'**
+  String deletePlaceTitle(String name);
+
+  /// No description provided for @deletePlaceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You can add it again any time.'**
+  String get deletePlaceMessage;
+
+  /// No description provided for @placesSignInTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to save your places'**
+  String get placesSignInTitle;
+
+  /// No description provided for @placeSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Place saved'**
+  String get placeSaved;
+
+  /// No description provided for @placeUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Place updated'**
+  String get placeUpdated;
+
+  /// No description provided for @placeDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Place deleted'**
+  String get placeDeleted;
 }
 
 class _CustomerLocalizationsDelegate

@@ -746,4 +746,81 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String get browseOffers => 'تصفّح العروض';
+
+  @override
+  String get placesTitle => 'وين نوريك العروض؟';
+
+  @override
+  String get addPlace => 'أضف مكان';
+
+  @override
+  String get findingLocation => 'نحدد في موقعك…';
+
+  @override
+  String get addPlaceTitle => 'أضف مكان';
+
+  @override
+  String get addPlaceMessage =>
+      'البيت، الشغل، أو بيت العيلة: احفظه مرة وبدّل بينهم بضغطة.';
+
+  @override
+  String get placeNameLabel => 'الاسم';
+
+  @override
+  String get placeNameHint => 'مثلاً: البيت، الشغل، بيت جدي';
+
+  @override
+  String get savePlace => 'احفظ';
+
+  @override
+  String get placeDetailsTitle => 'شن تسمّي المكان؟';
+
+  @override
+  String get placeNoteLabel => 'وصف (اختياري)';
+
+  @override
+  String get placeNoteHint => 'مثلاً: الدور الثاني، قدام الجامع';
+
+  @override
+  String get editPlaceTitle => 'عدّل المكان';
+
+  @override
+  String get placeOnMap => 'المكان على الخريطة';
+
+  @override
+  String get placeMoved => 'تغيّر';
+
+  @override
+  String get deletePlace => 'احذف المكان';
+
+  @override
+  String get switchPlaceTitle => 'نبدّل المكان؟';
+
+  @override
+  String switchPlaceMessage(String name) {
+    return 'نوريك العروض قرب «$name».';
+  }
+
+  @override
+  String get switchPlace => 'بدّل';
+
+  @override
+  String deletePlaceTitle(String name) {
+    return 'تحذف «$name»؟';
+  }
+
+  @override
+  String get deletePlaceMessage => 'تقدر تضيفه من جديد وقت ما تبي.';
+
+  @override
+  String get placesSignInTitle => 'سجّل دخولك باش تحفظ أماكنك';
+
+  @override
+  String get placeSaved => 'حفظنا المكان';
+
+  @override
+  String get placeUpdated => 'عدّلنا المكان';
+
+  @override
+  String get placeDeleted => 'حذفنا المكان';
 }

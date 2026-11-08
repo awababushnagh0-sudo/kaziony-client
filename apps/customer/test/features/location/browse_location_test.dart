@@ -1,4 +1,5 @@
 import 'package:customer/features/location/domain/browse_location.dart';
+import 'package:customer/features/location/domain/saved_place.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kernel/kernel.dart';
 import 'package:kernel/testing.dart';
@@ -52,6 +53,19 @@ void main() {
       container.read(browseLocationProvider)?.point,
       const GeoPoint(32.9, 13.2),
     );
+  });
+
+  test("a saved place's name is kept with it", () async {
+    await container
+        .read(browseLocationProvider.notifier)
+        .set(
+          BrowseLocation.of(
+            const SavedPlace(id: '1', name: 'Home', point: souqAlJuma),
+          ),
+        );
+
+    final kept = await BrowseLocationController.readSaved(settings);
+    expect((kept?.placeId, kept?.name, kept?.pinned), ('1', 'Home', true));
   });
 
   test('a service area covers what is within its radius', () {

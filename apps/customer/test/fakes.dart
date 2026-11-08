@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:customer/features/auth/domain/auth_repository.dart';
 import 'package:customer/features/bookings/domain/booking.dart';
 import 'package:customer/features/location/domain/browse_location.dart';
+import 'package:customer/features/location/domain/saved_place.dart';
 import 'package:customer/features/offers/domain/offer.dart';
 import 'package:customer/features/stores/domain/store.dart';
 import 'package:kernel/kernel.dart';
@@ -69,6 +70,51 @@ class FakeServiceAreaRepository implements ServiceAreaRepository {
   Future<Result<List<ServiceArea>>> areas() async {
     loads++;
     return result;
+  }
+}
+
+/// The customer's places on a pretend account; [failure], when set, is
+/// what every change gets back, and nothing changes.
+class FakePlacesRepository implements PlacesRepository {
+  FakePlacesRepository([List<SavedPlace> places = const []])
+    : places = [...places];
+
+  final List<SavedPlace> places;
+  AppFailure? failure;
+  var loads = 0;
+
+  @override
+  Future<Result<List<SavedPlace>>> list() async {
+    loads++;
+    return Ok([...places]);
+  }
+
+  @override
+  Future<Result<SavedPlace>> add(PlaceDetails details, GeoPoint point) async {
+    if (failure case final failure?) return Err(failure);
+    final place = SavedPlace(
+      id: 'p${places.length + 1}',
+      name: details.name,
+      note: details.note,
+      point: point,
+    );
+    places.add(place);
+    return Ok(place);
+  }
+
+  @override
+  Future<Result<SavedPlace>> update(SavedPlace place) async {
+    if (failure case final failure?) return Err(failure);
+    final at = places.indexWhere((kept) => kept.id == place.id);
+    places[at] = place;
+    return Ok(place);
+  }
+
+  @override
+  Future<Result<void>> remove(String id) async {
+    if (failure case final failure?) return Err(failure);
+    places.removeWhere((kept) => kept.id == id);
+    return const Ok(null);
   }
 }
 

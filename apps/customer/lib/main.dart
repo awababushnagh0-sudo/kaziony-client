@@ -12,9 +12,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Read before the first frame, so someone who has chosen a place never
   // sees the welcome pages flash by.
-  final location = await BrowseLocationController.readSaved(
-    DeviceSettingsStore(),
-  );
+  final store = DeviceSettingsStore();
+  final location = await BrowseLocationController.readSaved(store);
   await bootstrap(
     config: AppConfig.fromEnvironment(AppKind.customer),
     overrides: [

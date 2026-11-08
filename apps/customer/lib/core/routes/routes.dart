@@ -12,8 +12,19 @@ abstract final class Routes {
 
   /// Opened from the app, back to where it was once done.
   static const signIn = '/sign-in';
+
+  /// Where offers are shown from, with no saved place to switch to: where
+  /// the phone is, or a spot on the map.
   static const location = '/location';
   static const locationMap = '/location/map';
+
+  /// Where offers are shown from, to switch, change, delete or add one.
+  static const places = '/places';
+  static const addPlace = '/places/add';
+  static const addPlaceMap = '/places/add/map';
+
+  /// Moving a saved place: the map, from where it is now.
+  static const placeMap = '/places/map';
 
   /// Every offer around, one sort or category ([offersQuery]): "See all".
   static const offers = '/offers';

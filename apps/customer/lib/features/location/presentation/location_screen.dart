@@ -8,48 +8,71 @@ import '../domain/browse_location.dart';
 import 'location_problem.dart';
 import 'location_view_model.dart';
 
+/// Why [LocationScreen] asks.
+enum LocationPurpose {
+  /// The welcome pages' first place.
+  welcome,
+
+  /// From the app, with no saved place to switch to. Once signed in, a
+  /// spot set on the map is named and saved there.
+  change,
+
+  /// A place to save: where the phone is goes through the map too, which
+  /// names the place and saves it.
+  add,
+}
+
 /// Asks where to show offers from: where the phone is, or a place the
 /// customer sets on the map ([mapRoute]). [onDone] runs once one is kept.
 class LocationScreen extends AppView {
   const LocationScreen({
     required this.onDone,
     required this.mapRoute,
-    this.canGoBack = false,
+    this.purpose = LocationPurpose.welcome,
     super.key,
   });
 
   final VoidCallback onDone;
   final String mapRoute;
-
-  /// Opened from the account page, not the welcome pages.
-  final bool canGoBack;
+  final LocationPurpose purpose;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = CustomerLocalizations.of(context);
     final state = ref.watch(locationViewModel);
     final viewModel = ref.read(locationViewModel.notifier);
+    final adding = purpose == LocationPurpose.add;
+    // The map saved the spot and shows offers from it already.
+    final mapSaves =
+        adding ||
+        (purpose == LocationPurpose.change &&
+            ref.watch(sessionProvider) is SignedIn);
 
     Future<void> useMyLocation() async {
-      if (await viewModel.useMyLocation()) onDone();
+      final point = await viewModel.locate();
+      if (point == null || !context.mounted) return;
+      if (adding) {
+        // To fine-tune the pin and name the place.
+        if (await context.push<GeoPoint>(mapRoute, extra: point) == null) {
+          return;
+        }
+      } else {
+        await viewModel.use(point, pinned: false);
+      }
+      if (context.mounted) onDone();
     }
 
     Future<void> setOnMap() async {
-      if (await context.push<bool>(mapRoute) ?? false) onDone();
+      final point = await context.push<GeoPoint>(mapRoute);
+      if (point == null || !context.mounted) return;
+      if (!mapSaves) await viewModel.use(point, pinned: true);
+      if (context.mounted) onDone();
     }
 
-    final message = switch (state) {
-      LocationState(problem: final problem?) => problemMessage(s, problem),
-      LocationState(outsideOf: final areas?) => outsideMessage(context, areas),
-      LocationState(failure: final failure?) => failureMessage(
-        context,
-        failure,
-      ),
-      _ => null,
-    };
+    final message = locationStateMessage(context, state);
 
     return SWelcomePage(
-      top: [if (canGoBack) const CustomerBackButton()],
+      top: [if (purpose != LocationPurpose.welcome) const CustomerBackButton()],
       actions: [
         SButton(
           label: s.useMyLocation,
@@ -65,10 +88,13 @@ class LocationScreen extends AppView {
         children: [
           const SIllustration(CustomerIllustrations.location),
           const Gap(Space.lg),
-          SText.display(s.locationTitle, align: TextAlign.center),
+          SText.display(
+            adding ? s.addPlaceTitle : s.locationTitle,
+            align: TextAlign.center,
+          ),
           const Gap(Space.sm),
           SText(
-            s.locationMessage,
+            adding ? s.addPlaceMessage : s.locationMessage,
             color: SColor.textMuted,
             align: TextAlign.center,
           ),
@@ -88,6 +114,21 @@ class LocationScreen extends AppView {
     );
   }
 }
+
+/// Why the phone's location couldn't be used, if it couldn't.
+String? locationStateMessage(BuildContext context, LocationState state) =>
+    switch (state) {
+      LocationState(problem: final problem?) => problemMessage(
+        CustomerLocalizations.of(context),
+        problem,
+      ),
+      LocationState(outsideOf: final areas?) => outsideMessage(context, areas),
+      LocationState(failure: final failure?) => failureMessage(
+        context,
+        failure,
+      ),
+      _ => null,
+    };
 
 /// What to tell the customer about [problem].
 String problemMessage(CustomerLocalizations s, LocationProblem problem) =>

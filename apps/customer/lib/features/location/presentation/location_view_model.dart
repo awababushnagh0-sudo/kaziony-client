@@ -1,6 +1,7 @@
 import 'package:kernel/kernel.dart';
 
 import '../domain/browse_location.dart';
+import '../domain/saved_place.dart';
 import 'location_problem.dart';
 
 class LocationState {
@@ -27,33 +28,47 @@ class LocationViewModel extends ViewModel<LocationState> {
 
   LocationFinder get _finder => ref.read(locationFinderProvider);
 
-  /// Asks where the phone is and keeps it if Kaziony works there. True
-  /// once kept.
-  Future<bool> useMyLocation() async {
-    if (state.finding) return false;
+  /// Asks where the phone is. The point once Kaziony works there, else
+  /// null and why not in the state.
+  Future<GeoPoint?> locate() async {
+    if (state.finding) return null;
     state = const LocationState(finding: true);
     final fix = await _finder.current();
-    if (!ref.mounted) return false;
+    if (!ref.mounted) return null;
     if (fix is! LocationFound) {
       state = LocationState(problem: LocationProblem.of(fix));
-      return false;
+      return null;
     }
     final areas = await ref.read(serviceAreaRepositoryProvider).areas();
-    if (!ref.mounted) return false;
+    if (!ref.mounted) return null;
     switch (areas) {
       case Err(:final failure):
         state = LocationState(failure: failure);
-        return false;
+        return null;
       case Ok(value: final areas) when !coveredBy(areas, fix.point):
         state = LocationState(outsideOf: areas);
-        return false;
+        return null;
       case Ok():
-        await ref
-            .read(browseLocationProvider.notifier)
-            .set(BrowseLocation(fix.point, pinned: false));
-        if (ref.mounted) state = const LocationState();
-        return true;
+        state = const LocationState();
+        return fix.point;
     }
+  }
+
+  /// Browses from [point]: where the phone is, or [pinned] on the map.
+  Future<void> use(GeoPoint point, {required bool pinned}) => ref
+      .read(browseLocationProvider.notifier)
+      .set(BrowseLocation(point, pinned: pinned));
+
+  /// Browses from one of the saved places.
+  Future<void> useSaved(SavedPlace place) =>
+      ref.read(browseLocationProvider.notifier).set(BrowseLocation.of(place));
+
+  /// Browses from where the phone is now. True once it does.
+  Future<bool> useMyLocation() async {
+    final point = await locate();
+    if (point == null || !ref.mounted) return false;
+    await use(point, pinned: false);
+    return true;
   }
 
   /// Where the problem can be fixed: the phone's location settings when

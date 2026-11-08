@@ -151,29 +151,19 @@ class _Body extends AppView {
         // how many are left.
         Padding(
           padding: const EdgeInsets.fromLTRB(Space.lg, Space.lg, Space.lg, 0),
-          child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: Space.md,
-              children: [
-                Expanded(
-                  child: _FactBox(
-                    icon: SIcons.clock,
-                    label: s.offerFactPickup,
-                    value: s.cardPickup(context, offer, now),
-                  ),
-                ),
-                if (offer.limited && total != null && total > 0)
-                  Expanded(
-                    child: _FactBox(
-                      icon: SIcons.products,
-                      label: s.offerFactLeft,
-                      value: s.offerFactLeftValue(offer.remaining ?? 0, total),
-                    ),
-                  ),
-              ],
+          child: SFactBoxes([
+            FactBox(
+              icon: SIcons.clock,
+              label: s.offerFactPickup,
+              value: s.cardPickup(context, offer, now),
             ),
-          ),
+            if (offer.limited && total != null && total > 0)
+              FactBox(
+                icon: SIcons.products,
+                label: s.offerFactLeft,
+                value: s.offerFactLeftValue(offer.remaining ?? 0, total),
+              ),
+          ]),
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(Space.lg, Space.md, Space.lg, 0),
@@ -282,46 +272,6 @@ class _Caption extends StatelessWidget {
       ],
     );
   }
-}
-
-/// One thing to plan around in an outlined box: its icon and what it is,
-/// then the value, bold.
-class _FactBox extends StatelessWidget {
-  const _FactBox({
-    required this.icon,
-    required this.label,
-    required this.value,
-  });
-
-  final SIcons icon;
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) => SCard(
-    padded: false,
-    child: Padding(
-      padding: const EdgeInsets.all(Space.md),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: Space.xs,
-        children: [
-          Row(
-            spacing: Space.xs,
-            children: [
-              SIcon(icon, size: SIconSize.sm, color: SColor.textMuted),
-              SText(
-                label,
-                variant: TextVariant.caption,
-                color: SColor.textMuted,
-              ),
-            ],
-          ),
-          SText(value, weight: SFontWeight.bold),
-        ],
-      ),
-    ),
-  );
 }
 
 /// The store, as a row that opens its page.

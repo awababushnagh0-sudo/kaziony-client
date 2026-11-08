@@ -10,6 +10,7 @@ import '../../features/bookings/presentation/ratings_screen.dart';
 import '../../features/location/domain/browse_location.dart';
 import '../../features/location/presentation/location_screen.dart';
 import '../../features/location/presentation/map_picker_screen.dart';
+import '../../features/location/presentation/places_screen.dart';
 import '../../features/offers/domain/offer.dart';
 import '../../features/offers/presentation/home_screen.dart';
 import '../../features/offers/presentation/offer_screen.dart';
@@ -54,7 +55,9 @@ final routerProvider = Provider<GoRouter>((ref) {
               mapRoute: Routes.welcomeMap,
               onDone: () => context.go(Routes.welcomeSignIn),
             ),
-            routes: [_map],
+            routes: [
+              GoRoute(path: 'map', builder: (_, _) => const MapPickerScreen()),
+            ],
           ),
           GoRoute(
             path: 'sign-in',
@@ -95,11 +98,46 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.location,
         builder: (context, _) => LocationScreen(
-          canGoBack: true,
+          purpose: LocationPurpose.change,
           mapRoute: Routes.locationMap,
           onDone: () => context.pop(),
         ),
-        routes: [_map],
+        routes: [
+          GoRoute(
+            path: 'map',
+            // Signed in, the spot is named and saved as a place.
+            builder: (_, _) =>
+                MapPickerScreen(adding: ref.read(sessionProvider) is SignedIn),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: Routes.places,
+        builder: (_, _) => const PlacesScreen(),
+        routes: [
+          GoRoute(
+            path: 'add',
+            builder: (context, _) => LocationScreen(
+              purpose: LocationPurpose.add,
+              mapRoute: Routes.addPlaceMap,
+              onDone: () => context.pop(),
+            ),
+            routes: [
+              GoRoute(
+                path: 'map',
+                builder: (_, state) => MapPickerScreen(
+                  start: state.extra as GeoPoint?,
+                  adding: true,
+                ),
+              ),
+            ],
+          ),
+          GoRoute(
+            path: 'map',
+            builder: (_, state) =>
+                MapPickerScreen(start: state.extra as GeoPoint?),
+          ),
+        ],
       ),
       // One branch per [CustomerTab], in its order.
       StatefulShellRoute.indexedStack(
@@ -114,9 +152,6 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
-
-/// Under both location pages: [Routes.welcomeMap], [Routes.locationMap].
-final _map = GoRoute(path: 'map', builder: (_, _) => const MapPickerScreen());
 
 StatefulShellBranch _tab(String path, Widget page) => StatefulShellBranch(
   routes: [GoRoute(path: path, builder: (_, _) => page)],

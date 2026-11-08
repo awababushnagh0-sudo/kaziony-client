@@ -9,6 +9,7 @@ import '../../auth/domain/auth_repository.dart';
 import '../../bookings/presentation/booking_texts.dart';
 import '../../bookings/presentation/bookings_view_model.dart';
 import '../../location/domain/browse_location.dart';
+import '../../location/presentation/places_screen.dart';
 
 /// Signed in, a greeting on a soft orange band, then the way to the
 /// bookings (with how many wait), the favorite stores and the ratings
@@ -121,6 +122,7 @@ class _Settings extends AppView {
     final stellar = StellarLocalizations.of(context);
     final place = switch (ref.watch(browseLocationProvider)) {
       null => null,
+      BrowseLocation(:final name?) => name,
       BrowseLocation(pinned: true) => s.pinnedLocation,
       BrowseLocation() => s.myLocation,
     };
@@ -136,7 +138,7 @@ class _Settings extends AppView {
               icon: SIcons.location,
               title: s.locationRow,
               value: place,
-              onTap: () => context.push(Routes.location),
+              onTap: () => PlacesScreen.open(context, ref),
             ),
             SListTile(
               icon: SIcons.language,

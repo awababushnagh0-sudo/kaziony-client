@@ -3,6 +3,7 @@ import 'package:customer/features/account/presentation/account_screen.dart';
 import 'package:customer/features/auth/domain/auth_repository.dart';
 import 'package:customer/features/bookings/domain/booking.dart';
 import 'package:customer/features/location/domain/browse_location.dart';
+import 'package:customer/features/location/domain/saved_place.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kernel/kernel.dart';
 
@@ -28,11 +29,11 @@ void main() {
     routes: [
       GoRoute(path: Routes.account, builder: (_, _) => const AccountScreen()),
       stubPage(Routes.signIn, 'sign-in page'),
-      stubPage(Routes.location, 'location page'),
       stubPage(Routes.terms, 'terms page'),
       stubPage(Routes.bookings, 'bookings page'),
       stubPage(Routes.favorites, 'favorites page'),
       stubPage(Routes.ratings, 'ratings page'),
+      stubPage(Routes.places, 'places page'),
     ],
     overrides: [
       authRepositoryProvider.overrideWithValue(auth),
@@ -57,14 +58,23 @@ void main() {
     expect(find.text('sign-in page'), findsOneWidget);
   });
 
-  testWidgets('shows a pinned place and changes it', (tester) async {
+  testWidgets('shows a pinned place and opens the places to change it', (
+    tester,
+  ) async {
     await open(tester, place: const BrowseLocation(souqAlJuma, pinned: true));
 
     expect(find.text('A place on the map'), findsOneWidget);
     await tester.tap(find.text('Location'));
     await tester.pumpAndSettle();
 
-    expect(find.text('location page'), findsOneWidget);
+    expect(find.text('places page'), findsOneWidget);
+  });
+
+  testWidgets('names the saved place offers are shown from', (tester) async {
+    const home = SavedPlace(id: '1', name: 'Home', point: souqAlJuma);
+    await open(tester, place: BrowseLocation.of(home));
+
+    expect(find.text('Home'), findsOneWidget);
   });
 
   testWidgets('shows when offers are around the phone', (tester) async {

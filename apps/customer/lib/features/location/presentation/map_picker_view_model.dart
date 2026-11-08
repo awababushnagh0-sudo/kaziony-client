@@ -36,8 +36,13 @@ class MapPickerState {
   );
 }
 
-/// Setting the place to browse from by moving a map under a pin.
+/// Setting the place to browse from by moving a map under a pin, from
+/// [start] when given (where the phone was found).
 class MapPickerViewModel extends AsyncViewModel<MapPickerState> {
+  MapPickerViewModel(this.start);
+
+  final GeoPoint? start;
+
   @override
   Future<MapPickerState> build() async {
     final areas = switch (await ref
@@ -46,13 +51,13 @@ class MapPickerViewModel extends AsyncViewModel<MapPickerState> {
       Ok(:final value) => value,
       Err(:final failure) => throw failure,
     };
-    // Where they browse from now, if it still counts; else the middle of
-    // the first city we work in.
-    final saved = ref.read(browseLocationProvider)?.point;
-    final start = saved != null && coveredBy(areas, saved)
+    // Where it was told (the phone), or where they browse from now, if it
+    // still counts; else the middle of the first city we work in.
+    final saved = start ?? ref.read(browseLocationProvider)?.point;
+    final from = saved != null && coveredBy(areas, saved)
         ? saved
         : areas.firstOrNull?.center ?? _tripoli;
-    return MapPickerState(areas: areas, target: start, picked: start);
+    return MapPickerState(areas: areas, target: from, picked: from);
   }
 
   /// Only reached when the backend has no areas on.
@@ -80,18 +85,15 @@ class MapPickerViewModel extends AsyncViewModel<MapPickerState> {
     return LocationProblem.of(fix);
   }
 
-  /// Keeps the pinned place, if Kaziony works there. True once kept.
-  Future<bool> confirm() async {
+  /// The pinned place, if Kaziony works there.
+  GeoPoint? confirm() {
     final current = state.value;
-    if (current == null || !current.inside) return false;
-    await ref
-        .read(browseLocationProvider.notifier)
-        .set(BrowseLocation(current.picked, pinned: true));
-    return true;
+    if (current == null || !current.inside) return null;
+    return current.picked;
   }
 }
 
-final mapPickerViewModel =
-    AsyncNotifierProvider.autoDispose<MapPickerViewModel, MapPickerState>(
+final mapPickerViewModel = AsyncNotifierProvider.autoDispose
+    .family<MapPickerViewModel, MapPickerState, GeoPoint?>(
       MapPickerViewModel.new,
     );

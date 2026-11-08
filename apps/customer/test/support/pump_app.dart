@@ -5,13 +5,15 @@ import 'package:kernel/testing.dart';
 import 'package:stellar/stellar.dart';
 
 /// Opens [initial] in the customer app's look, in English, with [routes]
-/// and kernel's test fakes plus [overrides].
+/// and kernel's test fakes plus [overrides]. What's kept on the phone
+/// goes to [settings].
 Future<void> pumpCustomerPages(
   WidgetTester tester, {
   required String initial,
   required List<RouteBase> routes,
   List<Override> overrides = const [],
   LocationFinder? locationFinder,
+  SettingsStore? settings,
 }) async {
   await tester.pumpWidget(
     AppScope(
@@ -19,6 +21,7 @@ Future<void> pumpCustomerPages(
         ...testOverrides(
           kind: AppKind.customer,
           locationFinder: locationFinder,
+          settings: settings,
         ),
         ...overrides,
       ],

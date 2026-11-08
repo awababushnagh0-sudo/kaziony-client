@@ -6,6 +6,7 @@ import '../../../core/routes/routes.dart';
 import '../../../core/widgets/customer_illustrations.dart';
 import '../../../core/widgets/no_offers_view.dart';
 import '../../location/domain/browse_location.dart';
+import '../../location/presentation/places_screen.dart';
 import '../../stores/domain/store.dart';
 import '../../stores/presentation/stores_view_model.dart';
 import '../../stores/presentation/widgets/store_logo_row.dart';
@@ -26,7 +27,8 @@ class HomeScreen extends AppView {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = CustomerLocalizations.of(context);
-    final pinned = ref.watch(browseLocationProvider)?.pinned ?? false;
+    final location = ref.watch(browseLocationProvider);
+    final pinned = location?.pinned ?? false;
     final categoryId = ref.watch(homeCategoryProvider);
     final feed = ref.watch(homeFeedProvider);
     return SScaffold(
@@ -57,8 +59,10 @@ class HomeScreen extends AppView {
                 children: [
                   SPlaceHeader(
                     caption: s.offersNear,
-                    place: pinned ? s.pinnedLocation : s.myLocation,
-                    onTap: () => context.push(Routes.location),
+                    place:
+                        location?.name ??
+                        (pinned ? s.pinnedLocation : s.myLocation),
+                    onTap: () => PlacesScreen.open(context, ref),
                   ),
                   SSearchField.button(
                     hint: s.searchHint,

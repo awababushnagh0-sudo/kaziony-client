@@ -740,4 +740,81 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String get browseOffers => 'Browse offers';
+
+  @override
+  String get placesTitle => 'Show offers near';
+
+  @override
+  String get addPlace => 'Add a place';
+
+  @override
+  String get findingLocation => 'Finding where you are…';
+
+  @override
+  String get addPlaceTitle => 'Add a place';
+
+  @override
+  String get addPlaceMessage =>
+      'Home, work, or family: save it once and switch with a tap.';
+
+  @override
+  String get placeNameLabel => 'Name';
+
+  @override
+  String get placeNameHint => 'e.g. Home, Work, Grandma\'s';
+
+  @override
+  String get savePlace => 'Save';
+
+  @override
+  String get placeDetailsTitle => 'Name this place';
+
+  @override
+  String get placeNoteLabel => 'Description (optional)';
+
+  @override
+  String get placeNoteHint => 'e.g. Second floor, across from the mosque';
+
+  @override
+  String get editPlaceTitle => 'Edit place';
+
+  @override
+  String get placeOnMap => 'Spot on the map';
+
+  @override
+  String get placeMoved => 'Moved';
+
+  @override
+  String get deletePlace => 'Delete place';
+
+  @override
+  String get switchPlaceTitle => 'Switch place?';
+
+  @override
+  String switchPlaceMessage(String name) {
+    return 'We\'ll show offers near “$name”.';
+  }
+
+  @override
+  String get switchPlace => 'Switch';
+
+  @override
+  String deletePlaceTitle(String name) {
+    return 'Delete “$name”?';
+  }
+
+  @override
+  String get deletePlaceMessage => 'You can add it again any time.';
+
+  @override
+  String get placesSignInTitle => 'Sign in to save your places';
+
+  @override
+  String get placeSaved => 'Place saved';
+
+  @override
+  String get placeUpdated => 'Place updated';
+
+  @override
+  String get placeDeleted => 'Place deleted';
 }

@@ -1,4 +1,5 @@
 import 'package:customer/features/location/domain/browse_location.dart';
+import 'package:customer/features/location/domain/saved_place.dart';
 import 'package:customer/features/location/presentation/location_problem.dart';
 import 'package:customer/features/location/presentation/location_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -35,6 +36,19 @@ void main() {
     expect(place()?.point, const GeoPoint(32.88, 13.19));
     expect(place()?.pinned, isFalse);
     expect(state().finding, isFalse);
+  });
+
+  test('finds where the phone is without keeping it', () async {
+    expect(await viewModel.locate(), const GeoPoint(32.88, 13.19));
+    expect(place(), isNull);
+  });
+
+  test('shows offers from a saved place', () async {
+    const home = SavedPlace(id: '1', name: 'Home', point: souqAlJuma);
+    await viewModel.useSaved(home);
+
+    expect(place()?.point, souqAlJuma);
+    expect(place()?.placeId, '1');
   });
 
   test('refuses where Kaziony does not work yet', () async {

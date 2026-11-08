@@ -33,7 +33,7 @@ void main() {
     expect(redirect(Routes.home, hasLocation: false), Routes.welcome);
     expect(redirect(Routes.account, hasLocation: false), Routes.welcome);
     expect(redirect(Routes.signIn, hasLocation: false), Routes.welcome);
-    expect(redirect(Routes.locationMap, hasLocation: false), Routes.welcome);
+    expect(redirect(Routes.addPlaceMap, hasLocation: false), Routes.welcome);
   });
 
   test('the welcome pages and the terms open without a place', () {

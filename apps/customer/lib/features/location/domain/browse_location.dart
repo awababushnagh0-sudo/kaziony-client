@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:kernel/kernel.dart';
 
+import 'saved_place.dart';
+
 /// Where Kaziony works: a circle around a city. Customers browse from a
 /// place inside one.
 class ServiceArea {
@@ -39,26 +41,44 @@ final serviceAreaRepositoryProvider = Provider<ServiceAreaRepository>(
 
 /// Where the customer browses from: where the phone was, or a place they
 /// [pinned] on the map. Offers are shown within our radius of [point].
+/// [placeId] and [name] are the [SavedPlace] it is, when it's one of
+/// theirs; the name is kept here so the home page says it at once.
 class BrowseLocation {
-  const BrowseLocation(this.point, {required this.pinned});
+  const BrowseLocation(
+    this.point, {
+    required this.pinned,
+    this.placeId,
+    this.name,
+  });
+
+  BrowseLocation.of(SavedPlace place)
+    : this(place.point, pinned: true, placeId: place.id, name: place.name);
 
   final GeoPoint point;
   final bool pinned;
+  final String? placeId;
+  final String? name;
 
   Map<String, Object?> toJson() => {
     'latitude': point.latitude,
     'longitude': point.longitude,
     'pinned': pinned,
+    'placeId': ?placeId,
+    'name': ?name,
   };
 
   static BrowseLocation fromJson(Map<String, Object?> json) => BrowseLocation(
-    GeoPoint(
-      (json['latitude']! as num).toDouble(),
-      (json['longitude']! as num).toDouble(),
-    ),
+    _pointFrom(json),
     pinned: json['pinned'] as bool? ?? false,
+    placeId: json['placeId'] as String?,
+    name: json['name'] as String?,
   );
 }
+
+GeoPoint _pointFrom(Map<String, Object?> json) => GeoPoint(
+  (json['latitude']! as num).toDouble(),
+  (json['longitude']! as num).toDouble(),
+);
 
 /// Where the customer browses from, remembered on the phone. Null until
 /// they choose, which the welcome pages ask first.
