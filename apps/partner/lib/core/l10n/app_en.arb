@@ -144,25 +144,6 @@
   "offerPaused": "Paused",
   "offerEnded": "Ended",
   "offerRemoved": "Removed by our team",
-  "piecesLeft": "{left} of {total} left",
-  "@piecesLeft": {
-    "placeholders": {
-      "left": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
-  "ofTotal": "of {total}",
-  "@ofTotal": {
-    "placeholders": {
-      "total": {
-        "type": "int"
-      }
-    }
-  },
   "noLimit": "No limit",
   "until": "Until {date}",
   "@until": {
@@ -227,11 +208,6 @@
   "endsTooLate": "Offers can last at most 30 days.",
   "chooseABranch": "Choose at least one branch.",
   "offerPosted": "Offer posted.",
-  "claimsSection": "Claims",
-  "claimsReserved": "Reserved",
-  "claimsRedeemed": "Picked up",
-  "claimsExpired": "Not picked up",
-  "claimsCancelled": "Cancelled",
   "holdValue": "{minutes} min",
   "@holdValue": {
     "placeholders": {
@@ -332,7 +308,6 @@
       }
     }
   },
-  "notPickedUpHint": "Their time ran out",
   "almostGone": "{count, plural, =1{One almost gone} other{{count} almost gone}}",
   "@almostGone": {
     "placeholders": {
@@ -358,7 +333,6 @@
     }
   },
   "seeAll": "See all",
-  "seeAllOffers": "All offers",
   "yourLiveOffers": "Your live offers",
   "liveOffersTitle": "Live offers",
   "nobodyOnTheWay": "No one is on their way right now.",
@@ -422,9 +396,21 @@
     }
   },
   "payInCash": "Paid in cash",
-  "figureViews": "Views",
-  "figureReserved": "Reservations",
   "figurePickedUp": "Picked up",
+  "figureOnTheWay": "On the way",
+  "figureLeft": "Left",
+  "figureReady": "Ready",
+  "offerPriceAndWhen": "{price}, {when}",
+  "@offerPriceAndWhen": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      }
+    }
+  },
   "endsAt": "Ends {time}",
   "@endsAt": {
     "placeholders": {
@@ -450,31 +436,47 @@
     }
   },
   "dayToday": "Today",
-  "daysCount": "{count, plural, =1{1 day} other{{count} days}}",
-  "@daysCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
+  "offerPiecesTitle": "Pieces",
+  "offerDetailsTitle": "Details",
+  "seenLabel": "Seen",
+  "@seenLabel": {
+    "description": "How many people saw the offer"
   },
-  "hoursMinutesShort": "{hours} h {minutes} min",
-  "@hoursMinutesShort": {
+  "leftOfTotal": "{left} of {total}",
+  "@leftOfTotal": {
     "placeholders": {
-      "hours": {
+      "left": {
         "type": "int"
       },
-      "minutes": {
+      "total": {
         "type": "int"
       }
     }
   },
-  "discountOff": "{percent}% off",
-  "@discountOff": {
+  "dayAndTime": "{day} {time}",
+  "@dayAndTime": {
+    "description": "A day and a time: \"Today 9:00 PM\"",
     "placeholders": {
-      "percent": {
+      "day": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "notPickedUpOrCancelled": "{expired} not picked up, {cancelled} cancelled",
+  "@notPickedUpOrCancelled": {
+    "placeholders": {
+      "expired": {
+        "type": "int"
+      },
+      "cancelled": {
         "type": "int"
       }
     }
-  }
+  },
+  "moreActions": "More",
+  "repostOfferHint": "A new offer at the same price and quantity",
+  "endOfferHint": "Customers stop seeing it, for good"
 }

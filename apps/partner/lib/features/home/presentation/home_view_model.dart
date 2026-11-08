@@ -16,6 +16,9 @@ class Home {
   /// Rows each list shows; "See all" opens the rest.
   static const shown = 3;
 
+  /// Offers in the row that scrolls sideways; "See all" opens the rest.
+  static const offersShown = 5;
+
   final StoreStats stats;
 
   /// The first reservations, soonest to expire first. The server may not

@@ -33,6 +33,7 @@ class Offer {
     required this.productId,
     required this.title,
     required this.description,
+    required this.imageUrl,
     required this.thumbUrl,
     required this.originalPrice,
     required this.offerPrice,
@@ -55,6 +56,9 @@ class Offer {
   final String productId;
   final String title;
   final String? description;
+
+  /// The photo at full size, for the offer's page; [thumbUrl] for lists.
+  final String? imageUrl;
   final String? thumbUrl;
 
   /// LD with 3 decimals, shown with `formatPrice`.

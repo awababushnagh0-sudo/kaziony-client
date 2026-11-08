@@ -104,6 +104,7 @@ Offer _toOffer(api.PartnerOfferDto dto) => Offer(
   productId: dto.productId,
   title: dto.title,
   description: dto.description,
+  imageUrl: dto.imageUrl,
   thumbUrl: dto.thumbUrl,
   originalPrice: dto.originalPrice,
   offerPrice: dto.offerPrice,

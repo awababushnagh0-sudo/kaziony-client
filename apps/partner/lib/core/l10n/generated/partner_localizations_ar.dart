@@ -432,16 +432,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get offerRemoved => 'أزاله فريقنا';
 
   @override
-  String piecesLeft(int left, int total) {
-    return 'باقي $left من $total';
-  }
-
-  @override
-  String ofTotal(int total) {
-    return 'من $total';
-  }
-
-  @override
   String get noLimit => 'بدون حد';
 
   @override
@@ -558,21 +548,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get offerPosted => 'تم نشر العرض.';
-
-  @override
-  String get claimsSection => 'الحجوزات';
-
-  @override
-  String get claimsReserved => 'محجوز';
-
-  @override
-  String get claimsRedeemed => 'تم الاستلام';
-
-  @override
-  String get claimsExpired => 'لم يُستلم';
-
-  @override
-  String get claimsCancelled => 'أُلغي';
 
   @override
   String holdValue(int minutes) {
@@ -781,9 +756,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   }
 
   @override
-  String get notPickedUpHint => 'انتهت مدة حجزهم';
-
-  @override
   String almostGone(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -807,9 +779,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get seeAll => 'عرض الكل';
-
-  @override
-  String get seeAllOffers => 'كل العروض';
 
   @override
   String get yourLiveOffers => 'عروضك المتاحة';
@@ -912,13 +881,21 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get payInCash => 'الدفع نقدًا';
 
   @override
-  String get figureViews => 'مشاهدة';
-
-  @override
-  String get figureReserved => 'حُجزت';
-
-  @override
   String get figurePickedUp => 'استُلمت';
+
+  @override
+  String get figureOnTheWay => 'في الطريق';
+
+  @override
+  String get figureLeft => 'باقي';
+
+  @override
+  String get figureReady => 'جاهزة';
+
+  @override
+  String offerPriceAndWhen(String price, String when) {
+    return '$price، $when';
+  }
 
   @override
   String endsAt(String time) {
@@ -939,25 +916,35 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get dayToday => 'اليوم';
 
   @override
-  String daysCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count يومًا',
-      few: '$count أيام',
-      two: 'يومان',
-      one: 'يوم',
-    );
-    return '$_temp0';
+  String get offerPiecesTitle => 'الكمية';
+
+  @override
+  String get offerDetailsTitle => 'التفاصيل';
+
+  @override
+  String get seenLabel => 'شاهدوه';
+
+  @override
+  String leftOfTotal(int left, int total) {
+    return '$left من $total';
   }
 
   @override
-  String hoursMinutesShort(int hours, int minutes) {
-    return '$hours س $minutes د';
+  String dayAndTime(String day, String time) {
+    return '$day $time';
   }
 
   @override
-  String discountOff(int percent) {
-    return 'خصم $percent٪';
+  String notPickedUpOrCancelled(int expired, int cancelled) {
+    return '$expired لم يُستلم، $cancelled أُلغي';
   }
+
+  @override
+  String get moreActions => 'المزيد';
+
+  @override
+  String get repostOfferHint => 'عرض جديد بنفس السعر والكمية';
+
+  @override
+  String get endOfferHint => 'يختفي عند الزبائن ولا يمكن إرجاعه';
 }

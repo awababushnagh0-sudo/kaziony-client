@@ -268,6 +268,7 @@ Offer offer(
   productId: productId,
   title: 'Offer $id',
   description: null,
+  imageUrl: null,
   thumbUrl: null,
   originalPrice: '8.000',
   offerPrice: '4.000',

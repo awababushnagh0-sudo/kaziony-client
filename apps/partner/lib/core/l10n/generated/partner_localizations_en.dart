@@ -432,16 +432,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get offerRemoved => 'Removed by our team';
 
   @override
-  String piecesLeft(int left, int total) {
-    return '$left of $total left';
-  }
-
-  @override
-  String ofTotal(int total) {
-    return 'of $total';
-  }
-
-  @override
   String get noLimit => 'No limit';
 
   @override
@@ -560,21 +550,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get offerPosted => 'Offer posted.';
-
-  @override
-  String get claimsSection => 'Claims';
-
-  @override
-  String get claimsReserved => 'Reserved';
-
-  @override
-  String get claimsRedeemed => 'Picked up';
-
-  @override
-  String get claimsExpired => 'Not picked up';
-
-  @override
-  String get claimsCancelled => 'Cancelled';
 
   @override
   String holdValue(int minutes) {
@@ -780,9 +755,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   }
 
   @override
-  String get notPickedUpHint => 'Their time ran out';
-
-  @override
   String almostGone(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -805,9 +777,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get seeAll => 'See all';
-
-  @override
-  String get seeAllOffers => 'All offers';
 
   @override
   String get yourLiveOffers => 'Your live offers';
@@ -909,13 +878,21 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get payInCash => 'Paid in cash';
 
   @override
-  String get figureViews => 'Views';
-
-  @override
-  String get figureReserved => 'Reservations';
-
-  @override
   String get figurePickedUp => 'Picked up';
+
+  @override
+  String get figureOnTheWay => 'On the way';
+
+  @override
+  String get figureLeft => 'Left';
+
+  @override
+  String get figureReady => 'Ready';
+
+  @override
+  String offerPriceAndWhen(String price, String when) {
+    return '$price, $when';
+  }
 
   @override
   String endsAt(String time) {
@@ -936,23 +913,35 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get dayToday => 'Today';
 
   @override
-  String daysCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count days',
-      one: '1 day',
-    );
-    return '$_temp0';
+  String get offerPiecesTitle => 'Pieces';
+
+  @override
+  String get offerDetailsTitle => 'Details';
+
+  @override
+  String get seenLabel => 'Seen';
+
+  @override
+  String leftOfTotal(int left, int total) {
+    return '$left of $total';
   }
 
   @override
-  String hoursMinutesShort(int hours, int minutes) {
-    return '$hours h $minutes min';
+  String dayAndTime(String day, String time) {
+    return '$day $time';
   }
 
   @override
-  String discountOff(int percent) {
-    return '$percent% off';
+  String notPickedUpOrCancelled(int expired, int cancelled) {
+    return '$expired not picked up, $cancelled cancelled';
   }
+
+  @override
+  String get moreActions => 'More';
+
+  @override
+  String get repostOfferHint => 'A new offer at the same price and quantity';
+
+  @override
+  String get endOfferHint => 'Customers stop seeing it, for good';
 }

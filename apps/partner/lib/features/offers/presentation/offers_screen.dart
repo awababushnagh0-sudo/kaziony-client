@@ -3,11 +3,12 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
+import '../../../core/widgets/offer_card.dart';
+import '../../../core/widgets/offer_card_skeleton.dart';
 import '../../../core/widgets/partner_illustrations.dart';
 import '../../store/domain/current_store.dart';
 import '../domain/offer.dart';
 import 'offers_view_model.dart';
-import 'widgets/offer_card.dart';
 import 'widgets/start_offer.dart';
 
 /// The Offers tab: everyone in the store sees the offers; owners post them.
@@ -78,7 +79,7 @@ class _OfferList extends AppView {
     return SAsyncView(
       value: ref.watch(offersViewModel),
       onRetry: () => ref.invalidate(offersViewModel),
-      loading: const SSkeleton.list(),
+      loading: const OfferListSkeleton(),
       builder: (context, page) {
         if (page.items.isEmpty) {
           if (ref.watch(offerFilterProvider) != null) {
@@ -101,9 +102,12 @@ class _OfferList extends AppView {
           itemCount: page.items.length,
           itemBuilder: (context, index) {
             final offer = page.items[index];
-            return OfferCard(
-              offer: offer,
-              onTap: () => context.push(Routes.offer(offer.id)),
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+              child: OfferCard(
+                offer: offer,
+                onTap: () => context.push(Routes.offer(offer.id)),
+              ),
             );
           },
           onRefresh: () async {
@@ -116,7 +120,10 @@ class _OfferList extends AppView {
           hasMore: page.hasMore,
           loadingMore: page.loadingMore,
           moreFailure: page.moreFailure,
-          placeholder: const SSkeleton.list(rows: 1),
+          placeholder: const Padding(
+            padding: EdgeInsets.fromLTRB(Space.lg, Space.sm, Space.lg, 0),
+            child: OfferCardSkeleton(),
+          ),
         );
       },
     );

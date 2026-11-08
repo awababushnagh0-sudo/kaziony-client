@@ -15,17 +15,8 @@ enum PartnerIllustrations implements Illustration {
   signInHero('sign_in_hero', Size(340, 255)),
 
   /// A shop's pin at the end of a dotted path, with a clock: customers on
-  /// their way. The four below are on home's numbers.
-  onTheWay('on_the_way', Size(52, 52)),
-
-  /// A bag with a check: picked up.
-  pickedUp('picked_up', Size(52, 52)),
-
-  /// A sleeping bag: reservations no one came for.
-  notPickedUp('not_picked_up', Size(52, 52)),
-
-  /// A price tag: offers customers can claim now.
-  liveOffers('live_offers', Size(52, 52)),
+  /// their way, on home's band.
+  onTheWay('on_the_way', Size(112, 112)),
 
   /// A shop front with an "i" on its sign: the store's details. The three
   /// below are on the profile's shortcuts.

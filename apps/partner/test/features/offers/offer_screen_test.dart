@@ -46,18 +46,30 @@ void main() {
     );
   }
 
-  testWidgets('shows the claims and the details', (tester) async {
+  testWidgets('says each number once: where the pieces are, then details', (
+    tester,
+  ) async {
     await open(tester);
 
-    // Picked up: in the figures at the top and in the reservations.
-    expect(find.text('Picked up'), findsNWidgets(2));
-    expect(find.text('5'), findsNWidgets(2));
-    // Reserved in all: still waiting and picked up.
-    expect(find.text('7'), findsOneWidget);
+    expect(find.text('3 of 10'), findsOneWidget);
+    expect(find.text('Picked up'), findsOneWidget);
+    expect(find.text('5'), findsOneWidget);
+    expect(find.text('On the way'), findsOneWidget);
+    expect(find.text('2'), findsOneWidget);
+    expect(find.textContaining('not picked up'), findsOneWidget);
     expect(find.text('42'), findsOneWidget);
-    expect(find.text('3 of 10 left'), findsOneWidget);
     expect(find.text('60 min'), findsOneWidget);
-    expect(find.text('1 branch'), findsOneWidget);
+  });
+
+  testWidgets('an offer without a limit shows who saw it instead', (
+    tester,
+  ) async {
+    await open(tester, shown: offer('o1', type: OfferType.unlimited));
+
+    expect(find.text('Seen'), findsOneWidget);
+    expect(find.text('42'), findsOneWidget);
+    expect(find.text('No limit'), findsWidgets);
+    expect(find.text('Held for'), findsNothing);
   });
 
   testWidgets('pauses and resumes', (tester) async {
@@ -73,11 +85,12 @@ void main() {
     expect(offers.actions.last, ('o1', 'resume'));
   });
 
-  testWidgets('ends only once confirmed, then offers to post again', (
-    tester,
-  ) async {
+  testWidgets('ends from the menu, only once confirmed, then offers to post '
+      'again', (tester) async {
     await open(tester);
 
+    await tester.tap(find.byTooltip('More'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('End the offer'));
     await tester.pumpAndSettle();
     expect(find.text('End this offer?'), findsOneWidget);
@@ -85,15 +98,19 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(offers.actions.single, ('o1', 'end'));
+    // Over: no menu, and posting it again is the main button.
+    expect(find.byTooltip('More'), findsNothing);
     await tester.tap(find.text('Post it again'));
     await tester.pumpAndSettle();
     expect(find.text('new offer page'), findsOneWidget);
   });
 
-  testWidgets('owners post a live offer again from its photo', (tester) async {
+  testWidgets('owners post a live offer again from the menu', (tester) async {
     await open(tester);
 
-    await tester.tap(find.byTooltip('Post it again'));
+    await tester.tap(find.byTooltip('More'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Post it again'));
     await tester.pumpAndSettle();
     expect(find.text('new offer page'), findsOneWidget);
   });
@@ -101,11 +118,10 @@ void main() {
   testWidgets('staff see it without the actions', (tester) async {
     await open(tester, isOwner: false);
 
-    expect(find.text('Picked up'), findsNWidgets(2));
+    expect(find.text('Picked up'), findsOneWidget);
     expect(find.text('Pause'), findsNothing);
-    expect(find.text('End the offer'), findsNothing);
     expect(find.text('Edit'), findsNothing);
-    expect(find.byTooltip('Post it again'), findsNothing);
+    expect(find.byTooltip('More'), findsNothing);
   });
 
   testWidgets('the owner edits the title', (tester) async {

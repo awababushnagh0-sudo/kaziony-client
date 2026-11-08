@@ -1,15 +1,22 @@
+import 'dart:async';
+
 import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
+import '../../../core/widgets/offer_split_bar.dart';
 import '../../store/domain/current_store.dart';
+import '../../store/domain/store.dart';
+import '../../store/presentation/store_view_model.dart';
 import '../domain/offer.dart';
 import 'offer_view_model.dart';
 import 'widgets/offer_labels.dart';
 
-/// One offer: what customers see, how it's selling, when it runs, and the
-/// owner's actions.
+/// One offer, laid out like the customer's page of it: its photo with its
+/// name and price on it, when it ends and how many are left, where its
+/// pieces are now, then its details. The owner's everyday actions are at
+/// the bottom; posting it again and ending it, rarer, are in the menu.
 class OfferScreen extends AppView {
   const OfferScreen({required this.offerId, super.key});
 
@@ -21,8 +28,8 @@ class OfferScreen extends AppView {
     final isOwner = ref.watch(currentStoreProvider)?.isOwner ?? false;
     final shown = offer.value;
     return SScaffold(
-      // Loaded, the page opens on the offer's photo, with its own back
-      // button; loading or failing, it keeps the app bar's.
+      // Loaded, the page opens on the offer's photo, whose bar stays pinned
+      // with the back button; loading or failing, it keeps the app bar's.
       showAppBar: shown == null,
       underStatusBar: shown != null,
       padded: shown == null,
@@ -30,197 +37,106 @@ class OfferScreen extends AppView {
       body: SAsyncView(
         value: offer,
         onRetry: () => ref.invalidate(offerViewModel(offerId)),
-        loading: const SSkeleton.page(),
-        builder: (context, offer) => SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _Header(offer: offer, isOwner: isOwner),
-              Padding(
-                padding: const EdgeInsets.all(Space.lg),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  spacing: Space.lg,
-                  children: [
-                    if (offer.totalQuantity case final total?)
-                      _Stock(offer: offer, total: total),
-                    _Selling(offer: offer),
-                    _Run(offer: offer),
-                    if (isOwner && offer.canChange) _End(offer: offer),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        loading: const _Skeleton(),
+        builder: (context, offer) => CustomScrollView(
+          slivers: [
+            _Header(offer: offer, isOwner: isOwner),
+            SliverToBoxAdapter(child: _Body(offer: offer)),
+          ],
         ),
       ),
     );
   }
 }
 
-class _Header extends StatelessWidget {
+/// The page while the offer loads: its photo, the two boxes, then the bar
+/// and the details.
+class _Skeleton extends StatelessWidget {
+  const _Skeleton();
+
+  @override
+  Widget build(BuildContext context) => const SSkeleton(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: Space.md,
+      children: [
+        SBone.wide(),
+        Row(
+          spacing: Space.md,
+          children: [
+            Expanded(child: SBone.button()),
+            Expanded(child: SBone.button()),
+          ],
+        ),
+        Gap(Space.sm),
+        SBone.text(variant: TextVariant.subtitle, length: BoneLength.short),
+        SBone.button(),
+        Gap(Space.sm),
+        SBone.text(variant: TextVariant.subtitle, length: BoneLength.short),
+        SBone.text(length: BoneLength.long),
+        SBone.text(length: BoneLength.medium),
+      ],
+    ),
+  );
+}
+
+class _Header extends AppView {
   const _Header({required this.offer, required this.isOwner});
 
   final Offer offer;
   final bool isOwner;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final s = PartnerLocalizations.of(context);
     final language = Localizations.localeOf(context).languageCode;
-    return SDealHeader(
-      imageUrl: offer.thumbUrl,
+    final status = offerStatus(s, offer.state);
+    return SPhotoHeader(
       title: offer.title,
-      price: formatPrice(offer.offerPrice, languageCode: language),
-      originalPrice: formatPrice(offer.originalPrice, languageCode: language),
-      discountLabel: s.discountOff(offer.discountPercent),
-      status: offerStatus(s, offer.state),
+      subtitle: formatPrice(offer.offerPrice, languageCode: language),
+      trailing: status == null ? null : SBadge(status.label, tone: status.tone),
+      imageUrl: offer.imageUrl,
+      caption: _Caption(offer: offer),
       onBack: context.pop,
-      // Posting it again with the same values, at any time.
-      action: isOwner
-          ? DealAction(
-              icon: SIcons.repost,
-              tooltip: s.repostOffer,
-              onPressed: () => context.push(
-                Routes.newOffer(offer.productId, from: offer.id),
-              ),
+      // Once it's over, posting it again is the page's main button.
+      action: isOwner && offer.canChange
+          ? PhotoHeaderAction(
+              icon: SIcons.more,
+              tooltip: s.moreActions,
+              onPressed: () => _more(context, ref),
             )
           : null,
     );
   }
-}
 
-/// How much of a limited offer is left, and until when.
-class _Stock extends StatelessWidget {
-  const _Stock({required this.offer, required this.total});
-
-  final Offer offer;
-  final int total;
-
-  @override
-  Widget build(BuildContext context) {
+  Future<void> _more(BuildContext context, WidgetRef ref) async {
     final s = PartnerLocalizations.of(context);
-    final language = Localizations.localeOf(context).languageCode;
-    return SDealStock(
-      label: s.piecesLeft(offer.remainingQuantity ?? 0, total),
-      note: s.endsAt(formatWhen(offer.endsAt, languageCode: language)),
-      left: offerLeft(offer) ?? 0,
-    );
-  }
-}
-
-/// How it's selling: seen, reserved, picked up.
-class _Selling extends StatelessWidget {
-  const _Selling({required this.offer});
-
-  final Offer offer;
-
-  @override
-  Widget build(BuildContext context) {
-    final s = PartnerLocalizations.of(context);
-    final claims = offer.claims;
-    return SFigures([
-      Figure(
-        value: '${offer.viewCount}',
-        label: s.figureViews,
-        icon: SIcons.show,
-      ),
-      Figure(
-        value: '${claims.reserved + claims.redeemed}',
-        label: s.figureReserved,
-        icon: SIcons.users,
-      ),
-      Figure(
-        value: '${claims.redeemed}',
-        label: s.figurePickedUp,
-        icon: SIcons.check,
-      ),
-    ]);
-  }
-}
-
-/// When it runs, what each customer gets, and what became of the
-/// reservations.
-class _Run extends StatelessWidget {
-  const _Run({required this.offer});
-
-  final Offer offer;
-
-  @override
-  Widget build(BuildContext context) {
-    final s = PartnerLocalizations.of(context);
-    final language = Localizations.localeOf(context).languageCode;
-    final now = DateTime.now();
-    final claims = offer.claims;
-    TimePoint point(String label, DateTime at) => TimePoint(
-      label: label,
-      time: formatTime(at, languageCode: language),
-      note: isSameDay(at, now)
-          ? s.dayToday
-          : formatShortDay(at, languageCode: language),
-    );
-    return SListGroup(
-      children: [
-        STimeSpan(
-          start: point(s.startsLabel, offer.startsAt),
-          end: point(s.endsLabel, offer.endsAt),
-          length: offerLength(s, offer.endsAt.difference(offer.startsAt)),
+    final picked = await SSheet.actions<_More>(
+      context,
+      title: offer.title,
+      actions: [
+        SheetAction(
+          value: _More.repost,
+          icon: SIcons.repost,
+          label: s.repostOffer,
+          hint: s.repostOfferHint,
         ),
-        if (offer.type == OfferType.limited)
-          SFactTile(
-            label: s.holdTitle,
-            value: s.holdValue(offer.claimWindowMinutes),
-          ),
-        SFactTile(
-          label: s.perCustomerLabel,
-          value: offer.maxPerUser?.toString() ?? s.noLimit,
+        SheetAction(
+          value: _More.end,
+          icon: SIcons.stop,
+          label: s.endOffer,
+          hint: s.endOfferHint,
         ),
-        SFactTile(
-          label: s.branchesTitle,
-          value: s.branchCount(offer.branchIds.length),
-        ),
-        // What became of its reservations.
-        SFigures(look: FiguresLook.footer, title: s.claimsSection, [
-          Figure(value: '${claims.reserved}', label: s.claimsReserved),
-          Figure(value: '${claims.redeemed}', label: s.claimsRedeemed),
-          Figure(value: '${claims.expired}', label: s.claimsExpired),
-          Figure(value: '${claims.cancelled}', label: s.claimsCancelled),
-        ]),
       ],
     );
-  }
-}
-
-/// Shows what an owner's action did, or what went wrong.
-Future<void> _run(
-  BuildContext context,
-  Future<AppFailure?> action,
-  String done,
-) async {
-  final failure = await action;
-  if (!context.mounted) return;
-  if (failure == null) {
-    SSnack.success(context, done);
-  } else {
-    SSnack.error(context, failureMessage(context, failure));
-  }
-}
-
-/// Ending is for good, so it stays apart from the everyday actions, and
-/// asks first.
-class _End extends AppView {
-  const _End({required this.offer});
-
-  final Offer offer;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final s = PartnerLocalizations.of(context);
-    return SButton.dangerSoft(
-      label: s.endOffer,
-      icon: SIcons.stop,
-      expand: true,
-      onPressed: () async {
+    if (!context.mounted) return;
+    switch (picked) {
+      case _More.repost:
+        unawaited(
+          context.push(Routes.newOffer(offer.productId, from: offer.id)),
+        );
+      case _More.end:
+        // Ending is for good, so it asks first.
         final confirmed = await SDialog.confirm(
           context,
           title: s.endOfferTitle,
@@ -235,8 +151,212 @@ class _End extends AppView {
             s.offerEndedDone,
           );
         }
-      },
+      case null:
+        break;
+    }
+  }
+}
+
+enum _More { repost, end }
+
+/// On the photo's foot, in white over its shade: what customers see of it
+/// now, its name, and its price beside the regular one.
+class _Caption extends StatelessWidget {
+  const _Caption({required this.offer});
+
+  final Offer offer;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = PartnerLocalizations.of(context);
+    final language = Localizations.localeOf(context).languageCode;
+    final status = offerStatus(s, offer.state);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      spacing: Space.xs,
+      children: [
+        if (status != null) SBadge.status(status.label, tone: status.tone),
+        SText.display(offer.title, color: SColor.onScrim),
+        Wrap(
+          spacing: Space.sm,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            SText(
+              formatPrice(offer.offerPrice, languageCode: language),
+              variant: TextVariant.title,
+              weight: SFontWeight.bold,
+              color: SColor.onScrimBrand,
+            ),
+            SText(
+              formatPrice(offer.originalPrice, languageCode: language),
+              color: SColor.onScrim,
+              struck: true,
+            ),
+          ],
+        ),
+      ],
     );
+  }
+}
+
+class _Body extends AppView {
+  const _Body({required this.offer});
+
+  final Offer offer;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final s = PartnerLocalizations.of(context);
+    final claims = offer.claims;
+    final total = offer.totalQuantity;
+    final branches = ref.watch(storeViewModel).value?.branches;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(Space.lg, Space.lg, Space.lg, 0),
+          child: SFactBoxes([_when(context), _second(s)]),
+        ),
+        _Section(
+          title: s.offerPiecesTitle,
+          child: SCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: Space.sm,
+              children: [
+                OfferSplitBar(offer),
+                // Pieces that came back on sale: no longer in the bar.
+                if (offer.state != OfferState.scheduled)
+                  SText.caption(
+                    s.notPickedUpOrCancelled(claims.expired, claims.cancelled),
+                  ),
+              ],
+            ),
+          ),
+        ),
+        _Section(
+          title: s.offerDetailsTitle,
+          child: SListGroup(
+            children: [
+              // Without a limit, how many saw it is in the box above.
+              if (total != null) ...[
+                SFactTile(label: s.seenLabel, value: '${offer.viewCount}'),
+                SFactTile(
+                  label: s.holdTitle,
+                  value: s.holdValue(offer.claimWindowMinutes),
+                ),
+              ],
+              SFactTile(
+                label: s.perCustomerLabel,
+                value: offer.maxPerUser?.toString() ?? s.noLimit,
+              ),
+              SFactTile(label: s.branchesTitle, value: _branches(s, branches)),
+            ],
+          ),
+        ),
+        const Gap(Space.xl),
+      ],
+    );
+  }
+
+  /// When it starts, until when it runs, or when it ended.
+  FactBox _when(BuildContext context) {
+    final s = PartnerLocalizations.of(context);
+    final language = Localizations.localeOf(context).languageCode;
+    String at(DateTime time) => s.dayAndTime(
+      isSameDay(time, DateTime.now())
+          ? s.dayToday
+          : formatDayMonth(time, languageCode: language),
+      formatTime(time, languageCode: language),
+    );
+    return switch (offer.state) {
+      OfferState.scheduled => FactBox(
+        icon: SIcons.clock,
+        label: s.startsLabel,
+        value: at(offer.startsAt),
+      ),
+      OfferState.ended || OfferState.removed => FactBox(
+        icon: SIcons.clock,
+        label: s.offerEnded,
+        value: at(offer.endsAt),
+      ),
+      _ => FactBox(
+        icon: SIcons.clock,
+        label: s.endsLabel,
+        value: at(offer.endsAt),
+      ),
+    };
+  }
+
+  /// How many are left of a limited offer; how many saw one without a
+  /// limit, which has nothing to run out of.
+  FactBox _second(PartnerLocalizations s) {
+    final total = offer.totalQuantity;
+    if (total == null) {
+      return FactBox(
+        icon: SIcons.show,
+        label: s.seenLabel,
+        value: '${offer.viewCount}',
+      );
+    }
+    return FactBox(
+      icon: SIcons.products,
+      label: offer.state == OfferState.scheduled ? s.figureReady : s.figureLeft,
+      value: s.leftOfTotal(offer.remainingQuantity ?? 0, total),
+      hot: offer.state == OfferState.live && offer.isRunningOut,
+    );
+  }
+
+  /// The branch by name when it's one, "All branches" when it's every one
+  /// that's open; otherwise, or before the store has loaded, how many.
+  String _branches(PartnerLocalizations s, List<Branch>? all) {
+    final ids = offer.branchIds;
+    if (all != null) {
+      final names = [
+        for (final branch in all)
+          if (ids.contains(branch.id)) branch.name,
+      ];
+      if (names.length == 1 && ids.length == 1) return names.single;
+      final open = all.where((branch) => branch.isActive);
+      if (open.length > 1 && open.every((branch) => ids.contains(branch.id))) {
+        return s.allBranches;
+      }
+    }
+    return s.branchCount(ids.length);
+  }
+}
+
+/// A part of the page under its title.
+class _Section extends StatelessWidget {
+  const _Section({required this.title, required this.child});
+
+  final String title;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.fromLTRB(Space.lg, Space.xl, Space.lg, 0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: Space.sm,
+      children: [SSectionHeader(title), child],
+    ),
+  );
+}
+
+/// Shows what an owner's action did, or what went wrong.
+Future<void> _run(
+  BuildContext context,
+  Future<AppFailure?> action,
+  String done,
+) async {
+  final failure = await action;
+  if (!context.mounted) return;
+  if (failure == null) {
+    SSnack.success(context, done);
+  } else {
+    SSnack.error(context, failureMessage(context, failure));
   }
 }
 

@@ -881,18 +881,6 @@ abstract class PartnerLocalizations {
   /// **'Removed by our team'**
   String get offerRemoved;
 
-  /// No description provided for @piecesLeft.
-  ///
-  /// In en, this message translates to:
-  /// **'{left} of {total} left'**
-  String piecesLeft(int left, int total);
-
-  /// No description provided for @ofTotal.
-  ///
-  /// In en, this message translates to:
-  /// **'of {total}'**
-  String ofTotal(int total);
-
   /// No description provided for @noLimit.
   ///
   /// In en, this message translates to:
@@ -1108,36 +1096,6 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Offer posted.'**
   String get offerPosted;
-
-  /// No description provided for @claimsSection.
-  ///
-  /// In en, this message translates to:
-  /// **'Claims'**
-  String get claimsSection;
-
-  /// No description provided for @claimsReserved.
-  ///
-  /// In en, this message translates to:
-  /// **'Reserved'**
-  String get claimsReserved;
-
-  /// No description provided for @claimsRedeemed.
-  ///
-  /// In en, this message translates to:
-  /// **'Picked up'**
-  String get claimsRedeemed;
-
-  /// No description provided for @claimsExpired.
-  ///
-  /// In en, this message translates to:
-  /// **'Not picked up'**
-  String get claimsExpired;
-
-  /// No description provided for @claimsCancelled.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancelled'**
-  String get claimsCancelled;
 
   /// No description provided for @holdValue.
   ///
@@ -1487,12 +1445,6 @@ abstract class PartnerLocalizations {
   /// **'{count, plural, =1{of 1 reserved today} other{of {count} reserved today}}'**
   String ofClaimsToday(int count);
 
-  /// No description provided for @notPickedUpHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Their time ran out'**
-  String get notPickedUpHint;
-
   /// No description provided for @almostGone.
   ///
   /// In en, this message translates to:
@@ -1516,12 +1468,6 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'See all'**
   String get seeAll;
-
-  /// No description provided for @seeAllOffers.
-  ///
-  /// In en, this message translates to:
-  /// **'All offers'**
-  String get seeAllOffers;
 
   /// No description provided for @yourLiveOffers.
   ///
@@ -1679,23 +1625,35 @@ abstract class PartnerLocalizations {
   /// **'Paid in cash'**
   String get payInCash;
 
-  /// No description provided for @figureViews.
-  ///
-  /// In en, this message translates to:
-  /// **'Views'**
-  String get figureViews;
-
-  /// No description provided for @figureReserved.
-  ///
-  /// In en, this message translates to:
-  /// **'Reservations'**
-  String get figureReserved;
-
   /// No description provided for @figurePickedUp.
   ///
   /// In en, this message translates to:
   /// **'Picked up'**
   String get figurePickedUp;
+
+  /// No description provided for @figureOnTheWay.
+  ///
+  /// In en, this message translates to:
+  /// **'On the way'**
+  String get figureOnTheWay;
+
+  /// No description provided for @figureLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Left'**
+  String get figureLeft;
+
+  /// No description provided for @figureReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get figureReady;
+
+  /// No description provided for @offerPriceAndWhen.
+  ///
+  /// In en, this message translates to:
+  /// **'{price}, {when}'**
+  String offerPriceAndWhen(String price, String when);
 
   /// No description provided for @endsAt.
   ///
@@ -1721,23 +1679,59 @@ abstract class PartnerLocalizations {
   /// **'Today'**
   String get dayToday;
 
-  /// No description provided for @daysCount.
+  /// No description provided for @offerPiecesTitle.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 day} other{{count} days}}'**
-  String daysCount(int count);
+  /// **'Pieces'**
+  String get offerPiecesTitle;
 
-  /// No description provided for @hoursMinutesShort.
+  /// No description provided for @offerDetailsTitle.
   ///
   /// In en, this message translates to:
-  /// **'{hours} h {minutes} min'**
-  String hoursMinutesShort(int hours, int minutes);
+  /// **'Details'**
+  String get offerDetailsTitle;
 
-  /// No description provided for @discountOff.
+  /// How many people saw the offer
   ///
   /// In en, this message translates to:
-  /// **'{percent}% off'**
-  String discountOff(int percent);
+  /// **'Seen'**
+  String get seenLabel;
+
+  /// No description provided for @leftOfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{left} of {total}'**
+  String leftOfTotal(int left, int total);
+
+  /// A day and a time: "Today 9:00 PM"
+  ///
+  /// In en, this message translates to:
+  /// **'{day} {time}'**
+  String dayAndTime(String day, String time);
+
+  /// No description provided for @notPickedUpOrCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'{expired} not picked up, {cancelled} cancelled'**
+  String notPickedUpOrCancelled(int expired, int cancelled);
+
+  /// No description provided for @moreActions.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get moreActions;
+
+  /// No description provided for @repostOfferHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A new offer at the same price and quantity'**
+  String get repostOfferHint;
+
+  /// No description provided for @endOfferHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers stop seeing it, for good'**
+  String get endOfferHint;
 }
 
 class _PartnerLocalizationsDelegate
