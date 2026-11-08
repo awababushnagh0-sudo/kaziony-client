@@ -53,6 +53,20 @@ void main() {
     expect(() => err.valueOrThrow, throwsA(isA<NotFoundFailure>()));
   });
 
+  test('formatTimeParts splits the time from its AM or PM', () async {
+    await initializeDateFormatting('ar');
+    final time = DateTime(2026, 10, 19, 15, 12);
+
+    expect(formatTimeParts(time, languageCode: 'en'), (
+      clock: '3:12',
+      period: 'PM',
+    ));
+    expect(formatTimeParts(time, languageCode: 'ar'), (
+      clock: '3:12',
+      period: 'م',
+    ));
+  });
+
   test('formatDate writes the day in the given language', () async {
     await initializeDateFormatting('ar');
     final day = DateTime(2026, 10, 19, 12);

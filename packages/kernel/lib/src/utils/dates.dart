@@ -36,6 +36,18 @@ String formatDateTime(DateTime date, {required String languageCode}) =>
 String formatTime(DateTime date, {required String languageCode}) =>
     _western(DateFormat.jm(languageCode)).format(date.toLocal());
 
+/// [formatTime] in two parts, to set them apart: "3:12" and "PM".
+({String clock, String period}) formatTimeParts(
+  DateTime date, {
+  required String languageCode,
+}) {
+  final local = date.toLocal();
+  return (
+    clock: _western(DateFormat('h:mm', languageCode)).format(local),
+    period: DateFormat('a', languageCode).format(local),
+  );
+}
+
 /// Just the time when [date] falls today ([now] in tests), otherwise its
 /// day and time: for what's due within hours, like a reservation.
 String formatWhen(
