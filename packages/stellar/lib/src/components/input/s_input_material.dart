@@ -106,11 +106,13 @@ class SSearchFieldMaterial extends StatefulWidget implements SSearchField {
     this.initialValue = '',
     this.autofocus = false,
     super.key,
-  }) : onTap = null;
+  }) : onTap = null,
+       color = SColor.fieldFill;
 
   const SSearchFieldMaterial.button({
     required this.hint,
     required VoidCallback this.onTap,
+    this.color = SColor.fieldFill,
     super.key,
   }) : onChanged = null,
        onSubmitted = null,
@@ -132,6 +134,9 @@ class SSearchFieldMaterial extends StatefulWidget implements SSearchField {
 
   /// Opens the keyboard at once: on a page that is only for searching.
   final bool autofocus;
+
+  /// The pill's fill.
+  final SColor color;
 
   @override
   State<SSearchFieldMaterial> createState() => _SearchFieldState();
@@ -621,7 +626,7 @@ class _SearchFieldState extends State<SSearchFieldMaterial> {
         style: TextStyle(fontSize: context.style.text.body),
         decoration: InputDecoration(
           hintText: widget.hint,
-          fillColor: c.fieldFill,
+          fillColor: c.resolve(widget.color),
           border: shape,
           enabledBorder: shape,
           focusedBorder: shape,

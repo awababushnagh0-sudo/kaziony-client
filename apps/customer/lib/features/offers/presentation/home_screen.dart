@@ -17,9 +17,9 @@ import 'offer_texts.dart';
 import 'widgets/offer_card.dart';
 import 'widgets/offer_card_skeleton.dart';
 
-/// The Home tab: where offers are shown from, search, the kinds of store,
-/// a few words about the app, then rows of offers around (ending soon,
-/// nearest, biggest discount) with the stores near you between them, your
+/// The Home tab: where offers are shown from and search on a soft green
+/// band, the kinds of store, a few words about the app, then rows of
+/// offers around (ending soon, nearest, biggest discount) with the stores near you between them, your
 /// favorite stores under them, and the way to every offer.
 class HomeScreen extends AppView {
   const HomeScreen({super.key});
@@ -34,6 +34,7 @@ class HomeScreen extends AppView {
     return SScaffold(
       showAppBar: false,
       padded: false,
+      underStatusBar: true,
       body: SSliverView(
         onRefresh: feed.hasValue
             ? () async {
@@ -50,9 +51,10 @@ class HomeScreen extends AppView {
               }
             : null,
         slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
-            sliver: SliverToBoxAdapter(
+          // Where offers are from and the search, on a soft green band.
+          SliverToBoxAdapter(
+            child: SBand(
+              color: SColor.primaryTint,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 spacing: Space.md,
@@ -66,6 +68,7 @@ class HomeScreen extends AppView {
                   ),
                   SSearchField.button(
                     hint: s.searchHint,
+                    color: SColor.surface,
                     onTap: () => context.go(Routes.search),
                   ),
                 ],

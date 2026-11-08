@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../../foundation/s_tokens.dart';
 import 's_input_material.dart';
 
 /// A search box above a list: a gray pill that filters as the user types.
@@ -20,10 +21,12 @@ abstract interface class SSearchField implements Widget {
   }) = SSearchFieldMaterial;
 
   /// Looks the same but opens the search elsewhere ([onTap]): the search
-  /// bar at the top of a home page.
+  /// bar at the top of a home page. [color] fills the pill:
+  /// [SColor.surface] on a colored band ([SBand]).
   const factory SSearchField.button({
     required String hint,
     required VoidCallback onTap,
+    SColor color,
     Key? key,
   }) = SSearchFieldMaterial.button;
 }
