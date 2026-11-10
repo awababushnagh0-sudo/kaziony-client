@@ -12,7 +12,7 @@ enum CustomerIllustrations implements Illustration {
   location('location', Size(160, 130)),
 
   /// A little street map with a red pin, in a map app's own colors: a
-  /// store's branches and the way to them.
+  /// store's place and the way to it.
   map('map', Size(56, 56)),
 
   /// A hand holding up the brand bag among sparkles: on the account tab

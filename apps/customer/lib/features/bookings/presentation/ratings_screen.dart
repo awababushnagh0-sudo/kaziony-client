@@ -4,12 +4,13 @@ import 'package:stellar/stellar.dart';
 import '../../../core/l10n/generated/customer_localizations.dart';
 import '../../../core/routes/routes.dart';
 import '../domain/booking.dart';
+import 'booking_texts.dart';
 import 'ratings_view_model.dart';
 import 'widgets/booking_tiles_skeleton.dart';
 
-/// The stars the customer gave stores, the latest first: each pickup's
-/// picture, the store, what it was and when, and the stars. Opens the
-/// booking.
+/// The stars the customer gave stores, the latest first, one rating per
+/// store: the picture of the pickup it's from, the store and its area,
+/// what it was and when, and the stars. Opens the booking.
 class RatingsScreen extends AppView {
   const RatingsScreen({super.key});
 
@@ -92,7 +93,7 @@ class _RatingTile extends StatelessWidget {
               spacing: Space.xxs,
               children: [
                 SText(
-                  booking.storeName,
+                  storeNamed(booking),
                   weight: SFontWeight.semibold,
                   maxLines: 1,
                 ),

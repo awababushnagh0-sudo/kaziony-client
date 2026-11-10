@@ -2,9 +2,9 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/customer_localizations.dart';
-import '../../../core/widgets/branch_directions.dart';
 import '../../../core/widgets/page_section.dart';
 import '../../../core/widgets/sign_in_prompt.dart';
+import '../../../core/widgets/store_location_box.dart';
 import '../../offers/presentation/offer_texts.dart';
 import '../../offers/presentation/offers_layout.dart';
 import '../../offers/presentation/widgets/offer_card.dart';
@@ -14,9 +14,9 @@ import '../domain/store.dart';
 import 'store_view_model.dart';
 
 /// A store's page: its cover with its logo, name, rating and kind on it
-/// and the heart that saves it to the customer's favorites, its branches
-/// with the way there, its offers live now, and what it asks of customers
-/// picking up.
+/// and the heart that saves it to the customer's favorites, its place with
+/// the way there, its hours today and its phone, its offers live now, and
+/// what it asks of customers picking up.
 class StoreScreen extends AppView {
   const StoreScreen({required this.storeId, super.key});
 
@@ -53,18 +53,17 @@ class StoreScreen extends AppView {
             ),
             // Where to go first, as on an offer's page: right under the
             // cover.
-            if (store.branches.isNotEmpty)
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    Space.lg,
-                    Space.lg,
-                    Space.lg,
-                    0,
-                  ),
-                  child: BranchDirections(branches: store.branches),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  Space.lg,
+                  Space.lg,
+                  Space.lg,
+                  0,
                 ),
+                child: StoreLocationBox(location: store.location),
               ),
+            ),
             SliverToBoxAdapter(
               child: PageSection(
                 title: s.storeOffersNow,
@@ -121,8 +120,8 @@ class StoreScreen extends AppView {
   }
 }
 
-/// The page while the store loads: its cover, its closest branch, and its
-/// first offers in the layout picked.
+/// The page while the store loads: its cover, its place, and its first
+/// offers in the layout picked.
 class _Skeleton extends StatelessWidget {
   const _Skeleton({required this.tiles});
 

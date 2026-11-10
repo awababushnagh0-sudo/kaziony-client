@@ -26,7 +26,9 @@ void main() {
     ],
   );
 
-  testWidgets('lists the rated pickups with their stars', (tester) async {
+  testWidgets('lists the rated stores, by their area, with their stars', (
+    tester,
+  ) async {
     final semantics = tester.ensureSemantics();
     bookings.bookings = [
       booking(status: BookingStatus.pickedUp, myRating: 4),
@@ -34,10 +36,10 @@ void main() {
     ];
     await open(tester);
 
-    expect(find.text('Sweet shop'), findsOneWidget);
+    expect(find.text('Sweet shop · Andalus'), findsOneWidget);
     expect(find.bySemanticsLabel(RegExp('4 stars')), findsOneWidget);
 
-    await tester.tap(find.text('Sweet shop'));
+    await tester.tap(find.text('Sweet shop · Andalus'));
     await tester.pumpAndSettle();
     expect(find.text('booking page'), findsOneWidget);
     semantics.dispose();

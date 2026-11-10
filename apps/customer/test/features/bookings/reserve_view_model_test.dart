@@ -1,4 +1,5 @@
 import 'package:customer/features/bookings/domain/booking.dart';
+import 'package:customer/features/bookings/presentation/bookings_view_model.dart';
 import 'package:customer/features/bookings/presentation/reserve_view_model.dart';
 import 'package:customer/features/offers/domain/offer.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -66,5 +67,49 @@ void main() {
 
     viewModel.clearFailure();
     expect(container.read(reserveViewModel(deal)).failure, isNull);
+  });
+
+  group('where the customer stands', () {
+    Future<void> watchStanding() async {
+      container.listen(bookingStandingProvider, (_, _) {});
+      await container.read(bookingStandingProvider.future);
+    }
+
+    setUp(() {
+      container = ProviderContainer(
+        overrides: [
+          ...testOverrides(kind: AppKind.customer),
+          bookingsRepositoryProvider.overrideWithValue(bookings),
+          sessionProvider.overrideWith(() => SignedInSession(customer())),
+        ],
+      );
+      addTearDown(container.dispose);
+    });
+
+    test('is loaded again once reserved: one more is held', () async {
+      await watchStanding();
+      await viewModelFor(offer()).reserve();
+      await container.read(bookingStandingProvider.future);
+
+      expect(bookings.standingLoads, 2);
+    });
+
+    test('is loaded again when refused for it', () async {
+      await watchStanding();
+      bookings.reserveResult = const Err(ForbiddenFailure(code: 'ClaimBanned'));
+      await viewModelFor(offer()).reserve();
+      await container.read(bookingStandingProvider.future);
+
+      expect(bookings.standingLoads, 2);
+    });
+
+    test('stays as it was when refused for the offer', () async {
+      await watchStanding();
+      bookings.reserveResult = const Err(ConflictFailure(null, 'SoldOut'));
+      await viewModelFor(offer()).reserve();
+      await container.read(bookingStandingProvider.future);
+
+      expect(bookings.standingLoads, 1);
+    });
   });
 }

@@ -50,24 +50,25 @@ class OfferStore {
   final StoreRating? rating;
 }
 
-/// A branch where an offer can be picked up.
-class Branch {
-  const Branch({
-    required this.id,
-    required this.name,
+/// Where a store is: its one place, where its offers are picked up. A
+/// brand with several places is several stores, told apart by [area].
+class StoreLocation {
+  const StoreLocation({
     required this.point,
     this.area,
     this.address,
     this.phone,
+    this.hours = OpeningHours.none,
     this.distanceKm,
   });
 
-  final String id;
-  final String name;
   final GeoPoint point;
+
+  /// The neighbourhood, shown with the store's name.
   final String? area;
   final String? address;
   final String? phone;
+  final OpeningHours hours;
 
   /// From the place offers are shown around.
   final double? distanceKm;
@@ -86,8 +87,7 @@ class Offer {
     required this.startsAt,
     required this.endsAt,
     required this.store,
-    required this.nearestBranch,
-    required this.branchCount,
+    required this.location,
     this.description,
     this.imageUrl,
     this.thumbUrl,
@@ -107,8 +107,8 @@ class Offer {
   final String offerPrice;
   final int discountPercent;
 
-  /// Counted pieces, held for [claimWindowMinutes] once reserved; else a
-  /// code good until the offer ends.
+  /// Counted pieces, held for [claimWindowMinutes] once reserved (never
+  /// past the offer's end); else a code good until the offer ends.
   final bool limited;
   final int? remaining;
   final int? total;
@@ -121,8 +121,9 @@ class Offer {
   final DateTime startsAt;
   final DateTime endsAt;
   final OfferStore store;
-  final Branch nearestBranch;
-  final int branchCount;
+
+  /// Where to pick it up: the store's place.
+  final StoreLocation location;
 
   /// The most that can be reserved at once: what's left, within the
   /// per-customer limit.
@@ -144,19 +145,16 @@ class Offer {
   static const _almostGone = 3;
 }
 
-/// An offer's page: every branch, and the customer's reservation if any.
+/// An offer's page: how to pick it up, and the customer's reservation if
+/// any.
 class OfferDetail {
   const OfferDetail({
     required this.offer,
-    required this.branches,
     this.pickupInstructions,
     this.myBookingId,
   });
 
   final Offer offer;
-
-  /// Closest first.
-  final List<Branch> branches;
 
   /// What the store asks of customers picking up, in its own words; null
   /// when it hasn't said.

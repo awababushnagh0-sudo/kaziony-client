@@ -36,23 +36,96 @@ String bookingDay(
       : formatDate(day, languageCode: languageCode);
 }
 
+/// The store with its area, which tells a brand's places apart: "Sweet
+/// shop · Andalus".
+String storeNamed(Booking booking) =>
+    [booking.storeName, ?booking.location.area].join(' · ');
+
 /// When a past booking happened: picked up, or else booked.
 DateTime bookingTime(Booking booking) =>
     booking.pickedUpAt ?? booking.createdAt;
 
-/// Why a reservation was refused, in the app's words.
-String reserveFailureMessage(BuildContext context, AppFailure failure) {
+/// What to tell the customer of where they stand, calmly: booking paused
+/// and until when, or the missed pickups that count, how many more pause
+/// booking and when the oldest stops counting. Null when there's nothing
+/// to say.
+({String title, String? message})? standingWarning(
+  CustomerLocalizations s,
+  BookingStanding standing,
+  DateTime now, {
+  required String languageCode,
+}) {
+  if (standing.pausedAt(now)) {
+    return (
+      title: s.bookingPausedUntil(
+        formatWhen(standing.pausedUntil!, languageCode: languageCode, now: now),
+      ),
+      message: s.bookingPausedMessage,
+    );
+  }
+  if (standing.strikes < 1) return null;
+  final left = standing.strikesLeft;
+  final fades = standing.strikeFadesAt;
+  final message = [
+    if (left > 0) s.missedLeftBeforePause(left, standing.nextPauseDays),
+    if (fades != null)
+      s.missedFadesOn(
+        standing.strikes,
+        formatDayMonth(fades, languageCode: languageCode),
+      ),
+  ].join(' ');
+  return (
+    title: s.missedPickups(standing.strikes),
+    message: message.isEmpty ? null : message,
+  );
+}
+
+/// [standingWarning] on one line, for the account: "Booking paused until
+/// 3:00 PM", "You missed a pickup · 2 more before a pause".
+String? standingLine(
+  CustomerLocalizations s,
+  BookingStanding standing,
+  DateTime now, {
+  required String languageCode,
+}) {
+  if (standing.pausedAt(now)) {
+    return s.bookingPausedUntil(
+      formatWhen(standing.pausedUntil!, languageCode: languageCode, now: now),
+    );
+  }
+  if (standing.strikes < 1) return null;
+  return [
+    s.missedPickups(standing.strikes),
+    if (standing.strikesLeft > 0) s.missedLeftShort(standing.strikesLeft),
+  ].join(' · ');
+}
+
+/// Why a reservation was refused, in the app's words; a pause with until
+/// when, once [pausedUntil] is known (said from [now]).
+String reserveFailureMessage(
+  BuildContext context,
+  AppFailure failure, {
+  DateTime? pausedUntil,
+  DateTime? now,
+}) {
   final s = CustomerLocalizations.of(context);
+  final language = Localizations.localeOf(context).languageCode;
   return switch (failure) {
     ConflictFailure(code: 'AlreadyReserved') => s.reserveAlreadyReserved,
     ConflictFailure(code: 'ClaimLimitReached') => s.reserveLimitReached,
     ConflictFailure(code: 'OverClaimLimit') => s.reserveOverLimit,
     ConflictFailure(code: 'TooManyReservations') => s.reserveTooMany,
+    ConflictFailure(code: 'CancelledTooOften') => s.reserveCancelledTooOften,
     ConflictFailure(code: 'NotEnoughLeft') => s.reserveNotEnough,
     ConflictFailure(code: 'SoldOut') => s.soldOut,
     ConflictFailure(code: 'OfferNotStarted') => s.reserveNotStarted,
     ConflictFailure(code: 'OfferEnded') => s.reserveEnded,
-    ForbiddenFailure(code: 'ClaimBanned') => s.reserveBanned,
+    ForbiddenFailure(code: 'ClaimBanned') =>
+      pausedUntil == null
+          ? s.reservePaused
+          : s.bookingPausedUntil(
+              formatWhen(pausedUntil, languageCode: language, now: now),
+            ),
     _ => failureMessage(context, failure),
   };
 }

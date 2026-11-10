@@ -11,10 +11,10 @@ import '../../bookings/presentation/bookings_view_model.dart';
 import '../../location/domain/browse_location.dart';
 import '../../location/presentation/places_screen.dart';
 
-/// Signed in, a greeting on a soft orange band, then the way to the
-/// bookings (with how many wait), the favorite stores and the ratings
-/// given. Signed out, the way to sign in. Then the app's settings, which
-/// work signed out too.
+/// Signed in, a greeting on a soft orange band, a line when booking is
+/// paused or pickups were missed, then the way to the bookings (with how
+/// many wait), the favorite stores and the ratings given. Signed out, the
+/// way to sign in. Then the app's settings, which work signed out too.
 class AccountScreen extends AppView {
   const AccountScreen({super.key});
 
@@ -42,6 +42,15 @@ class AccountScreen extends AppView {
       now,
     ).length;
     final name = user.name?.trim();
+    final standing = ref.watch(bookingStandingProvider).value;
+    final line = standing == null
+        ? null
+        : standingLine(
+            s,
+            standing,
+            now,
+            languageCode: Localizations.localeOf(context).languageCode,
+          );
     return SScaffold(
       showAppBar: false,
       scrollable: true,
@@ -66,6 +75,7 @@ class AccountScreen extends AppView {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               spacing: Space.xl,
               children: [
+                if (line != null) SAlert.warning(title: line),
                 SShortcuts.pills([
                   ShortcutPill(
                     label: s.bookingsTitle,

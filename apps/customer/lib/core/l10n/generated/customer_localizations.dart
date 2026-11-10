@@ -101,18 +101,6 @@ abstract class CustomerLocalizations {
     Locale('en'),
   ];
 
-  /// No description provided for @branchCount.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{1 branch} other{{count} branches}}'**
-  String branchCount(int count);
-
-  /// No description provided for @branchClosest.
-  ///
-  /// In en, this message translates to:
-  /// **'Closest'**
-  String get branchClosest;
-
   /// No description provided for @offerFactPickup.
   ///
   /// In en, this message translates to:
@@ -170,7 +158,7 @@ abstract class CustomerLocalizations {
   /// No description provided for @ratingPrompt.
   ///
   /// In en, this message translates to:
-  /// **'How was your pickup at {store}?'**
+  /// **'How was {store}?'**
   String ratingPrompt(String store);
 
   /// No description provided for @ratingPromptMessage.
@@ -206,8 +194,26 @@ abstract class CustomerLocalizations {
   /// No description provided for @ratingAlreadyRated.
   ///
   /// In en, this message translates to:
-  /// **'You\'ve already rated this pickup.'**
+  /// **'You\'ve already rated this store from this pickup or a later one.'**
   String get ratingAlreadyRated;
+
+  /// No description provided for @ratingAgainMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up there again: rate it anew, and your new stars replace the old ones.'**
+  String get ratingAgainMessage;
+
+  /// No description provided for @ratingOnePerStore.
+  ///
+  /// In en, this message translates to:
+  /// **'One rating per store. Pick up there again to change it.'**
+  String get ratingOnePerStore;
+
+  /// No description provided for @ratingUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Update rating'**
+  String get ratingUpdate;
 
   /// No description provided for @pickupInstructionsTitle.
   ///
@@ -316,6 +322,36 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'We couldn\'t open the map. Try again.'**
   String get storeDirectionsFailed;
+
+  /// No description provided for @openToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Open today {hours}'**
+  String openToday(String hours);
+
+  /// No description provided for @closedToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed today'**
+  String get closedToday;
+
+  /// No description provided for @hoursBetween.
+  ///
+  /// In en, this message translates to:
+  /// **'{open} – {close}'**
+  String hoursBetween(String open, String close);
+
+  /// No description provided for @callAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get callAction;
+
+  /// No description provided for @callFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t start the call. Try again.'**
+  String get callFailed;
 
   /// No description provided for @storeAddFavorite.
   ///
@@ -962,14 +998,32 @@ abstract class CustomerLocalizations {
   /// No description provided for @holdTitle.
   ///
   /// In en, this message translates to:
-  /// **'Held for you for {minutes} min'**
-  String holdTitle(int minutes);
+  /// **'You have {time} to pick up'**
+  String holdTitle(String time);
 
   /// No description provided for @holdMessage.
   ///
   /// In en, this message translates to:
-  /// **'Reserve now and pick it up at the store within that time.'**
+  /// **'From when you reserve, and never past the offer\'s end.'**
   String get holdMessage;
+
+  /// No description provided for @holdHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours, plural, =1{1 hour} other{{hours} hours}}'**
+  String holdHours(int hours);
+
+  /// No description provided for @holdMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes, plural, =1{1 minute} other{{minutes} minutes}}'**
+  String holdMinutes(int minutes);
+
+  /// No description provided for @holdHoursAndMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} and {minutes}'**
+  String holdHoursAndMinutes(String hours, String minutes);
 
   /// No description provided for @untilEndTitle.
   ///
@@ -1034,8 +1088,8 @@ abstract class CustomerLocalizations {
   /// No description provided for @reserveHoldNote.
   ///
   /// In en, this message translates to:
-  /// **'We hold them for {minutes} min. You pay cash when you pick up.'**
-  String reserveHoldNote(int minutes);
+  /// **'You have {time} to pick up, and you pay cash then.'**
+  String reserveHoldNote(String time);
 
   /// No description provided for @reserveUntilEndNote.
   ///
@@ -1064,8 +1118,20 @@ abstract class CustomerLocalizations {
   /// No description provided for @reserveTooMany.
   ///
   /// In en, this message translates to:
-  /// **'You have too many reservations. Pick one up or cancel one first.'**
+  /// **'You already hold the most reservations at once. Pick one up or cancel one first.'**
   String get reserveTooMany;
+
+  /// No description provided for @reserveFullNote.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{You hold 1 reservation, the most at once. Pick it up or cancel it to book this one.} other{You hold {count} reservations, the most at once. Pick one up or cancel one to book this one.}}'**
+  String reserveFullNote(int count);
+
+  /// No description provided for @reserveCancelledTooOften.
+  ///
+  /// In en, this message translates to:
+  /// **'You cancelled this offer twice, so you can\'t book it again.'**
+  String get reserveCancelledTooOften;
 
   /// No description provided for @reserveNotEnough.
   ///
@@ -1085,11 +1151,47 @@ abstract class CustomerLocalizations {
   /// **'This offer has ended.'**
   String get reserveEnded;
 
-  /// No description provided for @reserveBanned.
+  /// No description provided for @reservePaused.
   ///
   /// In en, this message translates to:
-  /// **'You missed several pickups, so you can\'t reserve for a few days.'**
-  String get reserveBanned;
+  /// **'Booking is paused for a few days after missed pickups.'**
+  String get reservePaused;
+
+  /// No description provided for @bookingPausedUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking paused until {when}'**
+  String bookingPausedUntil(String when);
+
+  /// No description provided for @bookingPausedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'After missed pickups. It opens again by itself then.'**
+  String get bookingPausedMessage;
+
+  /// No description provided for @missedPickups.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{You missed a pickup} other{You missed {count} pickups}}'**
+  String missedPickups(int count);
+
+  /// No description provided for @missedLeftBeforePause.
+  ///
+  /// In en, this message translates to:
+  /// **'{left} more before booking pauses for {days, plural, =1{1 day} other{{days} days}}.'**
+  String missedLeftBeforePause(int left, int days);
+
+  /// No description provided for @missedFadesOn.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{It stops counting on {date}.} other{The oldest stops counting on {date}.}}'**
+  String missedFadesOn(int count, String date);
+
+  /// No description provided for @missedLeftShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{left} more before a pause'**
+  String missedLeftShort(int left);
 
   /// No description provided for @reserved.
   ///
@@ -1174,18 +1276,6 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'Where to pick up'**
   String get pickupWhereTitle;
-
-  /// No description provided for @orBranch.
-  ///
-  /// In en, this message translates to:
-  /// **'or {branch}'**
-  String orBranch(String branch);
-
-  /// No description provided for @orOtherBranches.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{or 1 more branch} other{or {count} more branches}}'**
-  String orOtherBranches(int count);
 
   /// No description provided for @bookingsNow.
   ///
@@ -1294,6 +1384,12 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'The pieces go back to the offer, and it doesn\'t count against you.'**
   String get cancelBookingMessage;
+
+  /// No description provided for @cancelEndsBookingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The pieces go back to the offer. You cancelled it once already, so you won\'t be able to book this offer again.'**
+  String get cancelEndsBookingMessage;
 
   /// No description provided for @keepBooking.
   ///

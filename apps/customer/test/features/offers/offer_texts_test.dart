@@ -1,3 +1,4 @@
+import 'package:customer/core/l10n/generated/customer_localizations_ar.dart';
 import 'package:customer/core/l10n/generated/customer_localizations_en.dart';
 import 'package:customer/features/offers/presentation/offer_texts.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -72,5 +73,27 @@ void main() {
       endsAt: DateTime(2026, 11, 9, 21),
     );
     expect(text, startsWith('Nov 9 until 9:00'));
+  });
+
+  group('holdTime', () {
+    test('in hours, minutes, or both', () {
+      expect(s.holdTime(120), '2 hours');
+      expect(s.holdTime(60), '1 hour');
+      expect(s.holdTime(45), '45 minutes');
+      expect(s.holdTime(90), '1 hour and 30 minutes');
+    });
+
+    test('in Arabic, as said: one, two, a few, many', () {
+      final ar = CustomerLocalizationsAr();
+      expect(ar.holdTime(60), 'ساعة');
+      expect(ar.holdTime(120), 'ساعتان');
+      expect(ar.holdTime(180), '3 ساعات');
+      expect(ar.holdTime(12 * 60), '12 ساعة');
+      expect(ar.holdTime(2), 'دقيقتان');
+      expect(ar.holdTime(5), '5 دقائق');
+      expect(ar.holdTime(45), '45 دقيقة');
+      expect(ar.holdTime(90), 'ساعة و30 دقيقة');
+      expect(ar.holdTitle(ar.holdTime(120)), 'عندك ساعتان للاستلام');
+    });
   });
 }

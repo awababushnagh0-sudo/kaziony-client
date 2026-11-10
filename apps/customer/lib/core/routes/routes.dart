@@ -36,7 +36,7 @@ abstract final class Routes {
   static const offerPattern = '/offer/:offerId';
   static String offer(String offerId) => '/offer/$offerId';
 
-  /// A store's page: its offers, branches, and following it.
+  /// A store's page: its offers, its place, and following it.
   static const storePattern = '/store/:storeId';
   static String store(String storeId) => '/store/$storeId';
 

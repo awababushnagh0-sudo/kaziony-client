@@ -51,6 +51,17 @@ extension OfferTexts on CustomerLocalizations {
 
   /// "1.2 km".
   String distance(double km) => distanceKm(km.toStringAsFixed(1));
+
+  /// How long a reservation is held, as people say it: "2 hours",
+  /// "45 minutes", "1 hour and 30 minutes" (in Arabic "ساعتان",
+  /// "45 دقيقة", "ساعة و30 دقيقة").
+  String holdTime(int minutes) {
+    final hours = minutes ~/ Duration.minutesPerHour;
+    final rest = minutes % Duration.minutesPerHour;
+    if (hours == 0) return holdMinutes(rest);
+    if (rest == 0) return holdHours(hours);
+    return holdHoursAndMinutes(holdHours(hours), holdMinutes(rest));
+  }
 }
 
 /// A weekday names one day only within the week ahead; past it, the date.

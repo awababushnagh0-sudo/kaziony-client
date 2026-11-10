@@ -27,6 +27,14 @@ class BookingsViewModel extends PagedListViewModel<Booking, String?> {
     return page;
   }
 
+  /// Where the customer stands comes again with the list: a booking that
+  /// ran out is a missed pickup, one picked up frees a place.
+  @override
+  Future<AppFailure?> refresh() {
+    ref.invalidate(bookingStandingProvider);
+    return super.refresh();
+  }
+
   static bool _waiting(PagedItems<Booking>? page) =>
       page?.items.any((booking) => booking.status == BookingStatus.reserved) ??
       false;
@@ -55,3 +63,18 @@ final bookingsViewModel =
     AsyncNotifierProvider.autoDispose<BookingsViewModel, PagedItems<Booking>>(
       BookingsViewModel.new,
     );
+
+/// Where the signed-in customer stands with booking, for the warnings on
+/// the Bookings tab, the account and an offer's page (never home); null
+/// for guests. Loaded again with the bookings, and after reserving or
+/// cancelling. Failing, the warnings just don't show: the server still
+/// says why when it refuses.
+final bookingStandingProvider = FutureProvider.autoDispose<BookingStanding?>((
+  ref,
+) async {
+  if (ref.watch(sessionProvider) is! SignedIn) return null;
+  return switch (await ref.watch(bookingsRepositoryProvider).standing()) {
+    Ok(:final value) => value,
+    Err(:final failure) => throw failure,
+  };
+});

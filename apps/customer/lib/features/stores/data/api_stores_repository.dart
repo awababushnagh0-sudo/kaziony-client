@@ -41,7 +41,8 @@ class ApiStoresRepository implements StoresRepository {
               coverUrl: store.coverUrl,
               category: toCategory(store.category),
               liveOfferCount: store.liveOfferCount.toInt(),
-              nearestBranch: toBranch(store.nearestBranch),
+              area: storeWords(store.location.area),
+              distanceKm: store.location.distanceKm?.toDouble(),
               rating: toRating(store.ratingAverage, store.ratingCount),
             ),
         ],
@@ -69,7 +70,7 @@ class ApiStoresRepository implements StoresRepository {
         pickupInstructions: storeWords(store.pickupInstructions),
         rating: toRating(store.ratingAverage, store.ratingCount),
         category: toCategory(store.category),
-        branches: [for (final branch in store.branches) toBranch(branch)],
+        location: toLocation(store.location),
         isFollowing: store.isFollowing,
         offers: [
           // Read through JSON, so they map the same way as browsing's
@@ -95,6 +96,7 @@ class ApiStoresRepository implements StoresRepository {
             id: store.id,
             name: store.name,
             logoUrl: store.logoUrl,
+            area: storeWords(store.area),
             category: toCategory(store.category),
             liveOfferCount: store.liveOfferCount.toInt(),
             rating: toRating(store.ratingAverage, store.ratingCount),

@@ -170,4 +170,47 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('ratings page'), findsOneWidget);
   });
+
+  testWidgets('after missed pickups, one line on where the customer stands', (
+    tester,
+  ) async {
+    bookings.standingNow = const BookingStanding(
+      strikes: 1,
+      strikesBeforePause: 3,
+      nextPauseDays: 3,
+      activeReservations: 0,
+      maxActiveReservations: 3,
+    );
+    await open(tester, user: customer());
+
+    expect(
+      find.text('You missed a pickup · 2 more before a pause'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('while booking is paused, until when', (tester) async {
+    bookings.standingNow = BookingStanding(
+      strikes: 0,
+      strikesBeforePause: 3,
+      nextPauseDays: 7,
+      activeReservations: 0,
+      maxActiveReservations: 3,
+      pausedUntil: now.add(const Duration(hours: 3)),
+    );
+    await open(tester, user: customer());
+
+    // Today: the time is enough.
+    expect(
+      find.textContaining(RegExp('^Booking paused until 3:00.PM\$')),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('with nothing to say, no line', (tester) async {
+    await open(tester, user: customer());
+
+    expect(find.textContaining('missed'), findsNothing);
+    expect(find.textContaining('paused'), findsNothing);
+  });
 }

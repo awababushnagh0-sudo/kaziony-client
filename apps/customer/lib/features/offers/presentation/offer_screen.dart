@@ -3,9 +3,10 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/customer_localizations.dart';
 import '../../../core/routes/routes.dart';
-import '../../../core/widgets/branch_directions.dart';
 import '../../../core/widgets/page_section.dart';
 import '../../../core/widgets/sign_in_prompt.dart';
+import '../../../core/widgets/store_location_box.dart';
+import '../../bookings/presentation/bookings_view_model.dart';
 import '../../bookings/presentation/reserve_sheet.dart';
 import '../../bookings/presentation/reserve_view_model.dart';
 import '../domain/offer.dart';
@@ -14,8 +15,8 @@ import 'offer_view_model.dart';
 
 /// One offer: its photo with its name and prices on it, when to pick up
 /// and how many are left, the store with its rating and how far, where to
-/// pick up, what it is, how picking up works, and the way to reserve it, as many as
-/// allowed.
+/// pick up, what it is, how picking up works, and the way to reserve it, as
+/// many as allowed, unless booking is paused for the customer.
 class OfferScreen extends AppView {
   const OfferScreen({required this.offerId, super.key});
 
@@ -80,7 +81,7 @@ class _StockBadge extends StatelessWidget {
 }
 
 /// The page while the offer loads: its photo, the two facts, the store's
-/// box and the branches' box, then the first part about it.
+/// box and the place's box, then the first part about it.
 class _Skeleton extends StatelessWidget {
   const _Skeleton();
 
@@ -171,13 +172,10 @@ class _Body extends AppView {
         ),
         // Where to go, right under who: the first thing to know after the
         // offer itself.
-        if (detail.branches.isNotEmpty) ...[
-          const Gap(Space.md),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
-            child: BranchDirections(branches: detail.branches),
-          ),
-        ],
+        Padding(
+          padding: const EdgeInsets.fromLTRB(Space.lg, Space.md, Space.lg, 0),
+          child: StoreLocationBox(location: offer.location),
+        ),
         if (description.isNotEmpty)
           PageSection(
             title: s.offerPageAbout,
@@ -194,7 +192,7 @@ class _Body extends AppView {
               if (offer.limited)
                 SListTile(
                   icon: SIcons.hourglass,
-                  title: s.holdTitle(offer.claimWindowMinutes),
+                  title: s.holdTitle(s.holdTime(offer.claimWindowMinutes)),
                   subtitle: s.holdMessage,
                 )
               else
@@ -274,9 +272,8 @@ class _Caption extends StatelessWidget {
   }
 }
 
-/// The store, as a row that opens its page.
-/// The store: its logo, its name, then its rating, kind and how far its
-/// nearest branch is; opens its page.
+/// The store: its logo, its name, then its rating, kind and how far it
+/// is; opens its page.
 class _StoreCard extends StatelessWidget {
   const _StoreCard({required this.offer});
 
@@ -288,7 +285,7 @@ class _StoreCard extends StatelessWidget {
     final language = Localizations.localeOf(context).languageCode;
     final store = offer.store;
     final rating = store.rating;
-    final km = offer.nearestBranch.distanceKm;
+    final km = offer.location.distanceKm;
     const dot = SText(
       '·',
       variant: TextVariant.caption,
@@ -353,7 +350,9 @@ class _StoreCard extends StatelessWidget {
 }
 
 /// The way to reserve, with how many beside it when more than one can be
-/// taken: signing in first, or the pickup code once reserved.
+/// taken: signing in first, or the pickup code once reserved. While
+/// booking is paused for the customer, until when instead; holding the
+/// most reservations at once, said over it before they try.
 class _Footer extends AppView {
   const _Footer({required this.detail});
 
@@ -378,26 +377,59 @@ class _Footer extends AppView {
       );
     }
     final signedIn = ref.watch(sessionProvider) is SignedIn;
+    final standing = ref.watch(bookingStandingProvider).value;
+    final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
+    if (standing != null && standing.pausedAt(now)) {
+      final language = Localizations.localeOf(context).languageCode;
+      return SDealFooter(
+        action: SButton(
+          label: s.bookingPausedUntil(
+            formatWhen(standing.pausedUntil!, languageCode: language, now: now),
+          ),
+          expand: true,
+          onPressed: null,
+        ),
+      );
+    }
     final quantity = ref.watch(reserveViewModel(offer)).quantity;
-    return SDealFooter(
-      quantity: offer.maxReservable > 1
-          ? SQuantityInput(
-              value: quantity,
-              max: offer.maxReservable,
-              onChanged: ref.read(reserveViewModel(offer).notifier).setQuantity,
-            )
-          : null,
-      action: SButton(
-        label: quantity > 1 ? s.offerPageReserveCount(quantity) : s.reserveNow,
-        expand: true,
-        onPressed: signedIn
-            ? () => reserve(context, ref, offer)
-            : () => SignInPrompt.show(
-                context,
-                title: s.reserveSignInTitle,
-                message: s.reserveSignInMessage,
-              ),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      spacing: Space.sm,
+      children: [
+        // The most at once counts reservations of counted offers only. The
+        // button stays: the server has the last word, and the count may be
+        // a moment old.
+        if (standing != null && standing.full && offer.limited)
+          SText.caption(
+            s.reserveFullNote(standing.maxActiveReservations),
+            align: TextAlign.center,
+          ),
+        SDealFooter(
+          quantity: offer.maxReservable > 1
+              ? SQuantityInput(
+                  value: quantity,
+                  max: offer.maxReservable,
+                  onChanged: ref
+                      .read(reserveViewModel(offer).notifier)
+                      .setQuantity,
+                )
+              : null,
+          action: SButton(
+            label: quantity > 1
+                ? s.offerPageReserveCount(quantity)
+                : s.reserveNow,
+            expand: true,
+            onPressed: signedIn
+                ? () => reserve(context, ref, offer)
+                : () => SignInPrompt.show(
+                    context,
+                    title: s.reserveSignInTitle,
+                    message: s.reserveSignInMessage,
+                  ),
+          ),
+        ),
+      ],
     );
   }
 }

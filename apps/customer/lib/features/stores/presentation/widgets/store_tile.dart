@@ -6,8 +6,8 @@ import '../../../../core/routes/routes.dart';
 import '../../../offers/presentation/offer_texts.dart';
 import '../../domain/store.dart';
 
-/// A store in a list that runs down the page: its logo, name, rating, kind
-/// and how far, and how many offers it has now. Opens its page.
+/// A store in a list that runs down the page: its logo, name, rating, kind,
+/// area and how far, and how many offers it has now. Opens its page.
 class StoreTile extends StatelessWidget {
   const StoreTile(this.store, {this.onOpen, this.trailing, super.key});
 
@@ -25,7 +25,9 @@ class StoreTile extends StatelessWidget {
     final language = Localizations.localeOf(context).languageCode;
     final details = [
       store.category.name(language),
-      if (store.nearestBranch?.distanceKm case final km?) s.distance(km),
+      // A brand's places share its name: the area tells them apart.
+      ?store.area,
+      if (store.distanceKm case final km?) s.distance(km),
     ];
     return SCard(
       onTap: () {

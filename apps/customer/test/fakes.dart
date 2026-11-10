@@ -141,11 +141,15 @@ const bakery = Category(
   nameEn: 'Bakeries',
 );
 
-const branch = Branch(
-  id: 'b1',
-  name: 'Hay Al Andalus',
+/// The store's place: open 8 AM to 11 PM on Mondays, as [now] is.
+const place = StoreLocation(
   point: souqAlJuma,
   area: 'Andalus',
+  address: 'Jaraba Street',
+  phone: '+218912345678',
+  hours: OpeningHours({
+    Weekday.mon: [OpeningShift(opens: 8 * 60, closes: 23 * 60)],
+  }),
   distanceKm: 1.2,
 );
 
@@ -156,9 +160,11 @@ Offer offer({
   int? remaining = 3,
   int? maxPerUser = 2,
   bool limited = true,
+  int claimWindowMinutes = 120,
   DateTime? startsAt,
   DateTime? endsAt,
   StoreRating? rating,
+  StoreLocation location = place,
 }) => Offer(
   id: id,
   title: title,
@@ -169,7 +175,7 @@ Offer offer({
   remaining: limited ? remaining : null,
   total: limited ? 10 : null,
   maxPerUser: maxPerUser,
-  claimWindowMinutes: 60,
+  claimWindowMinutes: claimWindowMinutes,
   startsAt: startsAt ?? now.subtract(const Duration(hours: 1)),
   endsAt: endsAt ?? now.add(const Duration(hours: 5)),
   store: OfferStore(
@@ -178,8 +184,7 @@ Offer offer({
     category: bakery,
     rating: rating,
   ),
-  nearestBranch: branch,
-  branchCount: 1,
+  location: location,
 );
 
 Booking booking({
@@ -189,6 +194,7 @@ Booking booking({
   bool canCancel = true,
   bool limited = true,
   bool canRate = false,
+  bool cancelEndsBooking = false,
   int? myRating,
   Duration ago = const Duration(minutes: 18),
 }) => Booking(
@@ -203,8 +209,9 @@ Booking booking({
   offerTitle: 'Kunafa box',
   offerPrice: '15.000',
   storeName: 'Sweet shop',
-  branches: const [branch],
+  location: place,
   canCancel: canCancel,
+  cancelEndsBooking: cancelEndsBooking,
   limited: limited,
   canRate: canRate,
   myRating: myRating,
@@ -241,19 +248,26 @@ class FakeOffersRepository implements OffersRepository {
   @override
   Future<Result<OfferDetail>> get(String offerId, {GeoPoint? around}) async =>
       detail ??
-      Ok(
-        OfferDetail(
-          offer: offers.firstWhere((o) => o.id == offerId),
-          branches: const [branch],
-        ),
-      );
+      Ok(OfferDetail(offer: offers.firstWhere((o) => o.id == offerId)));
 
   @override
   Future<Result<List<Category>>> categories() async => Ok(categoryList);
 }
 
+/// Where a customer stands with nothing to warn of: no missed pickups,
+/// nothing held.
+const clearStanding = BookingStanding(
+  strikes: 0,
+  strikesBeforePause: 3,
+  nextPauseDays: 3,
+  activeReservations: 0,
+  maxActiveReservations: 3,
+);
+
 class FakeBookingsRepository implements BookingsRepository {
   List<Booking> bookings = [booking()];
+  BookingStanding standingNow = clearStanding;
+  var standingLoads = 0;
   Result<Booking>? reserveResult;
   Result<Booking>? cancelResult;
   Result<Booking>? rateResult;
@@ -295,6 +309,12 @@ class FakeBookingsRepository implements BookingsRepository {
   }
 
   @override
+  Future<Result<BookingStanding>> standing() async {
+    standingLoads++;
+    return Ok(standingNow);
+  }
+
+  @override
   Future<Result<Booking>> rate(String bookingId, int stars) async {
     rated.add((bookingId, stars));
     return rateResult ??
@@ -313,11 +333,13 @@ const storeSummary = StoreSummary(
   name: 'Sweet shop',
   category: bakery,
   liveOfferCount: 2,
-  nearestBranch: branch,
+  area: 'Andalus',
+  distanceKm: 1.2,
 );
 
 class FakeStoresRepository implements StoresRepository {
   List<StoreSummary> stores = const [storeSummary];
+  StoreLocation location = place;
   StoreRating? rating;
   String? pickupInstructions;
   List<StoreSummary> followedStores = const [];
@@ -339,7 +361,7 @@ class FakeStoresRepository implements StoresRepository {
           id: storeId,
           name: 'Sweet shop',
           category: bakery,
-          branches: const [branch],
+          location: location,
           rating: rating,
           pickupInstructions: pickupInstructions,
           isFollowing: false,

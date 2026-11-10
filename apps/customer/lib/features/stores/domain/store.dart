@@ -3,7 +3,7 @@ import 'package:kernel/kernel.dart';
 import '../../offers/domain/offer.dart';
 
 /// A store in a list (near you, the customer's favorites): its logo,
-/// name, and how far.
+/// name and area, and how far.
 class StoreSummary {
   const StoreSummary({
     required this.id,
@@ -12,7 +12,8 @@ class StoreSummary {
     required this.liveOfferCount,
     this.logoUrl,
     this.coverUrl,
-    this.nearestBranch,
+    this.area,
+    this.distanceKm,
     this.rating,
   });
 
@@ -23,8 +24,11 @@ class StoreSummary {
   final Category category;
   final int liveOfferCount;
 
+  /// The neighbourhood: tells a brand's places apart.
+  final String? area;
+
   /// Null for followed stores, listed wherever they are.
-  final Branch? nearestBranch;
+  final double? distanceKm;
 
   /// Null before its first rating.
   final StoreRating? rating;
@@ -36,7 +40,7 @@ class StoreDetail {
     required this.id,
     required this.name,
     required this.category,
-    required this.branches,
+    required this.location,
     required this.offers,
     this.logoUrl,
     this.coverUrl,
@@ -60,8 +64,7 @@ class StoreDetail {
   /// Null before its first rating.
   final StoreRating? rating;
 
-  /// Closest first.
-  final List<Branch> branches;
+  final StoreLocation location;
 
   /// Null for guests.
   final bool? isFollowing;

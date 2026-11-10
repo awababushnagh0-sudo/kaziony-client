@@ -1,8 +1,5 @@
 {
   "@@locale": "en",
-  "branchCount": "{count, plural, =1{1 branch} other{{count} branches}}",
-  "@branchCount": {"placeholders": {"count": {"type": "int"}}},
-  "branchClosest": "Closest",
   "offerFactPickup": "Pick up",
   "offerFactLeft": "Left",
   "offerFactLeftValue": "{left} of {total}",
@@ -32,7 +29,7 @@
       }
     }
   },
-  "ratingPrompt": "How was your pickup at {store}?",
+  "ratingPrompt": "How was {store}?",
   "@ratingPrompt": {
     "placeholders": {
       "store": {
@@ -52,7 +49,10 @@
   "ratingThanks": "Thanks for rating!",
   "ratingSend": "Send rating",
   "ratingNotPickedUp": "You can rate the store once you've picked up.",
-  "ratingAlreadyRated": "You've already rated this pickup.",
+  "ratingAlreadyRated": "You've already rated this store from this pickup or a later one.",
+  "ratingAgainMessage": "Picked up there again: rate it anew, and your new stars replace the old ones.",
+  "ratingOnePerStore": "One rating per store. Pick up there again to change it.",
+  "ratingUpdate": "Update rating",
   "pickupInstructionsTitle": "Pickup instructions",
   "pickupInstructionsDefault": "Show your pickup code to a staff member at the store, and they'll hand you your order.",
   "homeStoresNearby": "Stores near you",
@@ -92,6 +92,13 @@
   "offerPageGoodToKnow": "Good to know",
   "storeGetDirections": "Get directions",
   "storeDirectionsFailed": "We couldn't open the map. Try again.",
+  "openToday": "Open today {hours}",
+  "@openToday": {"placeholders": {"hours": {"type": "String"}}},
+  "closedToday": "Closed today",
+  "hoursBetween": "{open} – {close}",
+  "@hoursBetween": {"placeholders": {"open": {"type": "String"}, "close": {"type": "String"}}},
+  "callAction": "Call",
+  "callFailed": "We couldn't start the call. Try again.",
   "storeAddFavorite": "Add to favorites",
   "storeRemoveFavorite": "Remove from favorites",
   "storeFavoriteSignInTitle": "Sign in to save your favorite stores",
@@ -243,15 +250,15 @@
   "noResultsFor": "Nothing for “{words}” near you",
   "@noResultsFor": {"placeholders": {"words": {"type": "String"}}},
   "noResultsNearby": "Stores post new offers every day. Here's what's near you now.",
-  "holdTitle": "Held for you for {minutes} min",
-  "@holdTitle": {
-    "placeholders": {
-      "minutes": {
-        "type": "int"
-      }
-    }
-  },
-  "holdMessage": "Reserve now and pick it up at the store within that time.",
+  "holdTitle": "You have {time} to pick up",
+  "@holdTitle": {"placeholders": {"time": {"type": "String"}}},
+  "holdMessage": "From when you reserve, and never past the offer's end.",
+  "holdHours": "{hours, plural, =1{1 hour} other{{hours} hours}}",
+  "@holdHours": {"placeholders": {"hours": {"type": "int"}}},
+  "holdMinutes": "{minutes, plural, =1{1 minute} other{{minutes} minutes}}",
+  "@holdMinutes": {"placeholders": {"minutes": {"type": "int"}}},
+  "holdHoursAndMinutes": "{hours} and {minutes}",
+  "@holdHoursAndMinutes": {"placeholders": {"hours": {"type": "String"}, "minutes": {"type": "String"}}},
   "untilEndTitle": "Your code works until the offer ends",
   "untilEndMessage": "Pick it up any time before the offer ends.",
   "payTitle": "Pay cash at the store",
@@ -276,23 +283,31 @@
     }
   },
   "reserveConfirm": "Confirm reservation",
-  "reserveHoldNote": "We hold them for {minutes} min. You pay cash when you pick up.",
-  "@reserveHoldNote": {
-    "placeholders": {
-      "minutes": {
-        "type": "int"
-      }
-    }
-  },
+  "reserveHoldNote": "You have {time} to pick up, and you pay cash then.",
+  "@reserveHoldNote": {"placeholders": {"time": {"type": "String"}}},
   "reserveUntilEndNote": "Your code works until the offer ends. You pay cash when you pick up.",
   "reserveAlreadyReserved": "You already have a reservation for this offer.",
   "reserveLimitReached": "You've already taken the most this offer allows.",
   "reserveOverLimit": "You can't take that many. Try fewer.",
-  "reserveTooMany": "You have too many reservations. Pick one up or cancel one first.",
+  "reserveTooMany": "You already hold the most reservations at once. Pick one up or cancel one first.",
+  "reserveFullNote": "{count, plural, =1{You hold 1 reservation, the most at once. Pick it up or cancel it to book this one.} other{You hold {count} reservations, the most at once. Pick one up or cancel one to book this one.}}",
+  "@reserveFullNote": {"placeholders": {"count": {"type": "int"}}},
+  "reserveCancelledTooOften": "You cancelled this offer twice, so you can't book it again.",
   "reserveNotEnough": "There aren't that many left. Try fewer.",
   "reserveNotStarted": "This offer hasn't started yet.",
   "reserveEnded": "This offer has ended.",
-  "reserveBanned": "You missed several pickups, so you can't reserve for a few days.",
+  "reservePaused": "Booking is paused for a few days after missed pickups.",
+  "bookingPausedUntil": "Booking paused until {when}",
+  "@bookingPausedUntil": {"placeholders": {"when": {"type": "String"}}},
+  "bookingPausedMessage": "After missed pickups. It opens again by itself then.",
+  "missedPickups": "{count, plural, =1{You missed a pickup} other{You missed {count} pickups}}",
+  "@missedPickups": {"placeholders": {"count": {"type": "int"}}},
+  "missedLeftBeforePause": "{left} more before booking pauses for {days, plural, =1{1 day} other{{days} days}}.",
+  "@missedLeftBeforePause": {"placeholders": {"left": {"type": "int"}, "days": {"type": "int"}}},
+  "missedFadesOn": "{count, plural, =1{It stops counting on {date}.} other{The oldest stops counting on {date}.}}",
+  "@missedFadesOn": {"placeholders": {"count": {"type": "int"}, "date": {"type": "String"}}},
+  "missedLeftShort": "{left} more before a pause",
+  "@missedLeftShort": {"placeholders": {"left": {"type": "int"}}},
   "reserved": "Reserved!",
   "bookingTitle": "Booking details",
   "qrLabel": "QR code to show at the store",
@@ -315,10 +330,6 @@
   "codeHint": "Show the code to the staff, or read them the letters if the camera can't scan it. Tap the code to copy it.",
   "directionsAction": "Directions",
   "pickupWhereTitle": "Where to pick up",
-  "orBranch": "or {branch}",
-  "@orBranch": {"placeholders": {"branch": {"type": "String"}}},
-  "orOtherBranches": "{count, plural, =1{or 1 more branch} other{or {count} more branches}}",
-  "@orOtherBranches": {"placeholders": {"count": {"type": "int"}}},
   "bookingsNow": "Now",
   "bookingsToday": "Today",
   "bookingsYesterday": "Yesterday",
@@ -346,6 +357,7 @@
   "cancelBooking": "Cancel reservation",
   "cancelBookingTitle": "Cancel this reservation?",
   "cancelBookingMessage": "The pieces go back to the offer, and it doesn't count against you.",
+  "cancelEndsBookingMessage": "The pieces go back to the offer. You cancelled it once already, so you won't be able to book this offer again.",
   "keepBooking": "Keep it",
   "bookingCancelled": "Reservation cancelled",
   "bookingPickedUp": "Picked up. Enjoy!",

@@ -2,9 +2,7 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/customer_localizations.dart';
-import '../../../core/widgets/branch_directions.dart';
-import '../../../core/widgets/customer_illustrations.dart';
-import '../../offers/domain/offer.dart';
+import '../../../core/widgets/store_location_box.dart';
 import '../../offers/presentation/offer_texts.dart';
 import '../domain/booking.dart';
 import 'booking_texts.dart';
@@ -13,8 +11,9 @@ import 'booking_view_model.dart';
 /// A booking. While it can be picked up, a pass to hold up at the
 /// counter, on the brand's green: the store and what was booked, the time
 /// left, the QR code and the code to read out (tapped, copied), what to pay
-/// and where, and the way to cancel. Once it's over, what became of it, and once picked
-/// up, the way to rate the store.
+/// and where (with the store's hours today and phone), and the way to
+/// cancel. Once it's over, what became of it, and once picked up, the
+/// customer's stars for the store, and the way to give them.
 class BookingScreen extends AppView {
   const BookingScreen({required this.bookingId, super.key});
 
@@ -75,28 +74,24 @@ class _Pass extends AppView {
         spacing: Space.md,
         children: [
           _Ticket(booking: booking, now: now),
-          _PayAndPickUp(booking: booking),
+          _PayAndPickUp(booking: booking, now: now),
         ],
       ),
     );
   }
 }
 
-/// Under the ticket, in one box: what to pay, and where: the closest
-/// branch, the way there in the phone's maps, or with several, a sheet of
-/// them all.
+/// Under the ticket, in one box: what to pay, and where: the store's place,
+/// the way there in the phone's maps, its hours today and its phone.
 class _PayAndPickUp extends AppView {
-  const _PayAndPickUp({required this.booking});
+  const _PayAndPickUp({required this.booking, required this.now});
 
   final Booking booking;
+  final DateTime now;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = CustomerLocalizations.of(context);
-    String named(Branch branch) => [
-      branch.name,
-      if (branch.distanceKm case final km?) s.distance(km),
-    ].join(' · ');
     return SListGroup(
       children: [
         SListTile(
@@ -115,30 +110,8 @@ class _PayAndPickUp extends AppView {
             color: SColor.primary,
           ),
         ),
-        if (booking.branches case [final closest, ...final others])
-          SListTile(
-            icon: SIcons.navigate,
-            title: named(closest),
-            subtitle: switch (others) {
-              [] => closest.address ?? closest.area,
-              [final other] => s.orBranch(named(other)),
-              _ => s.orOtherBranches(others.length),
-            },
-            trailing: SText(
-              s.directionsAction,
-              weight: SFontWeight.bold,
-              color: SColor.primary,
-            ),
-            onTap: others.isEmpty
-                ? () => openDirections(context, ref, closest)
-                : () => SSheet.show<void>(
-                    context,
-                    title: s.pickupWhereTitle,
-                    subtitle: booking.storeName,
-                    illustration: CustomerIllustrations.map,
-                    builder: (_) => BranchRows(branches: booking.branches),
-                  ),
-          ),
+        storeDirectionsTile(context, ref, booking.location),
+        ...storeLocationDetails(context, ref, booking.location, now: now),
       ],
     );
   }
@@ -276,8 +249,10 @@ class _Past extends StatelessWidget {
   }
 }
 
-/// After a pickup, how it went: five stars to rate the store, once, and
-/// the way to send them once picked; then the stars given.
+/// After a pickup, the customer's stars for the store: one rating per
+/// store, from this pickup or another. While this pickup can rate it (not
+/// rated since), five stars to pick and the way to send them, which
+/// replace the ones given before.
 class _Rating extends AppStatefulView {
   const _Rating({required this.booking});
 
@@ -300,7 +275,11 @@ class _RatingState extends AppViewState<_Rating> {
     setState(() => _sending = true);
     final failure = await ref.read(bookingViewModel(id).notifier).rate(_picked);
     if (!mounted) return;
-    setState(() => _sending = false);
+    setState(() {
+      _sending = false;
+      // Sent, the booking has them now.
+      if (failure == null) _picked = 0;
+    });
     if (failure == null) {
       SSnack.success(context, s.ratingThanks);
       return;
@@ -315,6 +294,7 @@ class _RatingState extends AppViewState<_Rating> {
     final s = CustomerLocalizations.of(context);
     final booking = widget.booking;
     final given = booking.myRating;
+    final canRate = booking.canRate;
     return SCard(
       child: Column(
         spacing: Space.sm,
@@ -326,19 +306,25 @@ class _RatingState extends AppViewState<_Rating> {
             weight: SFontWeight.semibold,
             align: TextAlign.center,
           ),
-          if (given == null)
-            SText.caption(s.ratingPromptMessage, align: TextAlign.center),
+          SText.caption(
+            given == null
+                ? s.ratingPromptMessage
+                : canRate
+                ? s.ratingAgainMessage
+                : s.ratingOnePerStore,
+            align: TextAlign.center,
+          ),
           SStarInput(
-            value: given ?? _picked,
+            value: _picked > 0 ? _picked : given ?? 0,
             starLabel: s.ratingStars,
-            onChanged: given == null && !_sending
+            onChanged: canRate && !_sending
                 ? (stars) => setState(() => _picked = stars)
                 : null,
           ),
-          if (given == null && _picked > 0) ...[
+          if (canRate && _picked > 0 && _picked != given) ...[
             const Gap(Space.xs),
             SButton(
-              label: s.ratingSend,
+              label: given == null ? s.ratingSend : s.ratingUpdate,
               expand: true,
               loading: _sending,
               onPressed: _send,
@@ -360,7 +346,10 @@ Future<void> _cancel(
   final sure = await SDialog.confirm(
     context,
     title: s.cancelBookingTitle,
-    message: s.cancelBookingMessage,
+    // Cancelled once already, it's the last time: said before, not after.
+    message: booking.cancelEndsBooking
+        ? s.cancelEndsBookingMessage
+        : s.cancelBookingMessage,
     confirmLabel: s.cancelBooking,
     cancelLabel: s.keepBooking,
     destructive: true,

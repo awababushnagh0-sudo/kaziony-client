@@ -45,19 +45,30 @@ class _Confirm extends AppView {
     final state = ref.watch(reserveViewModel(offer));
     final viewModel = ref.read(reserveViewModel(offer).notifier);
     final failure = state.failure;
+    // A refusal for a pause says until when, once the standing has caught
+    // up with it.
+    final pausedUntil = ref.watch(bookingStandingProvider).value?.pausedUntil;
+    final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: Space.lg,
       children: [
         SText(
           offer.limited
-              ? s.reserveHoldNote(offer.claimWindowMinutes)
+              ? s.reserveHoldNote(s.holdTime(offer.claimWindowMinutes))
               : s.reserveUntilEndNote,
           color: SColor.textMuted,
           align: TextAlign.center,
         ),
         if (failure != null)
-          SAlert(title: reserveFailureMessage(context, failure)),
+          SAlert(
+            title: reserveFailureMessage(
+              context,
+              failure,
+              pausedUntil: pausedUntil,
+              now: now,
+            ),
+          ),
         SButton(
           label: s.reserveConfirm,
           expand: true,

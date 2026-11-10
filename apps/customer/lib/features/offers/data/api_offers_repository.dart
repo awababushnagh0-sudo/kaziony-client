@@ -62,7 +62,6 @@ class ApiOffersRepository implements OffersRepository {
             jsonDecode(jsonEncode(offer)) as Map<String, Object?>,
           ),
         ),
-        branches: [for (final branch in offer.branches) toBranch(branch)],
         pickupInstructions: storeWords(offer.pickupInstructions),
         myBookingId: offer.myActiveClaimId,
       ),
@@ -105,8 +104,7 @@ Offer toOffer(api.PublicOfferDto offer) => Offer(
     category: toCategory(offer.store.category),
     rating: toRating(offer.store.ratingAverage, offer.store.ratingCount),
   ),
-  nearestBranch: toBranch(offer.nearestBranch),
-  branchCount: offer.branchCount.toInt(),
+  location: toLocation(offer.location),
 );
 
 /// Shared with stores. Null before the first rating.
@@ -128,13 +126,12 @@ Category toCategory(api.CategoryDto category) => Category(
   iconUrl: category.iconUrl,
 );
 
-/// Shared with bookings, which list the branches to pick up from.
-Branch toBranch(api.PublicBranchDto branch) => Branch(
-  id: branch.id,
-  name: branch.name,
-  point: GeoPoint(branch.latitude.toDouble(), branch.longitude.toDouble()),
-  area: branch.area,
-  address: branch.address,
-  phone: branch.phone,
-  distanceKm: branch.distanceKm?.toDouble(),
+/// Shared with stores and bookings, which say where to pick up too.
+StoreLocation toLocation(api.PublicLocationDto location) => StoreLocation(
+  point: GeoPoint(location.latitude.toDouble(), location.longitude.toDouble()),
+  area: storeWords(location.area),
+  address: storeWords(location.address),
+  phone: storeWords(location.phone),
+  hours: OpeningHours.fromJson(location.openingHours),
+  distanceKm: location.distanceKm?.toDouble(),
 );

@@ -2,6 +2,7 @@ import 'package:kernel/kernel.dart';
 
 import '../../offers/domain/offer.dart';
 import '../domain/booking.dart';
+import 'bookings_view_model.dart';
 
 class ReserveState {
   const ReserveState({
@@ -45,9 +46,18 @@ class ReserveViewModel extends ViewModel<ReserveState> {
     if (!ref.mounted) return null;
     switch (result) {
       case Ok(:final value):
+        // One more held: the warnings count it.
+        ref.invalidate(bookingStandingProvider);
         state = ReserveState(quantity: quantity);
         return value;
       case Err(:final failure):
+        // Refused for where the customer stands, which changed since it
+        // was loaded: the pages catch up.
+        if (failure
+            case ForbiddenFailure(code: 'ClaimBanned') ||
+                ConflictFailure(code: 'TooManyReservations')) {
+          ref.invalidate(bookingStandingProvider);
+        }
         state = ReserveState(quantity: quantity, failure: failure);
         return null;
     }

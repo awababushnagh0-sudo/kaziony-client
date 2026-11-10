@@ -196,8 +196,8 @@ class _Tile extends StatelessWidget {
   }
 }
 
-/// When to pick up, then the store's rating (not [inStore]) and how far,
-/// with the prices beside those two lines.
+/// When to pick up, then the store's rating and area (not [inStore]) and
+/// how far, with the prices beside those two lines.
 class _Facts extends StatelessWidget {
   const _Facts({required this.offer, required this.now, required this.inStore});
 
@@ -209,7 +209,13 @@ class _Facts extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = CustomerLocalizations.of(context);
     final rating = inStore ? null : offer.store.rating;
-    final km = offer.nearestBranch.distanceKm;
+    final km = offer.location.distanceKm;
+    // A brand's places share its name: the area tells them apart (on the
+    // store's own page, the page says it).
+    final where = [
+      if (!inStore) ?offer.location.area,
+      if (km != null) s.distance(km),
+    ].join(' · ');
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       spacing: Space.md,
@@ -225,7 +231,7 @@ class _Facts extends StatelessWidget {
               ),
               // Each only once known: a new store has no rating, and the
               // distance needs the customer's place.
-              if (rating != null || km != null)
+              if (rating != null || where.isNotEmpty)
                 Row(
                   spacing: Space.sm,
                   children: [
@@ -235,16 +241,16 @@ class _Facts extends StatelessWidget {
                         label: s.rating(rating),
                         small: true,
                       ),
-                    if (rating != null && km != null)
+                    if (rating != null && where.isNotEmpty)
                       const SText(
                         '|',
                         variant: TextVariant.caption,
                         color: SColor.textSubtle,
                       ),
-                    if (km != null)
+                    if (where.isNotEmpty)
                       Flexible(
                         child: SText(
-                          s.distance(km),
+                          where,
                           variant: TextVariant.caption,
                           weight: SFontWeight.semibold,
                           maxLines: 1,

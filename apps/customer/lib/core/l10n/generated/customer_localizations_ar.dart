@@ -10,23 +10,6 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   CustomerLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String branchCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count فرع',
-      many: '$count فرعًا',
-      few: '$count فروع',
-      two: 'فرعان',
-      one: 'فرع واحد',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get branchClosest => 'الأقرب';
-
-  @override
   String get offerFactPickup => 'الاستلام';
 
   @override
@@ -81,7 +64,7 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String ratingPrompt(String store) {
-    return 'كيف كان الاستلام من $store؟';
+    return 'كيف كان $store؟';
   }
 
   @override
@@ -103,7 +86,19 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get ratingNotPickedUp => 'تقدر تقيّم المحل بعد ما تستلم طلبك.';
 
   @override
-  String get ratingAlreadyRated => 'قيّمت هذا الاستلام من قبل.';
+  String get ratingAlreadyRated =>
+      'قيّمت هذا المحل من هذا الاستلام أو من استلام بعده.';
+
+  @override
+  String get ratingAgainMessage =>
+      'استلمت منه من جديد: قيّمه مرة أخرى، ونجومك الجديدة تحل محل القديمة.';
+
+  @override
+  String get ratingOnePerStore =>
+      'تقييم واحد لكل محل. استلم منه مرة أخرى لتغيّره.';
+
+  @override
+  String get ratingUpdate => 'تحديث التقييم';
 
   @override
   String get pickupInstructionsTitle => 'طريقة الاستلام';
@@ -183,6 +178,25 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String get storeDirectionsFailed => 'تعذّر فتح الخريطة. حاول مرة أخرى.';
+
+  @override
+  String openToday(String hours) {
+    return 'مفتوح اليوم $hours';
+  }
+
+  @override
+  String get closedToday => 'مغلق اليوم';
+
+  @override
+  String hoursBetween(String open, String close) {
+    return '$open – $close';
+  }
+
+  @override
+  String get callAction => 'اتصال';
+
+  @override
+  String get callFailed => 'تعذّر بدء الاتصال. حاول مرة أخرى.';
 
   @override
   String get storeAddFavorite => 'أضف إلى المفضلة';
@@ -543,12 +557,43 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
       'المحلات تنشر عروضًا جديدة كل يوم. إليك العروض القريبة منك الآن.';
 
   @override
-  String holdTitle(int minutes) {
-    return 'نحجزه لك $minutes دقيقة';
+  String holdTitle(String time) {
+    return 'عندك $time للاستلام';
   }
 
   @override
-  String get holdMessage => 'احجز الآن واستلمه من المحل خلال هذا الوقت.';
+  String get holdMessage => 'من وقت الحجز، ولا يتجاوز نهاية العرض.';
+
+  @override
+  String holdHours(int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: '$hours ساعة',
+      few: '$hours ساعات',
+      two: 'ساعتان',
+      one: 'ساعة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String holdMinutes(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes دقيقة',
+      few: '$minutes دقائق',
+      two: 'دقيقتان',
+      one: 'دقيقة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String holdHoursAndMinutes(String hours, String minutes) {
+    return '$hours و$minutes';
+  }
 
   @override
   String get untilEndTitle => 'رمزك صالح حتى نهاية العرض';
@@ -585,8 +630,8 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get reserveConfirm => 'تأكيد الحجز';
 
   @override
-  String reserveHoldNote(int minutes) {
-    return 'نحجزها لك $minutes دقيقة، وتدفع نقدًا عند الاستلام.';
+  String reserveHoldNote(String time) {
+    return 'عندك $time للاستلام، وتدفع نقدًا وقتها.';
   }
 
   @override
@@ -603,7 +648,27 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get reserveOverLimit => 'لا يمكنك أخذ هذا العدد. جرّب أقل.';
 
   @override
-  String get reserveTooMany => 'عندك حجوزات كثيرة. استلم أحدها أو ألغِه أولًا.';
+  String get reserveTooMany =>
+      'عندك أقصى عدد من الحجوزات في نفس الوقت. استلم أحدها أو ألغِه أولًا.';
+
+  @override
+  String reserveFullNote(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'عندك $count حجزًا، وهذا الحد في نفس الوقت. استلم أو ألغِ أحدها لتحجز هذا العرض.',
+      few:
+          'عندك $count حجوزات، وهذا الحد في نفس الوقت. استلم أو ألغِ أحدها لتحجز هذا العرض.',
+      two: 'عندك حجزان، وهذا الحد في نفس الوقت. استلم أو ألغِ أحدهما لتحجز هذا العرض.',
+      one: 'عندك حجز واحد، وهو الحد في نفس الوقت. استلمه أو ألغِه لتحجز هذا العرض.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reserveCancelledTooOften =>
+      'ألغيت هذا العرض مرتين، فلا يمكنك حجزه مرة أخرى.';
 
   @override
   String get reserveNotEnough => 'لم يبقَ هذا العدد. جرّب أقل.';
@@ -615,7 +680,58 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get reserveEnded => 'انتهى هذا العرض.';
 
   @override
-  String get reserveBanned => 'فاتتك عدة استلامات، فلا يمكنك الحجز لبضعة أيام.';
+  String get reservePaused => 'الحجز موقوف لأيام بسبب استلامات فاتتك.';
+
+  @override
+  String bookingPausedUntil(String when) {
+    return 'الحجز موقوف حتى $when';
+  }
+
+  @override
+  String get bookingPausedMessage =>
+      'بسبب استلامات فاتتك، ويرجع وحده في موعده.';
+
+  @override
+  String missedPickups(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'فاتك استلام $count حجزًا',
+      few: 'فاتك استلام $count حجوزات',
+      two: 'فاتك استلام حجزين',
+      one: 'فاتك استلام حجز',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String missedLeftBeforePause(int left, int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days يومًا',
+      few: '$days أيام',
+      two: 'يومين',
+      one: 'يومًا',
+    );
+    return 'بقي لك $left قبل إيقاف الحجز $_temp0.';
+  }
+
+  @override
+  String missedFadesOn(int count, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'وأقدمها لا يُحسب عليك بعد $date.',
+      one: 'ولا يُحسب عليك بعد $date.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String missedLeftShort(int left) {
+    return 'بقي لك $left قبل الإيقاف';
+  }
 
   @override
   String get reserved => 'تم الحجز!';
@@ -670,25 +786,6 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String get pickupWhereTitle => 'أين تستلم';
-
-  @override
-  String orBranch(String branch) {
-    return 'أو $branch';
-  }
-
-  @override
-  String orOtherBranches(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'أو $count فرع آخر',
-      many: 'أو $count فرعًا آخر',
-      few: 'أو $count فروع أخرى',
-      two: 'أو فرعان آخران',
-      one: 'أو فرع آخر',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get bookingsNow => 'الحالية';
@@ -749,6 +846,10 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String get cancelBookingMessage => 'ترجع القطع للعرض، ولا يُحسب عليك.';
+
+  @override
+  String get cancelEndsBookingMessage =>
+      'ترجع القطع للعرض. ألغيته مرة من قبل، فلن تستطيع حجز هذا العرض مرة أخرى.';
 
   @override
   String get keepBooking => 'لا، أبقِه';

@@ -53,6 +53,22 @@ class ApiBookingsRepository implements BookingsRepository {
     ),
   );
 
+  @override
+  Future<Result<BookingStanding>> standing() async {
+    final result = await _api.guard(() => _claims.bookingStatus());
+    return result.map(
+      (status) => BookingStanding(
+        strikes: status.strikes.toInt(),
+        strikesBeforePause: status.strikesBeforePause.toInt(),
+        strikeFadesAt: status.strikeFadesAt?.toLocal(),
+        pausedUntil: status.pausedUntil?.toLocal(),
+        nextPauseDays: status.nextPauseDays.toInt(),
+        activeReservations: status.activeReservations.toInt(),
+        maxActiveReservations: status.maxActiveReservations.toInt(),
+      ),
+    );
+  }
+
   Future<Result<Booking>> _one(
     Future<api.CustomerClaimDto> Function() call,
   ) async => (await _api.guard(call)).map(_toBooking);
@@ -78,8 +94,9 @@ class ApiBookingsRepository implements BookingsRepository {
     thumbUrl: claim.offer.thumbUrl,
     storeName: claim.store.name,
     storeLogoUrl: claim.store.logoUrl,
-    branches: [for (final branch in claim.branches) toBranch(branch)],
+    location: toLocation(claim.location),
     canCancel: claim.canCancel,
+    cancelEndsBooking: claim.cancelEndsBooking,
     limited: claim.offer.type == api.OfferType.limited,
     canRate: claim.canRate,
     myRating: claim.myRating?.toInt(),

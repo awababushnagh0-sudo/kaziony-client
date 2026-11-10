@@ -83,7 +83,8 @@ void main() {
     await open(tester);
 
     expect(find.text('Now'), findsNothing);
-    expect(find.text('Sweet shop'), findsOneWidget);
+    // With its area: a brand's places share its name.
+    expect(find.text('Sweet shop · Andalus'), findsOneWidget);
     expect(find.text('×2'), findsOneWidget);
     expect(find.text('Kunafa box'), findsOneWidget);
     expect(find.textContaining('30'), findsOneWidget);
@@ -106,6 +107,105 @@ void main() {
 
     expect(find.text('Today'), findsOneWidget);
     expect(find.text('Yesterday'), findsOneWidget);
+  });
+
+  testWidgets('after a missed pickup, a calm word over the list', (
+    tester,
+  ) async {
+    bookings.bookings = [booking(status: BookingStatus.expired)];
+    bookings.standingNow = BookingStanding(
+      strikes: 1,
+      strikesBeforePause: 3,
+      nextPauseDays: 3,
+      activeReservations: 0,
+      maxActiveReservations: 3,
+      strikeFadesAt: now.add(const Duration(days: 30)),
+    );
+    await open(tester);
+
+    expect(find.text('You missed a pickup'), findsOneWidget);
+    expect(
+      find.text(
+        '2 more before booking pauses for 3 days. It stops counting on Dec 2.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('Time ran out'), findsOneWidget);
+  });
+
+  testWidgets('while booking is paused, until when', (tester) async {
+    bookings.bookings = [booking(status: BookingStatus.expired)];
+    bookings.standingNow = BookingStanding(
+      strikes: 0,
+      strikesBeforePause: 3,
+      nextPauseDays: 7,
+      activeReservations: 0,
+      maxActiveReservations: 3,
+      pausedUntil: now.add(const Duration(days: 2, hours: 3)),
+    );
+    await open(tester);
+
+    expect(
+      find.textContaining(RegExp('^Booking paused until Wed, Nov 4 3:00.PM\$')),
+      findsOneWidget,
+    );
+    expect(
+      find.text('After missed pickups. It opens again by itself then.'),
+      findsOneWidget,
+    );
+    expect(find.textContaining('You missed'), findsNothing);
+  });
+
+  testWidgets('the word sits over the bookings to pick up now', (tester) async {
+    bookings.standingNow = const BookingStanding(
+      strikes: 2,
+      strikesBeforePause: 3,
+      nextPauseDays: 3,
+      activeReservations: 1,
+      maxActiveReservations: 3,
+    );
+    await open(tester);
+
+    expect(find.text('You missed 2 pickups'), findsOneWidget);
+    expect(
+      find.text('1 more before booking pauses for 3 days.'),
+      findsOneWidget,
+    );
+    expect(find.text('Now'), findsOneWidget);
+    expect(
+      tester.getTopLeft(find.text('You missed 2 pickups')).dy,
+      lessThan(tester.getTopLeft(find.text('Now')).dy),
+    );
+  });
+
+  testWidgets('with nothing to warn of, no word', (tester) async {
+    bookings.bookings = [booking(status: BookingStatus.expired)];
+    await open(tester);
+
+    expect(find.textContaining('You missed'), findsNothing);
+    expect(find.textContaining('paused'), findsNothing);
+    expect(find.text('Time ran out'), findsOneWidget);
+  });
+
+  testWidgets('pulled down, where the customer stands is loaded again', (
+    tester,
+  ) async {
+    bookings.bookings = [booking(status: BookingStatus.pickedUp)];
+    await open(tester);
+    expect(bookings.standingLoads, 1);
+
+    bookings.standingNow = const BookingStanding(
+      strikes: 1,
+      strikesBeforePause: 3,
+      nextPauseDays: 3,
+      activeReservations: 0,
+      maxActiveReservations: 3,
+    );
+    await tester.fling(find.text('Picked up'), const Offset(0, 400), 1000);
+    await tester.pumpAndSettle();
+
+    expect(bookings.standingLoads, 2);
+    expect(find.text('You missed a pickup'), findsOneWidget);
   });
 
   testWidgets('with none yet, it leads to the offers', (tester) async {

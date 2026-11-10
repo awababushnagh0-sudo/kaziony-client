@@ -9,10 +9,12 @@ import '../domain/booking.dart';
 import 'booking_texts.dart';
 import 'bookings_view_model.dart';
 
-/// The Bookings tab: the bookings to pick up now first, each a card with
-/// its time left and the way to its code; then the past ones, newest
-/// first under the day they happened (today, yesterday, a date), as cards with the store, what became of them and what was
-/// booked. Signed out, the way to sign in.
+/// The Bookings tab: a calm word first when booking is paused or pickups
+/// were missed; the bookings to pick up now, each a card with its time
+/// left and the way to its code; then the past ones, newest first under
+/// the day they happened (today, yesterday, a date), as cards with the
+/// store, what became of them and what was booked. Signed out, the way to
+/// sign in.
 class BookingsScreen extends AppView {
   const BookingsScreen({super.key});
 
@@ -42,10 +44,15 @@ class _List extends AppView {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = CustomerLocalizations.of(context);
+    final language = Localizations.localeOf(context).languageCode;
     final viewModel = ref.read(bookingsViewModel.notifier);
     // To the minute is enough to know which are still on; the cards count
     // the seconds themselves.
     final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
+    final standing = ref.watch(bookingStandingProvider).value;
+    final warning = standing == null
+        ? null
+        : standingWarning(s, standing, now, languageCode: language);
     return SAsyncView(
       value: ref.watch(bookingsViewModel),
       onRetry: () => ref.invalidate(bookingsViewModel),
@@ -69,9 +76,10 @@ class _List extends AppView {
           for (final booking in page.items)
             if (!booking.isActiveAt(now)) booking,
         ];
+        final header = warning != null || current.isNotEmpty;
         return SPagedList(
           divided: false,
-          header: current.isEmpty
+          header: !header
               ? null
               : Padding(
                   padding: const EdgeInsets.fromLTRB(
@@ -84,9 +92,18 @@ class _List extends AppView {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     spacing: Space.sm,
                     children: [
-                      SSectionHeader(s.bookingsNow),
-                      for (final booking in current)
-                        _CurrentCard(booking: booking),
+                      if (warning != null) ...[
+                        SAlert.warning(
+                          title: warning.title,
+                          message: warning.message,
+                        ),
+                        if (current.isNotEmpty) const Gap(Space.sm),
+                      ],
+                      if (current.isNotEmpty) ...[
+                        SSectionHeader(s.bookingsNow),
+                        for (final booking in current)
+                          _CurrentCard(booking: booking),
+                      ],
                     ],
                   ),
                 ),
@@ -105,19 +122,11 @@ class _List extends AppView {
                   if (newDay)
                     Padding(
                       padding: EdgeInsets.only(
-                        top: index == 0 && current.isEmpty
-                            ? Space.md
-                            : Space.lg,
+                        top: index == 0 && !header ? Space.md : Space.lg,
                         bottom: Space.sm,
                       ),
                       child: SSectionHeader(
-                        bookingDay(
-                          s,
-                          when,
-                          now,
-                          languageCode: Localizations.localeOf(context)
-                              .languageCode,
-                        ),
+                        bookingDay(s, when, now, languageCode: language),
                       ),
                     ),
                   _PastTile(booking: past[index], now: now),
@@ -192,7 +201,7 @@ class _CurrentCard extends AppView {
                         ),
                         Expanded(
                           child: SText(
-                            booking.storeName,
+                            storeNamed(booking),
                             variant: TextVariant.caption,
                             color: SColor.textMuted,
                             maxLines: 1,
@@ -290,7 +299,7 @@ class _PastTile extends StatelessWidget {
                   spacing: Space.xxs,
                   children: [
                     SText(
-                      booking.storeName,
+                      storeNamed(booking),
                       variant: TextVariant.caption,
                       weight: SFontWeight.bold,
                       color: SColor.text,

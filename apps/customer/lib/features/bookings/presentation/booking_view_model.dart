@@ -69,11 +69,14 @@ class BookingViewModel extends AsyncViewModel<Booking> {
   }
 
   /// Shows [booking] here and in the list, and stops checking once it's
-  /// no longer waiting.
+  /// no longer waiting. Where the customer stands may have changed with
+  /// it (one held less, or a missed pickup).
   void _show(Booking booking) {
     if (booking.status != BookingStatus.reserved) _checks?.cancel();
     state = AsyncData(booking);
-    ref.invalidate(bookingsViewModel);
+    ref
+      ..invalidate(bookingsViewModel)
+      ..invalidate(bookingStandingProvider);
   }
 }
 

@@ -60,7 +60,7 @@ StoreDetail _following(StoreDetail store, bool following) => StoreDetail(
   pickupInstructions: store.pickupInstructions,
   rating: store.rating,
   category: store.category,
-  branches: store.branches,
+  location: store.location,
   isFollowing: following,
   offers: store.offers,
 );

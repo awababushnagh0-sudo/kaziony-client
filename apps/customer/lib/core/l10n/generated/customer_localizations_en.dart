@@ -10,20 +10,6 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   CustomerLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String branchCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count branches',
-      one: '1 branch',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get branchClosest => 'Closest';
-
-  @override
   String get offerFactPickup => 'Pick up';
 
   @override
@@ -74,7 +60,7 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String ratingPrompt(String store) {
-    return 'How was your pickup at $store?';
+    return 'How was $store?';
   }
 
   @override
@@ -96,7 +82,19 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
       'You can rate the store once you\'ve picked up.';
 
   @override
-  String get ratingAlreadyRated => 'You\'ve already rated this pickup.';
+  String get ratingAlreadyRated =>
+      'You\'ve already rated this store from this pickup or a later one.';
+
+  @override
+  String get ratingAgainMessage =>
+      'Picked up there again: rate it anew, and your new stars replace the old ones.';
+
+  @override
+  String get ratingOnePerStore =>
+      'One rating per store. Pick up there again to change it.';
+
+  @override
+  String get ratingUpdate => 'Update rating';
 
   @override
   String get pickupInstructionsTitle => 'Pickup instructions';
@@ -173,6 +171,25 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String get storeDirectionsFailed => 'We couldn\'t open the map. Try again.';
+
+  @override
+  String openToday(String hours) {
+    return 'Open today $hours';
+  }
+
+  @override
+  String get closedToday => 'Closed today';
+
+  @override
+  String hoursBetween(String open, String close) {
+    return '$open – $close';
+  }
+
+  @override
+  String get callAction => 'Call';
+
+  @override
+  String get callFailed => 'We couldn\'t start the call. Try again.';
 
   @override
   String get storeAddFavorite => 'Add to favorites';
@@ -534,13 +551,40 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
       'Stores post new offers every day. Here\'s what\'s near you now.';
 
   @override
-  String holdTitle(int minutes) {
-    return 'Held for you for $minutes min';
+  String holdTitle(String time) {
+    return 'You have $time to pick up';
   }
 
   @override
   String get holdMessage =>
-      'Reserve now and pick it up at the store within that time.';
+      'From when you reserve, and never past the offer\'s end.';
+
+  @override
+  String holdHours(int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: '$hours hours',
+      one: '1 hour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String holdMinutes(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes minutes',
+      one: '1 minute',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String holdHoursAndMinutes(String hours, String minutes) {
+    return '$hours and $minutes';
+  }
 
   @override
   String get untilEndTitle => 'Your code works until the offer ends';
@@ -577,8 +621,8 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get reserveConfirm => 'Confirm reservation';
 
   @override
-  String reserveHoldNote(int minutes) {
-    return 'We hold them for $minutes min. You pay cash when you pick up.';
+  String reserveHoldNote(String time) {
+    return 'You have $time to pick up, and you pay cash then.';
   }
 
   @override
@@ -598,7 +642,23 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String get reserveTooMany =>
-      'You have too many reservations. Pick one up or cancel one first.';
+      'You already hold the most reservations at once. Pick one up or cancel one first.';
+
+  @override
+  String reserveFullNote(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'You hold $count reservations, the most at once. Pick one up or cancel one to book this one.',
+      one: 'You hold 1 reservation, the most at once. Pick it up or cancel it to book this one.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reserveCancelledTooOften =>
+      'You cancelled this offer twice, so you can\'t book it again.';
 
   @override
   String get reserveNotEnough => 'There aren\'t that many left. Try fewer.';
@@ -610,8 +670,55 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get reserveEnded => 'This offer has ended.';
 
   @override
-  String get reserveBanned =>
-      'You missed several pickups, so you can\'t reserve for a few days.';
+  String get reservePaused =>
+      'Booking is paused for a few days after missed pickups.';
+
+  @override
+  String bookingPausedUntil(String when) {
+    return 'Booking paused until $when';
+  }
+
+  @override
+  String get bookingPausedMessage =>
+      'After missed pickups. It opens again by itself then.';
+
+  @override
+  String missedPickups(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'You missed $count pickups',
+      one: 'You missed a pickup',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String missedLeftBeforePause(int left, int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    return '$left more before booking pauses for $_temp0.';
+  }
+
+  @override
+  String missedFadesOn(int count, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'The oldest stops counting on $date.',
+      one: 'It stops counting on $date.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String missedLeftShort(int left) {
+    return '$left more before a pause';
+  }
 
   @override
   String get reserved => 'Reserved!';
@@ -665,22 +772,6 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String get pickupWhereTitle => 'Where to pick up';
-
-  @override
-  String orBranch(String branch) {
-    return 'or $branch';
-  }
-
-  @override
-  String orOtherBranches(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'or $count more branches',
-      one: 'or 1 more branch',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get bookingsNow => 'Now';
@@ -742,6 +833,10 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   @override
   String get cancelBookingMessage =>
       'The pieces go back to the offer, and it doesn\'t count against you.';
+
+  @override
+  String get cancelEndsBookingMessage =>
+      'The pieces go back to the offer. You cancelled it once already, so you won\'t be able to book this offer again.';
 
   @override
   String get keepBooking => 'Keep it';

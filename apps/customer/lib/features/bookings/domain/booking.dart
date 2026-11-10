@@ -26,9 +26,10 @@ class Booking {
     required this.offerTitle,
     required this.offerPrice,
     required this.storeName,
-    required this.branches,
+    required this.location,
     required this.canCancel,
     required this.limited,
+    this.cancelEndsBooking = false,
     this.canRate = false,
     this.thumbUrl,
     this.storeLogoUrl,
@@ -57,18 +58,24 @@ class Booking {
   final String storeName;
   final String? storeLogoUrl;
 
-  /// Where it can be picked up, closest first.
-  final List<Branch> branches;
+  /// Where to pick it up: the store's place.
+  final StoreLocation location;
   final bool canCancel;
+
+  /// Cancelled once already: cancelling again closes the offer to the
+  /// customer, which the app says before.
+  final bool cancelEndsBooking;
 
   /// Held for a short time (a counted offer); else good until the offer
   /// ends.
   final bool limited;
 
-  /// Picked up and not rated yet: the customer can rate the store, once.
+  /// Picked up, and the store not rated since: the customer can rate it,
+  /// and the stars replace the ones given after an earlier pickup.
   final bool canRate;
 
-  /// The stars (1 to 5) the customer gave the store for this pickup.
+  /// The stars (1 to 5) the customer gave the store: one rating per store,
+  /// from this pickup or another. Null before they rate it.
   final int? myRating;
 
   /// Still to be picked up: reserved and not past its time.
@@ -76,13 +83,56 @@ class Booking {
       status == BookingStatus.reserved && expiresAt.isAfter(now);
 }
 
+/// Where the customer stands with booking: missed pickups that count, a
+/// pause they led to, and the reservations held.
+class BookingStanding {
+  const BookingStanding({
+    required this.strikes,
+    required this.strikesBeforePause,
+    required this.nextPauseDays,
+    required this.activeReservations,
+    required this.maxActiveReservations,
+    this.strikeFadesAt,
+    this.pausedUntil,
+  });
+
+  /// Missed pickups that count now: those of the last few weeks, since
+  /// the last pause.
+  final int strikes;
+
+  /// Missed pickups that pause booking.
+  final int strikesBeforePause;
+
+  /// When the oldest that counts stops counting; null without one.
+  final DateTime? strikeFadesAt;
+
+  /// Booking is paused until then; null when it isn't.
+  final DateTime? pausedUntil;
+
+  /// How long the next pause would be.
+  final int nextPauseDays;
+
+  /// Reservations of counted offers held now, and the most at once.
+  final int activeReservations;
+  final int maxActiveReservations;
+
+  bool pausedAt(DateTime now) => pausedUntil?.isAfter(now) ?? false;
+
+  /// More missed pickups before booking pauses.
+  int get strikesLeft =>
+      (strikesBeforePause - strikes).clamp(0, strikesBeforePause);
+
+  /// Holding the most at once: a counted offer can't be booked until one
+  /// is picked up or cancelled.
+  bool get full => activeReservations >= maxActiveReservations;
+}
+
 abstract interface class BookingsRepository {
   /// Reserves [quantity] pieces of an offer.
   Future<Result<Booking>> reserve(String offerId, {required int quantity});
 
-  /// Newest first.
   /// Newest first; [rated], only the pickups the customer rated, the
-  /// latest rating first.
+  /// latest rating first: one per store, the pickup the rating is from.
   Future<Result<PageResult<Booking>>> list({
     required int page,
     required int pageSize,
@@ -93,8 +143,12 @@ abstract interface class BookingsRepository {
 
   Future<Result<Booking>> cancel(String bookingId);
 
-  /// Rates the store [stars] from 1 to 5, once the booking is picked up.
+  /// Rates the store [stars] from 1 to 5, once the booking is picked up:
+  /// one rating per store, which a later pickup's replaces.
   Future<Result<Booking>> rate(String bookingId, int stars);
+
+  /// Where the signed-in customer stands with booking.
+  Future<Result<BookingStanding>> standing();
 }
 
 final bookingsRepositoryProvider = Provider<BookingsRepository>(

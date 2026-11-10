@@ -1,5 +1,6 @@
 import 'package:customer/core/routes/routes.dart';
 import 'package:customer/features/location/domain/browse_location.dart';
+import 'package:customer/features/offers/domain/offer.dart';
 import 'package:customer/features/stores/domain/store.dart';
 import 'package:customer/features/stores/presentation/store_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -45,13 +46,31 @@ void main() {
         ],
       );
 
-  testWidgets('shows the store, its offers and its branches', (tester) async {
+  testWidgets('shows the store, its offers and its place', (tester) async {
     await open(tester);
 
     expect(find.text('Sweet shop'), findsOneWidget);
     expect(find.text('Bakeries'), findsOneWidget);
-    expect(find.text('Hay Al Andalus'), findsOneWidget);
     expect(find.text('Kunafa box'), findsOneWidget);
+    // Where it is, with the way there, its hours today and its phone.
+    expect(find.text('Andalus'), findsOneWidget);
+    expect(find.text('Jaraba Street · 1.2 km'), findsOneWidget);
+    expect(
+      find.textContaining(RegExp('^Open today 8:00.AM – 11:00.PM\$')),
+      findsOneWidget,
+    );
+    expect(find.text('0912345678'), findsOneWidget);
+  });
+
+  testWidgets('says when the store is closed today', (tester) async {
+    stores.location = const StoreLocation(
+      point: souqAlJuma,
+      area: 'Andalus',
+      hours: OpeningHours({Weekday.mon: []}),
+    );
+    await open(tester);
+
+    expect(find.text('Closed today'), findsOneWidget);
   });
 
   testWidgets('saves the store to favorites, then takes it out', (
