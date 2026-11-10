@@ -311,3 +311,9 @@ The screen staff use all day, so it must be fast and work on a weak connection.
 - Shorebird for code fixes without app store review (optional)
 - App icons, splash screens, store listings
 - CI: analyze, test, import rules, builds
+- Share an offer (once the domain is set up, backend Phase 9): a share button on the offer
+  page while it can still be booked. It sends a link (`https://<domain>/o/<id>`) that opens
+  the offer in the app when installed (universal links / app links, routed to
+  `Routes.offer`), and otherwise a small web page with the offer and the store buttons;
+  the page carries a WhatsApp preview (the photo, the price). No text-only sharing before
+  then: a link that leads nowhere teaches people not to tap it.
