@@ -220,6 +220,10 @@ The screen staff use all day, so it must be fast and work on a weak connection.
 - [x] **new** stellar: `SScannerView`, `SSuccessView`, `TextInputKind.code`, camera colors
 - [ ] Test on real phones: a cracked or dim customer screen, the light, the first camera
       prompt on iOS and Android
+- [x] Each place is its own store (no more branches): nothing to pick at the counter or
+      on an offer; the store switcher says "name · area"; the Location page shows the
+      address, maps and opening hours (owners edit the hours); the Location and Team pages
+      ask our team on WhatsApp for what only we change (new places, staff, name, place)
 
 ### 3.2 Home
 
@@ -276,6 +280,12 @@ The screen staff use all day, so it must be fast and work on a weak connection.
 - [x] Search tab: before searching, the kinds of store, recent searches (on the phone)
       and stores near you; then matching stores and offers, filters once there are offers
 - [ ] Guest illustration on Account: pick one that doesn't look like Presto's
+- [x] Each place is its own store: the offer, store and booking pages show its one place
+      (area, address, today's hours, call, directions)
+- [x] Booking rules: the Bookings tab and Account say missed pickups and how many are left
+      before a pause, or until when booking is paused (never on Home); the offer page says
+      the hold time and, when paused, when booking opens; cancelling an offer a second time
+      is warned first; one rating per store, a later pickup's replacing it
 - [ ] Profile: name, contact phone, language
 
 ## Step 5: Admin dashboard (Flutter Web)
@@ -297,7 +307,10 @@ The screen staff use all day, so it must be fast and work on a weak connection.
       edit it, editors see it)
 - [x] Platform: service areas (name, center, radius, on/off), where customers can browse
 - [x] Stores: store page with its fields edited in place (Not saved / Save), disable, delete
-- [ ] Stores: branches, staff, reset owner password
+- [x] Stores: each place is a store: its place (city, area, address, location, opening
+      hours) on create and on its page; "Add another location" copies the brand (name,
+      photos, category, links, owners); the hold time for pickup in platform settings
+- [ ] Stores: staff, reset owner password
 - [x] Users (admins only): our team with search and a role filter; add an admin or editor,
       showing the temporary password once. Editors don't see Users or delete stores
 - [x] Users: a user's page (rename, change role, reset password, disable/enable); admins
