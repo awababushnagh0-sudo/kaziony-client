@@ -419,6 +419,42 @@ abstract class PartnerLocalizations {
   /// **'Customers see this on your store\'s page.'**
   String get storeInfoHint;
 
+  /// No description provided for @storeNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Store name'**
+  String get storeNameLabel;
+
+  /// No description provided for @storeNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Our team sets your store\'s name and category. Contact us to change them.'**
+  String get storeNameHint;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get saveChanges;
+
+  /// No description provided for @discardChangesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard your changes?'**
+  String get discardChangesTitle;
+
+  /// No description provided for @discardChangesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your changes haven\'t been saved. Leave without saving?'**
+  String get discardChangesMessage;
+
+  /// No description provided for @discardChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get discardChanges;
+
   /// No description provided for @branchesTitle.
   ///
   /// In en, this message translates to:
@@ -431,23 +467,17 @@ abstract class PartnerLocalizations {
   /// **'Team'**
   String get teamTitle;
 
-  /// No description provided for @storeInfoShortcutHint.
+  /// No description provided for @yourStoreSection.
   ///
   /// In en, this message translates to:
-  /// **'Name, description and contact'**
-  String get storeInfoShortcutHint;
+  /// **'Your store'**
+  String get yourStoreSection;
 
-  /// No description provided for @branchesShortcutHint.
+  /// No description provided for @yourBranch.
   ///
   /// In en, this message translates to:
-  /// **'Where customers pick up'**
-  String get branchesShortcutHint;
-
-  /// No description provided for @teamShortcutHint.
-  ///
-  /// In en, this message translates to:
-  /// **'The owner and staff'**
-  String get teamShortcutHint;
+  /// **'Your branch'**
+  String get yourBranch;
 
   /// No description provided for @teamHint.
   ///
@@ -458,7 +488,7 @@ abstract class PartnerLocalizations {
   /// No description provided for @accountSection.
   ///
   /// In en, this message translates to:
-  /// **'Account'**
+  /// **'Your account'**
   String get accountSection;
 
   /// No description provided for @changePasswordAction.
@@ -472,6 +502,12 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'App'**
   String get appSection;
+
+  /// No description provided for @helpSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Help'**
+  String get helpSection;
 
   /// No description provided for @aboutTitle.
   ///
@@ -635,6 +671,12 @@ abstract class PartnerLocalizations {
   /// **'Archived'**
   String get archivedProducts;
 
+  /// No description provided for @productAddPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a photo'**
+  String get productAddPhoto;
+
   /// No description provided for @noProductsTitle.
   ///
   /// In en, this message translates to:
@@ -674,7 +716,7 @@ abstract class PartnerLocalizations {
   /// No description provided for @regularPriceHelper.
   ///
   /// In en, this message translates to:
-  /// **'The usual price, before any offer.'**
+  /// **'Its everyday price in the store. The offer\'s is lower.'**
   String get regularPriceHelper;
 
   /// No description provided for @archiveProduct.
@@ -821,29 +863,53 @@ abstract class PartnerLocalizations {
   /// **'No offers here.'**
   String get noOffersHere;
 
-  /// No description provided for @allOffers.
-  ///
-  /// In en, this message translates to:
-  /// **'All'**
-  String get allOffers;
-
   /// No description provided for @activeOffers.
   ///
   /// In en, this message translates to:
   /// **'Active'**
   String get activeOffers;
 
-  /// No description provided for @pausedOffers.
-  ///
-  /// In en, this message translates to:
-  /// **'Paused'**
-  String get pausedOffers;
-
   /// No description provided for @endedOffers.
   ///
   /// In en, this message translates to:
   /// **'Ended'**
   String get endedOffers;
+
+  /// No description provided for @liveNowSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Live now'**
+  String get liveNowSection;
+
+  /// No description provided for @comingUpSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming up'**
+  String get comingUpSection;
+
+  /// No description provided for @pausedSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get pausedSection;
+
+  /// Under how many pieces are left: "2" over "left of 10"
+  ///
+  /// In en, this message translates to:
+  /// **'left of {total}'**
+  String figureLeftOf(int total);
+
+  /// No description provided for @figureSoldOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold out'**
+  String get figureSoldOut;
+
+  /// Under "Sold out": "all 10"
+  ///
+  /// In en, this message translates to:
+  /// **'all {total}'**
+  String figureAllOf(int total);
 
   /// No description provided for @offerLive.
   ///
@@ -911,24 +977,6 @@ abstract class PartnerLocalizations {
   /// **'New offer'**
   String get newOfferTitle;
 
-  /// No description provided for @offerSection.
-  ///
-  /// In en, this message translates to:
-  /// **'The offer'**
-  String get offerSection;
-
-  /// No description provided for @whenSection.
-  ///
-  /// In en, this message translates to:
-  /// **'When it ends'**
-  String get whenSection;
-
-  /// No description provided for @whenAndWhereSection.
-  ///
-  /// In en, this message translates to:
-  /// **'When and where'**
-  String get whenAndWhereSection;
-
   /// No description provided for @startOfferTitle.
   ///
   /// In en, this message translates to:
@@ -959,10 +1007,16 @@ abstract class PartnerLocalizations {
   /// **'Add its photo and price, and post it now'**
   String get somethingNewHint;
 
+  /// No description provided for @offerPhotoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional, but offers with a photo get reserved more'**
+  String get offerPhotoHint;
+
   /// No description provided for @quickProductNote.
   ///
   /// In en, this message translates to:
-  /// **'Saved to your products, to post again in seconds.'**
+  /// **'Saved to your products'**
   String get quickProductNote;
 
   /// No description provided for @offerPostedPhotoFailed.
@@ -982,12 +1036,6 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Offer price'**
   String get offerPriceLabel;
-
-  /// No description provided for @discountHelper.
-  ///
-  /// In en, this message translates to:
-  /// **'{percent}% off the regular price'**
-  String discountHelper(int percent);
 
   /// No description provided for @offerPriceTooHigh.
   ///
@@ -1019,12 +1067,6 @@ abstract class PartnerLocalizations {
   /// **'How many pieces'**
   String get quantityLabel;
 
-  /// No description provided for @holdLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Held for (minutes)'**
-  String get holdLabel;
-
   /// No description provided for @holdHelper.
   ///
   /// In en, this message translates to:
@@ -1036,12 +1078,6 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Per customer'**
   String get perCustomerLabel;
-
-  /// No description provided for @perCustomerHelper.
-  ///
-  /// In en, this message translates to:
-  /// **'How many times one customer can claim it.'**
-  String get perCustomerHelper;
 
   /// No description provided for @endsLabel.
   ///
@@ -1210,6 +1246,18 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Code'**
   String get codeLabel;
+
+  /// No description provided for @tapToCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to copy'**
+  String get tapToCopy;
+
+  /// No description provided for @codeCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Code copied'**
+  String get codeCopied;
 
   /// No description provided for @codeHelper.
   ///
@@ -1721,17 +1769,113 @@ abstract class PartnerLocalizations {
   /// **'More'**
   String get moreActions;
 
-  /// No description provided for @repostOfferHint.
-  ///
-  /// In en, this message translates to:
-  /// **'A new offer at the same price and quantity'**
-  String get repostOfferHint;
-
   /// No description provided for @endOfferHint.
   ///
   /// In en, this message translates to:
   /// **'Customers stop seeing it, for good'**
   String get endOfferHint;
+
+  /// No description provided for @discountBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'-{percent}%'**
+  String discountBadge(int percent);
+
+  /// No description provided for @unlimitedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Stays up until it ends or you pause it.'**
+  String get unlimitedHint;
+
+  /// No description provided for @noBranchChosen.
+  ///
+  /// In en, this message translates to:
+  /// **'No branch chosen'**
+  String get noBranchChosen;
+
+  /// No description provided for @whereTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Where it shows'**
+  String get whereTitle;
+
+  /// No description provided for @showsHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows here'**
+  String get showsHere;
+
+  /// No description provided for @hiddenHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Won\'t show here'**
+  String get hiddenHere;
+
+  /// No description provided for @hiddenFromBranches.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers of {branches} won\'t see this offer.'**
+  String hiddenFromBranches(String branches);
+
+  /// Between names in a list: "Andalus, Gargaresh"
+  ///
+  /// In en, this message translates to:
+  /// **', '**
+  String get listSeparator;
+
+  /// No description provided for @reservationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservations'**
+  String get reservationsTitle;
+
+  /// No description provided for @holdHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours, plural, =1{1 hour} other{{hours} hours}}'**
+  String holdHours(int hours);
+
+  /// No description provided for @holdAndPer.
+  ///
+  /// In en, this message translates to:
+  /// **'Held {hold} · {per}'**
+  String holdAndPer(String hold, String per);
+
+  /// No description provided for @noLimitPerCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'No limit per customer'**
+  String get noLimitPerCustomer;
+
+  /// No description provided for @piecesPerCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 piece per customer} other{{count} pieces per customer}}'**
+  String piecesPerCustomer(int count);
+
+  /// No description provided for @atMost.
+  ///
+  /// In en, this message translates to:
+  /// **'At most'**
+  String get atMost;
+
+  /// No description provided for @anyCustomerAll.
+  ///
+  /// In en, this message translates to:
+  /// **'One customer can take every piece.'**
+  String get anyCustomerAll;
+
+  /// No description provided for @postSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{pieces} · ends {when}'**
+  String postSummary(String pieces, String when);
+
+  /// No description provided for @postSummaryAt.
+  ///
+  /// In en, this message translates to:
+  /// **'{pieces} · ends {when} · at {branches} only'**
+  String postSummaryAt(String pieces, String when, String branches);
 }
 
 class _PartnerLocalizationsDelegate

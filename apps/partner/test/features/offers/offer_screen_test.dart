@@ -105,14 +105,16 @@ void main() {
     expect(find.text('new offer page'), findsOneWidget);
   });
 
-  testWidgets('owners post a live offer again from the menu', (tester) async {
+  testWidgets('a live offer is not posted again until it is over', (
+    tester,
+  ) async {
     await open(tester);
 
+    expect(find.text('Post it again'), findsNothing);
     await tester.tap(find.byTooltip('More'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Post it again'));
-    await tester.pumpAndSettle();
-    expect(find.text('new offer page'), findsOneWidget);
+    expect(find.text('End the offer'), findsOneWidget);
+    expect(find.text('Post it again'), findsNothing);
   });
 
   testWidgets('staff see it without the actions', (tester) async {

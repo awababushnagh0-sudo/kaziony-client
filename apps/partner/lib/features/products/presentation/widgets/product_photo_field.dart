@@ -7,9 +7,17 @@ import '../product_view_model.dart';
 /// The product's photo: tap to take or pick one, which uploads right away,
 /// or for a new product ([productId] null) once it's saved.
 class ProductPhotoField extends AppView {
-  const ProductPhotoField({required this.productId, this.onRetry, super.key});
+  const ProductPhotoField({
+    required this.productId,
+    this.onRetry,
+    this.hint,
+    super.key,
+  });
 
   final String? productId;
+
+  /// Under "Add a photo" while there's none, instead of the usual tip.
+  final String? hint;
 
   /// After a failed upload, instead of sending the photo again alone.
   final VoidCallback? onRetry;
@@ -49,6 +57,7 @@ class ProductPhotoField extends AppView {
       preview: state.photo?.preview,
       progress: state.progress,
       failed: state.failed,
+      hint: hint,
       onTap: state.failed ? onRetry ?? viewModel.retry : choose,
     );
   }

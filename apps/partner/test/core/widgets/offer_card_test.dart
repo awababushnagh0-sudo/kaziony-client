@@ -19,25 +19,36 @@ void main() {
     ],
   );
 
-  testWidgets('a limited offer counts where all its pieces are', (
+  testWidgets('a limited offer shows what is left beside where the rest are', (
     tester,
   ) async {
     await open(tester, offer('o1'));
 
+    expect(find.text('3'), findsOneWidget);
+    expect(find.text('left of 10'), findsOneWidget);
     expect(find.text('5'), findsOneWidget);
     expect(find.text('Picked up'), findsOneWidget);
     expect(find.text('2'), findsOneWidget);
     expect(find.text('On the way'), findsOneWidget);
-    expect(find.text('3'), findsOneWidget);
-    expect(find.text('Left'), findsOneWidget);
+    // Said once, big at the end.
+    expect(find.text('Left'), findsNothing);
     expect(find.text('No limit'), findsNothing);
   });
 
-  testWidgets('an unlimited offer has nothing left to count', (tester) async {
+  testWidgets('a sold out offer says so over its whole count', (tester) async {
+    await open(tester, offer('o1', left: 0));
+
+    expect(find.text('Sold out'), findsOneWidget);
+    expect(find.text('all 10'), findsOneWidget);
+  });
+
+  testWidgets('an unlimited offer counts its pickups instead', (tester) async {
     await open(tester, offer('o1', type: OfferType.unlimited));
 
+    expect(find.text('5'), findsOneWidget);
     expect(find.text('Picked up'), findsOneWidget);
-    expect(find.text('Left'), findsNothing);
+    expect(find.text('On the way'), findsOneWidget);
+    expect(find.textContaining('left of'), findsNothing);
     expect(find.text('No limit'), findsOneWidget);
   });
 
@@ -46,20 +57,32 @@ void main() {
   ) async {
     await open(tester, offer('o1', state: OfferState.scheduled));
 
-    expect(find.text('Scheduled'), findsOneWidget);
     expect(find.textContaining('Starts '), findsOneWidget);
     expect(find.text('10'), findsOneWidget);
     expect(find.text('Ready'), findsOneWidget);
     expect(find.text('Picked up'), findsNothing);
   });
 
-  testWidgets('an ended offer says when it ended', (tester) async {
+  testWidgets('an ended offer says when it ended and what was picked up', (
+    tester,
+  ) async {
     await open(
       tester,
       offer('o1', status: OfferStatus.ended, state: OfferState.ended),
     );
 
-    expect(find.text('Ended'), findsOneWidget);
     expect(find.textContaining('Ended '), findsOneWidget);
+    expect(find.text('Picked up'), findsOneWidget);
+    // The pieces nobody took.
+    expect(find.text('Left'), findsOneWidget);
+  });
+
+  testWidgets('a removed offer says who removed it', (tester) async {
+    await open(
+      tester,
+      offer('o1', status: OfferStatus.removed, state: OfferState.removed),
+    );
+
+    expect(find.text('Removed by our team'), findsOneWidget);
   });
 }

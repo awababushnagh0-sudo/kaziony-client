@@ -16,6 +16,7 @@ class ApiOfferRepository implements OfferRepository {
     required int page,
     required int pageSize,
     OfferStatus? status,
+    bool? ended,
   }) async {
     final result = await _api.guard(
       () => _offers.list(
@@ -29,6 +30,7 @@ class ApiOfferRepository implements OfferRepository {
           OfferStatus.ended => api.OfferStatus.ended,
           OfferStatus.removed => api.OfferStatus.removed,
         },
+        ended: ended,
       ),
     );
     return result.map(

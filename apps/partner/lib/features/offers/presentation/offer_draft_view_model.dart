@@ -13,9 +13,13 @@ class NewOfferState {
   const NewOfferState({
     required this.type,
     required this.discount,
+    required this.pieces,
+    required this.hold,
+    required this.perLimited,
+    required this.perCustomer,
+    required this.endsAt,
     this.branchIds,
     this.posting = false,
-    this.noBranch = false,
     this.failure,
   });
 
@@ -24,12 +28,17 @@ class NewOfferState {
   /// The discount the typed price gives, or null while it isn't a price.
   final int? discount;
 
-  /// Null for all the store's branches.
+  /// What the form holds now, for the lines that sum it up; null while
+  /// it isn't a number yet. [pieces] are for limited offers only.
+  final int? pieces;
+  final int hold;
+  final bool perLimited;
+  final int? perCustomer;
+  final DateTime? endsAt;
+
+  /// Null for all the store's branches; empty when every one is unticked.
   final Set<String>? branchIds;
   final bool posting;
-
-  /// Every branch was unticked.
-  final bool noBranch;
   final AppFailure? failure;
 }
 
@@ -39,17 +48,34 @@ class NewOfferState {
 abstract class OfferDraftViewModel extends ViewModel<NewOfferState> {
   late final FormGroup form;
 
+  /// The hold times to pick from: the usual ones, and the reposted
+  /// offer's own when it's another.
+  late final List<int> holdChoices;
+
+  /// The usual hold times, in minutes.
+  static const usualHolds = [30, 60, 120, 240];
+
+  /// Pieces a new offer starts with: a few, to step up or type over.
+  static const _firstPieces = 5;
+
+  /// What a per-customer limit starts at once one is set.
+  static const _firstPerCustomer = 2;
+
   /// The regular price ("8.000") the offer's must be under; null while
   /// there's none yet (typed on the form, for something new).
   String? get regularPrice;
 
   /// Builds [form] from the offer's fields and [extra] ones, filled from
-  /// [from] when it's posted again; returns the first state.
+  /// [from] when it's posted again; returns the first state. It ends
+  /// tonight (or tomorrow night) either way: the old end is gone.
   NewOfferState buildForm({
     Offer? from,
     Map<String, AbstractControl<Object?>> extra = const {},
   }) {
     final type = from?.type ?? OfferType.limited;
+    final hold = from?.claimWindowMinutes ?? 60;
+    final perCustomer = from?.maxPerUser;
+    holdChoices = {...usualHolds, hold}.toList()..sort();
     form = FormGroup({
       ...extra,
       'price': FormControl<String>(
@@ -62,19 +88,14 @@ abstract class OfferDraftViewModel extends ViewModel<NewOfferState> {
       ),
       'type': FormControl<OfferType>(value: type),
       'quantity': FormControl<String>(
-        value: from?.totalQuantity?.toString(),
-        validators: [SValidators.wholeNumberBetween(1, 10000)],
+        value: '${from?.totalQuantity ?? _firstPieces}',
       ),
-      'hold': FormControl<String>(
-        value: '${from?.claimWindowMinutes ?? 60}',
-        validators: [SValidators.wholeNumberBetween(15, 240)],
-      ),
+      'hold': FormControl<int>(value: hold),
+      // No limit per customer unless the store sets one: what matters is
+      // that the pieces go, not who takes them.
+      'perLimited': FormControl<bool>(value: perCustomer != null),
       'perCustomer': FormControl<String>(
-        value: '${from?.maxPerUser ?? 1}',
-        validators: [
-          Validators.required,
-          SValidators.wholeNumberBetween(1, 10),
-        ],
+        value: '${perCustomer ?? _firstPerCustomer}',
       ),
       'endsAt': FormControl<DateTime>(
         value: OfferChecks.defaultEnd(),
@@ -82,72 +103,51 @@ abstract class OfferDraftViewModel extends ViewModel<NewOfferState> {
       ),
     });
     _requireLimitedFields(type);
-    final prices = form
-        .control('price')
-        .valueChanges
-        .listen((_) => refreshDiscount());
+    _requirePerCustomer(perLimited: perCustomer != null);
+    final changes = form.valueChanges.listen(
+      (_) => state = _snapshot(state.branchIds),
+    );
     ref.onDispose(() {
-      unawaited(prices.cancel());
+      unawaited(changes.cancel());
       form.dispose();
     });
-    return NewOfferState(
-      type: type,
-      discount: _discount(),
-      branchIds: from?.branchIds.toSet(),
-    );
+    return _snapshot(from?.branchIds.toSet());
   }
 
-  void setType(OfferType type) {
-    _requireLimitedFields(type);
-    state = NewOfferState(
-      type: type,
-      discount: state.discount,
-      branchIds: state.branchIds,
-    );
-  }
+  void setType(OfferType type) => _requireLimitedFields(type);
+
+  void setPerLimited(bool limited) => _requirePerCustomer(perLimited: limited);
 
   /// Ticks or unticks a branch; [all] are the store's active branches.
   void toggleBranch(String id, List<String> all) {
     final chosen = {...(state.branchIds ?? all.toSet())};
     if (!chosen.remove(id)) chosen.add(id);
-    state = NewOfferState(
-      type: state.type,
-      discount: state.discount,
-      branchIds: chosen.length == all.length ? null : chosen,
-    );
+    state = _snapshot(chosen.length == all.length ? null : chosen);
   }
 
-  /// After the offer's price or the regular price changes.
-  void refreshDiscount() => state = NewOfferState(
-    type: state.type,
-    discount: _discount(),
-    branchIds: state.branchIds,
-  );
+  /// Ticks every branch, or unticks them all.
+  void setAllBranches({required bool all}) =>
+      state = _snapshot(all ? null : {});
 
   /// The store to post in, once everything's filled in right; null, with
   /// what's wrong marked, otherwise. Shows it's posting.
   String? startPosting() {
     if (state.posting) return null;
     final branchIds = state.branchIds;
-    final noBranch = branchIds != null && branchIds.isEmpty;
-    if (form.invalid || noBranch) {
+    if (form.invalid || (branchIds != null && branchIds.isEmpty)) {
       form.markAllAsTouched();
-      state = NewOfferState(
-        type: state.type,
-        discount: state.discount,
-        branchIds: branchIds,
-        noBranch: noBranch,
-      );
+      state = _snapshot(branchIds);
       return null;
     }
     final storeId = ref.read(currentStoreProvider)?.storeId;
     if (storeId == null) return null;
-    _setPosting(posting: true);
+    state = _snapshot(branchIds, posting: true);
     return storeId;
   }
 
   /// Ends posting with why it failed.
-  void failPosting(AppFailure failure) => _setPosting(failure: failure);
+  void failPosting(AppFailure failure) =>
+      state = _snapshot(state.branchIds, failure: failure);
 
   /// Posts the offer for [productId]; returns it, or null when it wasn't
   /// posted (the failure is in the state).
@@ -163,14 +163,14 @@ abstract class OfferDraftViewModel extends ViewModel<NewOfferState> {
             offerPrice: parsePrice(form.control('price').value as String)!,
             type: state.type,
             totalQuantity: limited ? _number('quantity') : null,
-            claimWindowMinutes: limited ? _number('hold') : null,
-            maxPerUser: _number('perCustomer')!,
+            claimWindowMinutes: limited ? state.hold : null,
+            maxPerUser: state.perLimited ? _number('perCustomer') : null,
             endsAt: form.control('endsAt').value as DateTime,
             branchIds: branchIds?.toList(),
           ),
         );
     if (!ref.mounted) return null;
-    _setPosting(failure: result.failureOrNull);
+    state = _snapshot(branchIds, failure: result.failureOrNull);
     if (result.isOk) {
       ref
         ..invalidate(offersViewModel)
@@ -179,28 +179,41 @@ abstract class OfferDraftViewModel extends ViewModel<NewOfferState> {
     return result.valueOrNull;
   }
 
-  void _setPosting({bool posting = false, AppFailure? failure}) =>
-      state = NewOfferState(
-        type: state.type,
-        discount: state.discount,
-        branchIds: state.branchIds,
-        posting: posting,
-        failure: failure,
-      );
-
-  /// Pieces and the hold time only count for limited offers.
-  void _requireLimitedFields(OfferType type) {
-    final limited = type == OfferType.limited;
-    form
-      ..control('quantity').setValidators([
-        if (limited) Validators.required,
-        SValidators.wholeNumberBetween(1, 10000),
-      ], autoValidate: true)
-      ..control('hold').setValidators([
-        if (limited) Validators.required,
-        SValidators.wholeNumberBetween(15, 240),
-      ], autoValidate: true);
+  /// The form as it is now, with the [branchIds] it posts in.
+  NewOfferState _snapshot(
+    Set<String>? branchIds, {
+    bool posting = false,
+    AppFailure? failure,
+  }) {
+    final type = form.control('type').value as OfferType;
+    final perLimited = form.control('perLimited').value as bool;
+    return NewOfferState(
+      type: type,
+      discount: _discount(),
+      pieces: type == OfferType.limited ? _number('quantity') : null,
+      hold: form.control('hold').value as int,
+      perLimited: perLimited,
+      perCustomer: perLimited ? _number('perCustomer') : null,
+      endsAt: form.control('endsAt').value as DateTime?,
+      branchIds: branchIds,
+      posting: posting,
+      failure: failure,
+    );
   }
+
+  /// Pieces only count for limited offers.
+  void _requireLimitedFields(OfferType type) =>
+      form.control('quantity').setValidators([
+        if (type == OfferType.limited) Validators.required,
+        SValidators.wholeNumberBetween(1, 10000),
+      ], autoValidate: true);
+
+  /// The number per customer only counts once there's a limit.
+  void _requirePerCustomer({required bool perLimited}) =>
+      form.control('perCustomer').setValidators([
+        if (perLimited) Validators.required,
+        SValidators.wholeNumberBetween(1, 10),
+      ], autoValidate: true);
 
   int? _discount() {
     final value = form.control('price').value;

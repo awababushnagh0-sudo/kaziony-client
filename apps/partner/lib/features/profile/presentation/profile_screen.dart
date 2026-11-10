@@ -3,128 +3,107 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
-import '../../../core/widgets/partner_illustrations.dart';
+import '../../../core/widgets/store_image_field.dart';
 import '../../auth/domain/auth_repository.dart';
 import '../../store/domain/current_store.dart';
+import '../../store/domain/store.dart';
+import '../../store/presentation/store_view_model.dart';
 
-/// Who's signed in and where: the store with the member's role, name and
-/// phone; the store's pages as pictured cards; then the account and the
-/// app's settings, each row a card that opens its own page.
+/// The store as customers see it across the top (its cover, logo, name and
+/// category), then the store's info, branches and team, the member's own
+/// account, the app's settings and help. Owners change the cover and logo
+/// right there. The page doesn't wait for the store's details: the name
+/// and logo come with the sign-in, and the rest fills in once loaded.
 class ProfileScreen extends AppView {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = PartnerLocalizations.of(context);
-    final store = ref.watch(currentStoreProvider);
-    final user = switch (ref.watch(sessionProvider)) {
-      SignedIn(:final user) => user,
-      _ => null,
-    };
+    final stellar = StellarLocalizations.of(context);
+    final membership = ref.watch(currentStoreProvider);
+    final details = ref.watch(storeViewModel).value;
+    Future<void> refresh() async {
+      final failure = await ref.read(storeViewModel.notifier).refresh();
+      if (failure != null && context.mounted) {
+        SSnack.error(context, failureMessage(context, failure));
+      }
+    }
+
     return SScaffold(
-      // The header says whose profile it is; the tab says it's the profile.
+      // The store's cover says whose page it is; the tab says it's the
+      // profile.
       showAppBar: false,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          spacing: Space.xl,
-          children: [
-            if (store != null)
-              SProfileHeader(
-                title: store.storeName,
-                imageUrl: store.storeLogoUrl,
-                role: store.isOwner
-                    ? ProfileRole(
-                        label: s.ownerRole,
-                        icon: SIcons.crown,
-                        lead: true,
-                      )
-                    : ProfileRole(label: s.staffRole, icon: SIcons.user),
-                subtitle: user?.name,
-                phone: switch (user?.phone) {
-                  final phone? => formatLibyanPhone(phone),
-                  null => null,
-                },
-              ),
-            // The store's own pages, the ones opened most.
-            SShortcuts([
-              Shortcut(
-                illustration: PartnerIllustrations.storeInfo,
-                label: s.storeInfoTitle,
-                hint: s.storeInfoShortcutHint,
-                onTap: () => context.push(Routes.storeInfo),
-              ),
-              Shortcut(
-                illustration: PartnerIllustrations.branches,
-                label: s.branchesTitle,
-                hint: s.branchesShortcutHint,
-                onTap: () => context.push(Routes.branches),
-              ),
-              Shortcut(
-                illustration: PartnerIllustrations.team,
-                label: s.teamTitle,
-                hint: s.teamShortcutHint,
-                onTap: () => context.push(Routes.team),
-              ),
-            ]),
-            SListGroup(
-              title: s.accountSection,
-              separated: true,
+      scrollable: true,
+      // What the team changed (the name, the category) shows without
+      // signing in again.
+      onRefresh: refresh,
+      padded: false,
+      underStatusBar: true,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: Space.xl,
+        children: [
+          if (membership != null)
+            _StoreHeader(membership: membership, details: details),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(Space.lg, 0, Space.lg, Space.lg),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: Space.xl,
               children: [
-                if (ref.watch(myStoresProvider).length > 1)
-                  SListTile(
-                    icon: SIcons.chevronUpDown,
-                    title: s.switchStore,
-                    onTap: () => _switchStore(context, ref),
-                  ),
-                SListTile(
-                  icon: SIcons.key,
-                  title: s.changePasswordAction,
-                  onTap: () => context.push(Routes.password),
+                if (membership != null)
+                  _YourStore(membership: membership, details: details),
+                _YourAccount(membership),
+                SListGroup(
+                  title: s.appSection,
+                  separated: true,
+                  children: [
+                    SListTile(
+                      icon: SIcons.language,
+                      title: stellar.language,
+                      value: languageName(ref.watch(localeProvider)),
+                      onTap: () => chooseLanguage(context, ref),
+                    ),
+                    SListTile(
+                      icon: SIcons.appearance,
+                      title: stellar.theme,
+                      value: themeName(context, ref.watch(themeChoiceProvider)),
+                      onTap: () => chooseTheme(context, ref),
+                    ),
+                  ],
+                ),
+                SListGroup(
+                  title: s.helpSection,
+                  separated: true,
+                  children: [
+                    SListTile(
+                      icon: SIcons.chat,
+                      title: s.contactUs,
+                      onTap: () => context.push(Routes.contact),
+                    ),
+                    SListTile(
+                      icon: SIcons.info,
+                      title: s.aboutTitle,
+                      onTap: () => context.push(Routes.about),
+                    ),
+                    SListTile(
+                      icon: SIcons.document,
+                      title: s.termsTitle,
+                      onTap: () => context.push(Routes.terms),
+                    ),
+                  ],
+                ),
+                SButton.dangerSecondary(
+                  label: s.logout,
+                  icon: SIcons.logout,
+                  expand: true,
+                  onPressed: () => _logout(context, ref),
                 ),
               ],
             ),
-            SListGroup(
-              title: s.appSection,
-              separated: true,
-              children: [
-                SListTile(
-                  icon: SIcons.language,
-                  title: StellarLocalizations.of(context).language,
-                  value: languageName(ref.watch(localeProvider)),
-                  onTap: () => chooseLanguage(context, ref),
-                ),
-                SListTile(
-                  icon: SIcons.appearance,
-                  title: StellarLocalizations.of(context).theme,
-                  value: themeName(context, ref.watch(themeChoiceProvider)),
-                  onTap: () => chooseTheme(context, ref),
-                ),
-                SListTile(
-                  icon: SIcons.chat,
-                  title: s.contactUs,
-                  onTap: () => context.push(Routes.contact),
-                ),
-                SListTile(
-                  icon: SIcons.info,
-                  title: s.aboutTitle,
-                  onTap: () => context.push(Routes.about),
-                ),
-                SListTile(
-                  icon: SIcons.document,
-                  title: s.termsTitle,
-                  onTap: () => context.push(Routes.terms),
-                ),
-              ],
-            ),
-            SButton.dangerSecondary(
-              label: s.logout,
-              icon: SIcons.logout,
-              expand: true,
-              onPressed: () => _logout(context, ref),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -141,6 +120,169 @@ class ProfileScreen extends AppView {
       destructive: true,
     );
     if (confirmed) await ref.read(authRepositoryProvider).logout();
+  }
+}
+
+/// The cover and the logo over its edge, then the store's name and
+/// category.
+class _StoreHeader extends StatelessWidget {
+  const _StoreHeader({required this.membership, required this.details});
+
+  final StoreMembership membership;
+
+  /// Null until the store's details load.
+  final Store? details;
+
+  @override
+  Widget build(BuildContext context) {
+    final details = this.details;
+    final owner = membership.isOwner;
+    final category = details?.category.name(Localizations.localeOf(context));
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: Space.md,
+      children: [
+        SCoverWithLogo(
+          cover: StoreImageField(
+            image: StoreImage.cover,
+            url: details?.coverUrl,
+            editable: owner,
+            shape: PhotoFieldShape.banner,
+          ),
+          logo: StoreImageField(
+            image: StoreImage.logo,
+            // The one from the sign-in until the store's own loads.
+            url: details == null ? membership.storeLogoUrl : details.logoUrl,
+            editable: owner,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SText.title(details?.name ?? membership.storeName),
+              if (category != null) SText(category, color: SColor.textMuted),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// The store's info, as customers see it (owners edit it there). Then,
+/// for owners, the branches and the team, with how many of each; for
+/// staff, the branch they work at, or all the branches when they work at
+/// every one.
+class _YourStore extends StatelessWidget {
+  const _YourStore({required this.membership, required this.details});
+
+  final StoreMembership membership;
+  final Store? details;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = PartnerLocalizations.of(context);
+    final details = this.details;
+    final branchId = membership.branchId;
+    void openBranches() => context.push(Routes.branches);
+    final branches = SListTile(
+      icon: SIcons.location,
+      title: s.branchesTitle,
+      value: details == null ? null : '${details.branches.length}',
+      onTap: openBranches,
+    );
+    return SListGroup(
+      title: s.yourStoreSection,
+      separated: true,
+      children: [
+        SListTile(
+          icon: SIcons.store,
+          title: s.storeInfoTitle,
+          onTap: () => context.push(Routes.storeInfo),
+        ),
+        if (membership.isOwner) ...[
+          branches,
+          SListTile(
+            icon: SIcons.users,
+            title: s.teamTitle,
+            value: details == null ? null : '${details.members.length}',
+            onTap: () => context.push(Routes.team),
+          ),
+        ] else if (branchId != null)
+          SListTile(
+            icon: SIcons.location,
+            title: s.yourBranch,
+            value: details?.branches
+                .where((branch) => branch.id == branchId)
+                .firstOrNull
+                ?.name,
+            onTap: openBranches,
+          )
+        else
+          branches,
+      ],
+    );
+  }
+}
+
+/// Who's signed in, with their role here, and what they can change about
+/// their own account.
+class _YourAccount extends AppView {
+  const _YourAccount(this.membership);
+
+  final StoreMembership? membership;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final s = PartnerLocalizations.of(context);
+    final membership = this.membership;
+    final user = switch (ref.watch(sessionProvider)) {
+      SignedIn(:final user) => user,
+      _ => null,
+    };
+    final name = user?.name?.trim();
+    final phone = switch (user?.phone) {
+      // "091 000 0001" keeps its order in Arabic.
+      final phone? => '\u2066${formatLibyanPhone(phone)}\u2069',
+      null => null,
+    };
+    final named = name != null && name.isNotEmpty;
+    final title = named ? name : phone;
+    return SListGroup(
+      title: s.accountSection,
+      separated: true,
+      children: [
+        if (title != null)
+          SListTile(
+            icon: SIcons.user,
+            title: title,
+            subtitle: named ? phone : null,
+            trailing: switch (membership?.isOwner) {
+              true => SBadge(
+                s.ownerRole,
+                tone: BadgeTone.brand,
+                size: BadgeSize.large,
+                icon: SIcons.crown,
+              ),
+              false => SBadge(s.staffRole, size: BadgeSize.large),
+              null => null,
+            },
+          ),
+        if (ref.watch(myStoresProvider).length > 1)
+          SListTile(
+            icon: SIcons.chevronUpDown,
+            title: s.switchStore,
+            onTap: () => _switchStore(context, ref),
+          ),
+        SListTile(
+          icon: SIcons.key,
+          title: s.changePasswordAction,
+          onTap: () => context.push(Routes.password),
+        ),
+      ],
+    );
   }
 
   Future<void> _switchStore(BuildContext context, WidgetRef ref) async {

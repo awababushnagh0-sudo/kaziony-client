@@ -150,7 +150,12 @@ class _Details extends AppView {
       children: [
         if (problem != null)
           SAlert(title: problem, message: claimProblemHint(context, claim)),
-        SCodeCard(label: s.codeLabel, code: formatPickupCode(claim.code)),
+        SCodeCard(
+          label: s.codeLabel,
+          code: formatPickupCode(claim.code),
+          copyHint: s.tapToCopy,
+          copiedMessage: s.codeCopied,
+        ),
         // Only what's to be paid now: a used code shows no total, so no
         // money is taken twice.
         if (problem == null)
@@ -180,19 +185,19 @@ class _Details extends AppView {
           ),
         SListGroup(
           children: [
-            SListTile(
-              title: s.customerLabel,
+            SFactTile(
+              label: s.customerLabel,
               value: claim.customerName ?? s.someCustomer,
             ),
             if (redeemedAt != null)
-              SListTile(
-                title: s.pickedUpAtLabel,
+              SFactTile(
+                label: s.pickedUpAtLabel,
                 value: [time(redeemedAt), ?branch].join(' · '),
               )
             else ...[
-              SListTile(title: s.heldUntil, value: heldUntil),
+              SFactTile(label: s.heldUntil, value: heldUntil),
               if (branch != null)
-                SListTile(title: s.branchLabel, value: branch),
+                SFactTile(label: s.branchLabel, value: branch),
             ],
           ],
         ),

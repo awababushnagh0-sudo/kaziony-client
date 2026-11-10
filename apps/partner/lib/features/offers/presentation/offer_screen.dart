@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
@@ -98,7 +96,9 @@ class _Header extends AppView {
       imageUrl: offer.imageUrl,
       caption: _Caption(offer: offer),
       onBack: context.pop,
-      // Once it's over, posting it again is the page's main button.
+      // Ending is for good, so it's tucked away here. Posting it again waits
+      // until it's over (then it's the page's main button): two live copies
+      // of one offer would show customers the same thing twice.
       action: isOwner && offer.canChange
           ? PhotoHeaderAction(
               icon: SIcons.more,
@@ -111,53 +111,36 @@ class _Header extends AppView {
 
   Future<void> _more(BuildContext context, WidgetRef ref) async {
     final s = PartnerLocalizations.of(context);
-    final picked = await SSheet.actions<_More>(
+    final end = await SSheet.actions<bool>(
       context,
       title: offer.title,
       actions: [
         SheetAction(
-          value: _More.repost,
-          icon: SIcons.repost,
-          label: s.repostOffer,
-          hint: s.repostOfferHint,
-        ),
-        SheetAction(
-          value: _More.end,
+          value: true,
           icon: SIcons.stop,
           label: s.endOffer,
           hint: s.endOfferHint,
         ),
       ],
     );
-    if (!context.mounted) return;
-    switch (picked) {
-      case _More.repost:
-        unawaited(
-          context.push(Routes.newOffer(offer.productId, from: offer.id)),
-        );
-      case _More.end:
-        // Ending is for good, so it asks first.
-        final confirmed = await SDialog.confirm(
-          context,
-          title: s.endOfferTitle,
-          message: s.endOfferMessage,
-          confirmLabel: s.endOffer,
-          destructive: true,
-        );
-        if (confirmed && context.mounted) {
-          await _run(
-            context,
-            ref.read(offerViewModel(offer.id).notifier).end(),
-            s.offerEndedDone,
-          );
-        }
-      case null:
-        break;
+    if (end != true || !context.mounted) return;
+    // Ending is for good, so it asks first.
+    final confirmed = await SDialog.confirm(
+      context,
+      title: s.endOfferTitle,
+      message: s.endOfferMessage,
+      confirmLabel: s.endOffer,
+      destructive: true,
+    );
+    if (confirmed && context.mounted) {
+      await _run(
+        context,
+        ref.read(offerViewModel(offer.id).notifier).end(),
+        s.offerEndedDone,
+      );
     }
   }
 }
-
-enum _More { repost, end }
 
 /// On the photo's foot, in white over its shade: what customers see of it
 /// now, its name, and its price beside the regular one.

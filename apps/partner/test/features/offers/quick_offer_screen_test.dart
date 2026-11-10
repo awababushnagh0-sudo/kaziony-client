@@ -51,15 +51,15 @@ void main() {
   Future<void> fill(WidgetTester tester) async {
     await tester.enterText(field('Name'), 'Caramel cake');
     await tester.enterText(field('Regular price'), '8');
-    await tester.enterText(field('Offer price'), '5');
-    await tester.enterText(field('How many pieces'), '3');
+    await tester.enterText(amountField(), '5');
+    await tester.enterText(countField(), '3');
     await tester.pump();
   }
 
   testWidgets('saves it as a product, then posts its offer', (tester) async {
     await open(tester);
     await fill(tester);
-    expect(find.text('38% off the regular price'), findsOneWidget);
+    expect(find.text('-38%'), findsOneWidget);
 
     await tester.tap(find.text('Post an offer'));
     await tester.pumpAndSettle();
@@ -79,12 +79,13 @@ void main() {
   ) async {
     await open(tester);
     await fill(tester);
-    await tester.enterText(field('Offer price'), '9');
+    // Lowered after the offer's price was typed: the price is checked again.
+    await tester.enterText(field('Regular price'), '4');
     await tester.tap(find.text('Post an offer'));
     await tester.pumpAndSettle();
 
     expect(
-      find.text('Must be lower than the regular price (8 LD)'),
+      find.text('Must be lower than the regular price (4 LD)'),
       findsOneWidget,
     );
     expect(products.created, isEmpty);

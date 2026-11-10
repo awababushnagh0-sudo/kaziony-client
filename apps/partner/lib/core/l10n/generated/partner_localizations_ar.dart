@@ -196,31 +196,51 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get storeInfoHint => 'يرى الزبائن هذه المعلومات في صفحة متجرك.';
 
   @override
+  String get storeNameLabel => 'اسم المتجر';
+
+  @override
+  String get storeNameHint =>
+      'يحدد فريقنا اسم المتجر وفئته. لتغييرهما تواصل معنا.';
+
+  @override
+  String get saveChanges => 'حفظ التغييرات';
+
+  @override
+  String get discardChangesTitle => 'تجاهل التعديلات؟';
+
+  @override
+  String get discardChangesMessage =>
+      'لم تُحفظ تعديلاتك. هل تريد المغادرة دون حفظ؟';
+
+  @override
+  String get discardChanges => 'تجاهل';
+
+  @override
   String get branchesTitle => 'الفروع';
 
   @override
   String get teamTitle => 'الفريق';
 
   @override
-  String get storeInfoShortcutHint => 'الاسم والوصف ووسائل التواصل';
+  String get yourStoreSection => 'متجرك';
 
   @override
-  String get branchesShortcutHint => 'أماكن استلام الزبائن';
-
-  @override
-  String get teamShortcutHint => 'المالك والموظفون';
+  String get yourBranch => 'فرعك';
 
   @override
   String get teamHint => 'لإضافة شخص أو إزالته، تواصل مع فريقنا.';
 
   @override
-  String get accountSection => 'الحساب';
+  String get accountSection => 'حسابك';
 
   @override
   String get changePasswordAction => 'تغيير كلمة المرور';
 
   @override
   String get appSection => 'التطبيق';
+
+  @override
+  String get helpSection => 'المساعدة';
 
   @override
   String get aboutTitle => 'عن التطبيق';
@@ -306,6 +326,9 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get archivedProducts => 'المؤرشفة';
 
   @override
+  String get productAddPhoto => 'أضف صورة';
+
+  @override
   String get noProductsTitle => 'لا توجد منتجات بعد';
 
   @override
@@ -324,7 +347,8 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get regularPriceLabel => 'السعر العادي';
 
   @override
-  String get regularPriceHelper => 'السعر المعتاد قبل أي عرض.';
+  String get regularPriceHelper =>
+      'سعره في المحل كل يوم. سعر العرض يكون أقل منه.';
 
   @override
   String get archiveProduct => 'أرشفة';
@@ -402,16 +426,32 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get noOffersHere => 'لا توجد عروض هنا.';
 
   @override
-  String get allOffers => 'الكل';
-
-  @override
   String get activeOffers => 'الحالية';
 
   @override
-  String get pausedOffers => 'المتوقفة';
+  String get endedOffers => 'المنتهية';
 
   @override
-  String get endedOffers => 'المنتهية';
+  String get liveNowSection => 'معروضة الآن';
+
+  @override
+  String get comingUpSection => 'قادمة';
+
+  @override
+  String get pausedSection => 'موقوفة';
+
+  @override
+  String figureLeftOf(int total) {
+    return 'باقي من $total';
+  }
+
+  @override
+  String get figureSoldOut => 'نفدت';
+
+  @override
+  String figureAllOf(int total) {
+    return 'كل الـ$total';
+  }
 
   @override
   String get offerLive => 'متاح';
@@ -450,15 +490,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get newOfferTitle => 'عرض جديد';
 
   @override
-  String get offerSection => 'العرض';
-
-  @override
-  String get whenSection => 'متى ينتهي';
-
-  @override
-  String get whenAndWhereSection => 'متى وأين';
-
-  @override
   String get startOfferTitle => 'على ماذا العرض؟';
 
   @override
@@ -474,7 +505,10 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get somethingNewHint => 'أضف صورته وسعره وانشره الآن';
 
   @override
-  String get quickProductNote => 'يُحفظ في منتجاتك لتنشره مرة أخرى في ثوانٍ.';
+  String get offerPhotoHint => 'اختيارية، لكن العروض بالصور تُحجز أكثر';
+
+  @override
+  String get quickProductNote => 'يُحفظ في منتجاتك';
 
   @override
   String get offerPostedPhotoFailed =>
@@ -487,11 +521,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get offerPriceLabel => 'سعر العرض';
-
-  @override
-  String discountHelper(int percent) {
-    return 'خصم $percent% من السعر العادي';
-  }
 
   @override
   String offerPriceTooHigh(String price) {
@@ -511,16 +540,10 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get quantityLabel => 'عدد القطع';
 
   @override
-  String get holdLabel => 'مدة الحجز (بالدقائق)';
-
-  @override
   String get holdHelper => 'المدة التي يُحجز فيها العرض للزبون حتى يصل.';
 
   @override
   String get perCustomerLabel => 'لكل زبون';
-
-  @override
-  String get perCustomerHelper => 'كم مرة يمكن للزبون الواحد أن يحجزه.';
 
   @override
   String get endsLabel => 'ينتهي';
@@ -618,6 +641,12 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get codeLabel => 'الرمز';
+
+  @override
+  String get tapToCopy => 'اضغط للنسخ';
+
+  @override
+  String get codeCopied => 'نُسخ الرمز';
 
   @override
   String get codeHelper => 'الأحرف والأرقام الثمانية تحت رمز QR عند الزبون.';
@@ -943,8 +972,86 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get moreActions => 'المزيد';
 
   @override
-  String get repostOfferHint => 'عرض جديد بنفس السعر والكمية';
+  String get endOfferHint => 'يختفي عند الزبائن ولا يمكن إرجاعه';
 
   @override
-  String get endOfferHint => 'يختفي عند الزبائن ولا يمكن إرجاعه';
+  String discountBadge(int percent) {
+    return '-$percent%';
+  }
+
+  @override
+  String get unlimitedHint => 'يبقى متاحًا حتى ينتهي وقته أو توقفه.';
+
+  @override
+  String get noBranchChosen => 'لم تختر أي فرع';
+
+  @override
+  String get whereTitle => 'أين يظهر العرض؟';
+
+  @override
+  String get showsHere => 'يظهر هنا';
+
+  @override
+  String get hiddenHere => 'لن يظهر هنا';
+
+  @override
+  String hiddenFromBranches(String branches) {
+    return 'لن يرى زبائن $branches هذا العرض.';
+  }
+
+  @override
+  String get listSeparator => '، ';
+
+  @override
+  String get reservationsTitle => 'الحجز';
+
+  @override
+  String holdHours(int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: '$hours ساعة',
+      few: '$hours ساعات',
+      two: 'ساعتان',
+      one: 'ساعة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String holdAndPer(String hold, String per) {
+    return 'يُحجز $hold · $per';
+  }
+
+  @override
+  String get noLimitPerCustomer => 'بدون حد لكل زبون';
+
+  @override
+  String piecesPerCustomer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count قطعة لكل زبون',
+      few: '$count قطع لكل زبون',
+      two: 'قطعتان لكل زبون',
+      one: 'قطعة واحدة لكل زبون',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get atMost => 'حد أقصى';
+
+  @override
+  String get anyCustomerAll => 'يستطيع أي زبون حجز كل القطع.';
+
+  @override
+  String postSummary(String pieces, String when) {
+    return '$pieces · ينتهي $when';
+  }
+
+  @override
+  String postSummaryAt(String pieces, String when, String branches) {
+    return '$pieces · ينتهي $when · في $branches فقط';
+  }
 }

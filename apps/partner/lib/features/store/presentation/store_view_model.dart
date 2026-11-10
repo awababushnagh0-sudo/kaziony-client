@@ -17,6 +17,22 @@ class StoreViewModel extends AsyncViewModel<Store> {
     };
   }
 
+  /// Loads it again behind what's shown (pulling the page down). Returns
+  /// what went wrong, or null.
+  Future<AppFailure?> refresh() async {
+    final storeId = ref.read(currentStoreProvider)?.storeId;
+    if (storeId == null) return const NotFoundFailure();
+    final result = await ref.read(storeRepositoryProvider).getStore(storeId);
+    if (!ref.mounted) return null;
+    switch (result) {
+      case Ok(:final value):
+        state = AsyncData(value);
+        return null;
+      case Err(:final failure):
+        return failure;
+    }
+  }
+
   Future<void> reload() async {
     state = const AsyncLoading();
     ref.invalidateSelf();

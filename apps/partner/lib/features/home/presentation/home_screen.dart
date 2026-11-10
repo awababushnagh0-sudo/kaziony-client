@@ -142,9 +142,8 @@ class _HomeBody extends AppView {
   }
 }
 
-/// The live offers in a row that scrolls sideways. They're all live, so the
-/// cards don't say so. One alone takes the page's width: there's nothing to
-/// scroll to.
+/// The live offers in a row that scrolls sideways. One alone takes the
+/// page's width: there's nothing to scroll to.
 class _LiveOffers extends StatelessWidget {
   const _LiveOffers(this.offers);
 
@@ -154,7 +153,6 @@ class _LiveOffers extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget card(Offer offer) => OfferCard(
       offer: offer,
-      showState: false,
       onTap: () => context.push(Routes.offer(offer.id)),
     );
     if (offers.length == 1) {

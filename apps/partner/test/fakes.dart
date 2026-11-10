@@ -21,6 +21,16 @@ SessionUser user({
   memberships: memberships,
 );
 
+/// A session that is already signed in as [user], without the backend.
+class SignedInSession extends SessionController {
+  SignedInSession(this.user);
+
+  final SessionUser user;
+
+  @override
+  SessionState build() => SignedIn(user);
+}
+
 StoreMembership store(String id, {bool isOwner = true, String? branchId}) =>
     StoreMembership(
       storeId: id,
@@ -263,6 +273,7 @@ Offer offer(
   OfferState state = OfferState.live,
   OfferType type = OfferType.limited,
   String productId = '1',
+  int left = 3,
 }) => Offer(
   id: id,
   productId: productId,
@@ -277,7 +288,7 @@ Offer offer(
   status: status,
   state: state,
   totalQuantity: type == OfferType.limited ? 10 : null,
-  remainingQuantity: type == OfferType.limited ? 3 : null,
+  remainingQuantity: type == OfferType.limited ? left : null,
   maxPerUser: 1,
   claimWindowMinutes: 60,
   startsAt: DateTime.utc(2026, 10, 25, 8),
@@ -287,12 +298,13 @@ Offer offer(
   claims: const ClaimCounts(reserved: 2, redeemed: 5, expired: 1, cancelled: 0),
 );
 
-/// Serves [offers] filtered by status like the API, and records changes.
+/// Serves [offers] filtered by status or ended like the API, and records
+/// changes.
 class FakeOfferRepository implements OfferRepository {
   FakeOfferRepository([List<Offer>? offers]) : offers = offers ?? [offer('o1')];
 
   final List<Offer> offers;
-  final statuses = <OfferStatus?>[];
+  final lists = <({OfferStatus? status, bool? ended})>[];
   final created = <NewOffer>[];
   final updated = <(String, OfferChanges)>[];
   final actions = <(String, String)>[];
@@ -306,11 +318,17 @@ class FakeOfferRepository implements OfferRepository {
     required int page,
     required int pageSize,
     OfferStatus? status,
+    bool? ended,
   }) async {
-    statuses.add(status);
+    lists.add((status: status, ended: ended));
+    bool finished(Offer offer) =>
+        offer.status == OfferStatus.ended ||
+        offer.status == OfferStatus.removed;
     final matching = [
       for (final offer in offers)
-        if (status == null || offer.status == status) offer,
+        if ((status == null || offer.status == status) &&
+            (ended == null || finished(offer) == ended))
+          offer,
     ];
     return Ok(PageResult(items: matching, total: matching.length));
   }

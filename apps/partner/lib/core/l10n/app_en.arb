@@ -67,15 +67,21 @@
   "coverHint": "Your shop front or what you sell",
   "storeImagesHint": "Customers see your logo by your name, and the cover across the top of your page.",
   "storeInfoHint": "Customers see this on your store's page.",
+  "storeNameLabel": "Store name",
+  "storeNameHint": "Our team sets your store's name and category. Contact us to change them.",
+  "saveChanges": "Save changes",
+  "discardChangesTitle": "Discard your changes?",
+  "discardChangesMessage": "Your changes haven't been saved. Leave without saving?",
+  "discardChanges": "Discard",
   "branchesTitle": "Branches",
   "teamTitle": "Team",
-  "storeInfoShortcutHint": "Name, description and contact",
-  "branchesShortcutHint": "Where customers pick up",
-  "teamShortcutHint": "The owner and staff",
+  "yourStoreSection": "Your store",
+  "yourBranch": "Your branch",
   "teamHint": "To add or remove someone, contact our team.",
-  "accountSection": "Account",
+  "accountSection": "Your account",
   "changePasswordAction": "Change password",
   "appSection": "App",
+  "helpSection": "Help",
   "aboutTitle": "About the app",
   "aboutText": "Post limited offers from your products in seconds, and hand them over at the counter with a pickup code.",
   "termsTitle": "Terms and conditions",
@@ -103,13 +109,14 @@
   "searchProducts": "Search products",
   "currentProducts": "Current",
   "archivedProducts": "Archived",
+  "productAddPhoto": "Add a photo",
   "noProductsTitle": "No products yet",
   "noProductsMessage": "Add what you sell, then post offers from it in seconds.",
   "noProductsMatch": "No products match your search.",
   "noArchivedProducts": "No archived products.",
   "productTitleLabel": "Name",
   "regularPriceLabel": "Regular price",
-  "regularPriceHelper": "The usual price, before any offer.",
+  "regularPriceHelper": "Its everyday price in the store. The offer's is lower.",
   "archiveProduct": "Archive",
   "productPhotoTipTitle": "Add a photo",
   "productPhotoTipMessage": "Customers see it first on every offer from this product.",
@@ -134,10 +141,30 @@
   "noOffersTitle": "No offers yet",
   "noOffersMessage": "Post one from a product: customers nearby see it right away.",
   "noOffersHere": "No offers here.",
-  "allOffers": "All",
   "activeOffers": "Active",
-  "pausedOffers": "Paused",
   "endedOffers": "Ended",
+  "liveNowSection": "Live now",
+  "comingUpSection": "Coming up",
+  "pausedSection": "Paused",
+  "figureLeftOf": "left of {total}",
+  "@figureLeftOf": {
+    "description": "Under how many pieces are left: \"2\" over \"left of 10\"",
+    "placeholders": {
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "figureSoldOut": "Sold out",
+  "figureAllOf": "all {total}",
+  "@figureAllOf": {
+    "description": "Under \"Sold out\": \"all 10\"",
+    "placeholders": {
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "offerLive": "Live",
   "offerScheduled": "Scheduled",
   "offerSoldOut": "Sold out",
@@ -156,15 +183,13 @@
   "chooseProductTitle": "Choose a product",
   "noProductsForOffer": "Post something new, and it's saved here for next time.",
   "newOfferTitle": "New offer",
-  "offerSection": "The offer",
-  "whenSection": "When it ends",
-  "whenAndWhereSection": "When and where",
   "startOfferTitle": "What's the offer on?",
   "fromMyProducts": "From my products",
   "fromMyProductsHint": "One you've saved before",
   "somethingNew": "Something new",
   "somethingNewHint": "Add its photo and price, and post it now",
-  "quickProductNote": "Saved to your products, to post again in seconds.",
+  "offerPhotoHint": "Optional, but offers with a photo get reserved more",
+  "quickProductNote": "Saved to your products",
   "offerPostedPhotoFailed": "Offer posted. The photo didn't upload: add it from the product's page.",
   "regularPriceIs": "Regular price {price}",
   "@regularPriceIs": {
@@ -175,14 +200,6 @@
     }
   },
   "offerPriceLabel": "Offer price",
-  "discountHelper": "{percent}% off the regular price",
-  "@discountHelper": {
-    "placeholders": {
-      "percent": {
-        "type": "int"
-      }
-    }
-  },
   "offerPriceTooHigh": "Must be lower than the regular price ({price})",
   "@offerPriceTooHigh": {
     "placeholders": {
@@ -195,10 +212,8 @@
   "limitedType": "A set number",
   "unlimitedType": "No limit",
   "quantityLabel": "How many pieces",
-  "holdLabel": "Held for (minutes)",
   "holdHelper": "How long a reservation waits for the customer to come.",
   "perCustomerLabel": "Per customer",
-  "perCustomerHelper": "How many times one customer can claim it.",
   "endsLabel": "Ends",
   "endsTonight": "Tonight",
   "endsTomorrow": "Tomorrow night",
@@ -241,6 +256,8 @@
   "scanHint": "Point the camera at the customer's code",
   "typeCode": "Type the code",
   "codeLabel": "Code",
+  "tapToCopy": "Tap to copy",
+  "codeCopied": "Code copied",
   "codeHelper": "The 8 letters and numbers under the customer's QR code.",
   "checkCode": "Check the code",
   "notAClaimCode": "This QR code isn't a reservation.",
@@ -477,6 +494,86 @@
     }
   },
   "moreActions": "More",
-  "repostOfferHint": "A new offer at the same price and quantity",
-  "endOfferHint": "Customers stop seeing it, for good"
+  "endOfferHint": "Customers stop seeing it, for good",
+  "discountBadge": "-{percent}%",
+  "@discountBadge": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "unlimitedHint": "Stays up until it ends or you pause it.",
+  "noBranchChosen": "No branch chosen",
+  "whereTitle": "Where it shows",
+  "showsHere": "Shows here",
+  "hiddenHere": "Won't show here",
+  "hiddenFromBranches": "Customers of {branches} won't see this offer.",
+  "@hiddenFromBranches": {
+    "placeholders": {
+      "branches": {
+        "type": "String"
+      }
+    }
+  },
+  "listSeparator": ", ",
+  "@listSeparator": {
+    "description": "Between names in a list: \"Andalus, Gargaresh\""
+  },
+  "reservationsTitle": "Reservations",
+  "holdHours": "{hours, plural, =1{1 hour} other{{hours} hours}}",
+  "@holdHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "holdAndPer": "Held {hold} · {per}",
+  "@holdAndPer": {
+    "placeholders": {
+      "hold": {
+        "type": "String"
+      },
+      "per": {
+        "type": "String"
+      }
+    }
+  },
+  "noLimitPerCustomer": "No limit per customer",
+  "piecesPerCustomer": "{count, plural, =1{1 piece per customer} other{{count} pieces per customer}}",
+  "@piecesPerCustomer": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "atMost": "At most",
+  "anyCustomerAll": "One customer can take every piece.",
+  "postSummary": "{pieces} · ends {when}",
+  "@postSummary": {
+    "placeholders": {
+      "pieces": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "postSummaryAt": "{pieces} · ends {when} · at {branches} only",
+  "@postSummaryAt": {
+    "placeholders": {
+      "pieces": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      },
+      "branches": {
+        "type": "String"
+      }
+    }
+  }
 }

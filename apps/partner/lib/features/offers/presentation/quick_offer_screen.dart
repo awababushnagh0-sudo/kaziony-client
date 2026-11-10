@@ -7,6 +7,7 @@ import '../../products/presentation/product_photo_view_model.dart';
 import '../../products/presentation/widgets/product_photo_field.dart';
 import 'quick_offer_view_model.dart';
 import 'widgets/offer_fields.dart';
+import 'widgets/post_offer_bar.dart';
 
 /// Posts an offer for something new in one go: its photo, name and
 /// regular price, then the offer. It's saved as a product on the way.
@@ -34,48 +35,53 @@ class QuickOfferScreen extends AppView {
     return SScaffold(
       title: s.newOfferTitle,
       scrollable: true,
-      bottom: SButton(
-        label: s.postOffer,
-        onPressed: post,
+      bottom: PostOfferBar(
+        state: state,
+        onPost: post,
         loading: state.posting || uploading,
-        expand: true,
       ),
       body: SForm(
         form: viewModel.form,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          spacing: Space.lg,
+          spacing: Space.xl,
           children: [
-            // A photo that failed to go is sent again with the offer.
-            ProductPhotoField(productId: null, onRetry: post),
-            SFormSection(
-              title: s.productBasicsSection,
-              note: s.quickProductNote,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                spacing: Space.lg,
-                children: [
-                  STextInput(
-                    controlName: 'title',
-                    label: s.productTitleLabel,
-                    hint: s.productTitleHint,
-                  ),
-                  STextInput(
-                    controlName: 'regular',
-                    label: s.regularPriceLabel,
-                    kind: TextInputKind.price,
-                    helper: s.regularPriceHelper,
-                  ),
-                  STextInput(
-                    controlName: 'description',
-                    label: s.descriptionLabel,
-                    hint: s.descriptionHint,
-                    kind: TextInputKind.multiline,
-                    maxLength: 1000,
-                  ),
-                ],
-              ),
+            // What it is, on the page like the offer's own fields under it.
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: Space.lg,
+              children: [
+                SSectionHeader(
+                  s.productBasicsSection,
+                  note: s.quickProductNote,
+                ),
+                // A photo that failed to go is sent again with the offer.
+                ProductPhotoField(
+                  productId: null,
+                  onRetry: post,
+                  hint: s.offerPhotoHint,
+                ),
+                STextInput(
+                  controlName: 'title',
+                  label: s.productTitleLabel,
+                  hint: s.productTitleHint,
+                ),
+                STextInput(
+                  controlName: 'regular',
+                  label: s.regularPriceLabel,
+                  kind: TextInputKind.price,
+                  helper: s.regularPriceHelper,
+                ),
+                STextInput(
+                  controlName: 'description',
+                  label: s.descriptionLabel,
+                  hint: s.descriptionHint,
+                  kind: TextInputKind.multiline,
+                  maxLength: 1000,
+                ),
+              ],
             ),
+            const SDivider(),
             OfferFields(viewModel: viewModel, state: state),
             if (state.failure case final failure?)
               SText(failureMessage(context, failure), color: SColor.danger),

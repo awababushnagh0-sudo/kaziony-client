@@ -125,7 +125,9 @@ class NewOffer {
   /// Limited offers only.
   final int? totalQuantity;
   final int? claimWindowMinutes;
-  final int maxPerUser;
+
+  /// Null for no limit.
+  final int? maxPerUser;
   final DateTime endsAt;
 
   /// Null for all the store's branches.
@@ -147,11 +149,15 @@ class OfferChanges {
 
 /// Everyone in the store can see offers; only owners post and change them.
 abstract interface class OfferRepository {
+  /// [ended] picks one of the Offers tab's lists: false the current offers
+  /// (running, then starting later, then paused, in that order), true the
+  /// finished ones (the latest first); null every offer, the newest first.
   Future<Result<PageResult<Offer>>> list(
     String storeId, {
     required int page,
     required int pageSize,
     OfferStatus? status,
+    bool? ended,
   });
 
   Future<Result<Offer>> get(String storeId, String offerId);

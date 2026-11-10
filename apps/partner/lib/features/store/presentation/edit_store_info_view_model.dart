@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
@@ -6,44 +8,51 @@ import '../domain/store.dart';
 import 'store_view_model.dart';
 
 class EditStoreInfoState {
-  const EditStoreInfoState({this.saving = false, this.failure});
+  const EditStoreInfoState({
+    this.changed = false,
+    this.saving = false,
+    this.failure,
+  });
 
+  /// A field differs from the saved store: there's something to save, and
+  /// leaving asks first.
+  final bool changed;
   final bool saving;
   final AppFailure? failure;
 }
 
-/// Edits what customers see of the store. Opened from the info page,
-/// which has already loaded the store.
+/// What customers see of the store, edited in place on the info page: the
+/// fields fill from the saved store (and again when it reloads, unless
+/// something is being edited), [EditStoreInfoState.changed] turns on once
+/// one differs from it, and [save] sends them.
 class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
   late final FormGroup form;
 
+  /// What the saved values were, as the fields show them.
+  Map<String, String?> _saved = const {};
+
   @override
   EditStoreInfoState build() {
-    final profile = ref.read(storeViewModel).requireValue.profile;
-    final phone = profile.phone;
     form = FormGroup({
       'pickupInstructions': FormControl<String>(
-        value: profile.pickupInstructions,
         validators: [Validators.maxLength(500)],
       ),
-      'phone': FormControl<String>(
-        value: phone == null ? null : formatLibyanPhone(phone),
-        validators: [SValidators.libyanPhone],
-      ),
+      'phone': FormControl<String>(validators: [SValidators.libyanPhone]),
       'email': FormControl<String>(
-        value: profile.email,
         validators: [SValidators.email, Validators.maxLength(255)],
       ),
-      'facebookUrl': FormControl<String>(
-        value: profile.facebookUrl,
-        validators: [SValidators.url],
-      ),
-      'instagramUrl': FormControl<String>(
-        value: profile.instagramUrl,
-        validators: [SValidators.url],
-      ),
+      'facebookUrl': FormControl<String>(validators: [SValidators.url]),
+      'instagramUrl': FormControl<String>(validators: [SValidators.url]),
     });
-    ref.onDispose(form.dispose);
+    final edits = form.valueChanges.listen((_) => _compare());
+    ref.onDispose(() {
+      unawaited(edits.cancel());
+      form.dispose();
+    });
+    ref.listen(storeViewModel, (_, next) {
+      if (next.value case final saved? when !state.changed) _fill(saved);
+    });
+    if (ref.read(storeViewModel).value case final saved?) _fill(saved);
     return const EditStoreInfoState();
   }
 
@@ -56,7 +65,7 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
     }
     final storeId = ref.read(currentStoreProvider)?.storeId;
     if (storeId == null) return false;
-    state = const EditStoreInfoState(saving: true);
+    state = const EditStoreInfoState(changed: true, saving: true);
 
     final phone = _text('phone');
     final result = await ref
@@ -75,19 +84,54 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
 
     switch (result) {
       case Ok(:final value):
-        ref.read(storeViewModel.notifier).replace(value);
         state = const EditStoreInfoState();
+        _fill(value);
+        ref.read(storeViewModel.notifier).replace(value);
       case Err(:final failure):
-        state = EditStoreInfoState(failure: failure);
+        state = EditStoreInfoState(changed: true, failure: failure);
     }
     return result.isOk;
   }
 
-  /// The field's text, or null when it's empty.
-  String? _text(String name) {
-    final value = (form.control(name).value as String?)?.trim();
-    return value == null || value.isEmpty ? null : value;
+  void _fill(Store store) {
+    final profile = store.profile;
+    final phone = profile.phone;
+    final values = {
+      'pickupInstructions': profile.pickupInstructions,
+      'phone': phone == null ? null : formatLibyanPhone(phone),
+      'email': profile.email,
+      'facebookUrl': profile.facebookUrl,
+      'instagramUrl': profile.instagramUrl,
+    };
+    _saved = {
+      for (final MapEntry(:key, :value) in values.entries) key: _normal(value),
+    };
+    for (final MapEntry(:key, :value) in values.entries) {
+      form.control(key).reset(value: value);
+    }
   }
+
+  void _compare() {
+    final changed = form.controls.keys.any(
+      (name) => _text(name) != _saved[name],
+    );
+    if (changed != state.changed) {
+      state = EditStoreInfoState(
+        changed: changed,
+        saving: state.saving,
+        failure: state.failure,
+      );
+    }
+  }
+
+  /// The field's text without spaces around it, or null when it's empty.
+  String? _text(String name) => _normal(form.control(name).value as String?);
+}
+
+/// Spaces around text don't count as a change, and empty text is no value.
+String? _normal(String? value) {
+  final trimmed = value?.trim();
+  return trimmed == null || trimmed.isEmpty ? null : trimmed;
 }
 
 final editStoreInfoViewModel =

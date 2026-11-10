@@ -19,7 +19,7 @@ class OfferCardSkeleton extends StatelessWidget {
           Row(
             spacing: Space.md,
             children: [
-              SBone.image(size: SImageSize.deal),
+              SBone.image(size: SImageSize.thumb),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -1,35 +1,51 @@
 import 'package:kernel/kernel.dart';
 
+import '../../home/presentation/home_view_model.dart';
 import '../../store/domain/current_store.dart';
 import '../domain/offer.dart';
 
-/// Which offers the list shows: all (null), active, paused or ended.
-class OfferFilterController extends ViewModel<OfferStatus?> {
+/// Which list the Offers tab shows: the current offers (false) or the
+/// finished ones (true).
+class EndedOffersController extends ViewModel<bool> {
   @override
-  OfferStatus? build() => null;
+  bool build() => false;
 
-  void show(OfferStatus? status) => state = status;
+  void show({required bool ended}) => state = ended;
 }
 
-final offerFilterProvider =
-    NotifierProvider.autoDispose<OfferFilterController, OfferStatus?>(
-      OfferFilterController.new,
+final showEndedOffersProvider =
+    NotifierProvider.autoDispose<EndedOffersController, bool>(
+      EndedOffersController.new,
     );
 
-class OffersViewModel
-    extends PagedListViewModel<Offer, (String?, OfferStatus?)> {
+class OffersViewModel extends PagedListViewModel<Offer, (String?, bool)> {
   @override
-  (String?, OfferStatus?) watchQuery() => (
+  (String?, bool) watchQuery() => (
     ref.watch(currentStoreProvider)?.storeId,
-    ref.watch(offerFilterProvider),
+    ref.watch(showEndedOffersProvider),
   );
+
+  /// Shows a paused offer to customers again, from its card. Returns what
+  /// went wrong, or null once the list shows it running.
+  Future<AppFailure?> resume(String offerId) async {
+    final storeId = ref.read(currentStoreProvider)?.storeId;
+    if (storeId == null) return const NotFoundFailure();
+    final result = await ref
+        .read(offerRepositoryProvider)
+        .resume(storeId, offerId);
+    if (!ref.mounted) return null;
+    if (result case Err(:final failure)) return failure;
+    // Home lists the running offers too.
+    ref.invalidate(homeViewModel);
+    return refresh();
+  }
 
   @override
   Future<Result<PageResult<Offer>>> fetch(
-    (String?, OfferStatus?) query, {
+    (String?, bool) query, {
     required int page,
   }) async {
-    final (storeId, status) = query;
+    final (storeId, ended) = query;
     // The tab only opens inside a store.
     if (storeId == null) return const Err(NotFoundFailure());
     return ref
@@ -38,7 +54,7 @@ class OffersViewModel
           storeId,
           page: page,
           pageSize: PagedListViewModel.pageSize,
-          status: status,
+          ended: ended,
         );
   }
 }

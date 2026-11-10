@@ -71,7 +71,7 @@ void main() {
     expect(find.text('Sara'), findsOneWidget);
     expect(find.text('40 min'), findsOneWidget);
     expect(find.text('Offer o1'), findsOneWidget);
-    expect(find.text('Left'), findsOneWidget);
+    expect(find.text('left of 10'), findsOneWidget);
   });
 
   testWidgets('shows staff only their counter numbers', (tester) async {
@@ -194,7 +194,7 @@ void main() {
     await open(tester, offers: [offer('o1', type: OfferType.unlimited)]);
 
     expect(find.text('Offer o1'), findsOneWidget);
-    expect(find.text('Left'), findsNothing);
+    expect(find.textContaining('left of'), findsNothing);
     expect(find.text('No limit'), findsOneWidget);
   });
 

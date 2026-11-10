@@ -38,7 +38,6 @@ class QuickOfferViewModel extends OfferDraftViewModel {
     final regulars = form.control('regular').valueChanges.listen((value) {
       regularPrice = value is String ? parsePrice(value) : null;
       form.control('price').updateValueAndValidity();
-      refreshDiscount();
     });
     ref.onDispose(() => unawaited(regulars.cancel()));
     return first;

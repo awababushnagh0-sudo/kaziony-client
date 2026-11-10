@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kernel/kernel.dart';
 import 'package:partner/core/routes/routes.dart';
@@ -78,6 +79,28 @@ void main() {
     expect(find.text('Picked up'), findsOneWidget);
     expect(find.text('Collect from the customer'), findsOneWidget);
     expect(find.text('4.5 LD'), findsOneWidget);
+  });
+
+  testWidgets('copies the code with a tap', (tester) async {
+    String? copied;
+    final messenger = tester.binding.defaultBinaryMessenger;
+    messenger.setMockMethodCallHandler(SystemChannels.platform, (call) async {
+      if (call.method == 'Clipboard.setData') {
+        copied = (call.arguments as Map)['text'] as String;
+      }
+      return null;
+    });
+    addTearDown(
+      () => messenger.setMockMethodCallHandler(SystemChannels.platform, null),
+    );
+    await open(tester);
+
+    expect(find.text('Tap to copy'), findsOneWidget);
+    await tester.tap(find.text('ABCD 2345'));
+    await tester.pump();
+
+    expect(copied, 'ABCD 2345');
+    expect(find.text('Code copied'), findsOneWidget);
   });
 
   testWidgets('says how many pieces to hand over and what they come to', (

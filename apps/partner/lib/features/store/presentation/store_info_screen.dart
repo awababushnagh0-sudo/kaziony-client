@@ -2,13 +2,17 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
-import '../../../core/routes/routes.dart';
+import '../../../core/widgets/store_image_field.dart';
 import '../domain/current_store.dart';
 import '../domain/store.dart';
-import 'store_image_view_model.dart';
+import 'edit_store_info_view_model.dart';
 import 'store_view_model.dart';
 
-/// The store as customers see it. Owners can edit it.
+/// The store as customers see it. Owners edit what's theirs right here:
+/// the pictures upload as soon as they're picked, and the pickup
+/// instructions and contact details save with "Save changes", which shows
+/// once something changed; leaving with changes asks first. The name and
+/// category are our team's to change. Staff only read it.
 class StoreInfoScreen extends AppView {
   const StoreInfoScreen({super.key});
 
@@ -17,164 +21,221 @@ class StoreInfoScreen extends AppView {
     final s = PartnerLocalizations.of(context);
     final store = ref.watch(storeViewModel);
     final isOwner = ref.watch(currentStoreProvider)?.isOwner ?? false;
-    return SScaffold(
-      title: s.storeInfoTitle,
-      actions: [
-        if (isOwner && store.hasValue)
-          SButton.icon(
-            icon: SIcons.edit,
-            tooltip: s.edit,
-            onPressed: () => context.push(Routes.editStoreInfo),
-          ),
-      ],
-      body: SAsyncView(
-        value: store,
-        onRetry: ref.read(storeViewModel.notifier).reload,
-        loading: const SSkeleton.groups(groups: 3),
-        builder: (context, store) {
-          final profile = store.profile;
-          String shown(String? value) =>
-              value == null || value.isEmpty ? s.notSet : value;
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (isOwner || store.logoUrl != null || store.coverUrl != null)
-                  SCoverWithLogo(
-                    cover: _StoreImageField(
-                      image: StoreImage.cover,
-                      url: store.coverUrl,
-                      editable: isOwner,
-                    ),
-                    logo: _StoreImageField(
-                      image: StoreImage.logo,
-                      url: store.logoUrl,
-                      editable: isOwner,
-                    ),
+    final edit = isOwner ? ref.watch(editStoreInfoViewModel) : null;
+
+    Future<void> save() async {
+      final saved = await ref.read(editStoreInfoViewModel.notifier).save();
+      if (saved && context.mounted) SSnack.success(context, s.saved);
+    }
+
+    return LeaveGuard(
+      active: edit?.changed ?? false,
+      confirm: (context) => SDialog.confirm(
+        context,
+        title: s.discardChangesTitle,
+        message: s.discardChangesMessage,
+        confirmLabel: s.discardChanges,
+        destructive: true,
+      ),
+      child: SScaffold(
+        title: s.storeInfoTitle,
+        bottom: edit != null && edit.changed
+            ? SButton(
+                label: s.saveChanges,
+                onPressed: save,
+                loading: edit.saving,
+                expand: true,
+              )
+            : null,
+        body: SAsyncView(
+          value: store,
+          onRetry: ref.read(storeViewModel.notifier).reload,
+          loading: const SSkeleton.groups(groups: 3),
+          builder: (context, store) => SingleChildScrollView(
+            child: edit == null
+                ? _ReadOnly(store)
+                : SForm(
+                    form: ref.read(editStoreInfoViewModel.notifier).form,
+                    child: _Editable(store, edit: edit, onSave: save),
                   ),
-                if (isOwner) ...[
-                  const Gap(Space.sm),
-                  SText.caption(s.storeImagesHint),
-                ],
-                const Gap(Space.xl),
-                SListGroup(
-                  children: [
-                    SListTile(
-                      icon: SIcons.store,
-                      title: store.name,
-                      subtitle: store.category.name(
-                        Localizations.localeOf(context),
-                      ),
-                    ),
-                  ],
-                ),
-                const Gap(Space.xl),
-                SListGroup(
-                  children: [
-                    SFactTile(
-                      label: s.ratingLabel,
-                      value: switch (store.ratingAverage) {
-                        final average? when store.ratingCount > 0 =>
-                          s.ratingSummary(average, store.ratingCount),
-                        _ => s.noRatingsYet,
-                      },
-                    ),
-                  ],
-                ),
-                const Gap(Space.xl),
-                SListGroup(
-                  children: [
-                    SListTile(
-                      title: s.pickupInstructionsLabel,
-                      subtitle: shown(profile.pickupInstructions),
-                    ),
-                    SListTile(
-                      title: s.phoneLabel,
-                      subtitle: shown(
-                        profile.phone == null
-                            ? null
-                            : formatLibyanPhone(profile.phone!),
-                      ),
-                    ),
-                    SListTile(
-                      title: s.emailLabel,
-                      subtitle: shown(profile.email),
-                    ),
-                    SListTile(
-                      title: s.facebookLabel,
-                      subtitle: shown(profile.facebookUrl),
-                    ),
-                    SListTile(
-                      title: s.instagramLabel,
-                      subtitle: shown(profile.instagramUrl),
-                    ),
-                  ],
-                ),
-                const Gap(Space.sm),
-                SText.caption(s.storeInfoHint),
-              ],
-            ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
 }
 
-/// The store's logo or cover photo. Owners tap it to change it; it
-/// uploads right away.
-class _StoreImageField extends AppView {
-  const _StoreImageField({
-    required this.image,
-    required this.url,
-    required this.editable,
-  });
+/// The owner's page: the pictures to tap, what our team sets, and the
+/// fields they can change.
+class _Editable extends StatelessWidget {
+  const _Editable(this.store, {required this.edit, required this.onSave});
 
-  final StoreImage image;
-  final String? url;
-  final bool editable;
+  final Store store;
+  final EditStoreInfoState edit;
+  final VoidCallback onSave;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final s = PartnerLocalizations.of(context);
-    final provider = storeImageViewModel(image);
-    final state = ref.watch(provider);
-    final viewModel = ref.read(provider.notifier);
-    final logo = image == StoreImage.logo;
+    final failure = edit.failure;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SCoverWithLogo(
+          cover: StoreImageField(
+            image: StoreImage.cover,
+            url: store.coverUrl,
+            editable: true,
+          ),
+          logo: StoreImageField(
+            image: StoreImage.logo,
+            url: store.logoUrl,
+            editable: true,
+          ),
+        ),
+        const Gap(Space.sm),
+        SText.caption(s.storeImagesHint),
+        const Gap(Space.xl),
+        _Facts(store),
+        const Gap(Space.sm),
+        SText.caption(s.storeNameHint),
+        const Gap(Space.xl),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: Space.lg,
+          children: [
+            STextInput(
+              controlName: 'pickupInstructions',
+              label: s.pickupInstructionsLabel,
+              hint: s.pickupInstructionsHint,
+              helper: s.pickupInstructionsHelper,
+              kind: TextInputKind.multiline,
+              maxLength: 500,
+            ),
+            STextInput(
+              controlName: 'phone',
+              label: s.phoneLabel,
+              kind: TextInputKind.phone,
+            ),
+            STextInput(
+              controlName: 'email',
+              label: s.emailLabel,
+              kind: TextInputKind.email,
+            ),
+            STextInput(
+              controlName: 'facebookUrl',
+              label: s.facebookLabel,
+              kind: TextInputKind.url,
+              hint: 'https://facebook.com/…',
+            ),
+            STextInput(
+              controlName: 'instagramUrl',
+              label: s.instagramLabel,
+              kind: TextInputKind.url,
+              hint: 'https://instagram.com/…',
+              isLast: true,
+              onSubmitted: onSave,
+            ),
+            if (failure != null)
+              SText(failureMessage(context, failure), color: SColor.danger),
+          ],
+        ),
+        const Gap(Space.sm),
+        SText.caption(s.storeInfoHint),
+      ],
+    );
+  }
+}
 
-    Future<void> choose() async {
-      final source = await SPhoto.chooseSource(context);
-      if (source == null || !context.mounted) return;
-      final pick = await viewModel.choose(
-        source,
-        cropTitle: logo ? s.storeLogo : s.storeCover,
-      );
-      if (!context.mounted) return;
-      switch (pick) {
-        case PhotoAccessDenied():
-          if (await SPhoto.askToOpenSettings(context)) {
-            await viewModel.openSettings();
-          }
-        case PhotoFailed():
-          SSnack.error(context, StellarLocalizations.of(context).photoFailed);
-        case PhotoReady() || PhotoCancelled():
-          break;
-      }
-    }
+/// Staff's page: the same facts, nothing to change.
+class _ReadOnly extends StatelessWidget {
+  const _ReadOnly(this.store);
 
-    return SPhotoField(
-      shape: logo ? PhotoFieldShape.round : PhotoFieldShape.wide,
-      url: url,
-      preview: state.photo?.preview,
-      progress: state.progress,
-      failed: state.failed,
-      addLabel: logo ? s.addLogo : s.addCover,
-      hint: logo ? null : s.coverHint,
-      onTap: !editable
-          ? null
-          : state.failed
-          ? viewModel.retry
-          : choose,
+  final Store store;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = PartnerLocalizations.of(context);
+    final profile = store.profile;
+    final phone = profile.phone;
+    String shown(String? value) =>
+        value == null || value.isEmpty ? s.notSet : value;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (store.logoUrl != null || store.coverUrl != null) ...[
+          SCoverWithLogo(
+            cover: StoreImageField(
+              image: StoreImage.cover,
+              url: store.coverUrl,
+              editable: false,
+            ),
+            logo: StoreImageField(
+              image: StoreImage.logo,
+              url: store.logoUrl,
+              editable: false,
+            ),
+          ),
+          const Gap(Space.xl),
+        ],
+        _Facts(store),
+        const Gap(Space.xl),
+        SListGroup(
+          children: [
+            SFactTile(
+              label: s.pickupInstructionsLabel,
+              value: shown(profile.pickupInstructions),
+            ),
+            SFactTile(
+              label: s.phoneLabel,
+              value: phone == null
+                  ? s.notSet
+                  // "091 000 0001" keeps its order in Arabic.
+                  : '\u2066${formatLibyanPhone(phone)}\u2069',
+            ),
+            SFactTile(label: s.emailLabel, value: shown(profile.email)),
+            SFactTile(
+              label: s.facebookLabel,
+              value: shown(profile.facebookUrl),
+            ),
+            SFactTile(
+              label: s.instagramLabel,
+              value: shown(profile.instagramUrl),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+/// What our team sets, and what customers think of it.
+class _Facts extends StatelessWidget {
+  const _Facts(this.store);
+
+  final Store store;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = PartnerLocalizations.of(context);
+    return SListGroup(
+      children: [
+        SFactTile(label: s.storeNameLabel, value: store.name),
+        SFactTile(
+          label: s.categoryLabel,
+          value: store.category.name(Localizations.localeOf(context)),
+        ),
+        SFactTile(
+          label: s.ratingLabel,
+          value: switch (store.ratingAverage) {
+            final average? when store.ratingCount > 0 => s.ratingSummary(
+              average,
+              store.ratingCount,
+            ),
+            _ => s.noRatingsYet,
+          },
+        ),
+      ],
     );
   }
 }

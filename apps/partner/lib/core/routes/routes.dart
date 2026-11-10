@@ -14,7 +14,6 @@ abstract final class Routes {
 
   // Opened from Profile, over the tabs.
   static const storeInfo = '/store-info';
-  static const editStoreInfo = '/store-info/edit';
   static const branches = '/branches';
   static const team = '/team';
   static const password = '/password';

@@ -28,6 +28,7 @@ void main() {
         ),
         stubPage(Routes.newProduct, 'new product page'),
         stubPage(Routes.product(':id'), 'product page'),
+        stubPage(Routes.newOffer(':productId'), 'new offer page'),
       ],
     );
   }
@@ -40,9 +41,26 @@ void main() {
     expect(find.text('8 LD'), findsOneWidget);
   });
 
+  testWidgets('a product without a photo asks for one', (tester) async {
+    await open(tester, [product('1')]);
+
+    expect(find.text('Add a photo'), findsOneWidget);
+  });
+
+  testWidgets('posts an offer from a product in one tap', (tester) async {
+    await open(tester, [product('1')]);
+
+    await tester.tap(find.text('Post an offer'));
+    await tester.pumpAndSettle();
+    expect(find.text('new offer page'), findsOneWidget);
+  });
+
   testWidgets('opens a product', (tester) async {
     await open(tester);
 
+    // Under its photo, below the test screen's fold.
+    await tester.ensureVisible(find.text('Product 2'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Product 2'));
     await tester.pumpAndSettle();
     expect(find.text('product page'), findsOneWidget);
@@ -69,9 +87,11 @@ void main() {
     expect(products.listCalls.last.archived, isTrue);
     expect(find.text('Product 1'), findsNothing);
     expect(find.text('Product 2'), findsOneWidget);
+    // Restored from its page before an offer is posted from it.
+    expect(find.text('Post an offer'), findsNothing);
   });
 
-  testWidgets('adds from the button over the list', (tester) async {
+  testWidgets('adds from the button in the bar', (tester) async {
     await open(tester, [product('1')]);
 
     await tester.tap(find.text('Add product'));
@@ -92,7 +112,9 @@ void main() {
     await open(tester, [for (var i = 0; i < 30; i++) product('$i')]);
     expect(products.listCalls.map((call) => call.page), [1]);
 
-    await tester.drag(find.bySubtype<SPagedList>(), const Offset(0, -3000));
+    // To the end of the first page: two cards across, tall on a wide test
+    // screen.
+    await tester.drag(find.bySubtype<SPagedList>(), const Offset(0, -8000));
     await tester.pumpAndSettle();
 
     expect(products.listCalls.map((call) => call.page), [1, 2]);

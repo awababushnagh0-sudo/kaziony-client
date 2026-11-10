@@ -23,7 +23,6 @@ import '../../features/profile/presentation/terms_screen.dart';
 import '../../features/store/domain/current_store.dart';
 import '../../features/store/presentation/branches_screen.dart';
 import '../../features/store/presentation/choose_store_screen.dart';
-import '../../features/store/presentation/edit_store_info_screen.dart';
 import '../../features/store/presentation/no_store_screen.dart';
 import '../../features/store/presentation/store_info_screen.dart';
 import '../../features/store/presentation/team_screen.dart';
@@ -73,11 +72,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       // Opened from Profile, over the tabs.
       GoRoute(
         path: Routes.storeInfo,
+        // Owners edit it in place: leaving with changes asks first.
+        onExit: LeaveGuard.onExit,
         builder: (_, _) => const StoreInfoScreen(),
-      ),
-      GoRoute(
-        path: Routes.editStoreInfo,
-        builder: (_, _) => const EditStoreInfoScreen(),
       ),
       GoRoute(path: Routes.branches, builder: (_, _) => const BranchesScreen()),
       GoRoute(path: Routes.team, builder: (_, _) => const TeamScreen()),

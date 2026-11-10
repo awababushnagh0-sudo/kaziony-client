@@ -4,13 +4,19 @@ import 'package:stellar/stellar.dart';
 import '../../features/offers/domain/offer.dart';
 import '../l10n/generated/partner_localizations.dart';
 
+/// The counts of an [OfferSplitBar] a card can show bigger beside it.
+enum OfferCount { pickedUp, left }
+
 /// Where an offer's pieces are now, as one bar: picked up, on the way and
 /// left. Before it starts, only what's ready. The same on its card and its
 /// page, so the two always agree.
 class OfferSplitBar extends StatelessWidget {
-  const OfferSplitBar(this.offer, {super.key});
+  const OfferSplitBar(this.offer, {this.apart, super.key});
 
   final Offer offer;
+
+  /// The count shown bigger beside the bar, so its key leaves it out.
+  final OfferCount? apart;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +39,7 @@ class OfferSplitBar extends StatelessWidget {
         count: offer.claims.redeemed,
         label: s.figurePickedUp,
         tone: SplitTone.done,
+        keyed: apart != OfferCount.pickedUp,
       ),
       SplitPart(
         count: offer.claims.reserved,
@@ -46,6 +53,7 @@ class OfferSplitBar extends StatelessWidget {
           tone: offer.state == OfferState.live && offer.isRunningOut
               ? SplitTone.hot
               : SplitTone.waiting,
+          keyed: apart != OfferCount.left,
         ),
     ];
   }

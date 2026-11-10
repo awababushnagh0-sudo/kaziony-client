@@ -7,6 +7,7 @@ import 'package:partner/features/profile/presentation/about_screen.dart';
 import 'package:partner/features/profile/presentation/profile_screen.dart';
 import 'package:partner/features/profile/presentation/terms_screen.dart';
 import 'package:partner/features/store/domain/current_store.dart';
+import 'package:partner/features/store/domain/store.dart';
 
 import '../../fakes.dart';
 import '../../support/pump_app.dart';
@@ -14,6 +15,7 @@ import '../../support/pump_app.dart';
 void main() {
   late FakeAuthRepository auth;
   late MemorySettingsStore settings;
+  late FakeStoreRepository storeRepository;
 
   Future<void> open(
     WidgetTester tester, {
@@ -21,18 +23,25 @@ void main() {
   }) async {
     auth = FakeAuthRepository();
     settings = MemorySettingsStore();
+    storeRepository = FakeStoreRepository();
     await pumpPartnerPages(
       tester,
       initial: Routes.profile,
       settings: settings,
       overrides: [
         authRepositoryProvider.overrideWithValue(auth),
+        sessionProvider.overrideWith(
+          () => SignedInSession(user(memberships: stores)),
+        ),
         myStoresProvider.overrideWithValue(stores),
+        storeRepositoryProvider.overrideWithValue(storeRepository),
       ],
       routes: [
         GoRoute(path: Routes.profile, builder: (_, _) => const ProfileScreen()),
         stubPage(Routes.home, 'home page'),
         stubPage(Routes.storeInfo, 'store info page'),
+        stubPage(Routes.branches, 'branches page'),
+        stubPage(Routes.team, 'team page'),
         GoRoute(path: Routes.about, builder: (_, _) => const AboutScreen()),
         GoRoute(path: Routes.terms, builder: (_, _) => const TermsScreen()),
       ],
@@ -45,15 +54,73 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('shows the store and the member role', (tester) async {
-    await open(tester, stores: [store('a', isOwner: false)]);
+  testWidgets('shows the store, its category and who is signed in', (
+    tester,
+  ) async {
+    await open(tester, stores: [store('a')]);
 
     expect(find.text('Store a'), findsOneWidget);
-    expect(find.text('Staff'), findsOneWidget);
+    expect(find.text('Sweets'), findsOneWidget);
+    expect(find.text('Test'), findsOneWidget);
+    expect(find.text('Owner'), findsOneWidget);
+  });
+
+  testWidgets('pulling down loads the store again', (tester) async {
+    await open(tester, stores: [store('a')]);
+    storeRepository.getResult = Ok(
+      storeDetails(
+        branches: [
+          branch('b1', 'Andalus'),
+          branch('b2', 'Gargaresh'),
+          branch('b3', 'Souq'),
+          branch('b4', 'Dahra'),
+        ],
+      ),
+    );
+
+    await tester.fling(find.text('Store a'), const Offset(0, 400), 1000);
+    await tester.pumpAndSettle();
+
+    expect(find.text('4'), findsOneWidget);
   });
 
   testWidgets('opens the store info', (tester) async {
     await open(tester, stores: [store('a')]);
+
+    await tap(tester, 'Store info');
+    expect(find.text('store info page'), findsOneWidget);
+  });
+
+  testWidgets('owners see how many branches and members, and open them', (
+    tester,
+  ) async {
+    await open(tester, stores: [store('a')]);
+
+    expect(find.text('1'), findsOneWidget);
+    expect(find.text('2'), findsOneWidget);
+    await tap(tester, 'Team');
+    expect(find.text('team page'), findsOneWidget);
+  });
+
+  testWidgets('staff see their branch, not the team', (tester) async {
+    await open(tester, stores: [store('a', isOwner: false, branchId: 'b1')]);
+
+    expect(find.text('Staff'), findsOneWidget);
+    expect(find.text('Andalus'), findsOneWidget);
+    expect(find.text('Team'), findsNothing);
+    await tap(tester, 'Your branch');
+    expect(find.text('branches page'), findsOneWidget);
+  });
+
+  testWidgets('staff of every branch see the branches', (tester) async {
+    await open(tester, stores: [store('a', isOwner: false)]);
+
+    expect(find.text('Branches'), findsOneWidget);
+    expect(find.text('Your branch'), findsNothing);
+  });
+
+  testWidgets('staff open the store info too', (tester) async {
+    await open(tester, stores: [store('a', isOwner: false)]);
 
     await tap(tester, 'Store info');
     expect(find.text('store info page'), findsOneWidget);

@@ -7,6 +7,7 @@ import '../../products/presentation/product_view_model.dart';
 import 'new_offer_view_model.dart';
 import 'offer_view_model.dart';
 import 'widgets/offer_fields.dart';
+import 'widgets/post_offer_bar.dart';
 
 /// Posts an offer from [productId], or posts [fromOfferId] again.
 class NewOfferScreen extends AppView {
@@ -64,17 +65,12 @@ class _NewOfferForm extends AppView {
     return SScaffold(
       title: s.newOfferTitle,
       scrollable: true,
-      bottom: SButton(
-        label: s.postOffer,
-        onPressed: post,
-        loading: state.posting,
-        expand: true,
-      ),
+      bottom: PostOfferBar(state: state, onPost: post, loading: state.posting),
       body: SForm(
         form: viewModel.form,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          spacing: Space.lg,
+          spacing: Space.xl,
           children: [
             SListGroup(
               children: [

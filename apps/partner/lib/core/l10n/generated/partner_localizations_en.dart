@@ -193,31 +193,51 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get storeInfoHint => 'Customers see this on your store\'s page.';
 
   @override
+  String get storeNameLabel => 'Store name';
+
+  @override
+  String get storeNameHint =>
+      'Our team sets your store\'s name and category. Contact us to change them.';
+
+  @override
+  String get saveChanges => 'Save changes';
+
+  @override
+  String get discardChangesTitle => 'Discard your changes?';
+
+  @override
+  String get discardChangesMessage =>
+      'Your changes haven\'t been saved. Leave without saving?';
+
+  @override
+  String get discardChanges => 'Discard';
+
+  @override
   String get branchesTitle => 'Branches';
 
   @override
   String get teamTitle => 'Team';
 
   @override
-  String get storeInfoShortcutHint => 'Name, description and contact';
+  String get yourStoreSection => 'Your store';
 
   @override
-  String get branchesShortcutHint => 'Where customers pick up';
-
-  @override
-  String get teamShortcutHint => 'The owner and staff';
+  String get yourBranch => 'Your branch';
 
   @override
   String get teamHint => 'To add or remove someone, contact our team.';
 
   @override
-  String get accountSection => 'Account';
+  String get accountSection => 'Your account';
 
   @override
   String get changePasswordAction => 'Change password';
 
   @override
   String get appSection => 'App';
+
+  @override
+  String get helpSection => 'Help';
 
   @override
   String get aboutTitle => 'About the app';
@@ -303,6 +323,9 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get archivedProducts => 'Archived';
 
   @override
+  String get productAddPhoto => 'Add a photo';
+
+  @override
   String get noProductsTitle => 'No products yet';
 
   @override
@@ -322,7 +345,8 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get regularPriceLabel => 'Regular price';
 
   @override
-  String get regularPriceHelper => 'The usual price, before any offer.';
+  String get regularPriceHelper =>
+      'Its everyday price in the store. The offer\'s is lower.';
 
   @override
   String get archiveProduct => 'Archive';
@@ -402,16 +426,32 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get noOffersHere => 'No offers here.';
 
   @override
-  String get allOffers => 'All';
-
-  @override
   String get activeOffers => 'Active';
 
   @override
-  String get pausedOffers => 'Paused';
+  String get endedOffers => 'Ended';
 
   @override
-  String get endedOffers => 'Ended';
+  String get liveNowSection => 'Live now';
+
+  @override
+  String get comingUpSection => 'Coming up';
+
+  @override
+  String get pausedSection => 'Paused';
+
+  @override
+  String figureLeftOf(int total) {
+    return 'left of $total';
+  }
+
+  @override
+  String get figureSoldOut => 'Sold out';
+
+  @override
+  String figureAllOf(int total) {
+    return 'all $total';
+  }
 
   @override
   String get offerLive => 'Live';
@@ -450,15 +490,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get newOfferTitle => 'New offer';
 
   @override
-  String get offerSection => 'The offer';
-
-  @override
-  String get whenSection => 'When it ends';
-
-  @override
-  String get whenAndWhereSection => 'When and where';
-
-  @override
   String get startOfferTitle => 'What\'s the offer on?';
 
   @override
@@ -474,8 +505,11 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get somethingNewHint => 'Add its photo and price, and post it now';
 
   @override
-  String get quickProductNote =>
-      'Saved to your products, to post again in seconds.';
+  String get offerPhotoHint =>
+      'Optional, but offers with a photo get reserved more';
+
+  @override
+  String get quickProductNote => 'Saved to your products';
 
   @override
   String get offerPostedPhotoFailed =>
@@ -488,11 +522,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get offerPriceLabel => 'Offer price';
-
-  @override
-  String discountHelper(int percent) {
-    return '$percent% off the regular price';
-  }
 
   @override
   String offerPriceTooHigh(String price) {
@@ -512,17 +541,11 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get quantityLabel => 'How many pieces';
 
   @override
-  String get holdLabel => 'Held for (minutes)';
-
-  @override
   String get holdHelper =>
       'How long a reservation waits for the customer to come.';
 
   @override
   String get perCustomerLabel => 'Per customer';
-
-  @override
-  String get perCustomerHelper => 'How many times one customer can claim it.';
 
   @override
   String get endsLabel => 'Ends';
@@ -618,6 +641,12 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get codeLabel => 'Code';
+
+  @override
+  String get tapToCopy => 'Tap to copy';
+
+  @override
+  String get codeCopied => 'Code copied';
 
   @override
   String get codeHelper =>
@@ -940,8 +969,82 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get moreActions => 'More';
 
   @override
-  String get repostOfferHint => 'A new offer at the same price and quantity';
+  String get endOfferHint => 'Customers stop seeing it, for good';
 
   @override
-  String get endOfferHint => 'Customers stop seeing it, for good';
+  String discountBadge(int percent) {
+    return '-$percent%';
+  }
+
+  @override
+  String get unlimitedHint => 'Stays up until it ends or you pause it.';
+
+  @override
+  String get noBranchChosen => 'No branch chosen';
+
+  @override
+  String get whereTitle => 'Where it shows';
+
+  @override
+  String get showsHere => 'Shows here';
+
+  @override
+  String get hiddenHere => 'Won\'t show here';
+
+  @override
+  String hiddenFromBranches(String branches) {
+    return 'Customers of $branches won\'t see this offer.';
+  }
+
+  @override
+  String get listSeparator => ', ';
+
+  @override
+  String get reservationsTitle => 'Reservations';
+
+  @override
+  String holdHours(int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: '$hours hours',
+      one: '1 hour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String holdAndPer(String hold, String per) {
+    return 'Held $hold · $per';
+  }
+
+  @override
+  String get noLimitPerCustomer => 'No limit per customer';
+
+  @override
+  String piecesPerCustomer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pieces per customer',
+      one: '1 piece per customer',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get atMost => 'At most';
+
+  @override
+  String get anyCustomerAll => 'One customer can take every piece.';
+
+  @override
+  String postSummary(String pieces, String when) {
+    return '$pieces · ends $when';
+  }
+
+  @override
+  String postSummaryAt(String pieces, String when, String branches) {
+    return '$pieces · ends $when · at $branches only';
+  }
 }
