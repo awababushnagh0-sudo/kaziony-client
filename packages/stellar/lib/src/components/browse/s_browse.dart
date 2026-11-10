@@ -15,19 +15,19 @@ class CategoryChoice {
   final String? imageUrl;
 }
 
-/// Where offers are shown from, at the top of a home page: a quiet
-/// `caption` over the `place` in bold, with an arrow that says it changes
-/// (`onTap`), and `trailing` at the other end.
+/// Where offers are shown from, at the top of a home page, on a band in
+/// the brand's color (`SBand`): a white pill with a pin, the `place` in
+/// bold over a quiet `detail`, and an arrow that says it changes
+/// (`onTap`).
 abstract interface class SPlaceHeader implements Widget {
-  /// [caption] goes over the place ("Offers near"); [trailing] at the other
-  /// end (the brand's logo). [onBrand]: in white, on a band in
-  /// [SColor.brand].
+  /// [detail] says what the place means for what's shown ("Offers within
+  /// 10 km"). [trailing] goes at the other end, square and as tall as the
+  /// pill: an `SButton.onBand`.
   const factory SPlaceHeader({
-    required String caption,
     required String place,
+    required String detail,
     required VoidCallback onTap,
     Widget? trailing,
-    bool onBrand,
     Key? key,
   }) = SPlaceHeaderMaterial;
 }

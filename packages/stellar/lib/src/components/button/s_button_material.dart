@@ -269,6 +269,56 @@ class SPhotoButtonMaterial extends StatelessWidget implements SButton {
   }
 }
 
+/// [SButton.onBand], drawn as a [Material] circle around an [InkWell]: as
+/// big as the room it's given, and no smaller than a tap needs.
+class SBandButtonMaterial extends StatelessWidget implements SButton {
+  const SBandButtonMaterial({
+    required this.icon,
+    required this.tooltip,
+    required this.onPressed,
+    super.key,
+  });
+
+  final SIcons icon;
+
+  /// Also what screen readers say.
+  final String tooltip;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Tooltip(
+      message: tooltip,
+      child: Semantics(
+        button: true,
+        enabled: onPressed != null,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            minWidth: kMinInteractiveDimension,
+            minHeight: kMinInteractiveDimension,
+          ),
+          child: Material(
+            color: c.surface,
+            shape: const CircleBorder(),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: onPressed,
+              child: Center(
+                child: Icon(
+                  materialIcon(icon),
+                  size: SIconSize.md.pixels,
+                  color: c.primary,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// [SButton.icon], drawn with Material's [IconButton].
 class SIconButtonMaterial extends StatelessWidget implements SButton {
   const SIconButtonMaterial({

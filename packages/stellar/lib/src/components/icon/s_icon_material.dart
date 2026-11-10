@@ -96,6 +96,11 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // mail
+  SIcons.notifications => const IconData(
+    0xe059,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // bell
   SIcons.key => const IconData(
     0xe4a3,
     fontFamily: _f,

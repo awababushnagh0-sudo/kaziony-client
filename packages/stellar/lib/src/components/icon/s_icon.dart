@@ -71,6 +71,9 @@ enum SIcons {
   /// A chat with our team (WhatsApp).
   chat,
   mail,
+
+  /// What the app has to tell someone.
+  notifications,
   key,
   settings,
 

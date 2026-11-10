@@ -121,43 +121,24 @@ int _bound(Object error, String key) =>
 class SSearchFieldMaterial extends StatefulWidget implements SSearchField {
   const SSearchFieldMaterial({
     required this.hint,
-    required ValueChanged<String> this.onChanged,
+    required this.onChanged,
     this.onSubmitted,
     this.controller,
     this.initialValue = '',
     this.autofocus = false,
     super.key,
-  }) : onTap = null,
-       color = SColor.fieldFill;
-
-  const SSearchFieldMaterial.button({
-    required this.hint,
-    required VoidCallback this.onTap,
-    this.color = SColor.fieldFill,
-    super.key,
-  }) : onChanged = null,
-       onSubmitted = null,
-       controller = null,
-       initialValue = '',
-       autofocus = false;
+  });
 
   final String hint;
-  final ValueChanged<String>? onChanged;
+  final ValueChanged<String> onChanged;
   final ValueChanged<String>? onSubmitted;
 
   /// The caller's, to change the words from outside; else the field's own.
   final TextEditingController? controller;
-
-  /// Set instead of [onChanged] when the field only opens the search
-  /// elsewhere.
-  final VoidCallback? onTap;
   final String initialValue;
 
   /// Opens the keyboard at once: on a page that is only for searching.
   final bool autofocus;
-
-  /// The pill's fill.
-  final SColor color;
 
   @override
   State<SSearchFieldMaterial> createState() => _SearchFieldState();
@@ -652,7 +633,7 @@ class _SearchFieldState extends State<SSearchFieldMaterial> {
 
   void _clear() {
     _controller.clear();
-    widget.onChanged?.call('');
+    widget.onChanged('');
   }
 
   @override
@@ -664,7 +645,6 @@ class _SearchFieldState extends State<SSearchFieldMaterial> {
       borderRadius: BorderRadius.all(Radius.circular(Radii.pill)),
       borderSide: BorderSide.none,
     );
-    final onTap = widget.onTap;
     // Rebuilt as the words change, for the × to come and go.
     return ListenableBuilder(
       listenable: _controller,
@@ -674,14 +654,10 @@ class _SearchFieldState extends State<SSearchFieldMaterial> {
         onSubmitted: widget.onSubmitted,
         textInputAction: TextInputAction.search,
         autofocus: widget.autofocus,
-        // As a button: no cursor, no keyboard, only the tap.
-        readOnly: onTap != null,
-        canRequestFocus: onTap == null,
-        onTap: onTap,
         style: TextStyle(fontSize: context.style.text.body),
         decoration: InputDecoration(
           hintText: widget.hint,
-          fillColor: c.resolve(widget.color),
+          fillColor: c.fieldFill,
           border: shape,
           enabledBorder: shape,
           focusedBorder: shape,
@@ -692,7 +668,7 @@ class _SearchFieldState extends State<SSearchFieldMaterial> {
           ),
           // Clear of the round end.
           prefixIconConstraints: const BoxConstraints(minWidth: 44),
-          suffixIcon: onTap != null || _controller.text.isEmpty
+          suffixIcon: _controller.text.isEmpty
               ? null
               : IconButton(
                   tooltip: StellarLocalizations.of(context).searchClear,

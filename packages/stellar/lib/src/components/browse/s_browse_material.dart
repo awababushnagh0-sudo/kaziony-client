@@ -11,97 +11,101 @@ import '../illustration/s_illustration.dart';
 import '../illustration/s_illustration_material.dart';
 import 's_browse.dart';
 
-/// [SPlaceHeader], drawn as an [InkWell] row.
+/// [SPlaceHeader], drawn as a [Material] stadium around an [InkWell] row.
 class SPlaceHeaderMaterial extends StatelessWidget implements SPlaceHeader {
   const SPlaceHeaderMaterial({
-    required this.caption,
     required this.place,
+    required this.detail,
     required this.onTap,
     this.trailing,
-    this.onBrand = false,
     super.key,
   });
 
-  /// How much of the white the caption keeps on the brand's band: quieter
-  /// than the place, still easy to read.
-  static const _captionOnBrand = 0.85;
+  /// Closer than the font's own lines, for two lines in a slim pill.
+  static const _lineHeight = 1.3;
 
-  final String caption;
   final String place;
+  final String detail;
   final VoidCallback onTap;
   final Widget? trailing;
-  final bool onBrand;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
     final trailing = this.trailing;
-    final ink = onBrand ? c.onBrand : c.text;
-    // The brand's light green: a pin that stands out on its deep green.
-    final pin = onBrand ? c.onScrimBrand : c.primary;
-    final quiet = onBrand
-        ? c.onBrand.withValues(alpha: _captionOnBrand)
-        : c.textMuted;
-    return Row(
-      spacing: Space.md,
-      children: [
-        Flexible(
-          child: InkWell(
-            onTap: onTap,
-            borderRadius: BorderRadius.circular(Radii.md),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: Space.xs),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                spacing: Space.sm,
-                children: [
-                  Icon(
-                    materialIcon(SIcons.location),
-                    size: SIconSize.lg.pixels,
-                    color: pin,
-                  ),
-                  Flexible(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          caption,
-                          style: TextStyle(fontSize: text.small, color: quiet),
+    final pill = Semantics(
+      button: true,
+      child: Material(
+        color: c.surface,
+        shape: const StadiumBorder(),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Space.lg,
+              vertical: Space.xs,
+            ),
+            child: Row(
+              spacing: Space.sm,
+              children: [
+                Icon(
+                  materialIcon(SIcons.location),
+                  size: SIconSize.md.pixels,
+                  color: c.primary,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        place,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: text.body,
+                          fontWeight: SFontWeight.bold.value,
+                          height: _lineHeight,
+                          color: c.text,
                         ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          spacing: Space.xs,
-                          children: [
-                            Flexible(
-                              child: Text(
-                                place,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: text.subtitle,
-                                  fontWeight: SFontWeight.bold.value,
-                                  color: ink,
-                                ),
-                              ),
-                            ),
-                            Icon(
-                              materialIcon(SIcons.chevronDown),
-                              size: SIconSize.sm.pixels,
-                              color: ink,
-                            ),
-                          ],
+                      ),
+                      Text(
+                        detail,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: text.tiny,
+                          height: _lineHeight,
+                          color: c.textMuted,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Icon(
+                  materialIcon(SIcons.chevronDown),
+                  size: SIconSize.xs.pixels,
+                  color: c.text,
+                ),
+              ],
             ),
           ),
         ),
-        ?trailing,
-      ],
+      ),
+    );
+    if (trailing == null) return pill;
+    // As tall as the pill, which grows with the words' size.
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: Space.md,
+        children: [
+          Expanded(child: pill),
+          AspectRatio(aspectRatio: 1, child: trailing),
+        ],
+      ),
     );
   }
 }
