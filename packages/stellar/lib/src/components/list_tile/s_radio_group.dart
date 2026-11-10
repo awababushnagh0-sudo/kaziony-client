@@ -18,7 +18,7 @@ class RadioOption<T> {
   final T value;
   final String label;
 
-  /// A quieter line under [label] (a branch's address).
+  /// A quieter line under [label] (a place's address).
   final String? subtitle;
 
   /// At the start of the row, on its own.

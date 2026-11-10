@@ -20,7 +20,6 @@ class SScannerViewMaterial extends StatelessWidget implements SScannerView {
     this.torchOn = false,
     this.onTorch,
     this.cover,
-    this.place,
     this.actions = const [],
     super.key,
   });
@@ -31,7 +30,6 @@ class SScannerViewMaterial extends StatelessWidget implements SScannerView {
   final bool torchOn;
   final VoidCallback? onTorch;
   final Widget? cover;
-  final ScannerPlace? place;
   final List<ScannerAction> actions;
 
   @override
@@ -39,12 +37,7 @@ class SScannerViewMaterial extends StatelessWidget implements SScannerView {
     final c = context.colors;
     final cover = this.cover;
     final onCamera = cover == null;
-    final bar = _TopBar(
-      place: place,
-      torchOn: torchOn,
-      onTorch: onTorch,
-      onCamera: onCamera,
-    );
+    final bar = _TopBar(torchOn: torchOn, onTorch: onTorch);
     final actions = _Actions(actions: this.actions, onCamera: onCamera);
     return ColoredBox(
       color: c.cameraBackdrop,
@@ -222,26 +215,17 @@ class _ScanLineState extends State<_ScanLine>
   }
 }
 
-/// The [ScannerPlace] at the start and the light at the end, under the
-/// status bar.
+/// The light at the end, under the status bar.
 class _TopBar extends StatelessWidget {
-  const _TopBar({
-    required this.place,
-    required this.torchOn,
-    required this.onTorch,
-    required this.onCamera,
-  });
+  const _TopBar({required this.torchOn, required this.onTorch});
 
-  final ScannerPlace? place;
   final bool torchOn;
   final VoidCallback? onTorch;
-  final bool onCamera;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final height = context.style.controlHeight;
-    final place = this.place;
     final onTorch = this.onTorch;
     return Padding(
       padding: EdgeInsetsDirectional.only(
@@ -256,14 +240,7 @@ class _TopBar extends StatelessWidget {
         height: height,
         child: Row(
           children: [
-            Expanded(
-              child: Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: place == null
-                    ? null
-                    : _PlaceButton(place: place, onCamera: onCamera),
-              ),
-            ),
+            const Spacer(),
             if (onTorch != null)
               IconButton(
                 onPressed: onTorch,
@@ -283,59 +260,6 @@ class _TopBar extends StatelessWidget {
                   size: SIconSize.md.pixels,
                 ),
               ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _PlaceButton extends StatelessWidget {
-  const _PlaceButton({required this.place, required this.onCamera});
-
-  final ScannerPlace place;
-  final bool onCamera;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final ink = onCamera ? c.onCamera : c.text;
-    return Semantics(
-      button: true,
-      label: place.semanticLabel,
-      excludeSemantics: true,
-      child: _Pill(
-        fill: onCamera ? c.cameraGlass : c.fieldFill,
-        frosted: onCamera,
-        onTap: place.onTap,
-        padding: Space.md,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              materialIcon(SIcons.location),
-              size: SIconSize.sm.pixels,
-              color: ink,
-            ),
-            const SizedBox(width: Space.sm),
-            Flexible(
-              child: Text(
-                place.label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: ink,
-                  fontSize: context.style.text.small,
-                  fontWeight: SFontWeight.semibold.value,
-                ),
-              ),
-            ),
-            const SizedBox(width: Space.xs),
-            Icon(
-              materialIcon(SIcons.chevronDown),
-              size: SIconSize.sm.pixels,
-              color: ink,
-            ),
           ],
         ),
       ),
@@ -404,7 +328,6 @@ class _ActionButton extends StatelessWidget {
       fill: fill,
       frosted: onCamera && !main,
       onTap: action.onPressed,
-      padding: Space.lg,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -468,16 +391,12 @@ class _Pill extends StatelessWidget {
   const _Pill({
     required this.fill,
     required this.onTap,
-    required this.padding,
     required this.child,
     this.frosted = false,
   });
 
   final Color fill;
   final VoidCallback onTap;
-
-  /// At the start and end.
-  final double padding;
   final Widget child;
   final bool frosted;
 
@@ -494,7 +413,7 @@ class _Pill extends StatelessWidget {
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: context.style.controlHeight),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: padding),
+            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
             child: child,
           ),
         ),

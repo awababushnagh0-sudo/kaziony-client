@@ -222,7 +222,7 @@ class SFactTileMaterial extends StatelessWidget implements SFactTile {
           horizontal: Space.lg,
           vertical: Space.md,
         ),
-        // A long value (a list of branches) wraps at the end, under itself,
+        // A long value (a week of opening hours) wraps at the end, under itself,
         // instead of pushing the label off the row.
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -3,23 +3,6 @@ import 'package:flutter/widgets.dart';
 import '../icon/s_icon.dart';
 import 's_scanner_material.dart';
 
-/// Where the phone scans, shown over the camera's top as a button that
-/// changes it (a store's branch).
-@immutable
-class ScannerPlace {
-  const ScannerPlace({
-    required this.label,
-    required this.semanticLabel,
-    required this.onTap,
-  });
-
-  final String label;
-
-  /// Read out instead of [label], naming what it is ("Your branch: …").
-  final String semanticLabel;
-  final VoidCallback onTap;
-}
-
 /// A button under the square, for when the camera can't read the code.
 @immutable
 class ScannerAction {
@@ -39,8 +22,8 @@ class ScannerAction {
 }
 
 /// A camera filling the page, up to the status bar, dimmed around a square
-/// to aim at with a hint under it. Over its top: the place and the
-/// phone's light; under the square: the actions.
+/// to aim at with a hint under it. Over its top: the phone's light; under
+/// the square: the actions.
 abstract interface class SScannerView implements Widget {
   /// [camera] is the camera's picture (kernel's `QrScanner.view`), and
   /// [hint] is shown under the square. [starting] shows a spinner in the
@@ -51,11 +34,10 @@ abstract interface class SScannerView implements Widget {
   ///
   /// [cover] is shown on the page's background instead of the camera, e.g.
   /// when the camera is off. The camera stays underneath, so it opens again
-  /// by itself once allowed. The [place] and [actions] stay.
+  /// by itself once allowed. The [actions] stay.
   ///
-  /// [place] is where the phone scans; null hides the button (nothing to
-  /// change). Of the [actions], the first is the main one, drawn solid;
-  /// the rest are quieter.
+  /// Of the [actions], the first is the main one, drawn solid; the rest are
+  /// quieter.
   const factory SScannerView({
     required Widget camera,
     required String hint,
@@ -63,7 +45,6 @@ abstract interface class SScannerView implements Widget {
     bool torchOn,
     VoidCallback? onTorch,
     Widget? cover,
-    ScannerPlace? place,
     List<ScannerAction> actions,
     Key? key,
   }) = SScannerViewMaterial;

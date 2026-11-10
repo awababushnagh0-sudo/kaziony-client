@@ -100,7 +100,7 @@ abstract final class SSheetMaterial {
         // the nav bar.
         useRootNavigator: true,
         useSafeArea: true,
-        // Long lists (a store's branches) scroll inside the sheet.
+        // Long lists (many stores to choose from) scroll inside the sheet.
         isScrollControlled: true,
         // The sheet draws its own card, inset from the screen's edges.
         backgroundColor: Colors.transparent,

@@ -7,7 +7,7 @@ import 's_alert_material.dart';
 /// readers as soon as it shows.
 abstract interface class SAlert implements Widget {
   /// Orange instead of red: not a mistake, a consequence to know before
-  /// going on ("Customers of the Andalus branch won't see this offer").
+  /// going on ("Customers won't see this offer until it starts").
   const factory SAlert.warning({
     required String title,
     String? message,
