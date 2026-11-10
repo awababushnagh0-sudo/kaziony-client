@@ -22,6 +22,7 @@ dependencies:
   google_maps_flutter: ^2.19.0
   maplibre_gl: ^0.27.1
   qr_flutter: ^4.1.0
+  liquid_glass_widgets: ^1.17.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -351,9 +351,17 @@ class _Actions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (actions.isEmpty) return const SizedBox(height: Space.lg);
+    // Above what floats over the page's foot (the tabs), the dimmed
+    // picture going on under it.
+    final room = MediaQuery.paddingOf(context).bottom;
+    if (actions.isEmpty) return SizedBox(height: Space.lg + room);
     return Padding(
-      padding: const EdgeInsets.all(Space.lg),
+      padding: EdgeInsets.fromLTRB(
+        Space.lg,
+        Space.lg,
+        Space.lg,
+        Space.lg + room,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,

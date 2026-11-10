@@ -39,6 +39,8 @@ class StellarColors {
     required this.background,
     required this.surface,
     required this.surfaceMuted,
+    required this.glass,
+    required this.glassSelected,
     required this.fieldFill,
     required this.border,
     required this.text,
@@ -144,6 +146,14 @@ class StellarColors {
 
   /// The side menu.
   final Color surfaceMuted;
+
+  /// The tint of glass floating over the page (the tabs, the buttons on a
+  /// photo): [surface] letting what's behind show through, blurred.
+  final Color glass;
+
+  /// What's picked on [glass] (the open tab): a shade of the glass, darker
+  /// on light and lighter on dark, rather than a color of its own.
+  final Color glassSelected;
 
   /// A quiet gray: behind text fields on the dashboard, the search field,
   /// and the panel that groups a store's numbers.
