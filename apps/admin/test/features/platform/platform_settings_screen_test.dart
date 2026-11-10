@@ -52,6 +52,11 @@ Finder get radiusField => find.descendant(
   matching: find.byType(EditableText),
 );
 
+Finder get holdField => find.descendant(
+  of: textField('Hold for pickup (minutes)'),
+  matching: find.byType(EditableText),
+);
+
 void main() {
   testWidgets('admins change the radius', (tester) async {
     setWindow(tester);
@@ -67,7 +72,56 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(settings.updates.map((s) => s.browseRadiusKm), [15]);
+    expect(settings.updates.single.holdMinutes, 120);
     expect(find.text('Not saved'), findsNothing);
+  });
+
+  testWidgets('admins change how long a reservation is held', (tester) async {
+    setWindow(tester);
+    final settings = FakePlatformSettingsRepository();
+    await tester.pumpWidget(harness(settings));
+    await tester.pumpAndSettle();
+
+    expect(find.text('120'), findsOneWidget);
+    await tester.enterText(holdField, '90');
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+
+    expect(settings.updates.single.holdMinutes, 90);
+    expect(settings.updates.single.browseRadiusKm, 25);
+  });
+
+  for (final outOfRange in ['29', '241', '45.5']) {
+    testWidgets('a hold of $outOfRange minutes is not sent', (tester) async {
+      setWindow(tester);
+      final settings = FakePlatformSettingsRepository();
+      await tester.pumpWidget(harness(settings));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(holdField, outOfRange);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+
+      expect(settings.updates, isEmpty);
+    });
+  }
+
+  testWidgets('a hold at the limits is sent', (tester) async {
+    setWindow(tester);
+    final settings = FakePlatformSettingsRepository();
+    await tester.pumpWidget(harness(settings));
+    await tester.pumpAndSettle();
+
+    for (final minutes in ['30', '240']) {
+      await tester.enterText(holdField, minutes);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+    }
+
+    expect(settings.updates.map((s) => s.holdMinutes), [30, 240]);
   });
 
   testWidgets('a radius out of range is not sent', (tester) async {
@@ -91,7 +145,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('25'), findsOneWidget);
-    expect(find.textContaining('Only admins change it'), findsOneWidget);
+    expect(find.text('120'), findsOneWidget);
+    expect(find.textContaining('Only admins change it'), findsNWidgets(2));
     expect(tester.widget<EditableText>(radiusField).readOnly, isTrue);
+    expect(tester.widget<EditableText>(holdField).readOnly, isTrue);
   });
 }

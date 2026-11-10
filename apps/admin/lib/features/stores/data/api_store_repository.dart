@@ -30,17 +30,7 @@ class ApiStoreRepository implements StoreRepository {
     return result.map(
       (dto) => StorePage(
         total: dto.meta.total.toInt(),
-        items: [
-          for (final store in dto.items)
-            StoreSummary(
-              id: store.id,
-              name: store.name,
-              category: _toCategory(store.category),
-              branchCount: store.branchCount.toInt(),
-              isActive: store.isActive,
-              createdAt: store.createdAt,
-            ),
-        ],
+        items: [for (final store in dto.items) storeSummaryFromDto(store)],
       ),
     );
   }
@@ -48,27 +38,15 @@ class ApiStoreRepository implements StoreRepository {
   @override
   Future<Result<StoreDetails>> get(String id) async {
     final result = await _api.guard(() => _stores.getStore(id: id));
-    return result.map(_toDetails);
+    return result.map(storeDetailsFromDto);
   }
 
   @override
   Future<Result<StoreDetails>> update(String id, EditedStore store) async {
     final result = await _api.guard(
-      () => _stores.update(
-        id: id,
-        // Every field is sent; an empty string clears an optional one.
-        body: UpdateStoreDto(
-          name: store.name,
-          categoryId: store.categoryId,
-          pickupInstructions: store.pickupInstructions ?? '',
-          phone: store.phone ?? '',
-          email: store.email ?? '',
-          facebookUrl: store.facebookUrl ?? '',
-          instagramUrl: store.instagramUrl ?? '',
-        ),
-      ),
+      () => _stores.update(id: id, body: updateStoreBody(store)),
     );
-    return result.map(_toDetails);
+    return result.map(storeDetailsFromDto);
   }
 
   @override
@@ -82,7 +60,7 @@ class ApiStoreRepository implements StoreRepository {
         body: UpdateStoreDto(isActive: active),
       ),
     );
-    return result.map(_toDetails);
+    return result.map(storeDetailsFromDto);
   }
 
   @override
@@ -102,29 +80,8 @@ class ApiStoreRepository implements StoreRepository {
 
   @override
   Future<Result<CreatedStore>> create(NewStore store) async {
-    final branch = store.branch;
     final result = await _api.guard(
-      () => _stores.create(
-        body: CreateStoreDto(
-          name: store.name,
-          categoryId: store.categoryId,
-          phone: store.phone,
-          email: store.email,
-          branches: [
-            CreateBranchDto(
-              name: branch.name,
-              city: switch (branch.city) {
-                City.tripoli => api.City.tripoli,
-              },
-              area: branch.area,
-              address: branch.address,
-              latitude: branch.latitude,
-              longitude: branch.longitude,
-            ),
-          ],
-          owner: NewMerchantDto(name: store.ownerName, phone: store.ownerPhone),
-        ),
-      ),
+      () => _stores.create(body: createStoreBody(store)),
     );
     return result.map(
       (dto) => CreatedStore(
@@ -134,6 +91,20 @@ class ApiStoreRepository implements StoreRepository {
         temporaryPassword: dto.owner.temporaryPassword,
       ),
     );
+  }
+
+  @override
+  Future<Result<StoreDetails>> addLocation(
+    String storeId,
+    NewLocation location,
+  ) async {
+    final result = await _api.guard(
+      () => _stores.addLocation(
+        storeId: storeId,
+        body: addLocationBody(location),
+      ),
+    );
+    return result.map(storeDetailsFromDto);
   }
 
   @override
@@ -150,16 +121,32 @@ class ApiStoreRepository implements StoreRepository {
   }
 }
 
-Category _toCategory(CategoryDto dto) =>
-    Category(id: dto.id, nameAr: dto.nameAr, nameEn: dto.nameEn);
+@visibleForTesting
+StoreSummary storeSummaryFromDto(StoreListItemDto dto) => StoreSummary(
+  id: dto.id,
+  name: dto.name,
+  category: _toCategory(dto.category),
+  area: dto.area,
+  isActive: dto.isActive,
+  createdAt: dto.createdAt,
+);
 
-StoreDetails _toDetails(StoreDetailDto dto) => StoreDetails(
+@visibleForTesting
+StoreDetails storeDetailsFromDto(StoreDetailDto dto) => StoreDetails(
   id: dto.id,
   name: dto.name,
   category: _toCategory(dto.category),
   isActive: dto.isActive,
   createdAt: dto.createdAt,
-  branchCount: dto.branches.length,
+  city: switch (dto.city) {
+    api.City.tripoli => City.tripoli,
+    api.City.$unknown => null,
+  },
+  area: dto.area,
+  address: dto.address,
+  latitude: dto.latitude.toDouble(),
+  longitude: dto.longitude.toDouble(),
+  openingHours: OpeningHours.fromJson(dto.openingHours),
   teamCount: dto.members.length,
   ratingAverage: dto.ratingAverage?.toDouble(),
   ratingCount: dto.ratingCount.toInt(),
@@ -170,3 +157,68 @@ StoreDetails _toDetails(StoreDetailDto dto) => StoreDetails(
   facebookUrl: dto.facebookUrl,
   instagramUrl: dto.instagramUrl,
 );
+
+@visibleForTesting
+CreateStoreDto createStoreBody(NewStore store) {
+  final place = store.place;
+  return CreateStoreDto(
+    name: store.name,
+    categoryId: store.categoryId,
+    phone: store.phone,
+    email: store.email,
+    city: _toApiCity(place.city),
+    area: place.area,
+    address: place.address,
+    latitude: place.latitude,
+    longitude: place.longitude,
+    openingHours: _newOpeningHours(place.openingHours),
+    owner: NewMerchantDto(name: store.ownerName, phone: store.ownerPhone),
+  );
+}
+
+/// Every own field is sent, and the place when it's given; an empty
+/// string clears an optional one.
+@visibleForTesting
+UpdateStoreDto updateStoreBody(EditedStore store) {
+  final place = store.place;
+  return UpdateStoreDto(
+    name: store.name,
+    categoryId: store.categoryId,
+    pickupInstructions: store.pickupInstructions ?? '',
+    phone: store.phone ?? '',
+    email: store.email ?? '',
+    facebookUrl: store.facebookUrl ?? '',
+    instagramUrl: store.instagramUrl ?? '',
+    city: place == null ? null : _toApiCity(place.city),
+    area: place == null ? null : place.area ?? '',
+    address: place == null ? null : place.address ?? '',
+    latitude: place?.latitude,
+    longitude: place?.longitude,
+    openingHours: place?.openingHours.toJson(),
+  );
+}
+
+@visibleForTesting
+AddStoreLocationDto addLocationBody(NewLocation location) {
+  final place = location.place;
+  return AddStoreLocationDto(
+    city: _toApiCity(place.city),
+    area: place.area,
+    address: place.address,
+    latitude: place.latitude,
+    longitude: place.longitude,
+    openingHours: _newOpeningHours(place.openingHours),
+    phone: location.phone,
+  );
+}
+
+Category _toCategory(CategoryDto dto) =>
+    Category(id: dto.id, nameAr: dto.nameAr, nameEn: dto.nameEn);
+
+api.City _toApiCity(City city) => switch (city) {
+  City.tripoli => api.City.tripoli,
+};
+
+/// A new place without hours sends none.
+Map<String, Object?>? _newOpeningHours(OpeningHours hours) =>
+    hours.isEmpty ? null : hours.toJson();

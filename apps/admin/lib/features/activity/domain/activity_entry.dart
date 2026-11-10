@@ -35,7 +35,8 @@ class ActivityEntry {
   /// from the database since.
   final String? actorName;
 
-  /// The name of what it was done to, at the time.
+  /// The name of what it was done to, at the time; a store's with its area
+  /// ("name · area").
   final String? targetLabel;
 
   /// What was sent with it, without passwords.
@@ -50,7 +51,7 @@ class ActivityEntry {
 class ActivityChange {
   const ActivityChange({required this.field, required this.value});
 
-  /// Dotted for nested fields ("branches.0.name").
+  /// Dotted for nested fields ("openingHours.sat.0.open").
   final String field;
   final String? value;
 }

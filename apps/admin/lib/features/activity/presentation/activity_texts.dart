@@ -8,8 +8,7 @@ String activityActionText(AdminLocalizations s, ActivityEntry entry) =>
       'store.create' => s.activityStoreCreate,
       'store.update' => s.activityStoreUpdate,
       'store.delete' => s.activityStoreDelete,
-      'store.addBranch' => s.activityStoreAddBranch,
-      'store.updateBranch' => s.activityStoreUpdateBranch,
+      'store.addLocation' => s.activityStoreAddLocation,
       'store.addMember' => s.activityStoreAddMember,
       'store.removeMember' => s.activityStoreRemoveMember,
       'user.create' => s.activityUserCreate,
@@ -28,8 +27,8 @@ String activityActionText(AdminLocalizations s, ActivityEntry entry) =>
       final other => other,
     };
 
-/// The fields sent, at a glance: "name, phone, branches" (nested ones by
-/// their top field).
+/// The fields sent, at a glance: "name, phone, openingHours" (nested ones
+/// by their top field).
 String activityFieldsText(ActivityEntry entry) =>
     {for (final change in entry.changes) change.field.split('.').first}
         .join(', ');

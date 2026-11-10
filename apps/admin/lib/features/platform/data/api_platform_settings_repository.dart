@@ -19,12 +19,17 @@ class ApiPlatformSettingsRepository implements PlatformSettingsRepository {
   Future<Result<PlatformSettings>> update(PlatformSettings settings) async {
     final result = await _api.guard(
       () => _settings.updateSettings(
-        body: UpdateAppSettingsDto(browseRadiusKm: settings.browseRadiusKm),
+        body: UpdateAppSettingsDto(
+          browseRadiusKm: settings.browseRadiusKm,
+          holdMinutes: settings.holdMinutes,
+        ),
       ),
     );
     return result.map(_toSettings);
   }
 }
 
-PlatformSettings _toSettings(AppSettingsDto dto) =>
-    PlatformSettings(browseRadiusKm: dto.browseRadiusKm.toInt());
+PlatformSettings _toSettings(AppSettingsDto dto) => PlatformSettings(
+  browseRadiusKm: dto.browseRadiusKm.toInt(),
+  holdMinutes: dto.holdMinutes.toInt(),
+);

@@ -1,3 +1,4 @@
+import 'package:admin/core/l10n/generated/admin_localizations_ar.dart';
 import 'package:admin/core/l10n/generated/admin_localizations_en.dart';
 import 'package:admin/features/activity/domain/activity_entry.dart';
 import 'package:admin/features/activity/presentation/activity_texts.dart';
@@ -7,12 +8,21 @@ import '../../fakes.dart';
 
 void main() {
   final s = AdminLocalizationsEn();
+  final ar = AdminLocalizationsAr();
 
   test('says what was done', () {
     expect(activityActionText(s, sampleActivity()), 'Edited a store');
     expect(
       activityActionText(s, sampleActivity(action: 'offer.remove')),
       'Took an offer down',
+    );
+    expect(
+      activityActionText(s, sampleActivity(action: 'store.addLocation')),
+      'Added a location',
+    );
+    expect(
+      activityActionText(ar, sampleActivity(action: 'store.addLocation')),
+      'إضافة فرع',
     );
   });
 
@@ -36,11 +46,13 @@ void main() {
     final entry = sampleActivity(
       changes: const [
         ActivityChange(field: 'name', value: 'Pizza'),
-        ActivityChange(field: 'branches.0.name', value: 'Center'),
-        ActivityChange(field: 'branches.0.latitude', value: '32.9'),
-        ActivityChange(field: 'branches.1.name', value: 'Airport'),
+        ActivityChange(field: 'area', value: 'Gargaresh'),
+        ActivityChange(field: 'latitude', value: '32.9'),
+        ActivityChange(field: 'openingHours.sat.0.open', value: '08:00'),
+        ActivityChange(field: 'openingHours.sat.0.close', value: '23:00'),
+        ActivityChange(field: 'openingHours.fri.0.open', value: '16:00'),
       ],
     );
-    expect(activityFieldsText(entry), 'name, branches');
+    expect(activityFieldsText(entry), 'name, area, latitude, openingHours');
   });
 }

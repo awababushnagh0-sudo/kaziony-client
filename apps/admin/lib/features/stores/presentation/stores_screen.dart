@@ -68,18 +68,12 @@ class StoresScreen extends AppView {
       TableColumn(
         label: s.columnName,
         flex: 3,
-        cell: (store) => SCellText(store.name, strong: true),
+        cell: (store) => SCellText(store.label, strong: true),
       ),
       TableColumn(
         label: s.columnCategory,
         minWidth: 520,
         cell: (store) => SCellText(store.category.name(locale)),
-      ),
-      TableColumn(
-        label: s.columnBranches,
-        flex: 1,
-        minWidth: 760,
-        cell: (store) => SCellText('${store.branchCount}'),
       ),
       TableColumn(
         label: s.columnStatus,

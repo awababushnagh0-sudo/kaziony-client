@@ -1,5 +1,6 @@
 import 'package:admin/core/l10n/generated/admin_localizations.dart';
 import 'package:admin/core/providers/access.dart';
+import 'package:admin/features/stores/domain/location.dart';
 import 'package:admin/features/stores/domain/store.dart';
 import 'package:admin/features/stores/presentation/store_details_screen.dart';
 import 'package:admin/features/stores/presentation/stores_screen.dart';
@@ -62,7 +63,7 @@ void main() {
     await tester.pumpWidget(harness(stores, at: '/stores'));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Store 1'));
+    await tester.tap(find.text('Store 1 · Area 1'));
     await tester.pumpAndSettle();
 
     expect(stores.opened, ['store-1']);
@@ -77,6 +78,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Stores'), findsOneWidget);
+    // The page says which of the brand's places it is.
+    expect(find.text('Sweet Coast · Hay Al Andalus'), findsOneWidget);
     expect(find.text('Sweet Coast'), findsWidgets);
     expect(find.text('★ 4.5 · 37 ratings'), findsOneWidget);
     expect(find.text('Active'), findsOneWidget);
@@ -108,7 +111,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(StoreDetailsScreen), findsNothing);
-    expect(find.text('Store 1'), findsOneWidget);
+    expect(find.text('Store 1 · Area 1'), findsOneWidget);
   });
 
   testWidgets('shows a failure with a retry', (tester) async {
@@ -140,7 +143,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await chooseAction(tester, 'Disable store');
-    expect(find.text('Disable Sweet Coast?'), findsOneWidget);
+    expect(find.text('Disable Sweet Coast · Hay Al Andalus?'), findsOneWidget);
     await tester.tap(find.text('Disable store').last);
     await tester.pumpAndSettle();
 
@@ -176,7 +179,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await chooseAction(tester, 'Delete store');
-    expect(find.text('Delete Sweet Coast?'), findsOneWidget);
+    expect(find.text('Delete Sweet Coast · Hay Al Andalus?'), findsOneWidget);
     await tester.tap(find.text('Delete store').last);
     await tester.pumpAndSettle();
 
@@ -256,6 +259,8 @@ void main() {
     expect(edited.phone, '+218921234567');
     expect(edited.email, isNull);
     expect(edited.instagramUrl, 'https://instagram.com/sweetcoast');
+    // The place wasn't touched, so it isn't sent.
+    expect(edited.place, isNull);
     expect(find.text('Saved'), findsOneWidget);
     expect(find.text('Not saved'), findsNothing);
     expect(find.text('Actions'), findsOneWidget);
@@ -321,7 +326,7 @@ void main() {
     await tester.tap(find.text('Discard'));
     await tester.pumpAndSettle();
     expect(find.byType(StoreDetailsScreen), findsNothing);
-    expect(find.text('Store 1'), findsOneWidget);
+    expect(find.text('Store 1 · Area 1'), findsOneWidget);
   });
 
   testWidgets('editors can disable a store but not delete it', (tester) async {
@@ -333,5 +338,233 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Disable store'), findsOneWidget);
     expect(find.text('Delete store'), findsNothing);
+  });
+
+  testWidgets('shows the place and its hours, without reading it again', (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository();
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Place'));
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Tripoli'), findsOneWidget);
+    expect(find.text('Hay Al Andalus'), findsOneWidget);
+    expect(find.text('Jaraba Street'), findsOneWidget);
+    expect(find.text('32.8872, 13.1913'), findsOneWidget);
+    expect(find.text('Location found: 32.88720, 13.19130'), findsOneWidget);
+    expect(find.text('08:00-13:00, 16:00-23:00'), findsOneWidget);
+    expect(find.text('16:00-23:00'), findsOneWidget);
+    expect(stores.resolvedLinks, isEmpty);
+    expect(find.text('Not saved'), findsNothing);
+  });
+
+  testWidgets('moves the store and changes its hours', (tester) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..locationResult = const Ok((latitude: 32.9, longitude: 13.2));
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Place'));
+    await tester.pumpAndSettle();
+    await tester.enterText(field('Area'), '');
+    await tester.enterText(field('Location'), 'https://maps.app.goo.gl/AbC');
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+    expect(stores.resolvedLinks, ['https://maps.app.goo.gl/AbC']);
+    expect(find.text('Location found: 32.90000, 13.20000'), findsOneWidget);
+    await tester.enterText(field('Saturday'), '9-22');
+    await tester.enterText(field('Friday'), '');
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+
+    final place = stores.updates.single.$2.place!;
+    expect(place.city, City.tripoli);
+    expect(place.area, isNull);
+    expect(place.address, 'Jaraba Street');
+    expect(place.latitude, 32.9);
+    expect(place.longitude, 13.2);
+    expect(
+      place.openingHours,
+      const OpeningHours({
+        Weekday.sat: [OpeningShift(opens: 9 * 60, closes: 22 * 60)],
+      }),
+    );
+    expect(find.text('Saved'), findsOneWidget);
+    // Filled again from what was saved.
+    expect(find.text('09:00-22:00'), findsOneWidget);
+    expect(find.text('32.9, 13.2'), findsOneWidget);
+  });
+
+  testWidgets('waits for a new location to be read before saving', (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..locationResult = const Ok((latitude: 32.9, longitude: 13.2));
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Place'));
+    await tester.pumpAndSettle();
+    await tester.enterText(field('Location'), '32.9, 13.2');
+    await tester.pump();
+    await tester.tap(find.text('Save'));
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+
+    expect(stores.updates.single.$2.place?.latitude, 32.9);
+  });
+
+  testWidgets('marks the location when the new place is outside Libya', (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..locationResult = const Ok((latitude: 48.85, longitude: 2.35))
+      ..updateResult = const Err(
+        ValidationFailure([], code: LocationCodes.outsideLibya),
+      );
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Place'));
+    await tester.pumpAndSettle();
+    await tester.enterText(field('Location'), '48.85, 2.35');
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+
+    expect(stores.updates, hasLength(1));
+    expect(find.text('This location is outside Libya.'), findsOneWidget);
+    expect(find.text('Not saved'), findsOneWidget);
+  });
+
+  testWidgets("doesn't save hours it can't read", (tester) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository();
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Place'));
+    await tester.pumpAndSettle();
+    await tester.enterText(field('Sunday'), '8-12, 13-14, 15-16, 17-18, 19-20');
+    await tester.pump();
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+
+    expect(stores.updates, isEmpty);
+    expect(
+      find.text('Write times like 08:00-23:00, at most 4 a day.'),
+      findsOneWidget,
+    );
+  });
+
+  Finder dialogField(String label) => find.descendant(
+    of: find.bySubtype<SDialog>(),
+    matching: find.descendant(
+      of: textField(label),
+      matching: find.byType(EditableText),
+    ),
+  );
+
+  testWidgets('adds another location of the brand and opens it', (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..locationResult = const Ok((latitude: 32.85, longitude: 13.1));
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await chooseAction(tester, 'Add another location');
+    expect(find.text('New location of Sweet Coast'), findsOneWidget);
+    expect(
+      find.textContaining('name, photos, category, contact links'),
+      findsOneWidget,
+    );
+
+    // Nothing is sent without a location.
+    await tester.tap(find.text('Add location'));
+    await tester.pumpAndSettle();
+    expect(stores.addedLocations, isEmpty);
+
+    await tester.enterText(dialogField('Area'), 'Gargaresh');
+    await tester.enterText(
+      dialogField('Location'),
+      'https://maps.app.goo.gl/XyZ',
+    );
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+    await tester.enterText(dialogField('Thursday'), '10-22');
+    await tester.enterText(dialogField('Phone of this location'), '0947654321');
+    await tester.tap(find.text('Add location'));
+    await tester.pumpAndSettle();
+
+    final (brandId, location) = stores.addedLocations.single;
+    expect(brandId, 'store-1');
+    expect(location.place.city, City.tripoli);
+    expect(location.place.area, 'Gargaresh');
+    expect(location.place.latitude, 32.85);
+    expect(
+      location.place.openingHours,
+      const OpeningHours({
+        Weekday.thu: [OpeningShift(opens: 10 * 60, closes: 22 * 60)],
+      }),
+    );
+    expect(location.phone, '+218947654321');
+
+    expect(find.text('Location added'), findsOneWidget);
+    expect(find.bySubtype<SDialog>(), findsNothing);
+    expect(stores.opened.last, 'store-new');
+    expect(find.byType(StoreDetailsScreen), findsOneWidget);
+  });
+
+  testWidgets('a new location without a phone takes the brand\'s', (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository();
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await chooseAction(tester, 'Add another location');
+    await tester.enterText(dialogField('Location'), '32.8872, 13.1913');
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Add location'));
+    await tester.pumpAndSettle();
+
+    final (_, location) = stores.addedLocations.single;
+    expect(location.phone, isNull);
+    expect(location.place.area, isNull);
+    expect(location.place.openingHours, isEmpty);
+  });
+
+  testWidgets('says why a new location was refused', (tester) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..addLocationResult = const Err(
+        ValidationFailure([], code: LocationCodes.outsideLibya),
+      );
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await chooseAction(tester, 'Add another location');
+    await tester.enterText(dialogField('Location'), '32.8872, 13.1913');
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Add location'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('This location is outside Libya.'), findsOneWidget);
+    expect(find.text('New location of Sweet Coast'), findsOneWidget);
+    expect(stores.opened, ['store-1']);
   });
 }

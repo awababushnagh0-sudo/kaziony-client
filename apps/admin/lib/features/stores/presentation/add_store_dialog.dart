@@ -4,9 +4,10 @@ import 'package:stellar/stellar.dart';
 import '../../../core/l10n/generated/admin_localizations.dart';
 import '../domain/store.dart';
 import 'add_store_view_model.dart';
+import 'widgets/place_fields.dart';
 
-/// The form for a new store, its first branch and its owner's account.
-/// Pops with the created store.
+/// The form for a new store, its place and its owner's account. Pops with
+/// the created store.
 class AddStoreDialog extends AppView {
   const AddStoreDialog({super.key});
 
@@ -22,8 +23,6 @@ class AddStoreDialog extends AppView {
       final created = await viewModel.submit();
       if (created != null && context.mounted) Navigator.pop(context, created);
     }
-
-    final point = state.location;
 
     final error = switch (state) {
       AddStoreState(problem: AddStoreProblem.phoneTakenByCustomer) =>
@@ -85,56 +84,13 @@ class AddStoreDialog extends AppView {
               ),
             ),
             SFormSection(
-              title: s.sectionBranch,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SFieldGrid(
-                    children: [
-                      STextInput(
-                        controlName: 'branchName',
-                        label: s.branchName,
-                        hint: s.branchNameHint,
-                        required: true,
-                      ),
-                      SSelectInput<City>(
-                        controlName: 'city',
-                        label: s.branchCity,
-                        required: true,
-                        options: [
-                          for (final city in City.values)
-                            SelectOption(city, _cityName(s, city)),
-                        ],
-                      ),
-                      STextInput(controlName: 'area', label: s.branchArea),
-                      STextInput(
-                        controlName: 'address',
-                        label: s.branchAddress,
-                      ),
-                    ],
-                  ),
-                  const Gap(Space.lg),
-                  STextInput(
-                    controlName: 'location',
-                    label: s.branchLocation,
-                    hint: 'https://maps.google.com/...',
-                    helper: point == null
-                        ? s.branchLocationHelp
-                        : s.locationFound(
-                            point.latitude.toStringAsFixed(5),
-                            point.longitude.toStringAsFixed(5),
-                          ),
-                    kind: TextInputKind.url,
-                    required: true,
-                    validationMessages: {
-                      LocationErrors.unreadable: (_) => s.invalidLocation,
-                      LocationErrors.outsideLibya: (_) =>
-                          s.locationOutsideLibya,
-                      LocationErrors.unchecked: (_) => s.locationUnchecked,
-                    },
-                  ),
-                ],
-              ),
+              title: s.sectionPlace,
+              child: PlaceFields(form: viewModel.form),
+            ),
+            SFormSection(
+              title: s.sectionHours,
+              note: s.hoursNote,
+              child: const OpeningHoursFields(),
             ),
             SFormSection(
               title: s.sectionOwner,
@@ -169,7 +125,3 @@ class AddStoreDialog extends AppView {
     );
   }
 }
-
-String _cityName(AdminLocalizations s, City city) => switch (city) {
-  City.tripoli => s.cityTripoli,
-};

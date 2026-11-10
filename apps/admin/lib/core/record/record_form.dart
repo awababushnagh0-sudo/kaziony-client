@@ -78,10 +78,14 @@ abstract class RecordForm<T> extends ViewModel<RecordFormState> {
     }
   }
 
+  /// Whether any of the fields [names] differs from the saved record: for
+  /// a group of fields that's only sent when one of them changed.
+  @protected
+  bool differs(Iterable<String> names) =>
+      names.any((name) => _normal(form.control(name).value) != _saved[name]);
+
   void _compare() {
-    final changed = form.controls.keys.any(
-      (name) => _normal(form.control(name).value) != _saved[name],
-    );
+    final changed = differs(form.controls.keys);
     if (changed != state.changed) {
       state = RecordFormState(changed: changed, saving: state.saving);
     }

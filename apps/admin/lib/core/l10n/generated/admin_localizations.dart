@@ -365,7 +365,7 @@ abstract class AdminLocalizations {
   /// No description provided for @storesSearch.
   ///
   /// In en, this message translates to:
-  /// **'Search by name'**
+  /// **'Search by name or area'**
   String get storesSearch;
 
   /// No description provided for @filterAll.
@@ -397,12 +397,6 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'Category'**
   String get columnCategory;
-
-  /// No description provided for @columnBranches.
-  ///
-  /// In en, this message translates to:
-  /// **'Branches'**
-  String get columnBranches;
 
   /// No description provided for @columnStatus.
   ///
@@ -494,11 +488,17 @@ abstract class AdminLocalizations {
   /// **'Store'**
   String get sectionStore;
 
-  /// No description provided for @sectionBranch.
+  /// No description provided for @sectionPlace.
   ///
   /// In en, this message translates to:
-  /// **'First branch'**
-  String get sectionBranch;
+  /// **'Place'**
+  String get sectionPlace;
+
+  /// No description provided for @sectionHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening hours'**
+  String get sectionHours;
 
   /// No description provided for @sectionOwner.
   ///
@@ -659,7 +659,7 @@ abstract class AdminLocalizations {
   /// No description provided for @deleteStoreMessage.
   ///
   /// In en, this message translates to:
-  /// **'The store, its branches and its products are deleted for good. Its team keeps their accounts.'**
+  /// **'The store and its products are deleted for good. Its team keeps their accounts, and the brand\'s other places stay.'**
   String get deleteStoreMessage;
 
   /// No description provided for @storeDisabledDone.
@@ -686,23 +686,11 @@ abstract class AdminLocalizations {
   /// **'This store has offers, so it can\'t be deleted. Disable it instead.'**
   String get storeHasOffers;
 
-  /// No description provided for @branchName.
-  ///
-  /// In en, this message translates to:
-  /// **'Branch name'**
-  String get branchName;
-
-  /// No description provided for @branchNameHint.
-  ///
-  /// In en, this message translates to:
-  /// **'e.g. Hay Al Andalus'**
-  String get branchNameHint;
-
-  /// No description provided for @branchCity.
+  /// No description provided for @placeCity.
   ///
   /// In en, this message translates to:
   /// **'City'**
-  String get branchCity;
+  String get placeCity;
 
   /// No description provided for @cityTripoli.
   ///
@@ -710,29 +698,143 @@ abstract class AdminLocalizations {
   /// **'Tripoli'**
   String get cityTripoli;
 
-  /// No description provided for @branchArea.
+  /// No description provided for @placeArea.
   ///
   /// In en, this message translates to:
   /// **'Area'**
-  String get branchArea;
+  String get placeArea;
 
-  /// No description provided for @branchAddress.
+  /// No description provided for @placeAreaHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Hay Al Andalus'**
+  String get placeAreaHint;
+
+  /// No description provided for @placeAreaHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown with the store\'s name, so a brand\'s places can be told apart.'**
+  String get placeAreaHelp;
+
+  /// No description provided for @placeAddress.
   ///
   /// In en, this message translates to:
   /// **'Address'**
-  String get branchAddress;
+  String get placeAddress;
 
-  /// No description provided for @branchLocation.
+  /// No description provided for @placeLocation.
   ///
   /// In en, this message translates to:
   /// **'Location'**
-  String get branchLocation;
+  String get placeLocation;
 
-  /// No description provided for @branchLocationHelp.
+  /// No description provided for @placeLocationHelp.
   ///
   /// In en, this message translates to:
   /// **'Paste a Google Maps link, or coordinates like 32.8872, 13.1913'**
-  String get branchLocationHelp;
+  String get placeLocationHelp;
+
+  /// No description provided for @hoursNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Times like 08:00-23:00, or with a break 08:00-13:00, 16:00-23:00. Write - for a day closed; a day left empty isn\'t shown to customers.'**
+  String get hoursNote;
+
+  /// No description provided for @invalidHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Write times like 08:00-23:00, at most 4 a day.'**
+  String get invalidHours;
+
+  /// No description provided for @daySat.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday'**
+  String get daySat;
+
+  /// No description provided for @daySun.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunday'**
+  String get daySun;
+
+  /// No description provided for @dayMon.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get dayMon;
+
+  /// No description provided for @dayTue.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuesday'**
+  String get dayTue;
+
+  /// No description provided for @dayWed.
+  ///
+  /// In en, this message translates to:
+  /// **'Wednesday'**
+  String get dayWed;
+
+  /// No description provided for @dayThu.
+  ///
+  /// In en, this message translates to:
+  /// **'Thursday'**
+  String get dayThu;
+
+  /// No description provided for @dayFri.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday'**
+  String get dayFri;
+
+  /// No description provided for @addLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Add another location'**
+  String get addLocation;
+
+  /// No description provided for @addLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Same name, photos and owners, at another place'**
+  String get addLocationHint;
+
+  /// No description provided for @addLocationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New location of {store}'**
+  String addLocationTitle(String store);
+
+  /// No description provided for @addLocationNote.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s a store of its own, and gets this one\'s name, photos, category, contact links, pickup instructions and owners.'**
+  String get addLocationNote;
+
+  /// No description provided for @addLocationButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add location'**
+  String get addLocationButton;
+
+  /// No description provided for @locationPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone of this location'**
+  String get locationPhone;
+
+  /// No description provided for @locationPhoneHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave it empty to use this store\'s phone.'**
+  String get locationPhoneHelp;
+
+  /// No description provided for @locationAddedDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Location added'**
+  String get locationAddedDone;
 
   /// No description provided for @invalidLocation.
   ///
@@ -1148,11 +1250,11 @@ abstract class AdminLocalizations {
   /// **'Platform settings'**
   String get platformSettingsTitle;
 
-  /// No description provided for @platformBrowseSection.
+  /// No description provided for @platformOffersSection.
   ///
   /// In en, this message translates to:
-  /// **'Browsing offers'**
-  String get platformBrowseSection;
+  /// **'Offers and reservations'**
+  String get platformOffersSection;
 
   /// No description provided for @browseRadiusLabel.
   ///
@@ -1163,14 +1265,32 @@ abstract class AdminLocalizations {
   /// No description provided for @browseRadiusHint.
   ///
   /// In en, this message translates to:
-  /// **'Customers see offers from branches within this distance of them, {min} to {max} km. Takes effect right away.'**
+  /// **'Customers see offers from stores within this distance of them, {min} to {max} km. Takes effect right away.'**
   String browseRadiusHint(int min, int max);
 
   /// No description provided for @browseRadiusEditorHint.
   ///
   /// In en, this message translates to:
-  /// **'Customers see offers from branches within this distance of them. Only admins change it.'**
+  /// **'Customers see offers from stores within this distance of them. Only admins change it.'**
   String get browseRadiusEditorHint;
+
+  /// No description provided for @holdMinutesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold for pickup (minutes)'**
+  String get holdMinutesLabel;
+
+  /// No description provided for @holdMinutesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'How long a reservation waits for the customer to pick it up, {min} to {max} minutes, unless the offer ends first. Reservations already made keep theirs.'**
+  String holdMinutesHint(int min, int max);
+
+  /// No description provided for @holdMinutesEditorHint.
+  ///
+  /// In en, this message translates to:
+  /// **'How long a reservation waits for the customer to pick it up. Only admins change it.'**
+  String get holdMinutesEditorHint;
 
   /// No description provided for @platformAreasSection.
   ///
@@ -2102,17 +2222,11 @@ abstract class AdminLocalizations {
   /// **'Deleted a store'**
   String get activityStoreDelete;
 
-  /// No description provided for @activityStoreAddBranch.
+  /// No description provided for @activityStoreAddLocation.
   ///
   /// In en, this message translates to:
-  /// **'Added a branch'**
-  String get activityStoreAddBranch;
-
-  /// No description provided for @activityStoreUpdateBranch.
-  ///
-  /// In en, this message translates to:
-  /// **'Edited a branch'**
-  String get activityStoreUpdateBranch;
+  /// **'Added a location'**
+  String get activityStoreAddLocation;
 
   /// No description provided for @activityStoreAddMember.
   ///

@@ -39,10 +39,16 @@ enum Field {
   name,
   phone,
   email,
-  branchName,
   area,
   address,
   location,
+  saturday,
+  sunday,
+  monday,
+  tuesday,
+  wednesday,
+  thursday,
+  friday,
   owner,
   ownerPhone,
 }
@@ -73,8 +79,9 @@ void main() {
     await tester.pumpWidget(harness(FakeStoreRepository()));
     await tester.pumpAndSettle();
 
-    expect(find.text('Store 1'), findsOneWidget);
-    expect(find.text('Store 2'), findsOneWidget);
+    // Each with its area: a brand's places share the name.
+    expect(find.text('Store 1 · Area 1'), findsOneWidget);
+    expect(find.text('Store 2 · Area 2'), findsOneWidget);
     expect(find.text('Active'), findsWidgets);
     expect(find.text('Disabled'), findsWidgets);
     expect(find.text('2 stores'), findsOneWidget);
@@ -95,8 +102,8 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 400));
 
     expect(stores.queries.last.search, 'store 2');
-    expect(find.text('Store 1'), findsNothing);
-    expect(find.text('Store 2'), findsOneWidget);
+    expect(find.text('Store 1 · Area 1'), findsNothing);
+    expect(find.text('Store 2 · Area 2'), findsOneWidget);
   });
 
   testWidgets('filters by status', (tester) async {
@@ -144,7 +151,10 @@ void main() {
     await tester.tap(find.text('Sweets').last);
     await tester.pumpAndSettle();
     await type(tester, Field.email, 'hello@sahel.ly');
-    await type(tester, Field.branchName, 'حي الأندلس');
+    await type(tester, Field.area, ' حي الأندلس ');
+    await type(tester, Field.saturday, '8-13، 16-23');
+    await type(tester, Field.friday, '16:00 - 24');
+    await type(tester, Field.monday, 'all day');
     stores.locationResult = const Err(
       ValidationFailure([], code: LocationCodes.unreadable),
     );
@@ -157,7 +167,12 @@ void main() {
       find.textContaining("Couldn't read a location from this link"),
       findsOneWidget,
     );
+    expect(
+      find.text('Write times like 08:00-23:00, at most 4 a day.'),
+      findsOneWidget,
+    );
     expect(stores.created, isEmpty);
+    await type(tester, Field.monday, '');
 
     stores.locationResult = const Ok((latitude: 32.8872, longitude: 13.1913));
     await typeLocation(tester, 'https://maps.app.goo.gl/AbC123');
@@ -170,8 +185,21 @@ void main() {
     expect(store.name, 'حلويات الساحل');
     expect(store.categoryId, sampleCategory.id);
     expect(store.email, 'hello@sahel.ly');
-    expect(store.branch.city, City.tripoli);
-    expect(store.branch.latitude, 32.8872);
+    expect(store.place.city, City.tripoli);
+    expect(store.place.area, 'حي الأندلس');
+    expect(store.place.address, isNull);
+    expect(store.place.latitude, 32.8872);
+    expect(store.place.longitude, 13.1913);
+    expect(
+      store.place.openingHours,
+      const OpeningHours({
+        Weekday.sat: [
+          OpeningShift(opens: 8 * 60, closes: 13 * 60),
+          OpeningShift(opens: 16 * 60, closes: 23 * 60),
+        ],
+        Weekday.fri: [OpeningShift(opens: 16 * 60, closes: 0)],
+      }),
+    );
     expect(store.ownerPhone, '+218912345678');
 
     expect(find.text('Store created'), findsOneWidget);
@@ -201,7 +229,6 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Sweets').last);
     await tester.pumpAndSettle();
-    await type(tester, Field.branchName, 'Center');
     await typeLocation(tester, '32.8872, 13.1913');
     await type(tester, Field.owner, 'Sara');
     await type(tester, Field.ownerPhone, '0921234567');
@@ -213,6 +240,35 @@ void main() {
       findsOneWidget,
     );
     // The dialog stays open with what was typed.
+    expect(find.text('New store'), findsOneWidget);
+  });
+
+  testWidgets('says so when the store is refused for being outside Libya', (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..createResult = const Err(
+        ValidationFailure([], code: LocationCodes.outsideLibya),
+      );
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Add store'));
+    await tester.pumpAndSettle();
+    await type(tester, Field.name, 'Cafe');
+    await tester.tap(find.bySubtype<SSelectInput<String>>());
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Sweets').last);
+    await tester.pumpAndSettle();
+    await typeLocation(tester, '32.8872, 13.1913');
+    await type(tester, Field.owner, 'Sara');
+    await type(tester, Field.ownerPhone, '0921234567');
+    await tester.tap(find.text('Create store'));
+    await tester.pumpAndSettle();
+
+    expect(stores.created, hasLength(1));
+    expect(find.text('This location is outside Libya.'), findsOneWidget);
     expect(find.text('New store'), findsOneWidget);
   });
 

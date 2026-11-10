@@ -6,13 +6,16 @@ import '../../../core/providers/access.dart';
 import '../../../core/record/record_screen.dart';
 import '../../../core/routes/routes.dart';
 import '../domain/store.dart';
+import 'add_location_dialog.dart';
 import 'add_store_view_model.dart';
 import 'store_details_view_model.dart';
 import 'store_form_view_model.dart';
+import 'widgets/place_fields.dart';
 
-/// One store, ERPNext-style: "Stores / name" with its status and an
-/// actions menu, tabs of fields, and a side panel with its logo and key
-/// facts. The fields are edited in place (see [RecordScreen]).
+/// One store, ERPNext-style: "Stores / name · area" with its status and an
+/// actions menu, tabs of fields (its place among them), and a side panel
+/// with its logo and key facts. The fields are edited in place (see
+/// [RecordScreen]).
 class StoreDetailsScreen extends AppStatefulView {
   const StoreDetailsScreen({required this.storeId, super.key});
 
@@ -34,7 +37,7 @@ class _StoreDetailsScreenState extends AppViewState<StoreDetailsScreen> {
     if (!active) {
       final confirmed = await SDialog.confirm(
         context,
-        title: s.disableStoreTitle(store.name),
+        title: s.disableStoreTitle(store.label),
         message: s.disableStoreMessage,
         confirmLabel: s.disableStore,
         destructive: true,
@@ -60,7 +63,7 @@ class _StoreDetailsScreenState extends AppViewState<StoreDetailsScreen> {
     final s = AdminLocalizations.of(context);
     final confirmed = await SDialog.confirm(
       context,
-      title: s.deleteStoreTitle(store.name),
+      title: s.deleteStoreTitle(store.label),
       message: s.deleteStoreMessage,
       confirmLabel: s.deleteStore,
       destructive: true,
@@ -84,6 +87,19 @@ class _StoreDetailsScreenState extends AppViewState<StoreDetailsScreen> {
     }
   }
 
+  /// Opens the new store's page once it's added.
+  Future<void> _addLocation(StoreDetails store) async {
+    final s = AdminLocalizations.of(context);
+    final added = await SDialog.show<StoreDetails>(
+      context,
+      (_) => AddLocationDialog(store: store),
+      dismissible: false,
+    );
+    if (added == null || !mounted) return;
+    SSnack.success(context, s.locationAddedDone);
+    context.go(Routes.store(added.id));
+  }
+
   @override
   Widget build(BuildContext context) {
     final s = AdminLocalizations.of(context);
@@ -94,13 +110,14 @@ class _StoreDetailsScreenState extends AppViewState<StoreDetailsScreen> {
         label: s.storesTitle,
         onTap: () => context.go(Routes.stores),
       ),
-      title: (store) => store.name,
+      title: (store) => store.label,
       status: (store) => _StatusBadge(active: store.isActive),
       actions: (store) => [
         _ActionsMenu(
           store: store,
           busy: _busy,
           canDelete: ref.watch(isAdminProvider),
+          onAddLocation: () => _addLocation(store),
           onSetActive: (active) => _setActive(store, active: active),
           onDelete: () => _delete(store),
         ),
@@ -116,6 +133,7 @@ class _ActionsMenu extends StatelessWidget {
     required this.store,
     required this.busy,
     required this.canDelete,
+    required this.onAddLocation,
     required this.onSetActive,
     required this.onDelete,
   });
@@ -125,6 +143,7 @@ class _ActionsMenu extends StatelessWidget {
 
   /// Only admins delete stores.
   final bool canDelete;
+  final VoidCallback onAddLocation;
   final ValueChanged<bool> onSetActive;
   final VoidCallback onDelete;
 
@@ -132,8 +151,15 @@ class _ActionsMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = AdminLocalizations.of(context);
     return SMenuButton(
-      width: 240,
+      width: 260,
       entries: [
+        MenuEntry(
+          label: s.addLocation,
+          description: s.addLocationHint,
+          icon: SIcons.location,
+          onTap: onAddLocation,
+        ),
+        null,
         if (store.isActive)
           MenuEntry(
             label: s.disableStore,
@@ -173,6 +199,7 @@ class _StoreRecord extends AppView {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = AdminLocalizations.of(context);
     final locale = Localizations.localeOf(context);
+    final form = ref.read(storeFormViewModel(store.id).notifier).form;
     // The store's own category stays listed even if it was hidden since.
     final categories = [
       store.category,
@@ -213,6 +240,24 @@ class _StoreRecord extends AppView {
                 ),
               ],
             ),
+          ),
+        ),
+        RecordTab(
+          label: s.sectionPlace,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SFormSection(
+                title: s.sectionPlace,
+                child: PlaceFields(form: form, columns: 3),
+              ),
+              SFormSection(
+                title: s.sectionHours,
+                note: s.hoursNote,
+                divider: false,
+                child: const OpeningHoursFields(columns: 4),
+              ),
+            ],
           ),
         ),
         RecordTab(
@@ -258,7 +303,6 @@ class _StoreRecord extends AppView {
           imageUrl: store.logoUrl,
         ),
         SRecordFacts([
-          RecordFact(s.columnBranches, '${store.branchCount}'),
           RecordFact(s.storeTeam, '${store.teamCount}'),
           RecordFact(s.storeRating, switch (store.ratingAverage) {
             final average? when store.ratingCount > 0 => s.ratingSummary(

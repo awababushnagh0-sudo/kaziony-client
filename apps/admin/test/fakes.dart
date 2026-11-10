@@ -93,10 +93,18 @@ StoreSummary sampleStore(int n, {bool active = true}) => StoreSummary(
   id: 'store-$n',
   name: 'Store $n',
   category: sampleCategory,
-  branchCount: n,
+  area: 'Area $n',
   isActive: active,
   createdAt: DateTime.utc(2026, 10, n),
 );
+
+const sampleHours = OpeningHours({
+  Weekday.sat: [
+    OpeningShift(opens: 8 * 60, closes: 13 * 60),
+    OpeningShift(opens: 16 * 60, closes: 23 * 60),
+  ],
+  Weekday.fri: [OpeningShift(opens: 16 * 60, closes: 23 * 60)],
+});
 
 StoreDetails sampleDetails(String id, {bool active = true}) => StoreDetails(
   id: id,
@@ -104,7 +112,12 @@ StoreDetails sampleDetails(String id, {bool active = true}) => StoreDetails(
   category: sampleCategory,
   isActive: active,
   createdAt: DateTime.utc(2026, 10, 15, 12),
-  branchCount: 2,
+  city: City.tripoli,
+  area: 'Hay Al Andalus',
+  address: 'Jaraba Street',
+  latitude: 32.8872,
+  longitude: 13.1913,
+  openingHours: sampleHours,
   teamCount: 3,
   ratingAverage: 4.5,
   ratingCount: 37,
@@ -131,6 +144,8 @@ class FakeStoreRepository implements StoreRepository {
   ));
   final created = <NewStore>[];
   Result<CreatedStore>? createResult;
+  final addedLocations = <(String, NewLocation)>[];
+  Result<StoreDetails>? addLocationResult;
 
   @override
   Future<Result<StorePage>> list(StoreQuery query) async {
@@ -152,6 +167,8 @@ class FakeStoreRepository implements StoreRepository {
   @override
   Future<Result<StoreDetails>> update(String id, EditedStore store) async {
     updates.add((id, store));
+    final saved = sampleDetails(id);
+    final place = store.place;
     return updateResult ??
         Ok(
           StoreDetails(
@@ -159,8 +176,13 @@ class FakeStoreRepository implements StoreRepository {
             name: store.name,
             category: sampleCategory,
             isActive: true,
-            createdAt: DateTime.utc(2026, 10, 15, 12),
-            branchCount: 2,
+            createdAt: saved.createdAt,
+            city: place?.city ?? saved.city,
+            area: place == null ? saved.area : place.area,
+            address: place == null ? saved.address : place.address,
+            latitude: place?.latitude ?? saved.latitude,
+            longitude: place?.longitude ?? saved.longitude,
+            openingHours: place?.openingHours ?? saved.openingHours,
             teamCount: 3,
             ratingCount: 0,
             pickupInstructions: store.pickupInstructions,
@@ -207,6 +229,35 @@ class FakeStoreRepository implements StoreRepository {
             storeName: store.name,
             ownerPhone: store.ownerPhone,
             temporaryPassword: 'Tmp-4821-xk',
+          ),
+        );
+  }
+
+  @override
+  Future<Result<StoreDetails>> addLocation(
+    String storeId,
+    NewLocation location,
+  ) async {
+    addedLocations.add((storeId, location));
+    final place = location.place;
+    final brand = sampleDetails(storeId);
+    return addLocationResult ??
+        Ok(
+          StoreDetails(
+            id: 'store-new',
+            name: brand.name,
+            category: brand.category,
+            isActive: true,
+            createdAt: DateTime.utc(2026, 11, 10, 12),
+            city: place.city,
+            area: place.area,
+            address: place.address,
+            latitude: place.latitude,
+            longitude: place.longitude,
+            openingHours: place.openingHours,
+            teamCount: 1,
+            ratingCount: 0,
+            phone: location.phone ?? brand.phone,
           ),
         );
   }
@@ -325,7 +376,10 @@ class FakeDashboardUserRepository implements DashboardUserRepository {
 }
 
 class FakePlatformSettingsRepository implements PlatformSettingsRepository {
-  PlatformSettings saved = const PlatformSettings(browseRadiusKm: 25);
+  PlatformSettings saved = const PlatformSettings(
+    browseRadiusKm: 25,
+    holdMinutes: 120,
+  );
   final updates = <PlatformSettings>[];
 
   @override

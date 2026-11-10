@@ -182,7 +182,7 @@ class AdminLocalizationsAr extends AdminLocalizations {
   }
 
   @override
-  String get storesSearch => 'ابحث بالاسم';
+  String get storesSearch => 'ابحث بالاسم أو المنطقة';
 
   @override
   String get filterAll => 'الكل';
@@ -198,9 +198,6 @@ class AdminLocalizationsAr extends AdminLocalizations {
 
   @override
   String get columnCategory => 'التصنيف';
-
-  @override
-  String get columnBranches => 'الفروع';
 
   @override
   String get columnStatus => 'الحالة';
@@ -250,7 +247,10 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get sectionStore => 'المتجر';
 
   @override
-  String get sectionBranch => 'الفرع الأول';
+  String get sectionPlace => 'المكان';
+
+  @override
+  String get sectionHours => 'أوقات العمل';
 
   @override
   String get sectionOwner => 'حساب صاحب المتجر';
@@ -338,7 +338,7 @@ class AdminLocalizationsAr extends AdminLocalizations {
 
   @override
   String get deleteStoreMessage =>
-      'سيُحذف المتجر وفروعه ومنتجاته نهائيًا، ويحتفظ فريقه بحساباتهم.';
+      'سيُحذف المتجر ومنتجاته نهائيًا، ويحتفظ فريقه بحساباتهم، وتبقى فروع العلامة الأخرى.';
 
   @override
   String get storeDisabledDone => 'أُوقف المتجر';
@@ -354,29 +354,86 @@ class AdminLocalizationsAr extends AdminLocalizations {
       'لهذا المتجر عروض، لذا لا يمكن حذفه. أوقفه بدلًا من ذلك.';
 
   @override
-  String get branchName => 'اسم الفرع';
-
-  @override
-  String get branchNameHint => 'مثلاً: حي الأندلس';
-
-  @override
-  String get branchCity => 'المدينة';
+  String get placeCity => 'المدينة';
 
   @override
   String get cityTripoli => 'طرابلس';
 
   @override
-  String get branchArea => 'المنطقة';
+  String get placeArea => 'المنطقة';
 
   @override
-  String get branchAddress => 'العنوان';
+  String get placeAreaHint => 'مثلاً: حي الأندلس';
 
   @override
-  String get branchLocation => 'الموقع';
+  String get placeAreaHelp =>
+      'تظهر مع اسم المتجر، فتُميّز فروع العلامة الواحدة عن بعضها.';
 
   @override
-  String get branchLocationHelp =>
+  String get placeAddress => 'العنوان';
+
+  @override
+  String get placeLocation => 'الموقع';
+
+  @override
+  String get placeLocationHelp =>
       'الصق رابط خرائط Google، أو الإحداثيات مثل 32.8872, 13.1913';
+
+  @override
+  String get hoursNote =>
+      'اكتب الأوقات مثل 08:00-23:00، ومع استراحة 08:00-13:00، 16:00-23:00. اكتب - ليوم الإغلاق، واليوم الفارغ لا يظهر للزبائن.';
+
+  @override
+  String get invalidHours =>
+      'اكتب الأوقات مثل 08:00-23:00، وحتى 4 فترات في اليوم.';
+
+  @override
+  String get daySat => 'السبت';
+
+  @override
+  String get daySun => 'الأحد';
+
+  @override
+  String get dayMon => 'الاثنين';
+
+  @override
+  String get dayTue => 'الثلاثاء';
+
+  @override
+  String get dayWed => 'الأربعاء';
+
+  @override
+  String get dayThu => 'الخميس';
+
+  @override
+  String get dayFri => 'الجمعة';
+
+  @override
+  String get addLocation => 'إضافة فرع آخر';
+
+  @override
+  String get addLocationHint => 'بنفس الاسم والصور والمالكين في مكان آخر';
+
+  @override
+  String addLocationTitle(String store) {
+    return 'فرع جديد لـ $store';
+  }
+
+  @override
+  String get addLocationNote =>
+      'الفرع متجر مستقل، يأخذ من هذا المتجر الاسم والصور والتصنيف وروابط التواصل وتعليمات الاستلام والمالكين.';
+
+  @override
+  String get addLocationButton => 'إضافة الفرع';
+
+  @override
+  String get locationPhone => 'هاتف الفرع';
+
+  @override
+  String get locationPhoneHelp => 'اتركه فارغًا ليأخذ هاتف هذا المتجر.';
+
+  @override
+  String get locationAddedDone => 'أُضيف الفرع';
 
   @override
   String get invalidLocation =>
@@ -620,19 +677,31 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get platformSettingsTitle => 'إعدادات المنصة';
 
   @override
-  String get platformBrowseSection => 'تصفح العروض';
+  String get platformOffersSection => 'العروض والحجوزات';
 
   @override
   String get browseRadiusLabel => 'نطاق العروض (كم)';
 
   @override
   String browseRadiusHint(int min, int max) {
-    return 'يرى الزبون عروض الفروع القريبة منه ضمن هذه المسافة، من $min إلى $max كم. يسري فورًا.';
+    return 'يرى الزبون عروض المتاجر القريبة منه ضمن هذه المسافة، من $min إلى $max كم. يسري فورًا.';
   }
 
   @override
   String get browseRadiusEditorHint =>
-      'يرى الزبون عروض الفروع القريبة منه ضمن هذه المسافة. يغيّرها المدير فقط.';
+      'يرى الزبون عروض المتاجر القريبة منه ضمن هذه المسافة. يغيّرها المدير فقط.';
+
+  @override
+  String get holdMinutesLabel => 'مدة الحجز للاستلام (دقائق)';
+
+  @override
+  String holdMinutesHint(int min, int max) {
+    return 'كم ينتظر الحجز الزبون حتى يستلم، من $min إلى $max دقيقة، إلا إذا انتهى العرض قبلها. الحجوزات الحالية تبقى على مدتها.';
+  }
+
+  @override
+  String get holdMinutesEditorHint =>
+      'كم ينتظر الحجز الزبون حتى يستلم. يغيّرها المدير فقط.';
 
   @override
   String get platformAreasSection => 'مناطق الخدمة';
@@ -1239,10 +1308,7 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get activityStoreDelete => 'حذف متجر';
 
   @override
-  String get activityStoreAddBranch => 'إضافة فرع';
-
-  @override
-  String get activityStoreUpdateBranch => 'تعديل فرع';
+  String get activityStoreAddLocation => 'إضافة فرع';
 
   @override
   String get activityStoreAddMember => 'إضافة شخص إلى متجر';

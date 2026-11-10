@@ -23,9 +23,9 @@ class PlatformSettingsScreen extends AppView {
       builder: (context, _) => SRecordPage(
         tabs: [
           RecordTab(
-            label: s.platformBrowseSection,
+            label: s.platformOffersSection,
             child: SFormSection(
-              title: s.platformBrowseSection,
+              title: s.platformOffersSection,
               divider: false,
               child: SFieldGrid(
                 columns: 3,
@@ -39,6 +39,15 @@ class PlatformSettingsScreen extends AppView {
                             maxBrowseRadiusKm,
                           )
                         : s.browseRadiusEditorHint,
+                    kind: TextInputKind.number,
+                    required: true,
+                  ),
+                  STextInput(
+                    controlName: 'holdMinutes',
+                    label: s.holdMinutesLabel,
+                    helper: isAdmin
+                        ? s.holdMinutesHint(minHoldMinutes, maxHoldMinutes)
+                        : s.holdMinutesEditorHint,
                     kind: TextInputKind.number,
                     required: true,
                   ),

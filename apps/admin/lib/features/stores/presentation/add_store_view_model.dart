@@ -3,33 +3,17 @@ import 'package:stellar/stellar.dart';
 
 import '../domain/location.dart';
 import '../domain/store.dart';
+import 'location_lookup.dart';
+import 'place_form.dart';
 
 enum AddStoreProblem { phoneTakenByCustomer }
 
 class AddStoreState {
-  const AddStoreState({
-    this.submitting = false,
-    this.problem,
-    this.failure,
-    this.location,
-  });
+  const AddStoreState({this.submitting = false, this.problem, this.failure});
 
   final bool submitting;
   final AddStoreProblem? problem;
   final AppFailure? failure;
-
-  /// The point the backend read from the location field, shown under it so
-  /// the admin can check it.
-  final LatLng? location;
-}
-
-/// Validation error keys for the location field.
-abstract final class LocationErrors {
-  static const unreadable = 'location';
-  static const outsideLibya = 'outsideLibya';
-
-  /// The backend couldn't be reached; submitting checks again.
-  static const unchecked = 'unchecked';
 }
 
 class AddStoreViewModel extends ViewModel<AddStoreState> {
@@ -46,24 +30,7 @@ class AddStoreViewModel extends ViewModel<AddStoreState> {
       'email': FormControl<String>(
         validators: [SValidators.email, Validators.maxLength(255)],
       ),
-      'branchName': FormControl<String>(
-        validators: [Validators.required, Validators.maxLength(100)],
-      ),
-      // Almost every store starts in Tripoli.
-      'city': FormControl<City>(
-        value: City.tripoli,
-        validators: [Validators.required],
-      ),
-      'area': FormControl<String>(validators: [Validators.maxLength(100)]),
-      'address': FormControl<String>(validators: [Validators.maxLength(255)]),
-      // The backend reads the point, following short links to the map. The
-      // field shows a spinner meanwhile.
-      'location': FormControl<String>(
-        validators: [Validators.required],
-        asyncValidators: [
-          Validators.debounced(Validators.delegateAsync(_readLocation), 600),
-        ],
-      ),
+      ...placeControls(ref),
       'ownerName': FormControl<String>(
         validators: [Validators.required, Validators.maxLength(100)],
       ),
@@ -75,61 +42,18 @@ class AddStoreViewModel extends ViewModel<AddStoreState> {
     return const AddStoreState();
   }
 
-  Future<Map<String, dynamic>?> _readLocation(
-    AbstractControl<dynamic> control,
-  ) async {
-    final link = (control.value as String?)?.trim() ?? '';
-    _showLocation(null);
-    if (link.isEmpty) return null;
-    final result = await ref
-        .read(storeRepositoryProvider)
-        .resolveLocation(link);
-    // Typed on meanwhile: this answer is for an older link.
-    if (!ref.mounted || (control.value as String?)?.trim() != link) {
-      return null;
-    }
-    if (result is Err) {
-      // The admin is watching the spinner: say why right away, without
-      // waiting for them to leave the field.
-      control.markAsTouched();
-    }
-    switch (result) {
-      case Ok(:final value):
-        _showLocation(value);
-        return null;
-      case Err(failure: ValidationFailure(code: LocationCodes.outsideLibya)):
-        return {LocationErrors.outsideLibya: true};
-      case Err(failure: ValidationFailure()):
-        return {LocationErrors.unreadable: true};
-      case Err():
-        return {LocationErrors.unchecked: true};
-    }
-  }
-
-  void _showLocation(LatLng? location) => state = AddStoreState(
-    submitting: state.submitting,
-    problem: state.problem,
-    failure: state.failure,
-    location: location,
-  );
-
   /// The created store, or null when the form is invalid or saving failed
-  /// (the state then says why).
+  /// (the state or the form then says why).
   Future<CreatedStore?> submit() async {
     if (state.submitting) return null;
-    state = AddStoreState(submitting: true, location: state.location);
+    state = const AddStoreState(submitting: true);
     final location = form.control('location');
-    if (location.hasError(LocationErrors.unchecked)) {
-      location.updateValueAndValidity();
-    }
-    if (location.pending) {
-      await location.statusChanged.firstWhere((_) => !location.pending);
-      if (!ref.mounted) return null;
-    }
-    final point = state.location;
-    if (form.invalid || point == null) {
+    await settleLocation(location);
+    if (!ref.mounted) return null;
+    final place = readPlace(form);
+    if (form.invalid || place == null) {
       form.markAllAsTouched();
-      state = AddStoreState(location: point);
+      state = const AddStoreState();
       return null;
     }
 
@@ -147,14 +71,7 @@ class AddStoreViewModel extends ViewModel<AddStoreState> {
             categoryId: form.control('categoryId').value as String,
             phone: phone == null ? null : normalizeLibyanPhone(phone),
             email: text('email'),
-            branch: NewBranch(
-              name: text('branchName')!,
-              city: form.control('city').value as City,
-              area: text('area'),
-              address: text('address'),
-              latitude: point.latitude,
-              longitude: point.longitude,
-            ),
+            place: place,
             ownerName: text('ownerName')!,
             ownerPhone: normalizeLibyanPhone(text('ownerPhone')!)!,
           ),
@@ -167,12 +84,14 @@ class AddStoreViewModel extends ViewModel<AddStoreState> {
         return value;
       // The only conflict: the owner's phone is a customer's account.
       case Err(failure: ConflictFailure()):
-        state = AddStoreState(
+        state = const AddStoreState(
           problem: AddStoreProblem.phoneTakenByCustomer,
-          location: point,
         );
+      case Err(failure: ValidationFailure(code: LocationCodes.outsideLibya)):
+        showOutsideLibya(location);
+        state = const AddStoreState();
       case Err(:final failure):
-        state = AddStoreState(failure: failure, location: point);
+        state = AddStoreState(failure: failure);
     }
     return null;
   }

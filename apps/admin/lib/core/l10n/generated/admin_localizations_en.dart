@@ -177,7 +177,7 @@ class AdminLocalizationsEn extends AdminLocalizations {
   }
 
   @override
-  String get storesSearch => 'Search by name';
+  String get storesSearch => 'Search by name or area';
 
   @override
   String get filterAll => 'All';
@@ -193,9 +193,6 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get columnCategory => 'Category';
-
-  @override
-  String get columnBranches => 'Branches';
 
   @override
   String get columnStatus => 'Status';
@@ -246,7 +243,10 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get sectionStore => 'Store';
 
   @override
-  String get sectionBranch => 'First branch';
+  String get sectionPlace => 'Place';
+
+  @override
+  String get sectionHours => 'Opening hours';
 
   @override
   String get sectionOwner => 'Owner account';
@@ -334,7 +334,7 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get deleteStoreMessage =>
-      'The store, its branches and its products are deleted for good. Its team keeps their accounts.';
+      'The store and its products are deleted for good. Its team keeps their accounts, and the brand\'s other places stay.';
 
   @override
   String get storeDisabledDone => 'Store disabled';
@@ -350,29 +350,86 @@ class AdminLocalizationsEn extends AdminLocalizations {
       'This store has offers, so it can\'t be deleted. Disable it instead.';
 
   @override
-  String get branchName => 'Branch name';
-
-  @override
-  String get branchNameHint => 'e.g. Hay Al Andalus';
-
-  @override
-  String get branchCity => 'City';
+  String get placeCity => 'City';
 
   @override
   String get cityTripoli => 'Tripoli';
 
   @override
-  String get branchArea => 'Area';
+  String get placeArea => 'Area';
 
   @override
-  String get branchAddress => 'Address';
+  String get placeAreaHint => 'e.g. Hay Al Andalus';
 
   @override
-  String get branchLocation => 'Location';
+  String get placeAreaHelp =>
+      'Shown with the store\'s name, so a brand\'s places can be told apart.';
 
   @override
-  String get branchLocationHelp =>
+  String get placeAddress => 'Address';
+
+  @override
+  String get placeLocation => 'Location';
+
+  @override
+  String get placeLocationHelp =>
       'Paste a Google Maps link, or coordinates like 32.8872, 13.1913';
+
+  @override
+  String get hoursNote =>
+      'Times like 08:00-23:00, or with a break 08:00-13:00, 16:00-23:00. Write - for a day closed; a day left empty isn\'t shown to customers.';
+
+  @override
+  String get invalidHours => 'Write times like 08:00-23:00, at most 4 a day.';
+
+  @override
+  String get daySat => 'Saturday';
+
+  @override
+  String get daySun => 'Sunday';
+
+  @override
+  String get dayMon => 'Monday';
+
+  @override
+  String get dayTue => 'Tuesday';
+
+  @override
+  String get dayWed => 'Wednesday';
+
+  @override
+  String get dayThu => 'Thursday';
+
+  @override
+  String get dayFri => 'Friday';
+
+  @override
+  String get addLocation => 'Add another location';
+
+  @override
+  String get addLocationHint =>
+      'Same name, photos and owners, at another place';
+
+  @override
+  String addLocationTitle(String store) {
+    return 'New location of $store';
+  }
+
+  @override
+  String get addLocationNote =>
+      'It\'s a store of its own, and gets this one\'s name, photos, category, contact links, pickup instructions and owners.';
+
+  @override
+  String get addLocationButton => 'Add location';
+
+  @override
+  String get locationPhone => 'Phone of this location';
+
+  @override
+  String get locationPhoneHelp => 'Leave it empty to use this store\'s phone.';
+
+  @override
+  String get locationAddedDone => 'Location added';
 
   @override
   String get invalidLocation =>
@@ -616,19 +673,31 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get platformSettingsTitle => 'Platform settings';
 
   @override
-  String get platformBrowseSection => 'Browsing offers';
+  String get platformOffersSection => 'Offers and reservations';
 
   @override
   String get browseRadiusLabel => 'Offer radius (km)';
 
   @override
   String browseRadiusHint(int min, int max) {
-    return 'Customers see offers from branches within this distance of them, $min to $max km. Takes effect right away.';
+    return 'Customers see offers from stores within this distance of them, $min to $max km. Takes effect right away.';
   }
 
   @override
   String get browseRadiusEditorHint =>
-      'Customers see offers from branches within this distance of them. Only admins change it.';
+      'Customers see offers from stores within this distance of them. Only admins change it.';
+
+  @override
+  String get holdMinutesLabel => 'Hold for pickup (minutes)';
+
+  @override
+  String holdMinutesHint(int min, int max) {
+    return 'How long a reservation waits for the customer to pick it up, $min to $max minutes, unless the offer ends first. Reservations already made keep theirs.';
+  }
+
+  @override
+  String get holdMinutesEditorHint =>
+      'How long a reservation waits for the customer to pick it up. Only admins change it.';
 
   @override
   String get platformAreasSection => 'Service areas';
@@ -1219,10 +1288,7 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get activityStoreDelete => 'Deleted a store';
 
   @override
-  String get activityStoreAddBranch => 'Added a branch';
-
-  @override
-  String get activityStoreUpdateBranch => 'Edited a branch';
+  String get activityStoreAddLocation => 'Added a location';
 
   @override
   String get activityStoreAddMember => 'Added someone to a store';

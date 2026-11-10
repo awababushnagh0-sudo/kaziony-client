@@ -93,13 +93,12 @@
       }
     }
   },
-  "storesSearch": "Search by name",
+  "storesSearch": "Search by name or area",
   "filterAll": "All",
   "filterActive": "Active",
   "filterDisabled": "Disabled",
   "columnName": "Name",
   "columnCategory": "Category",
-  "columnBranches": "Branches",
   "columnStatus": "Status",
   "columnAdded": "Added",
   "storeActive": "Active",
@@ -125,7 +124,8 @@
   "addStoreTitle": "New store",
   "createStore": "Create store",
   "sectionStore": "Store",
-  "sectionBranch": "First branch",
+  "sectionPlace": "Place",
+  "sectionHours": "Opening hours",
   "sectionOwner": "Owner account",
   "storeName": "Store name",
   "storeCategory": "Category",
@@ -166,19 +166,43 @@
       }
     }
   },
-  "deleteStoreMessage": "The store, its branches and its products are deleted for good. Its team keeps their accounts.",
+  "deleteStoreMessage": "The store and its products are deleted for good. Its team keeps their accounts, and the brand's other places stay.",
   "storeDisabledDone": "Store disabled",
   "storeEnabledDone": "Store enabled",
   "storeDeletedDone": "Store deleted",
   "storeHasOffers": "This store has offers, so it can't be deleted. Disable it instead.",
-  "branchName": "Branch name",
-  "branchNameHint": "e.g. Hay Al Andalus",
-  "branchCity": "City",
+  "placeCity": "City",
   "cityTripoli": "Tripoli",
-  "branchArea": "Area",
-  "branchAddress": "Address",
-  "branchLocation": "Location",
-  "branchLocationHelp": "Paste a Google Maps link, or coordinates like 32.8872, 13.1913",
+  "placeArea": "Area",
+  "placeAreaHint": "e.g. Hay Al Andalus",
+  "placeAreaHelp": "Shown with the store's name, so a brand's places can be told apart.",
+  "placeAddress": "Address",
+  "placeLocation": "Location",
+  "placeLocationHelp": "Paste a Google Maps link, or coordinates like 32.8872, 13.1913",
+  "hoursNote": "Times like 08:00-23:00, or with a break 08:00-13:00, 16:00-23:00. Write - for a day closed; a day left empty isn't shown to customers.",
+  "invalidHours": "Write times like 08:00-23:00, at most 4 a day.",
+  "daySat": "Saturday",
+  "daySun": "Sunday",
+  "dayMon": "Monday",
+  "dayTue": "Tuesday",
+  "dayWed": "Wednesday",
+  "dayThu": "Thursday",
+  "dayFri": "Friday",
+  "addLocation": "Add another location",
+  "addLocationHint": "Same name, photos and owners, at another place",
+  "addLocationTitle": "New location of {store}",
+  "@addLocationTitle": {
+    "placeholders": {
+      "store": {
+        "type": "String"
+      }
+    }
+  },
+  "addLocationNote": "It's a store of its own, and gets this one's name, photos, category, contact links, pickup instructions and owners.",
+  "addLocationButton": "Add location",
+  "locationPhone": "Phone of this location",
+  "locationPhoneHelp": "Leave it empty to use this store's phone.",
+  "locationAddedDone": "Location added",
   "invalidLocation": "Couldn't read a location from this link. Paste a Google Maps link or the coordinates.",
   "locationOutsideLibya": "This location is outside Libya.",
   "locationFound": "Location found: {latitude}, {longitude}",
@@ -307,9 +331,9 @@
   "languageEnglish": "English",
   "navPlatform": "Platform settings",
   "platformSettingsTitle": "Platform settings",
-  "platformBrowseSection": "Browsing offers",
+  "platformOffersSection": "Offers and reservations",
   "browseRadiusLabel": "Offer radius (km)",
-  "browseRadiusHint": "Customers see offers from branches within this distance of them, {min} to {max} km. Takes effect right away.",
+  "browseRadiusHint": "Customers see offers from stores within this distance of them, {min} to {max} km. Takes effect right away.",
   "@browseRadiusHint": {
     "placeholders": {
       "min": {
@@ -320,7 +344,20 @@
       }
     }
   },
-  "browseRadiusEditorHint": "Customers see offers from branches within this distance of them. Only admins change it.",
+  "browseRadiusEditorHint": "Customers see offers from stores within this distance of them. Only admins change it.",
+  "holdMinutesLabel": "Hold for pickup (minutes)",
+  "holdMinutesHint": "How long a reservation waits for the customer to pick it up, {min} to {max} minutes, unless the offer ends first. Reservations already made keep theirs.",
+  "@holdMinutesHint": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "holdMinutesEditorHint": "How long a reservation waits for the customer to pick it up. Only admins change it.",
   "platformAreasSection": "Service areas",
   "serviceAreasHelp": "Customers can only browse offers from inside these circles; the app draws them on its map.",
   "addServiceArea": "Add area",
@@ -814,8 +851,7 @@
   "activityStoreCreate": "Added a store",
   "activityStoreUpdate": "Edited a store",
   "activityStoreDelete": "Deleted a store",
-  "activityStoreAddBranch": "Added a branch",
-  "activityStoreUpdateBranch": "Edited a branch",
+  "activityStoreAddLocation": "Added a location",
   "activityStoreAddMember": "Added someone to a store",
   "activityStoreRemoveMember": "Removed someone from a store",
   "activityUserCreate": "Added a team member",

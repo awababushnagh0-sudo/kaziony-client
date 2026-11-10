@@ -2,10 +2,17 @@ import 'package:kernel/kernel.dart';
 
 /// Settings our team changes for everyone, without a release.
 class PlatformSettings {
-  const PlatformSettings({required this.browseRadiusKm});
+  const PlatformSettings({
+    required this.browseRadiusKm,
+    required this.holdMinutes,
+  });
 
-  /// Customers see offers from branches this close to them.
+  /// Customers see offers from stores this close to them.
   final int browseRadiusKm;
+
+  /// How long a reservation waits for the customer to pick it up, unless
+  /// the offer ends first. Reservations made before a change keep theirs.
+  final int holdMinutes;
 }
 
 abstract interface class PlatformSettingsRepository {
