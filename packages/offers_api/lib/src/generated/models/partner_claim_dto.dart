@@ -25,6 +25,7 @@ class PartnerClaimDto {
     required this.createdAt,
     required this.canRedeem,
     required this.problem,
+    required this.problemCode,
   });
   
   factory PartnerClaimDto.fromJson(Map<String, Object?> json) => _$PartnerClaimDtoFromJson(json);
@@ -50,6 +51,11 @@ class PartnerClaimDto {
 
   /// Why it can't be redeemed, to show the cashier.
   final String? problem;
+
+  /// The same, as a code the app can put in its own words (the `error` code.
+  /// redeeming would answer with): AlreadyRedeemed, ClaimCancelled,.
+  /// ClaimExpired or WrongBranch. More may be added later.
+  final String? problemCode;
 
   Map<String, Object?> toJson() => _$PartnerClaimDtoToJson(this);
 }

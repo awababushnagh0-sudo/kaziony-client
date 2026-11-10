@@ -61,6 +61,12 @@ abstract class AuthClient {
     @Body() required UpdateProfileDto body,
   });
 
+  /// Delete my account (customers).
+  ///
+  /// Erases the name, email, phones and sign-ins, logs out everywhere and gives back what is reserved. Past pickups stay, anonymous. Store and dashboard accounts get 403 with error "AccountDeletionByTeam".
+  @DELETE('/api/v1/auth/me')
+  Future<void> deleteMe();
+
   /// Change password (logs out other devices, returns new tokens)
   @POST('/api/v1/auth/change-password')
   Future<AuthResponseDto> changePassword({

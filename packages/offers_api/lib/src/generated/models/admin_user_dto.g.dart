@@ -23,6 +23,9 @@ AdminUserDto _$AdminUserDtoFromJson(Map<String, dynamic> json) => AdminUserDto(
   lastLoginAt: json['lastLoginAt'] == null
       ? null
       : DateTime.parse(json['lastLoginAt'] as String),
+  deletedAt: json['deletedAt'] == null
+      ? null
+      : DateTime.parse(json['deletedAt'] as String),
   createdAt: DateTime.parse(json['createdAt'] as String),
 );
 
@@ -40,5 +43,6 @@ Map<String, dynamic> _$AdminUserDtoToJson(AdminUserDto instance) =>
       'noShowCount': instance.noShowCount,
       'claimBannedUntil': ?instance.claimBannedUntil?.toIso8601String(),
       'lastLoginAt': ?instance.lastLoginAt?.toIso8601String(),
+      'deletedAt': ?instance.deletedAt?.toIso8601String(),
       'createdAt': instance.createdAt.toIso8601String(),
     };

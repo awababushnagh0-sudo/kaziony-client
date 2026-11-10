@@ -23,6 +23,7 @@ class AdminUserDto {
     required this.noShowCount,
     required this.claimBannedUntil,
     required this.lastLoginAt,
+    required this.deletedAt,
     required this.createdAt,
   });
   
@@ -42,6 +43,9 @@ class AdminUserDto {
   final num noShowCount;
   final DateTime? claimBannedUntil;
   final DateTime? lastLoginAt;
+
+  /// The customer deleted their account; it can't be enabled again.
+  final DateTime? deletedAt;
   final DateTime createdAt;
 
   Map<String, Object?> toJson() => _$AdminUserDtoToJson(this);

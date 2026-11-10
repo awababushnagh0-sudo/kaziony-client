@@ -23,6 +23,7 @@ PartnerClaimDto _$PartnerClaimDtoFromJson(Map<String, dynamic> json) =>
       createdAt: DateTime.parse(json['createdAt'] as String),
       canRedeem: json['canRedeem'] as bool,
       problem: json['problem'] as String?,
+      problemCode: json['problemCode'] as String?,
     );
 
 Map<String, dynamic> _$PartnerClaimDtoToJson(PartnerClaimDto instance) =>
@@ -40,4 +41,5 @@ Map<String, dynamic> _$PartnerClaimDtoToJson(PartnerClaimDto instance) =>
       'createdAt': instance.createdAt.toIso8601String(),
       'canRedeem': instance.canRedeem,
       'problem': ?instance.problem,
+      'problemCode': ?instance.problemCode,
     };

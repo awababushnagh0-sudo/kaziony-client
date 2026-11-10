@@ -26,12 +26,14 @@ class _PartnerOffersClient implements PartnerOffersClient {
     required num page,
     required num pageSize,
     OfferStatus? status,
+    bool? ended,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
       r'pageSize': pageSize,
       r'status': status?.toJson(),
+      r'ended': ended,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

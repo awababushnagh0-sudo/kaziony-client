@@ -17,13 +17,19 @@ part 'partner_offers_client.g.dart';
 abstract class PartnerOffersClient {
   factory PartnerOffersClient(Dio dio, {String? baseUrl}) = _PartnerOffersClient;
 
-  /// The store's offers with claim counts
+  /// The store's offers with claim counts.
+  ///
+  /// [ended] - The app's two lists. False: the current offers (active and paused),.
+  /// those started first, then those starting later, then the paused ones.
+  /// True: the finished ones (ended or taken down), the latest first. Left.
+  /// out: every offer, the newest first.
   @GET('/api/v1/partner/stores/{storeId}/offers')
   Future<PartnerOfferListDto> list({
     @Path('storeId') required String storeId,
     @Query('page') required num page,
     @Query('pageSize') required num pageSize,
     @Query('status') OfferStatus? status,
+    @Query('ended') bool? ended,
   });
 
   /// Post an offer from a product (owner).

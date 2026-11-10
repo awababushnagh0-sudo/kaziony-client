@@ -18,9 +18,11 @@ import 'clients/offers_client.dart';
 import 'clients/partner_offers_client.dart';
 import 'clients/admin_offers_client.dart';
 import 'clients/admin_search_client.dart';
+import 'clients/admin_system_client.dart';
 import 'clients/admin_locations_client.dart';
 import 'clients/places_client.dart';
 import 'clients/admin_users_client.dart';
+import 'clients/admin_audit_log_client.dart';
 import 'clients/partner_products_client.dart';
 import 'clients/claims_client.dart';
 import 'clients/partner_claims_client.dart';
@@ -55,9 +57,11 @@ class OffersApi {
   PartnerOffersClient? _partnerOffers;
   AdminOffersClient? _adminOffers;
   AdminSearchClient? _adminSearch;
+  AdminSystemClient? _adminSystem;
   AdminLocationsClient? _adminLocations;
   PlacesClient? _places;
   AdminUsersClient? _adminUsers;
+  AdminAuditLogClient? _adminAuditLog;
   PartnerProductsClient? _partnerProducts;
   ClaimsClient? _claims;
   PartnerClaimsClient? _partnerClaims;
@@ -91,11 +95,15 @@ class OffersApi {
 
   AdminSearchClient get adminSearch => _adminSearch ??= AdminSearchClient(_dio, baseUrl: _baseUrl);
 
+  AdminSystemClient get adminSystem => _adminSystem ??= AdminSystemClient(_dio, baseUrl: _baseUrl);
+
   AdminLocationsClient get adminLocations => _adminLocations ??= AdminLocationsClient(_dio, baseUrl: _baseUrl);
 
   PlacesClient get places => _places ??= PlacesClient(_dio, baseUrl: _baseUrl);
 
   AdminUsersClient get adminUsers => _adminUsers ??= AdminUsersClient(_dio, baseUrl: _baseUrl);
+
+  AdminAuditLogClient get adminAuditLog => _adminAuditLog ??= AdminAuditLogClient(_dio, baseUrl: _baseUrl);
 
   PartnerProductsClient get partnerProducts => _partnerProducts ??= PartnerProductsClient(_dio, baseUrl: _baseUrl);
 
