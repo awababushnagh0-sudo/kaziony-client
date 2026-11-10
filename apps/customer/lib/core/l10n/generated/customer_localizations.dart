@@ -575,6 +575,36 @@ abstract class CustomerLocalizations {
   /// **'Your bookings and favorite stores stay saved. Sign in again to see them.'**
   String get logoutMessage;
 
+  /// No description provided for @deleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete my account'**
+  String get deleteAccount;
+
+  /// No description provided for @deleteAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your account?'**
+  String get deleteAccountTitle;
+
+  /// No description provided for @deleteAccountMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name, email, bookings, favorites and ratings are erased for good, and bookings you hold go back on sale. This can\'t be undone.'**
+  String get deleteAccountMessage;
+
+  /// No description provided for @deleteAccountConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteAccountConfirm;
+
+  /// No description provided for @accountDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is deleted.'**
+  String get accountDeleted;
+
   /// No description provided for @back.
   ///
   /// In en, this message translates to:

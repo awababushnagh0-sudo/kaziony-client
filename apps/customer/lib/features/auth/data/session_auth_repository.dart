@@ -1,4 +1,5 @@
 import 'package:kernel/kernel.dart';
+import 'package:offers_api/auth.dart' show AuthClient;
 
 import '../domain/auth_repository.dart';
 
@@ -17,4 +18,13 @@ class SessionAuthRepository implements AuthRepository {
 
   @override
   Future<void> signOut() => _session.signOut();
+
+  @override
+  Future<Result<void>> deleteAccount() async {
+    final api = _ref.read(apiProvider);
+    final result = await api.guard(() => api.client(AuthClient.new).deleteMe());
+    // The account is gone with its tokens: only the phone's copy is left.
+    if (result is Ok) await _session.signOut();
+    return result;
+  }
 }

@@ -7,6 +7,10 @@ abstract interface class AuthRepository {
   Future<Result<SessionUser?>> signInWithGoogle();
 
   Future<void> signOut();
+
+  /// Erases the account for good (the stores and Google require the way
+  /// to), then signs out here. Bookings still held go back on sale.
+  Future<Result<void>> deleteAccount();
 }
 
 /// Wired to the real implementation in `core/providers/dependencies.dart`.

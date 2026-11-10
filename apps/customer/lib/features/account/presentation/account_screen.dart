@@ -93,6 +93,10 @@ class AccountScreen extends AppView {
                   expand: true,
                   onPressed: () => _logout(context, ref),
                 ),
+                SButton.text(
+                  label: s.deleteAccount,
+                  onPressed: () => _deleteAccount(context, ref),
+                ),
               ],
             ),
           ),
@@ -113,6 +117,27 @@ Future<void> _logout(BuildContext context, WidgetRef ref) async {
     destructive: true,
   );
   if (confirmed) await ref.read(authRepositoryProvider).signOut();
+}
+
+/// Asks first, saying what goes with it: it can't be undone.
+Future<void> _deleteAccount(BuildContext context, WidgetRef ref) async {
+  final s = CustomerLocalizations.of(context);
+  final confirmed = await SDialog.confirm(
+    context,
+    title: s.deleteAccountTitle,
+    message: s.deleteAccountMessage,
+    confirmLabel: s.deleteAccountConfirm,
+    destructive: true,
+  );
+  if (!confirmed) return;
+  final result = await ref.read(authRepositoryProvider).deleteAccount();
+  if (!context.mounted) return;
+  switch (result) {
+    case Ok():
+      SSnack.success(context, s.accountDeleted);
+    case Err(:final failure):
+      SSnack.error(context, failureMessage(context, failure));
+  }
 }
 
 /// "Good morning" until noon, then "good evening", as said in Libya.

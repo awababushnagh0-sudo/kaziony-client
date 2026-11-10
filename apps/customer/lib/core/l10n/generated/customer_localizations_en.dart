@@ -320,6 +320,22 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
       'Your bookings and favorite stores stay saved. Sign in again to see them.';
 
   @override
+  String get deleteAccount => 'Delete my account';
+
+  @override
+  String get deleteAccountTitle => 'Delete your account?';
+
+  @override
+  String get deleteAccountMessage =>
+      'Your name, email, bookings, favorites and ratings are erased for good, and bookings you hold go back on sale. This can\'t be undone.';
+
+  @override
+  String get deleteAccountConfirm => 'Delete';
+
+  @override
+  String get accountDeleted => 'Your account is deleted.';
+
+  @override
   String get back => 'Back';
 
   @override

@@ -331,6 +331,22 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
       'تبقى حجوزاتك ومحلاتك المفضلة محفوظة. سجّل الدخول مرة أخرى لتراها.';
 
   @override
+  String get deleteAccount => 'حذف حسابي';
+
+  @override
+  String get deleteAccountTitle => 'حذف حسابك؟';
+
+  @override
+  String get deleteAccountMessage =>
+      'يُمسح اسمك وبريدك وحجوزاتك ومحلاتك المفضلة وتقييماتك نهائيًا، وتعود القطع المحجوزة للبيع. لا يمكن التراجع عن هذا.';
+
+  @override
+  String get deleteAccountConfirm => 'احذف';
+
+  @override
+  String get accountDeleted => 'تم حذف حسابك.';
+
+  @override
   String get back => 'رجوع';
 
   @override

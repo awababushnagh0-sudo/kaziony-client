@@ -28,6 +28,8 @@ class FakeAuthRepository implements AuthRepository {
   Completer<void>? hold;
   var signIns = 0;
   var signOuts = 0;
+  Result<void> deleteResult = const Ok(null);
+  var deletions = 0;
 
   @override
   Future<Result<SessionUser?>> signInWithGoogle() async {
@@ -38,6 +40,12 @@ class FakeAuthRepository implements AuthRepository {
 
   @override
   Future<void> signOut() async => signOuts++;
+
+  @override
+  Future<Result<void>> deleteAccount() async {
+    deletions++;
+    return deleteResult;
+  }
 }
 
 /// A session that is already signed in as [user], without the backend.

@@ -112,6 +112,38 @@ void main() {
     expect(auth.signOuts, 1);
   });
 
+  testWidgets('deletes the account after asking', (tester) async {
+    await open(tester, user: customer());
+
+    await tester.ensureVisible(find.text('Delete my account'));
+    await tester.tap(find.text('Delete my account'));
+    await tester.pumpAndSettle();
+    expect(find.text('Delete your account?'), findsOneWidget);
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    expect(auth.deletions, 0);
+
+    await tester.tap(find.text('Delete my account'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Delete'));
+    await tester.pumpAndSettle();
+    expect(auth.deletions, 1);
+    expect(find.text('Your account is deleted.'), findsOneWidget);
+  });
+
+  testWidgets('says why when the account could not be deleted', (tester) async {
+    auth.deleteResult = const Err(NoConnectionFailure());
+    await open(tester, user: customer());
+
+    await tester.ensureVisible(find.text('Delete my account'));
+    await tester.tap(find.text('Delete my account'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Delete'));
+    await tester.pumpAndSettle();
+    expect(find.text('Your account is deleted.'), findsNothing);
+    expect(find.text('No internet connection'), findsOneWidget);
+  });
+
   testWidgets('leads to the bookings, counting the waiting one', (
     tester,
   ) async {
