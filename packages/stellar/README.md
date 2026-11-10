@@ -30,7 +30,7 @@ lib/src/
 | Folder | Widgets |
 |---|---|
 | `button` | `SButton`, `.secondary`, `.text`, `.menu` ("Actions" dropdown), `.icon` |
-| `input` | `STextInput` (`TextInputKind.price` for LD, `.code` for codes), `SSelectInput`, `SChoiceInput` (pills), `SDateTimeInput` (one-tap presets, then the phone's calendar and clock), `SSearchField`, `SCopyField` |
+| `input` | `STextInput` (`TextInputKind.price` for LD, `.code` for codes), `SAmountInput` (a price, large in the middle), `SCountInput` (a whole number: typed, or − and +), `SSelectInput`, `SChoiceInput` (pills; `.segmented` side by side), `SDateTimeInput` (one-tap presets, then the phone's calendar and clock), `SSearchField`, `SCopyField` |
 | `form` | `SForm`, `SFieldGrid`, `SFormSection`, `SValidators` (+ `FormGroup`, `FormControl`, `Validators`) |
 | `text` | `SText`, `.display`, `.title`, `.caption`: takes `TextVariant`, `SFontWeight`, `SColor` |
 | `icon` | `SIcon` (takes `SIconSize`, `SColor`), `SIcons` (the icons apps can use) |
@@ -43,7 +43,7 @@ lib/src/
 | `photo` | `SPhotoField` (a record's photo: add, change, upload progress, retry), `SPhoto.chooseSource`, `SPhoto.askToOpenSettings` |
 | `scanner` | `SScannerView` (a camera with a square to aim at, a hint and the light's button; `cover` for when the camera is off) |
 | `paged_list` | `SPagedList` (phone list: pull to refresh, more rows on scroll) |
-| `card`, `list_tile` | `SCard`, `SListTile` (tappable rows get an arrow; `value` at the end), `SListGroup` (rows in a rounded box under a title) |
+| `card`, `list_tile` | `SCard`, `SListTile` (tappable rows get an arrow; `value` at the end), `SCheckTile` (ticked or not, saying what the tick means), `SListGroup` (rows in a rounded box under a title) |
 | `status` | `SLoadingView`, `SEmptyView`, `SErrorView`, `SAsyncView`, `SSuccessView`, `SUpdateRequiredView`, `failureMessage` |
 | `snack` | `SSnack.info`, `.success`, `.error` |
 | `table` | `STable`, `TableColumn`, `SCellText` |

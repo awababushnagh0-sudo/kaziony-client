@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../icon/s_icon.dart';
 import 's_badge_material.dart';
 
 /// What a badge says at a glance, by its colors.
@@ -51,12 +52,14 @@ abstract interface class SBadge implements Widget {
   /// [label] in the colors of its [tone] (neutral by default). With
   /// [edge], it's square on that side, to sit flush against a photo's edge
   /// (an offer card's "2 left"), small and bold. [size] is regular unless
-  /// told otherwise.
+  /// told otherwise. [icon] goes before the label, in its color (a crown
+  /// by "Owner").
   const factory SBadge(
     String label, {
     BadgeTone tone,
     BadgeEdge? edge,
     BadgeSize size,
+    SIcons? icon,
     Key? key,
   }) = SBadgeMaterial;
 

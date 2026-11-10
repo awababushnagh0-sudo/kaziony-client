@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
@@ -31,44 +32,49 @@ class SBandMaterial extends StatelessWidget implements SBand {
   Widget build(BuildContext context) {
     final foot = this.foot;
     final color = context.colors.resolve(this.color);
-    return ColorAbove(
-      color: color,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            bottom: foot == null ? 0 : _footHang,
-            child: DecoratedBox(
-              decoration: ShapeDecoration(color: color, shape: _shape),
+    // The clock and battery in white on a deep band, dark on a soft one.
+    final dark = ThemeData.estimateBrightnessForColor(color) == Brightness.dark;
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+      child: ColorAbove(
+        color: color,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              bottom: foot == null ? 0 : _footHang,
+              child: DecoratedBox(
+                decoration: ShapeDecoration(color: color, shape: _shape),
+              ),
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Material(
-                type: MaterialType.transparency,
-                shape: _shape,
-                clipBehavior: Clip.antiAlias,
-                child: InkWell(
-                  onTap: onTap,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                      Space.lg,
-                      MediaQuery.paddingOf(context).top + Space.sm,
-                      Space.lg,
-                      foot == null ? Space.lg : Space.md,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Material(
+                  type: MaterialType.transparency,
+                  shape: _shape,
+                  clipBehavior: Clip.antiAlias,
+                  child: InkWell(
+                    onTap: onTap,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(
+                        Space.lg,
+                        MediaQuery.paddingOf(context).top + Space.sm,
+                        Space.lg,
+                        foot == null ? Space.lg : Space.md,
+                      ),
+                      child: child,
                     ),
-                    child: child,
                   ),
                 ),
-              ),
-              if (foot != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: Space.lg),
-                  child: foot,
-                ),
-            ],
-          ),
-        ],
+                if (foot != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+                    child: foot,
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

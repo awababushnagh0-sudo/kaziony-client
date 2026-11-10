@@ -23,11 +23,14 @@ abstract interface class SImage implements Widget {
       SImageMaterial;
 
   /// As wide as the space given, as tall as its [ratio] makes it: a banner
-  /// (an offer's photo on its card), rounded at its [corners].
+  /// (an offer's photo on its card), rounded at its [corners]. With no
+  /// photo yet, [missing] asks for one ("Add a photo") under a camera,
+  /// instead of the plain placeholder: for the one who can add it.
   const factory SImage.wide(
     String? url, {
     SImageRatio ratio,
     SImageCorners corners,
+    String? missing,
     Key? key,
   }) = SImageMaterial.wide;
 }

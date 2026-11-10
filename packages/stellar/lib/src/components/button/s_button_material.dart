@@ -226,6 +226,49 @@ class SButtonMaterial extends StatelessWidget implements SButton {
   }
 }
 
+/// [SButton.onPhoto], drawn with Material's [FilledButton].
+class SPhotoButtonMaterial extends StatelessWidget implements SButton {
+  const SPhotoButtonMaterial({
+    required this.label,
+    required this.icon,
+    required this.onPressed,
+    super.key,
+  });
+
+  final String label;
+  final SIcons icon;
+  final VoidCallback? onPressed;
+
+  /// Lower than a page's buttons, to leave the photo seen; taps still get
+  /// the usual room around it.
+  static const _height = 36.0;
+  static const _lift = 3.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return FilledButton.icon(
+      style: FilledButton.styleFrom(
+        backgroundColor: c.surface,
+        foregroundColor: c.primary,
+        elevation: _lift,
+        shadowColor: c.shadow,
+        minimumSize: const Size(0, _height),
+        padding: const EdgeInsets.symmetric(horizontal: Space.md),
+        textStyle: TextStyle(
+          fontFamily: stellarFont,
+          fontSize: context.style.text.small,
+          fontWeight: SFontWeight.bold.value,
+        ),
+      ),
+      onPressed: onPressed,
+      icon: Icon(materialIcon(icon), size: SIconSize.xs.pixels),
+      iconAlignment: IconAlignment.end,
+      label: Text(label),
+    );
+  }
+}
+
 /// [SButton.icon], drawn with Material's [IconButton].
 class SIconButtonMaterial extends StatelessWidget implements SButton {
   const SIconButtonMaterial({

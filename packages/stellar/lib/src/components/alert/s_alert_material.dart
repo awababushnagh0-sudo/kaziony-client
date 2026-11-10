@@ -8,10 +8,17 @@ import 's_alert.dart';
 
 /// [SAlert], drawn as a tinted box with Material's [Icon].
 class SAlertMaterial extends StatelessWidget implements SAlert {
-  const SAlertMaterial({required this.title, this.message, super.key});
+  const SAlertMaterial({required this.title, this.message, super.key})
+    : _warning = false;
+
+  const SAlertMaterial.warning({required this.title, this.message, super.key})
+    : _warning = true;
 
   final String title;
   final String? message;
+
+  /// Orange, an info sign: something to know, not something wrong.
+  final bool _warning;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +29,7 @@ class SAlertMaterial extends StatelessWidget implements SAlert {
       liveRegion: true,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: c.dangerSoft,
+          color: _warning ? c.accentSoft : c.dangerSoft,
           borderRadius: BorderRadius.circular(Radii.xl),
         ),
         child: Padding(
@@ -32,9 +39,9 @@ class SAlertMaterial extends StatelessWidget implements SAlert {
             spacing: Space.md,
             children: [
               Icon(
-                materialIcon(SIcons.error),
+                materialIcon(_warning ? SIcons.info : SIcons.error),
                 size: SIconSize.lg.pixels,
-                color: c.danger,
+                color: _warning ? c.accentInk : c.danger,
               ),
               Expanded(
                 child: Column(
@@ -46,7 +53,7 @@ class SAlertMaterial extends StatelessWidget implements SAlert {
                       style: TextStyle(
                         fontSize: text.body,
                         fontWeight: SFontWeight.bold.value,
-                        color: c.danger,
+                        color: _warning ? c.accentInk : c.danger,
                       ),
                     ),
                     if (message != null)

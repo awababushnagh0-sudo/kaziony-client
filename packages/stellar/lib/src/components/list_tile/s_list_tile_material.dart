@@ -5,6 +5,7 @@ import '../../foundation/s_tokens.dart';
 import '../../l10n/generated/stellar_localizations.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
+import 's_check_tile.dart';
 import 's_fact_tile.dart';
 import 's_list_group.dart';
 import 's_list_tile.dart';
@@ -221,21 +222,25 @@ class SFactTileMaterial extends StatelessWidget implements SFactTile {
           horizontal: Space.lg,
           vertical: Space.md,
         ),
+        // A long value (a list of branches) wraps at the end, under itself,
+        // instead of pushing the label off the row.
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           spacing: Space.md,
           children: [
+            Text(
+              label,
+              style: TextStyle(fontSize: body, color: c.textMuted),
+            ),
             Expanded(
               child: Text(
-                label,
-                style: TextStyle(fontSize: body, color: c.textMuted),
-              ),
-            ),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: body,
-                fontWeight: SFontWeight.bold.value,
-                color: c.text,
+                value,
+                textAlign: TextAlign.end,
+                style: TextStyle(
+                  fontSize: body,
+                  fontWeight: SFontWeight.bold.value,
+                  color: c.text,
+                ),
               ),
             ),
           ],
@@ -440,6 +445,86 @@ class _RadioLeading extends StatelessWidget {
 }
 
 /// A filled check on the chosen card, an empty ring on the others.
+/// [SCheckTile], drawn as a Material [ListTile] with a square of its own
+/// at the start, read out as one checkbox.
+class SCheckTileMaterial extends StatelessWidget implements SCheckTile {
+  const SCheckTileMaterial({
+    required this.title,
+    required this.checked,
+    required this.onChanged,
+    this.subtitle,
+    super.key,
+  });
+
+  final String title;
+  final bool checked;
+  final ValueChanged<bool> onChanged;
+  final String? subtitle;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final text = context.style.text;
+    final subtitle = this.subtitle;
+    return MergeSemantics(
+      child: Semantics(
+        checked: checked,
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: Space.lg),
+          onTap: () => onChanged(!checked),
+          leading: _CheckBox(checked: checked),
+          title: Text(
+            title,
+            style: TextStyle(
+              fontSize: text.body,
+              fontWeight: SFontWeight.semibold.value,
+              color: checked ? c.text : c.textSubtle,
+            ),
+          ),
+          subtitle: subtitle == null
+              ? null
+              : Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: text.small,
+                    color: checked ? c.link : c.accentInk,
+                  ),
+                ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A rounded square, filled green with a check when ticked.
+class _CheckBox extends StatelessWidget {
+  const _CheckBox({required this.checked});
+
+  final bool checked;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 150),
+      width: _checkSize,
+      height: _checkSize,
+      decoration: BoxDecoration(
+        color: checked ? c.primary : null,
+        borderRadius: BorderRadius.circular(Radii.sm),
+        border: Border.all(color: checked ? c.primary : c.border, width: 1.5),
+      ),
+      child: checked
+          ? Icon(
+              materialIcon(SIcons.check),
+              size: SIconSize.xs.pixels,
+              color: c.onPrimary,
+            )
+          : null,
+    );
+  }
+}
+
 class _RadioCheck extends StatelessWidget {
   const _RadioCheck({required this.selected});
 

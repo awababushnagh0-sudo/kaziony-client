@@ -20,12 +20,14 @@ class CategoryChoice {
 /// (`onTap`), and `trailing` at the other end.
 abstract interface class SPlaceHeader implements Widget {
   /// [caption] goes over the place ("Offers near"); [trailing] at the other
-  /// end (the brand's logo).
+  /// end (the brand's logo). [onBrand]: in white, on a band in
+  /// [SColor.brand].
   const factory SPlaceHeader({
     required String caption,
     required String place,
     required VoidCallback onTap,
     Widget? trailing,
+    bool onBrand,
     Key? key,
   }) = SPlaceHeaderMaterial;
 }

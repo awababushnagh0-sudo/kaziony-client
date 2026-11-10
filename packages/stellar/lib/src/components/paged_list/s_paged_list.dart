@@ -19,6 +19,11 @@ abstract interface class SPagedList implements Widget {
   /// and room above the first one. [placeholder] is a row's skeleton
   /// (bones, see `SSkeleton`), shown while more rows load in place of a
   /// spinner.
+  ///
+  /// [columns] above one lays the rows out as a grid of cards that many
+  /// across (products, by their photos), within the page's sides, each
+  /// line of cards as tall as its tallest; [placeholder] is then a whole
+  /// line's skeleton. Grid cards are apart, so [divided] doesn't apply.
   const factory SPagedList({
     required int itemCount,
     required IndexedWidgetBuilder itemBuilder,
@@ -30,6 +35,7 @@ abstract interface class SPagedList implements Widget {
     Widget? header,
     String? endNote,
     bool divided,
+    int columns,
     Widget? placeholder,
     Key? key,
   }) = SPagedListMaterial;

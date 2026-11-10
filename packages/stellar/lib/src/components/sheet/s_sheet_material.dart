@@ -9,7 +9,19 @@ import '../illustration/s_illustration.dart';
 import '../list_tile/s_radio_group.dart';
 import 's_sheet.dart';
 
-const _sheetRadius = 20.0;
+/// On a phone with rounded corners, the sheet floats [_sheetMargin] in
+/// from its edges: its foot curves alongside the screen's corners (62 on
+/// the iPhones of the last few years), [_sheetMargin] tighter so the two
+/// curves keep the same gap all the way round; its top, out in the page,
+/// rounded like a card. Drawn as iOS draws the screen's corners (a
+/// superellipse), or the curves wouldn't run together.
+const _footRadius = 62.0 - _sheetMargin;
+const _topRadius = 28.0;
+const _sheetMargin = Space.sm;
+
+/// On a phone with square corners, it rests on the bottom edge as before,
+/// rounded only at the top.
+const _restingRadius = 20.0;
 
 /// The grabber, as on iOS: a short thin bar at the top, a quiet gray.
 const _grabberWidth = 36.0;
@@ -36,7 +48,7 @@ const _closeTop = _grabberTop - (kMinInteractiveDimension - _closeSize) / 2;
 /// the close button (on both sides, so it stays centered).
 const _titleInset = _closeInset + kMinInteractiveDimension - Space.lg;
 
-/// [SSheet]: a white sheet with rounded top corners, a grabber and a close
+/// [SSheet]: a white card floating over the page's foot, a grabber and a close
 /// button: an optional picture, the title and a line on what the choice
 /// changes, then the choices as an [SRadioGroup], or the ways forward as
 /// outlined rows. Tapping one closes the sheet with it.
@@ -94,14 +106,72 @@ abstract final class SSheetMaterial {
         useSafeArea: true,
         // Long lists (a store's branches) scroll inside the sheet.
         isScrollControlled: true,
-        backgroundColor: context.colors.surface,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(_sheetRadius),
-          ),
-        ),
-        builder: (context) => _Frame(child: builder(context)),
+        // The sheet draws its own card, inset from the screen's edges.
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        builder: (context) => _Floating(child: _Frame(child: builder(context))),
       );
+}
+
+/// The sheet as a card off the screen's sides and bottom on a phone with
+/// rounded corners (one with a home bar), resting on its edge otherwise;
+/// above the keyboard either way when its content has a field.
+class _Floating extends StatelessWidget {
+  const _Floating({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
+    // The home bar's room stays while the keyboard is up; the padding
+    // under it doesn't.
+    final floats = media.viewPadding.bottom > 0;
+    final margin = floats ? _sheetMargin : 0.0;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        margin,
+        0,
+        margin,
+        margin + media.viewInsets.bottom,
+      ),
+      child: MediaQuery(
+        data: media.copyWith(
+          // Floating, the gap under the card takes part of the home bar's
+          // room; the content keeps half of the rest, enough to end just
+          // past the home bar without a tall empty foot.
+          padding: floats
+              ? media.padding.copyWith(
+                  bottom:
+                      (media.padding.bottom - _sheetMargin).clamp(
+                        0,
+                        double.infinity,
+                      ) /
+                      2,
+                )
+              : media.padding,
+          viewInsets: media.viewInsets.copyWith(bottom: 0),
+        ),
+        child: Material(
+          color: context.colors.surface,
+          shape: floats
+              ? const RoundedSuperellipseBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(_topRadius),
+                    bottom: Radius.circular(_footRadius),
+                  ),
+                )
+              : const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(_restingRadius),
+                  ),
+                ),
+          clipBehavior: Clip.antiAlias,
+          child: child,
+        ),
+      ),
+    );
+  }
 }
 
 /// What every sheet has around its content: the grabber at the top and
@@ -388,9 +458,7 @@ class _ContentSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    // Above the keyboard when the content has a field.
-    padding: _sheetPadding(context)
-        .add(EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom)),
+    padding: _sheetPadding(context),
     child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,

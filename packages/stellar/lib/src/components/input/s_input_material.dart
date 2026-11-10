@@ -10,6 +10,7 @@ import '../form/s_validators.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import '../pill/s_pill.dart';
+import '../segmented/s_segment_track_material.dart';
 import 's_choice_input.dart';
 import 's_date_time_input.dart';
 import 's_quantity_input.dart';
@@ -21,6 +22,26 @@ import 's_text_input.dart';
 /// keyboard opens. Flutter's 20 under it leaves the field touching the
 /// keyboard; this also shows what comes next (the next field, the button).
 const fieldScrollPadding = EdgeInsets.fromLTRB(20, 20, 20, 160);
+
+/// No box, no fill, no padding: a field that's only its text (a large
+/// amount, a count between its buttons). Every border is set, or the
+/// theme's would come back on focus and on errors.
+InputDecoration bareDecoration({
+  required String? hint,
+  required TextStyle hintStyle,
+}) => InputDecoration(
+  isCollapsed: true,
+  filled: false,
+  contentPadding: EdgeInsets.zero,
+  border: InputBorder.none,
+  enabledBorder: InputBorder.none,
+  focusedBorder: InputBorder.none,
+  errorBorder: InputBorder.none,
+  focusedErrorBorder: InputBorder.none,
+  disabledBorder: InputBorder.none,
+  hintText: hint,
+  hintStyle: hintStyle,
+);
 
 /// [STextInput], drawn with reactive_forms' [ReactiveTextField].
 class STextInputMaterial extends StatelessWidget implements STextInput {
@@ -238,6 +259,40 @@ class SChoiceInputMaterial<T> extends StatelessWidget
               },
             ),
         ],
+      ),
+    ),
+  );
+}
+
+/// [SChoiceInput.segmented], drawn as a [SegmentTrack] bound to the form.
+class SChoiceSegmentedMaterial<T> extends StatelessWidget
+    implements SChoiceInput<T> {
+  const SChoiceSegmentedMaterial({
+    required this.controlName,
+    required this.label,
+    required this.options,
+    this.onChanged,
+    super.key,
+  });
+
+  final String controlName;
+  final String label;
+  final List<SelectOption<T>> options;
+  final ValueChanged<T>? onChanged;
+
+  @override
+  Widget build(BuildContext context) => labelledInput(
+    context,
+    label: label,
+    child: ReactiveFormField<T, T>(
+      formControlName: controlName,
+      builder: (field) => SegmentTrack(
+        labels: [for (final option in options) option.label],
+        chosen: options.indexWhere((o) => o.value == field.value),
+        onTap: (i) {
+          field.didChange(options[i].value);
+          onChanged?.call(options[i].value);
+        },
       ),
     ),
   );

@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
+import '../icon/s_icon.dart';
+import '../icon/s_icon_material.dart';
 import 's_badge.dart';
 
 /// [SBadge], drawn as a tinted pill.
@@ -11,6 +13,7 @@ class SBadgeMaterial extends StatelessWidget implements SBadge {
     this.tone = BadgeTone.neutral,
     this.edge,
     this.size = BadgeSize.regular,
+    this.icon,
     super.key,
   });
 
@@ -18,6 +21,7 @@ class SBadgeMaterial extends StatelessWidget implements SBadge {
   final BadgeTone tone;
   final BadgeEdge? edge;
   final BadgeSize size;
+  final SIcons? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +32,22 @@ class SBadgeMaterial extends StatelessWidget implements SBadge {
     // a card's photo edge it's as small as the tags beside it.
     final big = size == BadgeSize.large || (discount && edge == null);
     final (fg, bg) = badgeColors(c, tone);
+    final icon = this.icon;
+    final words = Text(
+      label,
+      maxLines: 1,
+      style: TextStyle(
+        fontSize: big ? text.small : text.tiny,
+        fontWeight: switch (tone) {
+          _ when edge != null || big => SFontWeight.bold.value,
+          BadgeTone.discount ||
+          BadgeTone.onPhoto ||
+          BadgeTone.onPhotoHot => SFontWeight.bold.value,
+          _ => SFontWeight.medium.value,
+        },
+        color: fg,
+      ),
+    );
     return Container(
       padding: big
           ? const EdgeInsets.symmetric(horizontal: Space.md, vertical: Space.xs)
@@ -48,21 +68,16 @@ class SBadgeMaterial extends StatelessWidget implements SBadge {
           ),
         },
       ),
-      child: Text(
-        label,
-        maxLines: 1,
-        style: TextStyle(
-          fontSize: big ? text.small : text.tiny,
-          fontWeight: switch (tone) {
-            _ when edge != null || big => SFontWeight.bold.value,
-            BadgeTone.discount ||
-            BadgeTone.onPhoto ||
-            BadgeTone.onPhotoHot => SFontWeight.bold.value,
-            _ => SFontWeight.medium.value,
-          },
-          color: fg,
-        ),
-      ),
+      child: icon == null
+          ? words
+          : Row(
+              mainAxisSize: MainAxisSize.min,
+              spacing: Space.xs,
+              children: [
+                Icon(materialIcon(icon), size: SIconSize.xs.pixels, color: fg),
+                Flexible(child: words),
+              ],
+            ),
     );
   }
 }

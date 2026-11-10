@@ -24,11 +24,16 @@ class SplitPart {
     required this.count,
     required this.label,
     this.tone = SplitTone.waiting,
+    this.keyed = true,
   });
 
   final int count;
   final String label;
   final SplitTone tone;
+
+  /// False leaves it out of the key, where its count shows bigger beside
+  /// the bar (the pieces left, at the end of an offer's card).
+  final bool keyed;
 }
 
 /// A whole split into parts, as one bar with a key under it: where the 10

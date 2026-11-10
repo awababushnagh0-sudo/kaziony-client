@@ -59,8 +59,12 @@ class BoxHead extends StatelessWidget {
     final illustration = this.illustration;
     final subtitle = this.subtitle;
     final tag = this.tag;
+    // As wide at the sides as list rows, so the box lines up with them.
     return Padding(
-      padding: const EdgeInsets.all(Space.md),
+      padding: const EdgeInsets.symmetric(
+        horizontal: Space.lg,
+        vertical: Space.md,
+      ),
       child: Row(
         spacing: Space.md,
         children: [

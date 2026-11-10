@@ -5,7 +5,8 @@ import 's_button_material.dart';
 
 /// A button with a label ([SButton], [SButton.secondary], [SButton.soft],
 /// [SButton.dangerSoft], [SButton.dangerSecondary], [SButton.text]), one
-/// that opens a menu ([SButton.menu]) or just an icon ([SButton.icon]).
+/// over a photo ([SButton.onPhoto]), one that opens a menu ([SButton.menu])
+/// or just an icon ([SButton.icon]).
 ///
 /// Every button takes [onPressed] (null disables it). The ones with a label
 /// can show a spinner and ignore taps while [loading], so a form can't be
@@ -71,6 +72,16 @@ abstract interface class SButton implements Widget {
     SIcons? icon,
     Key? key,
   }) = SButtonMaterial.text;
+
+  /// Small and white, lifted on a soft shadow, over a corner of a photo:
+  /// an action on what the photo shows (posting an offer from a product's
+  /// photo). It reads on any picture.
+  const factory SButton.onPhoto({
+    required String label,
+    required SIcons icon,
+    required VoidCallback? onPressed,
+    Key? key,
+  }) = SPhotoButtonMaterial;
 
   /// Opens a menu, as ERPNext's "Actions": a primary button with
   /// up-and-down chevrons after the label. Use it as an SMenuButton's

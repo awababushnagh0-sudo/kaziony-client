@@ -45,7 +45,8 @@ class SSplitBarMaterial extends StatelessWidget implements SSplitBar {
             child: ColoredBox(
               color: c.fieldFill,
               child: SizedBox(
-                height: Space.md,
+                // Thin: a line under the words, not a block beside them.
+                height: Space.sm,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   spacing: Space.xxs,
@@ -75,7 +76,8 @@ class SSplitBarMaterial extends StatelessWidget implements SSplitBar {
                 spacing: Space.sm,
                 children: [
                   for (final part in parts)
-                    _KeyEntry(part, color: _color(c, part.tone)),
+                    if (part.keyed)
+                      _KeyEntry(part, color: _color(c, part.tone)),
                   if (note != null)
                     Text(
                       note,
@@ -102,7 +104,6 @@ class _KeyEntry extends StatelessWidget {
   final Color color;
 
   static const _swatch = 10.0;
-  static const _swatchRadius = 3.0;
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +120,7 @@ class _KeyEntry extends StatelessWidget {
             height: _swatch,
             decoration: BoxDecoration(
               color: color,
-              borderRadius: BorderRadius.circular(_swatchRadius),
+              shape: BoxShape.circle,
               // Gray on the card's white needs an edge to be seen.
               border: part.tone == SplitTone.waiting
                   ? Border.all(color: c.border)

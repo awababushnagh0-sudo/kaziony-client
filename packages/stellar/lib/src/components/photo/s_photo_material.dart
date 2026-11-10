@@ -13,6 +13,10 @@ import 's_photo_field.dart';
 // so the owner sees it about as customers will.
 const _fieldHeight = 200.0;
 
+/// Below the status bar: a little lower than a field, so the page's first
+/// rows still show under it.
+const _bannerHeight = 150.0;
+
 /// [SPhotoField], drawn with Material's [InkWell].
 class SPhotoFieldMaterial extends StatelessWidget implements SPhotoField {
   const SPhotoFieldMaterial({
@@ -47,6 +51,7 @@ class SPhotoFieldMaterial extends StatelessWidget implements SPhotoField {
     final hasPhoto = preview != null || url != null;
     final onTap = this.onTap;
     final round = shape == PhotoFieldShape.round;
+    final banner = shape == PhotoFieldShape.banner;
     final label = uploading
         ? s.photoUploading((progress * 100).round())
         : failed
@@ -55,22 +60,37 @@ class SPhotoFieldMaterial extends StatelessWidget implements SPhotoField {
         ? s.changePhoto
         : addLabel ?? s.addPhoto;
     final side = SImageSize.logo.pixels;
-    final height = round ? side : _fieldHeight;
+    // A banner reaches up under the status bar; what it shows stays below.
+    final inset = banner ? MediaQuery.paddingOf(context).top : 0.0;
+    final height = round
+        ? side
+        : banner
+        ? inset + _bannerHeight
+        : _fieldHeight;
+    // Empty and waiting for one: a dashed outline on the page's color, how
+    // a place to add something looks, not a tile that opens.
+    final empty = !hasPhoto && !uploading && !failed && onTap != null;
 
     return Semantics(
       button: onTap != null,
       label: onTap == null ? null : label,
       excludeSemantics: true,
       child: Material(
-        color: c.fieldFill,
+        color: banner
+            ? c.cream
+            : empty
+            ? c.surface
+            : c.fieldFill,
         // A round one sits on a cover photo: a ring of the page's color
         // keeps it apart.
         shape: round
             ? CircleBorder(
                 side: BorderSide(color: c.surface, width: _ring),
               )
-            : const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(Radii.xl)),
+            : RoundedRectangleBorder(
+                borderRadius: banner
+                    ? BorderRadius.zero
+                    : const BorderRadius.all(Radius.circular(Radii.xl)),
               ),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
@@ -98,6 +118,7 @@ class SPhotoFieldMaterial extends StatelessWidget implements SPhotoField {
                     // No room for words in a logo.
                     label: round ? null : label,
                     failed: failed,
+                    inset: inset,
                   )
                 else if (onTap == null)
                   const SizedBox.shrink()
@@ -107,12 +128,25 @@ class SPhotoFieldMaterial extends StatelessWidget implements SPhotoField {
                     bottom: Space.md,
                     child: _ChangeChip(label: label),
                   )
-                else if (!hasPhoto)
+                else if (banner)
+                  Padding(
+                    padding: EdgeInsets.only(top: inset),
+                    child: Center(child: _ChangeChip(label: label)),
+                  )
+                else if (!hasPhoto) ...[
                   _Empty(
                     label: label,
                     hint: round ? null : hint ?? s.addPhotoHint,
                     small: round,
                   ),
+                  // Dashes show less than a line: darker than a border.
+                  CustomPaint(
+                    painter: _DashedOutline(
+                      color: c.textSubtle.withValues(alpha: 0.5),
+                      round: round,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -123,6 +157,45 @@ class SPhotoFieldMaterial extends StatelessWidget implements SPhotoField {
 }
 
 const _ring = Space.xs;
+
+/// The outline of an empty field, in dashes: inside the ring of a round
+/// one, along the rounded corners of a wide one.
+class _DashedOutline extends CustomPainter {
+  const _DashedOutline({required this.color, required this.round});
+
+  final Color color;
+  final bool round;
+
+  static const _width = 1.5;
+  static const _dash = 6.0;
+  static const _gap = 4.0;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final inset = (round ? _ring : 0) + _width / 2;
+    final rect = (Offset.zero & size).deflate(inset);
+    final outline = Path()
+      ..addRRect(
+        RRect.fromRectAndRadius(
+          rect,
+          Radius.circular(round ? rect.shortestSide / 2 : Radii.xl - inset),
+        ),
+      );
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = _width;
+    for (final metric in outline.computeMetrics()) {
+      for (var at = 0.0; at < metric.length; at += _dash + _gap) {
+        canvas.drawPath(metric.extractPath(at, at + _dash), paint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(_DashedOutline old) =>
+      old.color != color || old.round != round;
+}
 
 /// No photo yet: a camera, what to do and what makes a good one.
 class _Empty extends StatelessWidget {
@@ -226,6 +299,7 @@ class _Dimmed extends StatelessWidget {
     required this.progress,
     required this.label,
     required this.failed,
+    required this.inset,
   });
 
   final double? progress;
@@ -233,6 +307,10 @@ class _Dimmed extends StatelessWidget {
   /// Null in a logo: no room for it.
   final String? label;
   final bool failed;
+
+  /// How far the photo reaches under the status bar: the progress stays
+  /// below it.
+  final double inset;
 
   @override
   Widget build(BuildContext context) {
@@ -242,7 +320,12 @@ class _Dimmed extends StatelessWidget {
     return ColoredBox(
       color: c.scrim,
       child: Padding(
-        padding: const EdgeInsets.all(Space.lg),
+        padding: EdgeInsets.fromLTRB(
+          Space.lg,
+          inset + Space.lg,
+          Space.lg,
+          Space.lg,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           spacing: Space.md,

@@ -32,7 +32,7 @@ enum SIllustrations implements Illustration {
   theme('theme', Size(140, 104)),
 
   /// A person's outline in a circle: someone, or a store, without a
-  /// picture yet ([SProfileHeader]).
+  /// picture yet.
   avatar('avatar', Size(72, 72));
 
   const SIllustrations(this.file, this.size);

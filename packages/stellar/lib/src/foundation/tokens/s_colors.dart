@@ -212,6 +212,7 @@ class StellarColors {
     SColor.accentSoft => accentSoft,
     SColor.accentInk => accentInk,
     SColor.cream => cream,
+    SColor.brand => brandTo,
     SColor.favorite => favorite,
   };
 }
@@ -268,6 +269,9 @@ enum SColor {
 
   /// The brand's cream.
   cream,
+
+  /// The brand's deep green, deep at night too: a band under white words.
+  brand,
 
   /// The heart of what's saved to favorites.
   favorite,

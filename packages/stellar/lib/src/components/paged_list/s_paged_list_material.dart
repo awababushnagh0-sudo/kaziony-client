@@ -26,9 +26,10 @@ class SPagedListMaterial extends StatelessWidget implements SPagedList {
     this.header,
     this.endNote,
     this.divided = true,
+    this.columns = 1,
     this.placeholder,
     super.key,
-  });
+  }) : assert(columns >= 1, 'At least one column');
 
   final int itemCount;
   final IndexedWidgetBuilder itemBuilder;
@@ -42,6 +43,9 @@ class SPagedListMaterial extends StatelessWidget implements SPagedList {
 
   /// Lines between the rows; otherwise a gap, for rows that are cards.
   final bool divided;
+
+  /// How many cards across; one is a plain list.
+  final int columns;
   final Widget? placeholder;
 
   @override
@@ -49,6 +53,8 @@ class SPagedListMaterial extends StatelessWidget implements SPagedList {
     final c = context.colors;
     final loading = hasMore || loadingMore || moreFailure != null;
     final header = this.header;
+    final grid = columns > 1;
+    final lined = divided && !grid;
     return RefreshIndicator(
       onRefresh: onRefresh,
       color: c.primary,
@@ -71,13 +77,13 @@ class SPagedListMaterial extends StatelessWidget implements SPagedList {
             SliverPadding(
               // Cards stand apart from what's above them, as from each
               // other; lined rows start right under it.
-              padding: EdgeInsets.only(top: divided ? 0 : Space.md),
+              padding: EdgeInsets.only(top: lined ? 0 : Space.md),
               sliver: SliverList.separated(
-                itemCount: itemCount,
-                itemBuilder: itemBuilder,
-                separatorBuilder: (_, _) => divided
+                itemCount: grid ? (itemCount / columns).ceil() : itemCount,
+                itemBuilder: grid ? _line : itemBuilder,
+                separatorBuilder: (_, _) => lined
                     ? const Divider(indent: Space.lg, endIndent: Space.lg)
-                    : const Gap(Space.sm),
+                    : Gap(grid ? Space.md : Space.sm),
               ),
             ),
             SliverPadding(
@@ -99,6 +105,29 @@ class SPagedListMaterial extends StatelessWidget implements SPagedList {
                 },
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// The cards of a grid's [line], side by side and as tall as the tallest;
+  /// a short last line keeps its cards the width of the others.
+  Widget _line(BuildContext context, int line) {
+    final first = line * columns;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: Space.md,
+          children: [
+            for (var i = first; i < first + columns; i++)
+              Expanded(
+                child: i < itemCount
+                    ? itemBuilder(context, i)
+                    : const SizedBox.shrink(),
+              ),
           ],
         ),
       ),

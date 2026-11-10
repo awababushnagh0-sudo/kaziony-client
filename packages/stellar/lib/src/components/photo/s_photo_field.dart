@@ -10,6 +10,13 @@ enum PhotoFieldShape {
 
   /// A circle: a logo.
   round,
+
+  /// Edge to edge across a page's top, under the status bar, with square
+  /// corners: a store's cover over its profile. With no photo it's a cream
+  /// band, with a pill to add one if it can be changed. For a page that
+  /// starts at the screen's top
+  /// (`SScaffold(showAppBar: false, underStatusBar: true, padded: false)`).
+  banner,
 }
 
 /// A record's photo on its page, with a pill to add or change it. While it

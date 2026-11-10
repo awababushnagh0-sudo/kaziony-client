@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 import '../icon/s_icon.dart';
+import '../input/s_select_input.dart';
+import 's_segment_track_material.dart';
 import 's_segmented_material.dart';
 
 /// One choice in an [SSegmented]: its [icon], and the [tooltip] that names
@@ -29,4 +31,14 @@ abstract interface class SSegmented<T> implements Widget {
     required ValueChanged<T> onChanged,
     Key? key,
   }) = SSegmentedMaterial<T>;
+
+  /// Two or three words side by side, as wide as it's given, the chosen one
+  /// raised on a gray track: which part of a list shows (current or
+  /// archived products). [selected] is one of the [options]' values.
+  const factory SSegmented.labels({
+    required List<SelectOption<T>> options,
+    required T selected,
+    required ValueChanged<T> onChanged,
+    Key? key,
+  }) = SSegmentedLabelsMaterial<T>;
 }

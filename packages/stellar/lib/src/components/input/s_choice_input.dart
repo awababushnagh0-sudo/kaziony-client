@@ -15,4 +15,15 @@ abstract interface class SChoiceInput<T> implements Widget {
     ValueChanged<T>? onChanged,
     Key? key,
   }) = SChoiceInputMaterial<T>;
+
+  /// Two or three answers to one question side by side, the page's full
+  /// width, the chosen one raised on a gray track: how an offer counts its
+  /// pieces (a set number or no limit).
+  const factory SChoiceInput.segmented({
+    required String controlName,
+    required String label,
+    required List<SelectOption<T>> options,
+    ValueChanged<T>? onChanged,
+    Key? key,
+  }) = SChoiceSegmentedMaterial<T>;
 }

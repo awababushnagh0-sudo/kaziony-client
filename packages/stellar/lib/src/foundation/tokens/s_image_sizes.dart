@@ -18,6 +18,9 @@ enum SImageSize {
   /// A store's logo in a row of stores ([SLogoTile]): round.
   logoInRow(64, Radii.pill),
 
+  /// A store's logo heading a card in a list (a past booking): round.
+  logoInCard(56, Radii.pill),
+
   /// An offer's photo beside its words, in a list of tiles.
   tile(88, Radii.lg),
 
@@ -31,11 +34,16 @@ enum SImageSize {
 }
 
 /// A picture's width to its height, for pictures that fill the width given
-/// ([SImage.wide]): banners.
+/// ([SImage.wide]): banners, and photos on cards in a grid.
 enum SImageRatio {
   /// A banner on a card (an offer's), in a row that scrolls sideways or a
   /// list.
-  banner(2.6);
+  banner(2.6),
+
+  /// The photo on a card two of which sit side by side (a product's in a
+  /// grid): square, as the card is narrow, with room for a button on its
+  /// corner below the words asking for a photo when there's none.
+  card(1);
 
   const SImageRatio(this.value);
 

@@ -18,19 +18,31 @@ class SPlaceHeaderMaterial extends StatelessWidget implements SPlaceHeader {
     required this.place,
     required this.onTap,
     this.trailing,
+    this.onBrand = false,
     super.key,
   });
+
+  /// How much of the white the caption keeps on the brand's band: quieter
+  /// than the place, still easy to read.
+  static const _captionOnBrand = 0.85;
 
   final String caption;
   final String place;
   final VoidCallback onTap;
   final Widget? trailing;
+  final bool onBrand;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
     final trailing = this.trailing;
+    final ink = onBrand ? c.onBrand : c.text;
+    // The brand's light green: a pin that stands out on its deep green.
+    final pin = onBrand ? c.onScrimBrand : c.primary;
+    final quiet = onBrand
+        ? c.onBrand.withValues(alpha: _captionOnBrand)
+        : c.textMuted;
     return Row(
       spacing: Space.md,
       children: [
@@ -47,7 +59,7 @@ class SPlaceHeaderMaterial extends StatelessWidget implements SPlaceHeader {
                   Icon(
                     materialIcon(SIcons.location),
                     size: SIconSize.lg.pixels,
-                    color: c.primary,
+                    color: pin,
                   ),
                   Flexible(
                     child: Column(
@@ -55,10 +67,7 @@ class SPlaceHeaderMaterial extends StatelessWidget implements SPlaceHeader {
                       children: [
                         Text(
                           caption,
-                          style: TextStyle(
-                            fontSize: text.small,
-                            color: c.textMuted,
-                          ),
+                          style: TextStyle(fontSize: text.small, color: quiet),
                         ),
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -70,16 +79,16 @@ class SPlaceHeaderMaterial extends StatelessWidget implements SPlaceHeader {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontSize: text.body,
+                                  fontSize: text.subtitle,
                                   fontWeight: SFontWeight.bold.value,
-                                  color: c.text,
+                                  color: ink,
                                 ),
                               ),
                             ),
                             Icon(
                               materialIcon(SIcons.chevronDown),
-                              size: SIconSize.xs.pixels,
-                              color: c.text,
+                              size: SIconSize.sm.pixels,
+                              color: ink,
                             ),
                           ],
                         ),

@@ -22,4 +22,14 @@ abstract interface class SCard implements Widget {
     bool padded,
     Key? key,
   }) = SCardMaterial.raised;
+
+  /// Neither outline nor shadow: a card whose photo is its edge, with its
+  /// words under it, in a grid of photos (a store's products). A tap
+  /// ripples over its rounded shape.
+  const factory SCard.plain({
+    required Widget child,
+    VoidCallback? onTap,
+    bool padded,
+    Key? key,
+  }) = SCardMaterial.plain;
 }

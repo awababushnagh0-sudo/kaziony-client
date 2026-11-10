@@ -8,6 +8,8 @@ import 'package:reactive_forms/reactive_forms.dart'
 
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
+import '../icon/s_icon.dart';
+import '../icon/s_icon_material.dart';
 import '../input/s_input_material.dart' show fieldScrollPadding;
 import '../snack/s_snack.dart';
 import 's_code_card.dart';
@@ -61,52 +63,102 @@ class SQrCodeMaterial extends StatelessWidget implements SQrCode {
 
 /// [SCodeCard], on the brand color.
 class SCodeCardMaterial extends StatelessWidget implements SCodeCard {
-  const SCodeCardMaterial({required this.label, required this.code, super.key});
+  const SCodeCardMaterial({
+    required this.label,
+    required this.code,
+    this.copyHint,
+    this.copiedMessage,
+    super.key,
+  }) : assert(
+         (copyHint == null) == (copiedMessage == null),
+         'A code that copies says so before and after.',
+       );
 
   final String label;
   final String code;
+  final String? copyHint;
+  final String? copiedMessage;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final text = context.style.text;
-    return Semantics(
-      container: true,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: c.primary,
-          borderRadius: BorderRadius.circular(Radii.xl),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(Space.lg),
-          child: Column(
-            spacing: Space.xxs,
-            children: [
-              Text(
-                label,
-                style: TextStyle(fontSize: text.small, color: c.onPrimaryMuted),
-              ),
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  code,
-                  textDirection: TextDirection.ltr,
-                  maxLines: 1,
-                  style: TextStyle(
-                    fontSize: text.code,
-                    fontWeight: SFontWeight.bold.value,
-                    letterSpacing: _letterSpacing,
-                    height: 1.2,
-                    color: c.onPrimary,
-                  ),
+    final copyHint = this.copyHint;
+    final copiedMessage = this.copiedMessage;
+    final card = DecoratedBox(
+      decoration: BoxDecoration(
+        color: c.primary,
+        borderRadius: BorderRadius.circular(Radii.xl),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(Space.lg),
+        child: Column(
+          spacing: Space.xxs,
+          children: [
+            Text(
+              label,
+              style: TextStyle(fontSize: text.small, color: c.onPrimaryMuted),
+            ),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                code,
+                textDirection: TextDirection.ltr,
+                maxLines: 1,
+                style: TextStyle(
+                  fontSize: text.code,
+                  fontWeight: SFontWeight.bold.value,
+                  letterSpacing: _letterSpacing,
+                  height: 1.2,
+                  color: c.onPrimary,
                 ),
               ),
-            ],
-          ),
+            ),
+            if (copyHint != null)
+              ExcludeSemantics(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: Space.xs,
+                  children: [
+                    Icon(
+                      materialIcon(SIcons.copy),
+                      size: SIconSize.xs.pixels,
+                      color: c.onPrimaryMuted,
+                    ),
+                    Text(
+                      copyHint,
+                      style: TextStyle(
+                        fontSize: text.tiny,
+                        color: c.onPrimaryMuted,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
         ),
       ),
     );
+    if (copyHint == null || copiedMessage == null) {
+      return Semantics(container: true, child: card);
+    }
+    return Semantics(
+      container: true,
+      button: true,
+      hint: copyHint,
+      // No ripple: the snack says it's copied.
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => _copy(context, code, copiedMessage),
+        child: card,
+      ),
+    );
   }
+}
+
+Future<void> _copy(BuildContext context, String code, String message) async {
+  await Clipboard.setData(ClipboardData(text: code));
+  if (context.mounted) SSnack.info(context, message);
 }
 
 /// [SCodeCard.copyable], its button a Material [IconButton].
@@ -131,10 +183,7 @@ class SCopyableCodeMaterial extends StatelessWidget implements SCodeCard {
       // No ripple: the snack says it's copied.
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () async {
-          await Clipboard.setData(ClipboardData(text: code));
-          if (context.mounted) SSnack.info(context, copiedMessage);
-        },
+        onTap: () => _copy(context, code, copiedMessage),
         child: FittedBox(
           fit: BoxFit.scaleDown,
           child: Text(

@@ -11,12 +11,14 @@ import 's_image.dart';
 class SImageMaterial extends StatelessWidget implements SImage {
   const SImageMaterial(this.url, {this.size = SImageSize.thumb, super.key})
     : ratio = null,
-      corners = SImageCorners.all;
+      corners = SImageCorners.all,
+      missing = null;
 
   const SImageMaterial.wide(
     this.url, {
     SImageRatio this.ratio = SImageRatio.banner,
     this.corners = SImageCorners.all,
+    this.missing,
     super.key,
   }) : size = SImageSize.thumb;
 
@@ -26,6 +28,9 @@ class SImageMaterial extends StatelessWidget implements SImage {
 
   /// Set for a wide picture, which [size] doesn't apply to.
   final SImageRatio? ratio;
+
+  /// What to say when there's no picture yet: asks for one.
+  final String? missing;
 
   /// A banner's corners: rounder than a thumbnail's, as bigger pictures get.
   static const _wideRadius = Radii.xl;
@@ -51,9 +56,12 @@ class SImageMaterial extends StatelessWidget implements SImage {
       },
       child: AspectRatio(
         aspectRatio: ratio.value,
-        child: LayoutBuilder(
-          builder: (context, box) => _Picture(url: url, width: box.maxWidth),
-        ),
+        child: switch ((url, missing)) {
+          (null, final String missing) => _Missing(missing),
+          _ => LayoutBuilder(
+            builder: (context, box) => _Picture(url: url, width: box.maxWidth),
+          ),
+        },
       ),
     );
   }
@@ -95,4 +103,42 @@ class _Placeholder extends StatelessWidget {
       ),
     ),
   );
+}
+
+/// No photo yet, and a word asking for one under a camera: on the
+/// placeholder's gray, quiet beside the photos around it.
+class _Missing extends StatelessWidget {
+  const _Missing(this.label);
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return ColoredBox(
+      color: c.fieldFill,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          spacing: Space.xs,
+          children: [
+            Icon(
+              materialIcon(SIcons.camera),
+              size: SIconSize.lg.pixels,
+              color: c.textSubtle,
+            ),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: context.style.text.small,
+                fontWeight: SFontWeight.semibold.value,
+                color: c.textMuted,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

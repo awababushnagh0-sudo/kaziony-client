@@ -99,7 +99,10 @@ class SScaffoldMaterial extends StatelessWidget implements SScaffold {
           edgeOffset: underStatusBar ? MediaQuery.paddingOf(context).top : 0,
           color: context.colors.primary,
           backgroundColor: context.colors.surface,
-          child: body,
+          // The indicator lets its child shrink; a short page would then
+          // scroll in a box its own height, and pulling it down would cut
+          // its foot off. It keeps the whole page instead.
+          child: SizedBox.expand(child: body),
         );
       }
     }
@@ -136,7 +139,10 @@ class SScaffoldMaterial extends StatelessWidget implements SScaffold {
           : null,
       body: SafeArea(
         top: !underStatusBar,
-        child: room == 0 ? body : _RoomAtFoot(bottom: room, child: body),
+        // Always there, even with no room to ask for: the page keeps its
+        // state (a sliding choice, what's typed in a search) when a
+        // floating button comes and goes.
+        child: _RoomAtFoot(bottom: room, child: body),
       ),
       floatingActionButton: floating == null
           ? null

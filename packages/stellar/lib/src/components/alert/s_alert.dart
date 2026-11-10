@@ -6,6 +6,14 @@ import 's_alert_material.dart';
 /// ([title]), and what to do about it ([message]). Read out by screen
 /// readers as soon as it shows.
 abstract interface class SAlert implements Widget {
+  /// Orange instead of red: not a mistake, a consequence to know before
+  /// going on ("Customers of the Andalus branch won't see this offer").
+  const factory SAlert.warning({
+    required String title,
+    String? message,
+    Key? key,
+  }) = SAlertMaterial.warning;
+
   const factory SAlert({required String title, String? message, Key? key}) =
       SAlertMaterial;
 }
