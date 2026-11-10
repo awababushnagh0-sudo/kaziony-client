@@ -17,6 +17,7 @@ export 'src/components/browse/s_browse.dart';
 export 'src/components/button/s_button.dart';
 export 'src/components/card/s_card.dart';
 export 'src/components/carousel/s_carousel.dart';
+export 'src/components/chart/s_bar_chart.dart';
 export 'src/components/chip/s_chip.dart';
 export 'src/components/code/s_code_card.dart';
 export 'src/components/code/s_code_input.dart';
