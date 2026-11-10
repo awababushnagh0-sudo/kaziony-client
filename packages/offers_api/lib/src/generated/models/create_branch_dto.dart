@@ -31,7 +31,8 @@ class CreateBranchDto {
   final num longitude;
   final String? phone;
 
-  /// Opening hours per day.
+  /// Opening hours per day ("sat" to "fri"), up to 4 times a day. A close.
+  /// earlier than the open is past midnight; a day left out isn't said.
   final dynamic openingHours;
 
   Map<String, Object?> toJson() => _$CreateBranchDtoToJson(this);
