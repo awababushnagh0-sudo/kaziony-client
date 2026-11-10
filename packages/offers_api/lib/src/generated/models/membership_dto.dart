@@ -13,16 +13,12 @@ part 'membership_dto.g.dart';
 class MembershipDto {
   const MembershipDto({
     required this.role,
-    required this.branchId,
     required this.store,
   });
   
   factory MembershipDto.fromJson(Map<String, Object?> json) => _$MembershipDtoFromJson(json);
   
   final StoreMemberRole role;
-
-  /// Null means the member works at all branches.
-  final String? branchId;
   final MembershipStoreDto store;
 
   Map<String, Object?> toJson() => _$MembershipDtoToJson(this);

@@ -5,7 +5,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'category_dto.dart';
-import 'public_branch_dto.dart';
+import 'public_location_dto.dart';
 import 'public_offer_dto.dart';
 
 part 'public_store_dto.g.dart';
@@ -25,7 +25,7 @@ class PublicStoreDto {
     required this.category,
     required this.ratingAverage,
     required this.ratingCount,
-    required this.branches,
+    required this.location,
     required this.followerCount,
     required this.isFollowing,
     required this.offers,
@@ -49,9 +49,7 @@ class PublicStoreDto {
   /// Average stars from customers' pickups, one decimal; null before the first.
   final num? ratingAverage;
   final num ratingCount;
-
-  /// Active branches, closest first when a location is sent.
-  final List<PublicBranchDto> branches;
+  final PublicLocationDto location;
   final num followerCount;
 
   /// Null when not logged in as a customer.

@@ -9,6 +9,7 @@ part of 'update_store_profile_dto.dart';
 UpdateStoreProfileDto _$UpdateStoreProfileDtoFromJson(
   Map<String, dynamic> json,
 ) => UpdateStoreProfileDto(
+  openingHours: json['openingHours'],
   pickupInstructions: json['pickupInstructions'] as String?,
   phone: json['phone'] as String?,
   email: json['email'] as String?,
@@ -19,6 +20,7 @@ UpdateStoreProfileDto _$UpdateStoreProfileDtoFromJson(
 Map<String, dynamic> _$UpdateStoreProfileDtoToJson(
   UpdateStoreProfileDto instance,
 ) => <String, dynamic>{
+  'openingHours': ?instance.openingHours,
   'pickupInstructions': ?instance.pickupInstructions,
   'phone': ?instance.phone,
   'email': ?instance.email,

@@ -17,9 +17,7 @@ class CreateOfferDto {
     required this.endsAt,
     this.totalQuantity,
     this.maxPerUser,
-    this.claimWindowMinutes,
     this.startsAt,
-    this.branchIds,
     this.title,
     this.description,
   });
@@ -40,17 +38,11 @@ class CreateOfferDto {
   /// Pieces one customer can take in all. Leave out for no limit.
   final num? maxPerUser;
 
-  /// How long a claim is held before it expires (LIMITED offers).
-  final num? claimWindowMinutes;
-
   /// Defaults to now.
   final DateTime? startsAt;
 
   /// At most 30 days after the start.
   final DateTime endsAt;
-
-  /// Branches where it's valid. Defaults to all active branches.
-  final List<String>? branchIds;
 
   /// Defaults to the product title.
   final String? title;

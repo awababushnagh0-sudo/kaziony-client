@@ -21,7 +21,6 @@ class PartnerClaimDto {
     required this.offer,
     required this.expiresAt,
     required this.redeemedAt,
-    required this.redeemedBranchId,
     required this.createdAt,
     required this.canRedeem,
     required this.problem,
@@ -43,7 +42,6 @@ class PartnerClaimDto {
   final ClaimOfferDto offer;
   final DateTime expiresAt;
   final DateTime? redeemedAt;
-  final String? redeemedBranchId;
   final DateTime createdAt;
 
   /// True if it can be redeemed right now at this store.
@@ -53,8 +51,8 @@ class PartnerClaimDto {
   final String? problem;
 
   /// The same, as a code the app can put in its own words (the `error` code.
-  /// redeeming would answer with): AlreadyRedeemed, ClaimCancelled,.
-  /// ClaimExpired or WrongBranch. More may be added later.
+  /// redeeming would answer with): AlreadyRedeemed, ClaimCancelled or.
+  /// ClaimExpired. More may be added later.
   final String? problemCode;
 
   Map<String, Object?> toJson() => _$PartnerClaimDtoToJson(this);

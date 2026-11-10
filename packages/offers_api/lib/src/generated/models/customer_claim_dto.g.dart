@@ -24,10 +24,11 @@ CustomerClaimDto _$CustomerClaimDtoFromJson(
   createdAt: DateTime.parse(json['createdAt'] as String),
   offer: CustomerClaimOfferDto.fromJson(json['offer'] as Map<String, dynamic>),
   store: CustomerClaimStoreDto.fromJson(json['store'] as Map<String, dynamic>),
-  branches: (json['branches'] as List<dynamic>)
-      .map((e) => PublicBranchDto.fromJson(e as Map<String, dynamic>))
-      .toList(),
+  location: PublicLocationDto.fromJson(
+    json['location'] as Map<String, dynamic>,
+  ),
   canCancel: json['canCancel'] as bool,
+  cancelEndsBooking: json['cancelEndsBooking'] as bool,
   myRating: json['myRating'] as num?,
   canRate: json['canRate'] as bool,
 );
@@ -45,8 +46,9 @@ Map<String, dynamic> _$CustomerClaimDtoToJson(CustomerClaimDto instance) =>
       'createdAt': instance.createdAt.toIso8601String(),
       'offer': instance.offer,
       'store': instance.store,
-      'branches': instance.branches,
+      'location': instance.location,
       'canCancel': instance.canCancel,
+      'cancelEndsBooking': instance.cancelEndsBooking,
       'myRating': ?instance.myRating,
       'canRate': instance.canRate,
     };

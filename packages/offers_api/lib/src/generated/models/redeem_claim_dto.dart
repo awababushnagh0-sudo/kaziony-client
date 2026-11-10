@@ -10,17 +10,12 @@ part 'redeem_claim_dto.g.dart';
 class RedeemClaimDto {
   const RedeemClaimDto({
     required this.code,
-    this.branchId,
   });
   
   factory RedeemClaimDto.fromJson(Map<String, Object?> json) => _$RedeemClaimDtoFromJson(json);
   
   /// The code from the customer's QR code (or typed in).
   final String code;
-
-  /// The branch where it's redeemed. Not needed for staff limited to one.
-  /// branch, or when the offer is valid at only one branch.
-  final String? branchId;
 
   Map<String, Object?> toJson() => _$RedeemClaimDtoToJson(this);
 }

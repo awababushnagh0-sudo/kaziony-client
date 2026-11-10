@@ -32,7 +32,6 @@ class PartnerOfferDto {
     required this.claimWindowMinutes,
     required this.startsAt,
     required this.endsAt,
-    required this.branchIds,
     required this.viewCount,
     required this.claims,
     required this.canEditDetails,
@@ -66,10 +65,12 @@ class PartnerOfferDto {
 
   /// Pieces one customer can take in all; null for no limit.
   final num? maxPerUser;
+
+  /// How long customers have to pick up after reserving (our setting, the.
+  /// same everywhere), unless the offer ends first.
   final num claimWindowMinutes;
   final DateTime startsAt;
   final DateTime endsAt;
-  final List<String> branchIds;
   final num viewCount;
   final ClaimCountsDto claims;
 

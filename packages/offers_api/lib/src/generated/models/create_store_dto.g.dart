@@ -8,21 +8,25 @@ part of 'create_store_dto.dart';
 
 CreateStoreDto _$CreateStoreDtoFromJson(Map<String, dynamic> json) =>
     CreateStoreDto(
+      city: City.fromJson(json['city'] as String),
       categoryId: json['categoryId'] as String,
       name: json['name'] as String,
-      branches: (json['branches'] as List<dynamic>)
-          .map((e) => CreateBranchDto.fromJson(e as Map<String, dynamic>))
-          .toList(),
       owner: NewMerchantDto.fromJson(json['owner'] as Map<String, dynamic>),
+      latitude: json['latitude'] as num,
+      longitude: json['longitude'] as num,
       pickupInstructions: json['pickupInstructions'] as String?,
       phone: json['phone'] as String?,
       email: json['email'] as String?,
       facebookUrl: json['facebookUrl'] as String?,
       instagramUrl: json['instagramUrl'] as String?,
+      area: json['area'] as String?,
+      address: json['address'] as String?,
+      openingHours: json['openingHours'],
     );
 
 Map<String, dynamic> _$CreateStoreDtoToJson(CreateStoreDto instance) =>
     <String, dynamic>{
+      'city': instance.city,
       'categoryId': instance.categoryId,
       'name': instance.name,
       'pickupInstructions': ?instance.pickupInstructions,
@@ -30,6 +34,10 @@ Map<String, dynamic> _$CreateStoreDtoToJson(CreateStoreDto instance) =>
       'email': ?instance.email,
       'facebookUrl': ?instance.facebookUrl,
       'instagramUrl': ?instance.instagramUrl,
-      'branches': instance.branches,
       'owner': instance.owner,
+      'area': ?instance.area,
+      'address': ?instance.address,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'openingHours': ?instance.openingHours,
     };

@@ -13,10 +13,10 @@ class StoreListItemDto {
   const StoreListItemDto({
     required this.id,
     required this.name,
+    required this.area,
     required this.logoUrl,
     required this.isActive,
     required this.category,
-    required this.branchCount,
     required this.createdAt,
   });
   
@@ -24,10 +24,12 @@ class StoreListItemDto {
   
   final String id;
   final String name;
+
+  /// The neighbourhood, shown with the name.
+  final String? area;
   final String? logoUrl;
   final bool isActive;
   final CategoryDto category;
-  final num branchCount;
   final DateTime createdAt;
 
   Map<String, Object?> toJson() => _$StoreListItemDtoToJson(this);

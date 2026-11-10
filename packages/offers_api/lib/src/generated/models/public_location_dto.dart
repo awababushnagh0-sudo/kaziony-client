@@ -6,15 +6,13 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'city.dart';
 
-part 'public_branch_dto.g.dart';
+part 'public_location_dto.g.dart';
 
 @JsonSerializable()
-class PublicBranchDto {
-  const PublicBranchDto({
+class PublicLocationDto {
+  const PublicLocationDto({
     required this.city,
     required this.openingHours,
-    required this.id,
-    required this.name,
     required this.area,
     required this.address,
     required this.latitude,
@@ -23,12 +21,10 @@ class PublicBranchDto {
     required this.distanceKm,
   });
   
-  factory PublicBranchDto.fromJson(Map<String, Object?> json) => _$PublicBranchDtoFromJson(json);
+  factory PublicLocationDto.fromJson(Map<String, Object?> json) => _$PublicLocationDtoFromJson(json);
   
   final City city;
   final dynamic openingHours;
-  final String id;
-  final String name;
   final String? area;
   final String? address;
   final num latitude;
@@ -38,5 +34,5 @@ class PublicBranchDto {
   /// Null when no location was sent.
   final num? distanceKm;
 
-  Map<String, Object?> toJson() => _$PublicBranchDtoToJson(this);
+  Map<String, Object?> toJson() => _$PublicLocationDtoToJson(this);
 }

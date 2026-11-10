@@ -11,6 +11,7 @@ class CustomerClaimStoreDto {
   const CustomerClaimStoreDto({
     required this.id,
     required this.name,
+    required this.area,
     required this.logoUrl,
   });
   
@@ -18,6 +19,9 @@ class CustomerClaimStoreDto {
   
   final String id;
   final String name;
+
+  /// The neighbourhood, shown with the name.
+  final String? area;
   final String? logoUrl;
 
   Map<String, Object?> toJson() => _$CustomerClaimStoreDtoToJson(this);

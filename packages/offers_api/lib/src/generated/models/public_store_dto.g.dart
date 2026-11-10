@@ -20,9 +20,9 @@ PublicStoreDto _$PublicStoreDtoFromJson(Map<String, dynamic> json) =>
       category: CategoryDto.fromJson(json['category'] as Map<String, dynamic>),
       ratingAverage: json['ratingAverage'] as num?,
       ratingCount: json['ratingCount'] as num,
-      branches: (json['branches'] as List<dynamic>)
-          .map((e) => PublicBranchDto.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      location: PublicLocationDto.fromJson(
+        json['location'] as Map<String, dynamic>,
+      ),
       followerCount: json['followerCount'] as num,
       isFollowing: json['isFollowing'] as bool?,
       offers: (json['offers'] as List<dynamic>)
@@ -44,7 +44,7 @@ Map<String, dynamic> _$PublicStoreDtoToJson(PublicStoreDto instance) =>
       'category': instance.category,
       'ratingAverage': ?instance.ratingAverage,
       'ratingCount': instance.ratingCount,
-      'branches': instance.branches,
+      'location': instance.location,
       'followerCount': instance.followerCount,
       'isFollowing': ?instance.isFollowing,
       'offers': instance.offers,

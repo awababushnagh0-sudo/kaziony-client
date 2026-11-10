@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'offer_state.dart';
 import 'offer_store_summary_dto.dart';
 import 'offer_type.dart';
-import 'public_branch_dto.dart';
+import 'public_location_dto.dart';
 
 part 'public_offer_detail_dto.g.dart';
 
@@ -31,9 +31,7 @@ class PublicOfferDetailDto {
     required this.startsAt,
     required this.endsAt,
     required this.store,
-    required this.nearestBranch,
-    required this.branchCount,
-    required this.branches,
+    required this.location,
     required this.myActiveClaimId,
     required this.pickupInstructions,
   });
@@ -64,20 +62,15 @@ class PublicOfferDetailDto {
   /// Pieces one customer can take in all; null for no limit.
   final num? maxPerUser;
 
-  /// How long a reservation is held after claiming.
+  /// How long a reservation is held after claiming (our setting, the same.
+  /// everywhere), unless the offer ends first.
   final num claimWindowMinutes;
   final DateTime startsAt;
   final DateTime endsAt;
   final OfferStoreSummaryDto store;
 
-  /// The closest branch where this offer is valid (or the first one).
-  final PublicBranchDto nearestBranch;
-
-  /// Number of branches where it's valid.
-  final num branchCount;
-
-  /// All branches where it's valid, closest first when a location is sent.
-  final List<PublicBranchDto> branches;
+  /// Where to pick it up: the store's place.
+  final PublicLocationDto location;
 
   /// The logged-in customer's active reservation for this offer, if any.
   final String? myActiveClaimId;

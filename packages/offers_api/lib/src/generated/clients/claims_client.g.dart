@@ -90,6 +90,33 @@ class _ClaimsClient implements ClaimsClient {
   }
 
   @override
+  Future<BookingStatusDto> bookingStatus() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<BookingStatusDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/me/booking-status',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late BookingStatusDto _value;
+    try {
+      _value = BookingStatusDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<CustomerClaimDto> getClaim({required String claimId}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

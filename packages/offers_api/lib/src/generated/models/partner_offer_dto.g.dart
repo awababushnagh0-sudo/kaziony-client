@@ -26,9 +26,6 @@ PartnerOfferDto _$PartnerOfferDtoFromJson(Map<String, dynamic> json) =>
       claimWindowMinutes: json['claimWindowMinutes'] as num,
       startsAt: DateTime.parse(json['startsAt'] as String),
       endsAt: DateTime.parse(json['endsAt'] as String),
-      branchIds: (json['branchIds'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
       viewCount: json['viewCount'] as num,
       claims: ClaimCountsDto.fromJson(json['claims'] as Map<String, dynamic>),
       canEditDetails: json['canEditDetails'] as bool,
@@ -55,7 +52,6 @@ Map<String, dynamic> _$PartnerOfferDtoToJson(PartnerOfferDto instance) =>
       'claimWindowMinutes': instance.claimWindowMinutes,
       'startsAt': instance.startsAt.toIso8601String(),
       'endsAt': instance.endsAt.toIso8601String(),
-      'branchIds': instance.branchIds,
       'viewCount': instance.viewCount,
       'claims': instance.claims,
       'canEditDetails': instance.canEditDetails,

@@ -1,17 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'public_branch_dto.dart';
+part of 'public_location_dto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-PublicBranchDto _$PublicBranchDtoFromJson(Map<String, dynamic> json) =>
-    PublicBranchDto(
+PublicLocationDto _$PublicLocationDtoFromJson(Map<String, dynamic> json) =>
+    PublicLocationDto(
       city: City.fromJson(json['city'] as String),
       openingHours: json['openingHours'],
-      id: json['id'] as String,
-      name: json['name'] as String,
       area: json['area'] as String?,
       address: json['address'] as String?,
       latitude: json['latitude'] as num,
@@ -20,12 +18,10 @@ PublicBranchDto _$PublicBranchDtoFromJson(Map<String, dynamic> json) =>
       distanceKm: json['distanceKm'] as num?,
     );
 
-Map<String, dynamic> _$PublicBranchDtoToJson(PublicBranchDto instance) =>
+Map<String, dynamic> _$PublicLocationDtoToJson(PublicLocationDto instance) =>
     <String, dynamic>{
       'city': instance.city,
       'openingHours': ?instance.openingHours,
-      'id': instance.id,
-      'name': instance.name,
       'area': ?instance.area,
       'address': ?instance.address,
       'latitude': instance.latitude,

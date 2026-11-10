@@ -8,6 +8,12 @@ part of 'update_store_dto.dart';
 
 UpdateStoreDto _$UpdateStoreDtoFromJson(Map<String, dynamic> json) =>
     UpdateStoreDto(
+      city: json['city'] == null ? null : City.fromJson(json['city'] as String),
+      area: json['area'] as String?,
+      address: json['address'] as String?,
+      latitude: json['latitude'] as num?,
+      longitude: json['longitude'] as num?,
+      openingHours: json['openingHours'],
       categoryId: json['categoryId'] as String?,
       name: json['name'] as String?,
       pickupInstructions: json['pickupInstructions'] as String?,
@@ -20,6 +26,12 @@ UpdateStoreDto _$UpdateStoreDtoFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$UpdateStoreDtoToJson(UpdateStoreDto instance) =>
     <String, dynamic>{
+      'city': ?instance.city,
+      'area': ?instance.area,
+      'address': ?instance.address,
+      'latitude': ?instance.latitude,
+      'longitude': ?instance.longitude,
+      'openingHours': ?instance.openingHours,
       'categoryId': ?instance.categoryId,
       'name': ?instance.name,
       'pickupInstructions': ?instance.pickupInstructions,

@@ -7,7 +7,13 @@ part of 'app_settings_dto.dart';
 // **************************************************************************
 
 AppSettingsDto _$AppSettingsDtoFromJson(Map<String, dynamic> json) =>
-    AppSettingsDto(browseRadiusKm: json['browseRadiusKm'] as num);
+    AppSettingsDto(
+      browseRadiusKm: json['browseRadiusKm'] as num,
+      holdMinutes: json['holdMinutes'] as num,
+    );
 
 Map<String, dynamic> _$AppSettingsDtoToJson(AppSettingsDto instance) =>
-    <String, dynamic>{'browseRadiusKm': instance.browseRadiusKm};
+    <String, dynamic>{
+      'browseRadiusKm': instance.browseRadiusKm,
+      'holdMinutes': instance.holdMinutes,
+    };

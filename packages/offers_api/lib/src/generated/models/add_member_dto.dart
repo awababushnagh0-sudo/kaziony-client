@@ -14,15 +14,11 @@ class AddMemberDto {
     required this.role,
     required this.name,
     required this.phone,
-    this.branchId,
   });
   
   factory AddMemberDto.fromJson(Map<String, Object?> json) => _$AddMemberDtoFromJson(json);
   
   final StoreMemberRole role;
-
-  /// Limit staff to one branch. Leave empty for all branches.
-  final String? branchId;
   final String name;
 
   /// Their login. If a merchant with this phone exists, they're linked.

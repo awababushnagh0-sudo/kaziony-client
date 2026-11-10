@@ -26,13 +26,9 @@ PublicOfferDetailDto _$PublicOfferDetailDtoFromJson(
   startsAt: DateTime.parse(json['startsAt'] as String),
   endsAt: DateTime.parse(json['endsAt'] as String),
   store: OfferStoreSummaryDto.fromJson(json['store'] as Map<String, dynamic>),
-  nearestBranch: PublicBranchDto.fromJson(
-    json['nearestBranch'] as Map<String, dynamic>,
+  location: PublicLocationDto.fromJson(
+    json['location'] as Map<String, dynamic>,
   ),
-  branchCount: json['branchCount'] as num,
-  branches: (json['branches'] as List<dynamic>)
-      .map((e) => PublicBranchDto.fromJson(e as Map<String, dynamic>))
-      .toList(),
   myActiveClaimId: json['myActiveClaimId'] as String?,
   pickupInstructions: json['pickupInstructions'] as String?,
 );
@@ -57,9 +53,7 @@ Map<String, dynamic> _$PublicOfferDetailDtoToJson(
   'startsAt': instance.startsAt.toIso8601String(),
   'endsAt': instance.endsAt.toIso8601String(),
   'store': instance.store,
-  'nearestBranch': instance.nearestBranch,
-  'branchCount': instance.branchCount,
-  'branches': instance.branches,
+  'location': instance.location,
   'myActiveClaimId': ?instance.myActiveClaimId,
   'pickupInstructions': ?instance.pickupInstructions,
 };

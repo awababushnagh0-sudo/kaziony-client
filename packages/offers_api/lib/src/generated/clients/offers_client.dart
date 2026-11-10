@@ -47,7 +47,7 @@ abstract class OffersClient {
     @Query('search') String? search,
   });
 
-  /// Offer details with all its branches.
+  /// Offer details, with where to pick it up.
   ///
   /// Works without login. With a customer token, `myActiveClaimId` shows their reservation.
   @GET('/api/v1/offers/{offerId}')

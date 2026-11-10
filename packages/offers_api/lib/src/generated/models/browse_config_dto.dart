@@ -17,7 +17,7 @@ class BrowseConfigDto {
   
   factory BrowseConfigDto.fromJson(Map<String, Object?> json) => _$BrowseConfigDtoFromJson(json);
   
-  /// Customers see offers from branches this close to them, in km.
+  /// Customers see offers from stores this close to them, in km.
   final num radiusKm;
 
   /// Where Kaziony works: customers browse from a point inside one of.

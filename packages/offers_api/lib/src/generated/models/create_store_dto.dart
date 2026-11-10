@@ -4,7 +4,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'create_branch_dto.dart';
+import 'city.dart';
 import 'new_merchant_dto.dart';
 
 part 'create_store_dto.g.dart';
@@ -12,19 +12,25 @@ part 'create_store_dto.g.dart';
 @JsonSerializable()
 class CreateStoreDto {
   const CreateStoreDto({
+    required this.city,
     required this.categoryId,
     required this.name,
-    required this.branches,
     required this.owner,
+    required this.latitude,
+    required this.longitude,
     this.pickupInstructions,
     this.phone,
     this.email,
     this.facebookUrl,
     this.instagramUrl,
+    this.area,
+    this.address,
+    this.openingHours,
   });
   
   factory CreateStoreDto.fromJson(Map<String, Object?> json) => _$CreateStoreDtoFromJson(json);
   
+  final City city;
   final String categoryId;
   final String name;
 
@@ -37,10 +43,20 @@ class CreateStoreDto {
   final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
-  final List<CreateBranchDto> branches;
 
   /// The store owner's account.
   final NewMerchantDto owner;
+
+  /// The neighbourhood, shown with the store's name: it tells a brand's.
+  /// places apart.
+  final String? area;
+  final String? address;
+  final num latitude;
+  final num longitude;
+
+  /// Opening hours per day ("sat" to "fri"), up to 4 times a day. A close.
+  /// earlier than the open is past midnight; a day left out isn't said.
+  final dynamic openingHours;
 
   Map<String, Object?> toJson() => _$CreateStoreDtoToJson(this);
 }

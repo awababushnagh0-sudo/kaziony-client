@@ -10,11 +10,13 @@ part 'update_app_settings_dto.g.dart';
 class UpdateAppSettingsDto {
   const UpdateAppSettingsDto({
     this.browseRadiusKm,
+    this.holdMinutes,
   });
   
   factory UpdateAppSettingsDto.fromJson(Map<String, Object?> json) => _$UpdateAppSettingsDtoFromJson(json);
   
   final num? browseRadiusKm;
+  final num? holdMinutes;
 
   Map<String, Object?> toJson() => _$UpdateAppSettingsDtoToJson(this);
 }

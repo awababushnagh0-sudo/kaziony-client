@@ -8,8 +8,14 @@ part of 'update_app_settings_dto.dart';
 
 UpdateAppSettingsDto _$UpdateAppSettingsDtoFromJson(
   Map<String, dynamic> json,
-) => UpdateAppSettingsDto(browseRadiusKm: json['browseRadiusKm'] as num?);
+) => UpdateAppSettingsDto(
+  browseRadiusKm: json['browseRadiusKm'] as num?,
+  holdMinutes: json['holdMinutes'] as num?,
+);
 
 Map<String, dynamic> _$UpdateAppSettingsDtoToJson(
   UpdateAppSettingsDto instance,
-) => <String, dynamic>{'browseRadiusKm': ?instance.browseRadiusKm};
+) => <String, dynamic>{
+  'browseRadiusKm': ?instance.browseRadiusKm,
+  'holdMinutes': ?instance.holdMinutes,
+};

@@ -7,13 +7,11 @@ import 'package:retrofit/retrofit.dart';
 
 import '../models/add_member_dto.dart';
 import '../models/add_member_response_dto.dart';
-import '../models/branch_dto.dart';
-import '../models/create_branch_dto.dart';
+import '../models/add_store_location_dto.dart';
 import '../models/create_store_dto.dart';
 import '../models/create_store_response_dto.dart';
 import '../models/store_detail_dto.dart';
 import '../models/store_list_dto.dart';
-import '../models/update_branch_dto.dart';
 import '../models/update_store_dto.dart';
 
 part 'admin_stores_client.g.dart';
@@ -23,6 +21,8 @@ abstract class AdminStoresClient {
   factory AdminStoresClient(Dio dio, {String? baseUrl}) = _AdminStoresClient;
 
   /// List and search stores.
+  ///
+  /// `search` finds a brand's places by name, or one by its area.
   ///
   /// [search] - Search by store name.
   @GET('/api/v1/admin/stores')
@@ -34,15 +34,15 @@ abstract class AdminStoresClient {
     @Query('isActive') bool? isActive,
   });
 
-  /// Create a store with its branches and owner account.
+  /// Create a store at one place, with its owner account.
   ///
-  /// Returns a temporary password for the owner, shown only once. If the phone already has a merchant account, it is linked instead.
+  /// Returns a temporary password for the owner, shown only once. If the phone already has a merchant account, it is linked instead. A brand's other places: `POST /admin/stores/{storeId}/locations`.
   @POST('/api/v1/admin/stores')
   Future<CreateStoreResponseDto> create({
     @Body() required CreateStoreDto body,
   });
 
-  /// Store details with branches and staff
+  /// Store details with its staff
   @GET('/api/v1/admin/stores/{id}')
   Future<StoreDetailDto> getStore({
     @Path('id') required String id,
@@ -59,25 +59,19 @@ abstract class AdminStoresClient {
 
   /// Delete a store that has no offers.
   ///
-  /// Removes its branches, products and team links; the merchant accounts stay. A store with offers keeps its customers' history and can only be disabled: 409 with error "StoreHasOffers".
+  /// Removes its products and team links; the merchant accounts stay. A store with offers keeps its customers' history and can only be disabled: 409 with error "StoreHasOffers".
   @DELETE('/api/v1/admin/stores/{id}')
   Future<void> remove({
     @Path('id') required String id,
   });
 
-  /// Add a branch
-  @POST('/api/v1/admin/stores/{id}/branches')
-  Future<BranchDto> addBranch({
-    @Path('id') required String id,
-    @Body() required CreateBranchDto body,
-  });
-
-  /// Edit, disable or enable a branch
-  @PATCH('/api/v1/admin/stores/{id}/branches/{branchId}')
-  Future<BranchDto> updateBranch({
-    @Path('id') required String id,
-    @Path('branchId') required String branchId,
-    @Body() required UpdateBranchDto body,
+  /// Open another place of this store's brand.
+  ///
+  /// A store of its own at the place sent, with the same name, kind, photos, contact details and owners. Its staff, products and offers are its own.
+  @POST('/api/v1/admin/stores/{storeId}/locations')
+  Future<StoreDetailDto> addLocation({
+    @Path('storeId') required String storeId,
+    @Body() required AddStoreLocationDto body,
   });
 
   /// Add an owner or staff member.

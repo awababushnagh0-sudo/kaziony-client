@@ -6,34 +6,37 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'city.dart';
 
-part 'create_branch_dto.g.dart';
+part 'add_store_location_dto.g.dart';
 
 @JsonSerializable()
-class CreateBranchDto {
-  const CreateBranchDto({
+class AddStoreLocationDto {
+  const AddStoreLocationDto({
     required this.city,
-    required this.name,
     required this.latitude,
     required this.longitude,
+    this.phone,
     this.area,
     this.address,
-    this.phone,
     this.openingHours,
   });
   
-  factory CreateBranchDto.fromJson(Map<String, Object?> json) => _$CreateBranchDtoFromJson(json);
+  factory AddStoreLocationDto.fromJson(Map<String, Object?> json) => _$AddStoreLocationDtoFromJson(json);
   
   final City city;
-  final String name;
+
+  /// This place's phone, if not the brand's.
+  final String? phone;
+
+  /// The neighbourhood, shown with the store's name: it tells a brand's.
+  /// places apart.
   final String? area;
   final String? address;
   final num latitude;
   final num longitude;
-  final String? phone;
 
   /// Opening hours per day ("sat" to "fri"), up to 4 times a day. A close.
   /// earlier than the open is past midnight; a day left out isn't said.
   final dynamic openingHours;
 
-  Map<String, Object?> toJson() => _$CreateBranchDtoToJson(this);
+  Map<String, Object?> toJson() => _$AddStoreLocationDtoToJson(this);
 }

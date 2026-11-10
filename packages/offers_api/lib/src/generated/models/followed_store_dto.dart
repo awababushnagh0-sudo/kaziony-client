@@ -13,6 +13,7 @@ class FollowedStoreDto {
   const FollowedStoreDto({
     required this.id,
     required this.name,
+    required this.area,
     required this.logoUrl,
     required this.category,
     required this.ratingAverage,
@@ -25,6 +26,9 @@ class FollowedStoreDto {
   
   final String id;
   final String name;
+
+  /// The neighbourhood, shown with the name.
+  final String? area;
   final String? logoUrl;
   final CategoryDto category;
 

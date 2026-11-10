@@ -8,8 +8,14 @@ part of 'store_detail_dto.dart';
 
 StoreDetailDto _$StoreDetailDtoFromJson(Map<String, dynamic> json) =>
     StoreDetailDto(
+      city: City.fromJson(json['city'] as String),
+      openingHours: json['openingHours'],
       id: json['id'] as String,
       name: json['name'] as String,
+      area: json['area'] as String?,
+      address: json['address'] as String?,
+      latitude: json['latitude'] as num,
+      longitude: json['longitude'] as num,
       logoUrl: json['logoUrl'] as String?,
       coverUrl: json['coverUrl'] as String?,
       phone: json['phone'] as String?,
@@ -22,9 +28,6 @@ StoreDetailDto _$StoreDetailDtoFromJson(Map<String, dynamic> json) =>
       isActive: json['isActive'] as bool,
       createdAt: DateTime.parse(json['createdAt'] as String),
       category: CategoryDto.fromJson(json['category'] as Map<String, dynamic>),
-      branches: (json['branches'] as List<dynamic>)
-          .map((e) => BranchDto.fromJson(e as Map<String, dynamic>))
-          .toList(),
       members: (json['members'] as List<dynamic>)
           .map((e) => StoreMemberDto.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -32,8 +35,14 @@ StoreDetailDto _$StoreDetailDtoFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$StoreDetailDtoToJson(StoreDetailDto instance) =>
     <String, dynamic>{
+      'city': instance.city,
+      'openingHours': ?instance.openingHours,
       'id': instance.id,
       'name': instance.name,
+      'area': ?instance.area,
+      'address': ?instance.address,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
       'logoUrl': ?instance.logoUrl,
       'coverUrl': ?instance.coverUrl,
       'phone': ?instance.phone,
@@ -46,6 +55,5 @@ Map<String, dynamic> _$StoreDetailDtoToJson(StoreDetailDto instance) =>
       'isActive': instance.isActive,
       'createdAt': instance.createdAt.toIso8601String(),
       'category': instance.category,
-      'branches': instance.branches,
       'members': instance.members,
     };

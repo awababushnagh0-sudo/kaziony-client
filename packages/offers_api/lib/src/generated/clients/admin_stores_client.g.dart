@@ -166,61 +166,29 @@ class _AdminStoresClient implements AdminStoresClient {
   }
 
   @override
-  Future<BranchDto> addBranch({
-    required String id,
-    required CreateBranchDto body,
+  Future<StoreDetailDto> addLocation({
+    required String storeId,
+    required AddStoreLocationDto body,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
-    final _options = _setStreamType<BranchDto>(
+    final _options = _setStreamType<StoreDetailDto>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/admin/stores/${id}/branches',
+            '/api/v1/admin/stores/${storeId}/locations',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, Object?>>(_options);
-    late BranchDto _value;
+    late StoreDetailDto _value;
     try {
-      _value = BranchDto.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<BranchDto> updateBranch({
-    required String id,
-    required String branchId,
-    required UpdateBranchDto body,
-  }) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body.toJson());
-    final _options = _setStreamType<BranchDto>(
-      Options(method: 'PATCH', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/api/v1/admin/stores/${id}/branches/${branchId}',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch<Map<String, Object?>>(_options);
-    late BranchDto _value;
-    try {
-      _value = BranchDto.fromJson(_result.data!);
+      _value = StoreDetailDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

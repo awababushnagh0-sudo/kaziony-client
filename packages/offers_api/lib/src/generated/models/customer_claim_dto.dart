@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'claim_status.dart';
 import 'customer_claim_offer_dto.dart';
 import 'customer_claim_store_dto.dart';
-import 'public_branch_dto.dart';
+import 'public_location_dto.dart';
 
 part 'customer_claim_dto.g.dart';
 
@@ -25,8 +25,9 @@ class CustomerClaimDto {
     required this.createdAt,
     required this.offer,
     required this.store,
-    required this.branches,
+    required this.location,
     required this.canCancel,
+    required this.cancelEndsBooking,
     required this.myRating,
     required this.canRate,
   });
@@ -54,14 +55,19 @@ class CustomerClaimDto {
   final CustomerClaimOfferDto offer;
   final CustomerClaimStoreDto store;
 
-  /// Where it can be picked up.
-  final List<PublicBranchDto> branches;
+  /// Where to pick it up.
+  final PublicLocationDto location;
   final bool canCancel;
 
-  /// The stars I gave the store for this pickup; null until rated.
+  /// This offer was cancelled once already: cancelling again means it can't.
+  /// be booked again. For the app to say so before.
+  final bool cancelEndsBooking;
+
+  /// The stars I gave the store (one rating per store); null until I rate it.
   final num? myRating;
 
-  /// Picked up and not rated yet.
+  /// Picked up, and the store not rated since: rating replaces my earlier.
+  /// stars for it.
   final bool canRate;
 
   Map<String, Object?> toJson() => _$CustomerClaimDtoToJson(this);

@@ -15,7 +15,6 @@ class StoreMemberDto {
     required this.userId,
     required this.name,
     required this.phone,
-    required this.branchId,
     required this.isActive,
     required this.mustChangePassword,
   });
@@ -26,7 +25,6 @@ class StoreMemberDto {
   final String userId;
   final String? name;
   final String? phone;
-  final String? branchId;
 
   /// False if the account has been disabled.
   final bool isActive;

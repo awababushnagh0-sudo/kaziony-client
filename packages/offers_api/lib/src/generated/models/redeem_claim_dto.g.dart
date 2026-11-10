@@ -7,10 +7,7 @@ part of 'redeem_claim_dto.dart';
 // **************************************************************************
 
 RedeemClaimDto _$RedeemClaimDtoFromJson(Map<String, dynamic> json) =>
-    RedeemClaimDto(
-      code: json['code'] as String,
-      branchId: json['branchId'] as String?,
-    );
+    RedeemClaimDto(code: json['code'] as String);
 
 Map<String, dynamic> _$RedeemClaimDtoToJson(RedeemClaimDto instance) =>
-    <String, dynamic>{'code': instance.code, 'branchId': ?instance.branchId};
+    <String, dynamic>{'code': instance.code};

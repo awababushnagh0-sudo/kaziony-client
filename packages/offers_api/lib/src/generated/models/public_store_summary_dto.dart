@@ -5,7 +5,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'category_dto.dart';
-import 'public_branch_dto.dart';
+import 'public_location_dto.dart';
 
 part 'public_store_summary_dto.g.dart';
 
@@ -19,7 +19,7 @@ class PublicStoreSummaryDto {
     required this.category,
     required this.ratingAverage,
     required this.ratingCount,
-    required this.nearestBranch,
+    required this.location,
     required this.liveOfferCount,
   });
   
@@ -34,9 +34,7 @@ class PublicStoreSummaryDto {
   /// Average stars from customers' pickups, one decimal; null before the first.
   final num? ratingAverage;
   final num ratingCount;
-
-  /// Its closest active branch.
-  final PublicBranchDto nearestBranch;
+  final PublicLocationDto location;
   final num liveOfferCount;
 
   Map<String, Object?> toJson() => _$PublicStoreSummaryDtoToJson(this);

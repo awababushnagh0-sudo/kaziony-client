@@ -10,12 +10,18 @@ part 'app_settings_dto.g.dart';
 class AppSettingsDto {
   const AppSettingsDto({
     required this.browseRadiusKm,
+    required this.holdMinutes,
   });
   
   factory AppSettingsDto.fromJson(Map<String, Object?> json) => _$AppSettingsDtoFromJson(json);
   
-  /// Customers see offers from branches this close to them, in km.
+  /// Customers see offers from stores this close to them, in km.
   final num browseRadiusKm;
+
+  /// How long a reservation is held for the customer to come, in minutes,.
+  /// unless the offer ends first. Reservations made before a change keep.
+  /// theirs.
+  final num holdMinutes;
 
   Map<String, Object?> toJson() => _$AppSettingsDtoToJson(this);
 }

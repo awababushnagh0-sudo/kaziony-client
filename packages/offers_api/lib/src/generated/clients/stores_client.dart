@@ -35,7 +35,7 @@ abstract class StoresClient {
     @Query('search') String? search,
   });
 
-  /// Store page with branches and live offers.
+  /// Store page with its place and live offers.
   ///
   /// With a customer token, `isFollowing` is filled in.
   @GET('/api/v1/stores/{storeId}')

@@ -19,7 +19,6 @@ PartnerClaimDto _$PartnerClaimDtoFromJson(Map<String, dynamic> json) =>
       redeemedAt: json['redeemedAt'] == null
           ? null
           : DateTime.parse(json['redeemedAt'] as String),
-      redeemedBranchId: json['redeemedBranchId'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
       canRedeem: json['canRedeem'] as bool,
       problem: json['problem'] as String?,
@@ -37,7 +36,6 @@ Map<String, dynamic> _$PartnerClaimDtoToJson(PartnerClaimDto instance) =>
       'offer': instance.offer,
       'expiresAt': instance.expiresAt.toIso8601String(),
       'redeemedAt': ?instance.redeemedAt?.toIso8601String(),
-      'redeemedBranchId': ?instance.redeemedBranchId,
       'createdAt': instance.createdAt.toIso8601String(),
       'canRedeem': instance.canRedeem,
       'problem': ?instance.problem,

@@ -27,10 +27,9 @@ PublicOfferDto _$PublicOfferDtoFromJson(Map<String, dynamic> json) =>
       store: OfferStoreSummaryDto.fromJson(
         json['store'] as Map<String, dynamic>,
       ),
-      nearestBranch: PublicBranchDto.fromJson(
-        json['nearestBranch'] as Map<String, dynamic>,
+      location: PublicLocationDto.fromJson(
+        json['location'] as Map<String, dynamic>,
       ),
-      branchCount: json['branchCount'] as num,
     );
 
 Map<String, dynamic> _$PublicOfferDtoToJson(PublicOfferDto instance) =>
@@ -52,6 +51,5 @@ Map<String, dynamic> _$PublicOfferDtoToJson(PublicOfferDto instance) =>
       'startsAt': instance.startsAt.toIso8601String(),
       'endsAt': instance.endsAt.toIso8601String(),
       'store': instance.store,
-      'nearestBranch': instance.nearestBranch,
-      'branchCount': instance.branchCount,
+      'location': instance.location,
     };

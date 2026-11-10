@@ -16,8 +16,8 @@ PublicStoreSummaryDto _$PublicStoreSummaryDtoFromJson(
   category: CategoryDto.fromJson(json['category'] as Map<String, dynamic>),
   ratingAverage: json['ratingAverage'] as num?,
   ratingCount: json['ratingCount'] as num,
-  nearestBranch: PublicBranchDto.fromJson(
-    json['nearestBranch'] as Map<String, dynamic>,
+  location: PublicLocationDto.fromJson(
+    json['location'] as Map<String, dynamic>,
   ),
   liveOfferCount: json['liveOfferCount'] as num,
 );
@@ -32,6 +32,6 @@ Map<String, dynamic> _$PublicStoreSummaryDtoToJson(
   'category': instance.category,
   'ratingAverage': ?instance.ratingAverage,
   'ratingCount': instance.ratingCount,
-  'nearestBranch': instance.nearestBranch,
+  'location': instance.location,
   'liveOfferCount': instance.liveOfferCount,
 };
