@@ -30,6 +30,11 @@ class SupportContact {
 
   Uri get callLink => Uri(scheme: 'tel', path: phone);
   Uri get whatsappLink => Uri.https('wa.me', '/$whatsapp');
+
+  /// A WhatsApp chat with our team that opens with [text] typed in, for
+  /// asking us to change what only our team changes.
+  Uri whatsappMessage(String text) =>
+      Uri.https('wa.me', '/$whatsapp', {'text': text});
   Uri get emailLink => Uri(scheme: 'mailto', path: email);
 }
 

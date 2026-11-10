@@ -39,6 +39,7 @@ export 'src/list/page_result.dart';
 export 'src/list/paged_list_view_model.dart';
 export 'src/locale/locale.dart';
 export 'src/location/location.dart' hide DeviceLocationFinder;
+export 'src/location/opening_hours.dart';
 export 'src/navigation/leave_guard.dart';
 export 'src/navigation/navigation.dart';
 export 'src/network/api.dart';

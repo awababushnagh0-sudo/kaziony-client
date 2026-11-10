@@ -11,41 +11,42 @@ enum AccountRole {
   unknown,
 }
 
-/// A store the logged-in merchant works at.
+/// A store the logged-in merchant works at. A store is one place: a
+/// brand's places are a store each, told apart by their area.
 class StoreMembership {
   const StoreMembership({
     required this.storeId,
     required this.storeName,
+    required this.storeArea,
     required this.storeLogoUrl,
     required this.isOwner,
-    required this.branchId,
   });
 
   factory StoreMembership.fromJson(Map<String, Object?> json) =>
       StoreMembership(
         storeId: json['storeId']! as String,
         storeName: json['storeName']! as String,
+        storeArea: json['storeArea'] as String?,
         storeLogoUrl: json['storeLogoUrl'] as String?,
         isOwner: json['isOwner']! as bool,
-        branchId: json['branchId'] as String?,
       );
 
   final String storeId;
   final String storeName;
+
+  /// The neighbourhood, shown with the name: "حلويات الساحل · حي الأندلس".
+  final String? storeArea;
   final String? storeLogoUrl;
 
   /// Owners manage the store; staff only redeem at the counter.
   final bool isOwner;
 
-  /// Staff limited to one branch. Null means all branches.
-  final String? branchId;
-
   Map<String, Object?> toJson() => {
     'storeId': storeId,
     'storeName': storeName,
+    'storeArea': storeArea,
     'storeLogoUrl': storeLogoUrl,
     'isOwner': isOwner,
-    'branchId': branchId,
   };
 }
 
@@ -82,9 +83,9 @@ class SessionUser {
         StoreMembership(
           storeId: membership.store.id,
           storeName: membership.store.name,
+          storeArea: membership.store.area,
           storeLogoUrl: membership.store.logoUrl,
           isOwner: membership.role == api.StoreMemberRole.owner,
-          branchId: membership.branchId,
         ),
     ],
   );
