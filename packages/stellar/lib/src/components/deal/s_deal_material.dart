@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../badge/s_badge_material.dart';
+import '../button/s_button_material.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import '../image/s_image_material.dart';
-import '../photo_header/s_photo_header_material.dart';
 import 's_deal_tile.dart';
 
 /// [SDealTile], drawn as an [InkWell] row, in a bordered [Material] when
@@ -105,7 +105,7 @@ class SDealTileMaterial extends StatelessWidget implements SDealTile {
   }
 }
 
-/// [SDealHeader], drawn with Material's [IconButton]s on the photo.
+/// [SDealHeader], drawn with buttons of glass on the photo.
 class SDealHeaderMaterial extends StatelessWidget implements SDealHeader {
   const SDealHeaderMaterial({
     required this.title,
@@ -177,7 +177,7 @@ class SDealHeaderMaterial extends StatelessWidget implements SDealHeader {
                 PositionedDirectional(
                   top: top + Space.sm,
                   start: Space.lg,
-                  child: RoundPhotoButton(
+                  child: SGlassButtonMaterial(
                     icon: SIcons.chevronBack,
                     tooltip: MaterialLocalizations.of(context)
                         .backButtonTooltip,
@@ -188,7 +188,7 @@ class SDealHeaderMaterial extends StatelessWidget implements SDealHeader {
                 PositionedDirectional(
                   top: top + Space.sm,
                   end: Space.lg,
-                  child: RoundPhotoButton(
+                  child: SGlassButtonMaterial(
                     icon: action.icon,
                     tooltip: action.tooltip,
                     onPressed: action.onPressed,

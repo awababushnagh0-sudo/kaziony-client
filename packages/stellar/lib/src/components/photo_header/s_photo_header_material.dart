@@ -6,9 +6,9 @@ import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../badge/s_badge.dart';
 import '../badge/s_badge_material.dart';
+import '../button/s_button_material.dart';
 import '../favorite_button/s_heart_material.dart';
 import '../icon/s_icon.dart';
-import '../icon/s_icon_material.dart';
 import 's_photo_header.dart';
 
 /// [SPhotoHeader], drawn as a pinned [SliverPersistentHeader].
@@ -283,7 +283,7 @@ class _PhotoHeaderDelegate extends SliverPersistentHeaderDelegate {
                 spacing: Space.md,
                 children: [
                   if (onBack != null)
-                    RoundPhotoButton(
+                    SGlassButtonMaterial(
                       icon: SIcons.chevronBack,
                       tooltip: backTooltip,
                       onPressed: onBack,
@@ -306,7 +306,7 @@ class _PhotoHeaderDelegate extends SliverPersistentHeaderDelegate {
                   if (words > 0 && header.trailing != null)
                     Opacity(opacity: words, child: header.trailing),
                   if (favorite != null)
-                    RoundPhotoButton.drawn(
+                    SGlassButtonMaterial.drawn(
                       icon: HeartMaterial(filled: favorite.saved),
                       tooltip: favorite.tooltip,
                       onPressed: favorite.onPressed,
@@ -314,7 +314,7 @@ class _PhotoHeaderDelegate extends SliverPersistentHeaderDelegate {
                       lift: 1 - bar,
                     ),
                   if (action != null)
-                    RoundPhotoButton(
+                    SGlassButtonMaterial(
                       icon: action.icon,
                       tooltip: action.tooltip,
                       onPressed: action.onPressed,
@@ -372,77 +372,6 @@ class _BarTitle extends StatelessWidget {
             style: TextStyle(fontSize: text.small, color: c.textMuted),
           ),
       ],
-    );
-  }
-}
-
-/// A white circle on a photo, so the icon reads on any picture. [lift]
-/// (0 to 1) is how much of its shadow shows: none once it sits on a plain
-/// bar.
-class RoundPhotoButton extends StatelessWidget {
-  RoundPhotoButton({
-    required SIcons icon,
-    required String tooltip,
-    required VoidCallback onPressed,
-    double lift = 1,
-    Key? key,
-  }) : this.drawn(
-         icon: Icon(materialIcon(icon), size: SIconSize.md.pixels),
-         tooltip: tooltip,
-         onPressed: onPressed,
-         lift: lift,
-         key: key,
-       );
-
-  /// With an icon drawn for it (a filled heart). [selected] tells screen
-  /// readers it's on.
-  const RoundPhotoButton.drawn({
-    required this.icon,
-    required this.tooltip,
-    required this.onPressed,
-    this.lift = 1,
-    this.selected = false,
-    super.key,
-  });
-
-  static const _size = 44.0;
-  static const _shadowBlur = 12.0;
-
-  final Widget icon;
-  final String tooltip;
-  final VoidCallback onPressed;
-  final double lift;
-  final bool selected;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        boxShadow: [
-          if (lift > 0)
-            BoxShadow(
-              color: c.shadow.withValues(alpha: c.shadow.a * lift),
-              blurRadius: _shadowBlur,
-            ),
-        ],
-      ),
-      child: Material(
-        color: c.surface,
-        shape: const CircleBorder(),
-        clipBehavior: Clip.antiAlias,
-        child: SizedBox.square(
-          dimension: _size,
-          child: IconButton(
-            tooltip: tooltip,
-            onPressed: onPressed,
-            isSelected: selected,
-            color: c.text,
-            icon: icon,
-          ),
-        ),
-      ),
     );
   }
 }

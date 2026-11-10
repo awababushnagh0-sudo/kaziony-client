@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../../l10n/generated/stellar_localizations.dart';
+import '../button/s_button_material.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import '../illustration/s_illustration.dart';
@@ -33,20 +34,15 @@ const _grabberOpacity = 0.5;
 /// doesn't crowd it.
 const _contentTop = _grabberTop + _grabberHeight + Space.xl;
 
-/// The close button's gray circle, as on iOS; it's tapped in a box of
-/// [kMinInteractiveDimension].
-const _closeSize = 30.0;
-
-/// From the sheet's end edge to the close button's tap box.
-const _closeInset = Space.sm;
-
-/// The close button sits at the top beside the grabber: its circle's top
-/// level with the grabber's (its tap box reaches above it).
-const _closeTop = _grabberTop - (kMinInteractiveDimension - _closeSize) / 2;
+/// The close button, a circle of glass as on iOS, sits in the top end
+/// corner beside the grabber, its top level with the grabber's and as far
+/// in from the side.
+const _closeInset = _grabberTop;
 
 /// How far the title keeps from each side so a long one never runs under
 /// the close button (on both sides, so it stays centered).
-const _titleInset = _closeInset + kMinInteractiveDimension - Space.lg;
+const _titleInset =
+    _closeInset + SGlassButtonMaterial.size + Space.sm - Space.lg;
 
 /// [SSheet]: a white card floating over the page's foot, a grabber and a close
 /// button: an optional picture, the title and a line on what the choice
@@ -205,37 +201,16 @@ class _Frame extends StatelessWidget {
             ),
           ),
         ),
-        const PositionedDirectional(
-          top: _closeTop,
+        PositionedDirectional(
+          top: _grabberTop,
           end: _closeInset,
-          child: _CloseButton(),
+          child: SGlassButtonMaterial(
+            icon: SIcons.close,
+            tooltip: StellarLocalizations.of(context).close,
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         ),
       ],
-    );
-  }
-}
-
-/// Closes the sheet with nothing chosen: an X in a gray circle.
-class _CloseButton extends StatelessWidget {
-  const _CloseButton();
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return IconButton(
-      tooltip: StellarLocalizations.of(context).close,
-      onPressed: () => Navigator.of(context).pop(),
-      style: IconButton.styleFrom(
-        backgroundColor: c.fieldFill,
-        foregroundColor: c.textMuted,
-        shape: const CircleBorder(),
-        fixedSize: const Size.square(_closeSize),
-        minimumSize: const Size.square(_closeSize),
-        padding: EdgeInsets.zero,
-        // The circle stays small; the box it's tapped in doesn't.
-        tapTargetSize: MaterialTapTargetSize.padded,
-      ),
-      icon: Icon(materialIcon(SIcons.close), size: SIconSize.xs.pixels),
     );
   }
 }

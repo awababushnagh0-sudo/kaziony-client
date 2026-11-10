@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
+import '../../material/s_glass.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
 import 's_button.dart';
@@ -339,5 +340,60 @@ class SIconButtonMaterial extends StatelessWidget implements SButton {
     tooltip: tooltip,
     onPressed: onPressed,
     icon: Icon(materialIcon(icon), size: SIconSize.md.pixels),
+  );
+}
+
+/// [SButton.glass], a circle of glass, so the icon reads on any picture or
+/// color. [lift] (0 to 1) is how much of its shadow shows: none once it
+/// sits on a plain bar.
+class SGlassButtonMaterial extends StatelessWidget implements SButton {
+  SGlassButtonMaterial({
+    required SIcons icon,
+    required String tooltip,
+    required VoidCallback onPressed,
+    double lift = 1,
+    Key? key,
+  }) : this.drawn(
+         icon: Icon(materialIcon(icon), size: SIconSize.md.pixels),
+         tooltip: tooltip,
+         onPressed: onPressed,
+         lift: lift,
+         key: key,
+       );
+
+  /// With an icon drawn for it (a filled heart). [selected] tells screen
+  /// readers it's on.
+  const SGlassButtonMaterial.drawn({
+    required this.icon,
+    required this.tooltip,
+    required this.onPressed,
+    this.lift = 1,
+    this.selected = false,
+    super.key,
+  });
+
+  /// Across the circle, which is also the box it's tapped in.
+  static const size = 44.0;
+
+  final Widget icon;
+  final String tooltip;
+  final VoidCallback onPressed;
+  final double lift;
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) => SizedBox.square(
+    dimension: size,
+    child: SGlass(
+      shape: SGlassShape.circle,
+      lift: lift,
+      child: IconButton(
+        tooltip: tooltip,
+        onPressed: onPressed,
+        isSelected: selected,
+        color: context.colors.text,
+        icon: icon,
+      ),
+    ),
   );
 }

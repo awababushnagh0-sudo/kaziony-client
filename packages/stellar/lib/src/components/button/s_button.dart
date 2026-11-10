@@ -112,4 +112,14 @@ abstract interface class SButton implements Widget {
     required VoidCallback? onPressed,
     Key? key,
   }) = SIconButtonMaterial;
+
+  /// An icon on a circle of glass, for a button floating over a photo or
+  /// the brand's shapes, where a bare icon would get lost. [tooltip] is
+  /// required so the button always has a name for screen readers.
+  factory SButton.glass({
+    required SIcons icon,
+    required String tooltip,
+    required VoidCallback onPressed,
+    Key? key,
+  }) = SGlassButtonMaterial;
 }
