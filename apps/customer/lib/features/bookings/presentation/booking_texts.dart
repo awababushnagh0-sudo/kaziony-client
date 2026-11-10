@@ -19,6 +19,27 @@ import '../domain/booking.dart';
   BookingStatus.expired => (s.statusExpired, BadgeTone.neutral),
 };
 
+/// The day a past booking is filed under: "Today", "Yesterday", the day
+/// with its weekday this year, or the date in another.
+String bookingDay(
+  CustomerLocalizations s,
+  DateTime day,
+  DateTime now, {
+  required String languageCode,
+}) {
+  if (isSameDay(day, now)) return s.bookingsToday;
+  if (isSameDay(day, now.subtract(const Duration(days: 1)))) {
+    return s.bookingsYesterday;
+  }
+  return day.toLocal().year == now.toLocal().year
+      ? formatDay(day, languageCode: languageCode)
+      : formatDate(day, languageCode: languageCode);
+}
+
+/// When a past booking happened: picked up, or else booked.
+DateTime bookingTime(Booking booking) =>
+    booking.pickedUpAt ?? booking.createdAt;
+
 /// Why a reservation was refused, in the app's words.
 String reserveFailureMessage(BuildContext context, AppFailure failure) {
   final s = CustomerLocalizations.of(context);

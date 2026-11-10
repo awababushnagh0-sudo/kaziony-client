@@ -313,6 +313,13 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get logout => 'Log out';
 
   @override
+  String get logoutTitle => 'Log out?';
+
+  @override
+  String get logoutMessage =>
+      'Your bookings and favorite stores stay saved. Sign in again to see them.';
+
+  @override
   String get back => 'Back';
 
   @override
@@ -658,7 +665,10 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get bookingsNow => 'Now';
 
   @override
-  String get bookingsPast => 'Before';
+  String get bookingsToday => 'Today';
+
+  @override
+  String get bookingsYesterday => 'Yesterday';
 
   @override
   String pickUpBefore(String time) {

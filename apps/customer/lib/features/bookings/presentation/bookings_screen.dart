@@ -8,12 +8,11 @@ import '../../offers/presentation/offer_texts.dart';
 import '../domain/booking.dart';
 import 'booking_texts.dart';
 import 'bookings_view_model.dart';
-import 'widgets/booking_tiles_skeleton.dart';
 
 /// The Bookings tab: the bookings to pick up now first, each a card with
 /// its time left and the way to its code; then the past ones, newest
-/// first, as tiles with what became of them. Signed out, the way to sign
-/// in.
+/// first under the day they happened (today, yesterday, a date), as cards with the store, what became of them and what was
+/// booked. Signed out, the way to sign in.
 class BookingsScreen extends AppView {
   const BookingsScreen({super.key});
 
@@ -52,7 +51,7 @@ class _List extends AppView {
       onRetry: () => ref.invalidate(bookingsViewModel),
       loading: const Padding(
         padding: EdgeInsets.all(Space.lg),
-        child: BookingTilesSkeleton(count: 5),
+        child: _PastTilesSkeleton(count: 4),
       ),
       builder: (context, page) {
         if (page.items.isEmpty) {
@@ -88,18 +87,44 @@ class _List extends AppView {
                       SSectionHeader(s.bookingsNow),
                       for (final booking in current)
                         _CurrentCard(booking: booking),
-                      if (past.isNotEmpty) ...[
-                        const Gap(Space.md),
-                        SSectionHeader(s.bookingsPast),
-                      ],
                     ],
                   ),
                 ),
           itemCount: past.length,
-          itemBuilder: (context, index) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
-            child: _PastTile(booking: past[index], now: now),
-          ),
+          itemBuilder: (context, index) {
+            final when = bookingTime(past[index]);
+            // A day's name over its first booking: newest first, so the
+            // day changes going down.
+            final newDay =
+                index == 0 || !isSameDay(when, bookingTime(past[index - 1]));
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (newDay)
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: index == 0 && current.isEmpty
+                            ? Space.md
+                            : Space.lg,
+                        bottom: Space.sm,
+                      ),
+                      child: SSectionHeader(
+                        bookingDay(
+                          s,
+                          when,
+                          now,
+                          languageCode: Localizations.localeOf(context)
+                              .languageCode,
+                        ),
+                      ),
+                    ),
+                  _PastTile(booking: past[index], now: now),
+                ],
+              ),
+            );
+          },
           onRefresh: () async {
             final failure = await viewModel.refresh();
             if (failure != null && context.mounted) {
@@ -112,7 +137,7 @@ class _List extends AppView {
           moreFailure: page.moreFailure,
           placeholder: const Padding(
             padding: EdgeInsets.symmetric(horizontal: Space.lg),
-            child: BookingTilesSkeleton(count: 1),
+            child: _PastTilesSkeleton(count: 1),
           ),
         );
       },
@@ -232,8 +257,10 @@ class _CurrentCard extends AppView {
   }
 }
 
-/// A past booking: its picture, what it was, the store and the day, and
-/// what became of it. Opens its page, with the stars once picked up.
+/// A past booking, on a card: the store's logo by its name, what became
+/// of it in its color with what was paid, and at what time; under them, the
+/// offer's photo with how many were booked on it, and its name. Opens its
+/// page, with the stars once picked up.
 class _PastTile extends StatelessWidget {
   const _PastTile({required this.booking, required this.now});
 
@@ -244,39 +271,155 @@ class _PastTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = CustomerLocalizations.of(context);
     final language = Localizations.localeOf(context).languageCode;
-    final (status, tone) = bookingStatus(s, booking, now);
-    final day = formatDayMonth(
-      booking.pickedUpAt ?? booking.createdAt,
-      languageCode: language,
-    );
+    final (status, _) = bookingStatus(s, booking, now);
+    // The day is over the card.
+    final when = formatTime(bookingTime(booking), languageCode: language);
     return SCard(
       onTap: () => context.push(Routes.booking(booking.id)),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: Space.md,
         children: [
-          SImage(booking.thumbUrl),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: Space.xxs,
-              children: [
-                SText(
+          Row(
+            spacing: Space.md,
+            children: [
+              SImage(booking.storeLogoUrl, size: SImageSize.logoInCard),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: Space.xxs,
+                  children: [
+                    SText(
+                      booking.storeName,
+                      variant: TextVariant.caption,
+                      weight: SFontWeight.bold,
+                      color: SColor.text,
+                      maxLines: 1,
+                    ),
+                    Row(
+                      spacing: Space.xs,
+                      children: [
+                        SText(
+                          status,
+                          variant: TextVariant.caption,
+                          weight: SFontWeight.semibold,
+                          color: _statusColor(booking.status),
+                        ),
+                        Flexible(
+                          child: SText(
+                            '· ${s.price(context, booking.totalPrice)}',
+                            variant: TextVariant.caption,
+                            color: SColor.textMuted,
+                            maxLines: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SText(
+                      when,
+                      variant: TextVariant.caption,
+                      color: SColor.textMuted,
+                      maxLines: 1,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          // One offer per booking: its photo, how many, and its name.
+          Row(
+            spacing: Space.md,
+            children: [
+              Stack(
+                children: [
+                  SImage(booking.thumbUrl, size: SImageSize.tile),
+                  PositionedDirectional(
+                    bottom: Space.xs,
+                    start: Space.xs,
+                    child: SBadge(
+                      s.quantityTimes(booking.quantity),
+                      tone: BadgeTone.onPhoto,
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: SText(
                   booking.offerTitle,
                   weight: SFontWeight.semibold,
-                  maxLines: 1,
+                  maxLines: 3,
                 ),
-                SText(
-                  '${booking.storeName} · $day',
-                  variant: TextVariant.caption,
-                  color: SColor.textMuted,
-                  maxLines: 1,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          SBadge(status, tone: tone),
         ],
       ),
     );
   }
+
+  /// Picked up in green, missed in red, cancelled in gray. A reserved one
+  /// is here only once its time ran out: missed.
+  static SColor _statusColor(BookingStatus status) => switch (status) {
+    BookingStatus.pickedUp => SColor.success,
+    BookingStatus.expired => SColor.danger,
+    BookingStatus.cancelled => SColor.textMuted,
+    BookingStatus.reserved => SColor.danger,
+  };
+}
+
+/// Past bookings while they load: a logo and its lines, then a photo and
+/// a name, on cards down the page.
+class _PastTilesSkeleton extends StatelessWidget {
+  const _PastTilesSkeleton({required this.count});
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) => SSkeleton(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: Space.sm,
+      children: [
+        for (var i = 0; i < count; i++)
+          const SCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: Space.md,
+              children: [
+                Row(
+                  spacing: Space.md,
+                  children: [
+                    SBone.image(size: SImageSize.logoInCard),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: Space.xxs,
+                        children: [
+                          SBone.text(length: BoneLength.medium),
+                          SBone.text(
+                            variant: TextVariant.caption,
+                            length: BoneLength.short,
+                          ),
+                          SBone.text(
+                            variant: TextVariant.caption,
+                            length: BoneLength.medium,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  spacing: Space.md,
+                  children: [
+                    SBone.image(size: SImageSize.tile),
+                    Expanded(child: SBone.text(length: BoneLength.long)),
+                  ],
+                ),
+              ],
+            ),
+          ),
+      ],
+    ),
+  );
 }

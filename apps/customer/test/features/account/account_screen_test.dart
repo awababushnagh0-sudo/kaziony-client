@@ -96,10 +96,19 @@ void main() {
     expect(find.text('Ahmed'), findsOneWidget);
     expect(find.text('a@gmail.com'), findsOneWidget);
 
+    // Asked first: going back keeps the customer signed in.
     await tester.ensureVisible(find.text('Log out'));
     await tester.tap(find.text('Log out'));
     await tester.pumpAndSettle();
+    expect(find.text('Log out?'), findsOneWidget);
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    expect(auth.signOuts, 0);
 
+    await tester.tap(find.text('Log out'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Log out').last);
+    await tester.pumpAndSettle();
     expect(auth.signOuts, 1);
   });
 

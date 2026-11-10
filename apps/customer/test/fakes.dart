@@ -177,6 +177,7 @@ Booking booking({
   bool limited = true,
   bool canRate = false,
   int? myRating,
+  Duration ago = const Duration(minutes: 18),
 }) => Booking(
   id: id,
   code: 'A2GUGPJ7',
@@ -184,7 +185,7 @@ Booking booking({
   totalPrice: '30.000',
   status: status,
   expiresAt: now.add(left),
-  createdAt: now.subtract(const Duration(minutes: 18)),
+  createdAt: now.subtract(ago),
   offerId: 'o1',
   offerTitle: 'Kunafa box',
   offerPrice: '15.000',

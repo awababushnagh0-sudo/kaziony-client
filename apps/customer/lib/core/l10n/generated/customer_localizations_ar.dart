@@ -324,6 +324,13 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get logout => 'تسجيل الخروج';
 
   @override
+  String get logoutTitle => 'تسجيل الخروج؟';
+
+  @override
+  String get logoutMessage =>
+      'تبقى حجوزاتك ومحلاتك المفضلة محفوظة. سجّل الدخول مرة أخرى لتراها.';
+
+  @override
   String get back => 'رجوع';
 
   @override
@@ -666,7 +673,10 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get bookingsNow => 'الحالية';
 
   @override
-  String get bookingsPast => 'السابقة';
+  String get bookingsToday => 'اليوم';
+
+  @override
+  String get bookingsYesterday => 'أمس';
 
   @override
   String pickUpBefore(String time) {

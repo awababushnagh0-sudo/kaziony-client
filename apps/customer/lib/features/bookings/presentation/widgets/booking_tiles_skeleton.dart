@@ -1,8 +1,7 @@
 import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
-/// Booking tiles while they load, [count] of them down the page: the
-/// bookings list and the ratings.
+/// The ratings given while they load, [count] of them down the page.
 class BookingTilesSkeleton extends StatelessWidget {
   const BookingTilesSkeleton({required this.count, super.key});
 

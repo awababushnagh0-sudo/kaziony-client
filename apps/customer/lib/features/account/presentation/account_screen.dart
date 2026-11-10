@@ -87,12 +87,11 @@ class AccountScreen extends AppView {
                   ),
                 ]),
                 const _Settings(),
-                // No question first: signing back in is one tap.
                 SButton.dangerSecondary(
                   label: s.logout,
                   icon: SIcons.logout,
                   expand: true,
-                  onPressed: ref.read(authRepositoryProvider).signOut,
+                  onPressed: () => _logout(context, ref),
                 ),
               ],
             ),
@@ -101,6 +100,19 @@ class AccountScreen extends AppView {
       ),
     );
   }
+}
+
+/// Asks first: a stray tap shouldn't sign the customer out.
+Future<void> _logout(BuildContext context, WidgetRef ref) async {
+  final s = CustomerLocalizations.of(context);
+  final confirmed = await SDialog.confirm(
+    context,
+    title: s.logoutTitle,
+    message: s.logoutMessage,
+    confirmLabel: s.logout,
+    destructive: true,
+  );
+  if (confirmed) await ref.read(authRepositoryProvider).signOut();
 }
 
 /// "Good morning" until noon, then "good evening", as said in Libya.

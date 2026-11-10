@@ -563,6 +563,18 @@ abstract class CustomerLocalizations {
   /// **'Log out'**
   String get logout;
 
+  /// No description provided for @logoutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out?'**
+  String get logoutTitle;
+
+  /// No description provided for @logoutMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your bookings and favorite stores stay saved. Sign in again to see them.'**
+  String get logoutMessage;
+
   /// No description provided for @back.
   ///
   /// In en, this message translates to:
@@ -1145,11 +1157,17 @@ abstract class CustomerLocalizations {
   /// **'Now'**
   String get bookingsNow;
 
-  /// No description provided for @bookingsPast.
+  /// No description provided for @bookingsToday.
   ///
   /// In en, this message translates to:
-  /// **'Before'**
-  String get bookingsPast;
+  /// **'Today'**
+  String get bookingsToday;
+
+  /// No description provided for @bookingsYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get bookingsYesterday;
 
   /// No description provided for @pickUpBefore.
   ///

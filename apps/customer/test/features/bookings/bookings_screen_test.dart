@@ -56,7 +56,7 @@ void main() {
 
     expect(find.text('Now'), findsOneWidget);
     expect(find.text('42:05'), findsOneWidget);
-    expect(find.text('Before'), findsOneWidget);
+    expect(find.text('Today'), findsOneWidget);
     expect(find.text('Time ran out'), findsOneWidget);
 
     await tester.tap(find.text('Show pickup code'));
@@ -76,14 +76,36 @@ void main() {
     expect(find.text('Picked up'), findsOneWidget);
   });
 
-  testWidgets('a past booking opens its page', (tester) async {
+  testWidgets('a past booking shows its store and how many, and opens', (
+    tester,
+  ) async {
     bookings.bookings = [booking(status: BookingStatus.pickedUp)];
     await open(tester);
 
     expect(find.text('Now'), findsNothing);
+    expect(find.text('Sweet shop'), findsOneWidget);
+    expect(find.text('×2'), findsOneWidget);
+    expect(find.text('Kunafa box'), findsOneWidget);
+    expect(find.textContaining('30'), findsOneWidget);
     await tester.tap(find.text('Picked up'));
     await tester.pumpAndSettle();
     expect(find.text('pickup code page'), findsOneWidget);
+  });
+
+  testWidgets('past ones go under the day they happened', (tester) async {
+    bookings.bookings = [
+      booking(id: 'k1', status: BookingStatus.cancelled),
+      booking(id: 'k2', status: BookingStatus.cancelled),
+      booking(
+        id: 'k3',
+        status: BookingStatus.pickedUp,
+        ago: const Duration(days: 1),
+      ),
+    ];
+    await open(tester);
+
+    expect(find.text('Today'), findsOneWidget);
+    expect(find.text('Yesterday'), findsOneWidget);
   });
 
   testWidgets('with none yet, it leads to the offers', (tester) async {
