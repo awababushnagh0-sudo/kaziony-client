@@ -758,4 +758,514 @@ class AdminLocalizationsEn extends AdminLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get navSystem => 'System';
+
+  @override
+  String get systemTitle => 'System';
+
+  @override
+  String get systemTabOverview => 'Overview';
+
+  @override
+  String get systemTabTraffic => 'Traffic';
+
+  @override
+  String get systemTabErrors => 'Errors';
+
+  @override
+  String get systemTabJobs => 'Jobs';
+
+  @override
+  String get systemTabDatabase => 'Database';
+
+  @override
+  String get systemRedis => 'Redis (shared cache)';
+
+  @override
+  String get systemInstances => 'Instances';
+
+  @override
+  String get systemCheckedAt => 'Checked';
+
+  @override
+  String systemCheckedAtValue(String time) {
+    return '$time · every 15 seconds';
+  }
+
+  @override
+  String get systemAllGood => 'Everything is running';
+
+  @override
+  String get systemNeedsAttention => 'Something needs a look';
+
+  @override
+  String get healthUp => 'Up';
+
+  @override
+  String get healthDown => 'Down';
+
+  @override
+  String get healthOff => 'Not set up';
+
+  @override
+  String unitMs(String value) {
+    return '$value ms';
+  }
+
+  @override
+  String unitKb(String value) {
+    return '$value KB';
+  }
+
+  @override
+  String unitMb(String value) {
+    return '$value MB';
+  }
+
+  @override
+  String unitGb(String value) {
+    return '$value GB';
+  }
+
+  @override
+  String unitPercent(String value) {
+    return '$value%';
+  }
+
+  @override
+  String uptimeMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String uptimeHours(int hours, int minutes) {
+    return '$hours h $minutes min';
+  }
+
+  @override
+  String uptimeDays(int days, int hours) {
+    return '$days d $hours h';
+  }
+
+  @override
+  String get figureRequestsPerMinute => 'Requests a minute';
+
+  @override
+  String get figureServerErrors => 'Server errors';
+
+  @override
+  String figureServerErrorsHint(int count) {
+    return '$count in 5 minutes';
+  }
+
+  @override
+  String get figureLatency => 'Response time (p95)';
+
+  @override
+  String get figureLast5Minutes => 'Last 5 minutes';
+
+  @override
+  String get figureErrorKinds => 'Kinds of errors';
+
+  @override
+  String get figureLastDay => 'Last 24 hours';
+
+  @override
+  String figureFailingJobs(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jobs failing',
+      one: '1 job failing',
+      zero: 'No job failing',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get instanceThisOne => 'Answered';
+
+  @override
+  String instanceSubtitle(String version, String uptime) {
+    return 'Version $version · up $uptime';
+  }
+
+  @override
+  String get instanceMemory => 'Memory';
+
+  @override
+  String instanceMemoryValue(String total, String heap) {
+    return '$total ($heap in use by JavaScript)';
+  }
+
+  @override
+  String get instanceCpu => 'Processor';
+
+  @override
+  String get instanceEventLoop => 'Event loop delay';
+
+  @override
+  String get instanceConnections => 'Database connections';
+
+  @override
+  String instanceConnectionsValue(int open, int idle, int waiting, int max) {
+    return '$open open · $idle idle · $waiting waiting · up to $max';
+  }
+
+  @override
+  String get instanceRequests => 'Requests a minute';
+
+  @override
+  String get instanceStarted => 'Started';
+
+  @override
+  String get instanceReported => 'Last report';
+
+  @override
+  String trafficWindow(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String trafficSummary(int requests, int errors, int minutes) {
+    return '$requests requests and $errors server errors in the last $minutes minutes';
+  }
+
+  @override
+  String trafficMinutesAgo(int minutes) {
+    return '$minutes min ago';
+  }
+
+  @override
+  String get trafficNow => 'Now';
+
+  @override
+  String trafficBar(String time, int requests, int errors) {
+    return '$time · $requests requests · $errors errors';
+  }
+
+  @override
+  String get trafficRoutes => 'Routes, busiest first';
+
+  @override
+  String trafficRouteLatency(String p50, String p95, String p99) {
+    return 'p50 $p50 · p95 $p95 · p99 $p99';
+  }
+
+  @override
+  String trafficRouteErrors(String latency, int errors, int refused) {
+    return '$latency · $errors server errors · $refused refused';
+  }
+
+  @override
+  String get trafficEmpty => 'No requests yet';
+
+  @override
+  String get trafficEmptyMessage =>
+      'Requests show here as the apps use the API.';
+
+  @override
+  String get errorsEmpty => 'No server errors';
+
+  @override
+  String get errorsEmptyMessage =>
+      'Errors of the last 24 hours show here, the same error on the same route as one.';
+
+  @override
+  String errorTimes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count times',
+      one: 'once',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String errorSubtitle(String route, String times, String when) {
+    return '$route · $times · last $when';
+  }
+
+  @override
+  String get errorRequestId => 'Last request id (finds it in the logs)';
+
+  @override
+  String get errorFirstSeen => 'First seen';
+
+  @override
+  String get errorLastSeen => 'Last seen';
+
+  @override
+  String get errorStack => 'Where it happened';
+
+  @override
+  String get jobRunNow => 'Run now';
+
+  @override
+  String jobRan(String duration) {
+    return 'Done in $duration';
+  }
+
+  @override
+  String get jobRanFailed => 'The job failed: its last error says why.';
+
+  @override
+  String get jobAlreadyRunning => 'This job is running right now.';
+
+  @override
+  String get jobSucceeded => 'Succeeded';
+
+  @override
+  String get jobFailed => 'Failed';
+
+  @override
+  String get jobRunning => 'Running';
+
+  @override
+  String get jobNeverRun => 'Not run yet';
+
+  @override
+  String get jobSchedule => 'Schedule (cron)';
+
+  @override
+  String get jobByHand => 'Only by hand';
+
+  @override
+  String get jobNextRun => 'Next run';
+
+  @override
+  String get jobLastRun => 'Last run';
+
+  @override
+  String jobLastRunValue(String when, String duration) {
+    return '$when · $duration';
+  }
+
+  @override
+  String get jobLastResult => 'What it did';
+
+  @override
+  String get jobRuns => 'Runs';
+
+  @override
+  String jobRunsValue(int runs, int failures) {
+    return '$runs ($failures failed)';
+  }
+
+  @override
+  String get jobLastError => 'Last error';
+
+  @override
+  String get jobsEmpty => 'No jobs';
+
+  @override
+  String get dbSize => 'Size';
+
+  @override
+  String get dbConnections => 'Connections';
+
+  @override
+  String dbConnectionsHint(int active, int max) {
+    return '$active active · up to $max';
+  }
+
+  @override
+  String get dbCacheHit => 'Read from memory';
+
+  @override
+  String get dbCacheHitHint => 'Below 99%, it needs more memory';
+
+  @override
+  String get dbWaiting => 'Waiting';
+
+  @override
+  String dbWaitingHint(int locks, int idle) {
+    return '$locks on locks · $idle idle in a transaction';
+  }
+
+  @override
+  String dbVersion(String version) {
+    return 'Postgres $version';
+  }
+
+  @override
+  String get dbStatementsOff => 'Query timings are off';
+
+  @override
+  String get dbStatementsOffMessage =>
+      'Load pg_stat_statements in Postgres to see the queries taking the most time.';
+
+  @override
+  String get dbRunning => 'Running for over a second';
+
+  @override
+  String dbRunningWaiting(String duration, String what) {
+    return '$duration · waiting for $what';
+  }
+
+  @override
+  String get dbSlowest => 'Taking the most time';
+
+  @override
+  String dbQueryStats(int calls, String mean, String total) {
+    return '$calls runs · $mean each · $total in all';
+  }
+
+  @override
+  String get dbTables => 'Tables, biggest first';
+
+  @override
+  String dbTableRows(int rows, int dead) {
+    return '$rows rows · $dead waiting for cleanup';
+  }
+
+  @override
+  String get systemStatus => 'Status';
+
+  @override
+  String get jobExpireClaims =>
+      'Expires missed pickups: the pieces go back on sale, the customer gets a strike, every third one blocks booking for 7 days. Ends offers whose time is up.';
+
+  @override
+  String get jobExpireClaimsBacklog => 'Bookings past their time';
+
+  @override
+  String get jobCleanTokens =>
+      'Deletes sign-in tokens that ran out, or were used or revoked over 7 days ago.';
+
+  @override
+  String get jobCleanTokensBacklog => 'Tokens to delete';
+
+  @override
+  String get jobCleanSearchTerms =>
+      'Deletes searches made fewer than 3 times, and not in the last 90 days.';
+
+  @override
+  String get jobCleanSearchTermsBacklog => 'Searches to delete';
+
+  @override
+  String get navActivity => 'Activity';
+
+  @override
+  String get activityTitle => 'Who changed what';
+
+  @override
+  String get activitySearch => 'Search by name';
+
+  @override
+  String activityTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count changes',
+      one: '1 change',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get activityEmpty => 'No changes yet';
+
+  @override
+  String get activityEmptyMessage =>
+      'Every change made in the dashboard shows here: who made it, and when.';
+
+  @override
+  String get activityAreaServiceAreas => 'Service areas';
+
+  @override
+  String get activityAreaSettings => 'Settings';
+
+  @override
+  String get activityAreaJobs => 'Jobs';
+
+  @override
+  String get columnWhen => 'When';
+
+  @override
+  String get columnWho => 'Who';
+
+  @override
+  String get columnWhat => 'What';
+
+  @override
+  String get columnItem => 'Item';
+
+  @override
+  String get columnFields => 'Fields';
+
+  @override
+  String get activityRemovedAccount => 'A removed account';
+
+  @override
+  String get activityRequestId => 'Request id (finds it in the logs)';
+
+  @override
+  String get activitySent => 'What was sent';
+
+  @override
+  String get activityNothingSent => 'Nothing was sent';
+
+  @override
+  String get activityStoreCreate => 'Added a store';
+
+  @override
+  String get activityStoreUpdate => 'Edited a store';
+
+  @override
+  String get activityStoreDelete => 'Deleted a store';
+
+  @override
+  String get activityStoreAddBranch => 'Added a branch';
+
+  @override
+  String get activityStoreUpdateBranch => 'Edited a branch';
+
+  @override
+  String get activityStoreAddMember => 'Added someone to a store';
+
+  @override
+  String get activityStoreRemoveMember => 'Removed someone from a store';
+
+  @override
+  String get activityUserCreate => 'Added a team member';
+
+  @override
+  String get activityUserUpdate => 'Edited an account';
+
+  @override
+  String get activityUserDisable => 'Disabled an account';
+
+  @override
+  String get activityUserEnable => 'Enabled an account';
+
+  @override
+  String get activityUserResetPassword => 'Reset a password';
+
+  @override
+  String get activityCategoryCreate => 'Added a category';
+
+  @override
+  String get activityCategoryUpdate => 'Edited a category';
+
+  @override
+  String get activityServiceAreaCreate => 'Added a service area';
+
+  @override
+  String get activityServiceAreaUpdate => 'Edited a service area';
+
+  @override
+  String get activityServiceAreaDelete => 'Deleted a service area';
+
+  @override
+  String get activitySettingsUpdate => 'Changed the platform settings';
+
+  @override
+  String get activityOfferRemove => 'Took an offer down';
+
+  @override
+  String get activityJobRun => 'Ran a job by hand';
 }

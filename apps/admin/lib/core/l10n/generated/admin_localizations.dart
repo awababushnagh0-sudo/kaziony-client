@@ -1363,6 +1363,846 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 offer} other{{count} offers}}'**
   String foundOffers(int count);
+
+  /// No description provided for @navSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get navSystem;
+
+  /// No description provided for @systemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get systemTitle;
+
+  /// No description provided for @systemTabOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get systemTabOverview;
+
+  /// No description provided for @systemTabTraffic.
+  ///
+  /// In en, this message translates to:
+  /// **'Traffic'**
+  String get systemTabTraffic;
+
+  /// No description provided for @systemTabErrors.
+  ///
+  /// In en, this message translates to:
+  /// **'Errors'**
+  String get systemTabErrors;
+
+  /// No description provided for @systemTabJobs.
+  ///
+  /// In en, this message translates to:
+  /// **'Jobs'**
+  String get systemTabJobs;
+
+  /// No description provided for @systemTabDatabase.
+  ///
+  /// In en, this message translates to:
+  /// **'Database'**
+  String get systemTabDatabase;
+
+  /// No description provided for @systemRedis.
+  ///
+  /// In en, this message translates to:
+  /// **'Redis (shared cache)'**
+  String get systemRedis;
+
+  /// No description provided for @systemInstances.
+  ///
+  /// In en, this message translates to:
+  /// **'Instances'**
+  String get systemInstances;
+
+  /// No description provided for @systemCheckedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked'**
+  String get systemCheckedAt;
+
+  /// No description provided for @systemCheckedAtValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{time} · every 15 seconds'**
+  String systemCheckedAtValue(String time);
+
+  /// No description provided for @systemAllGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything is running'**
+  String get systemAllGood;
+
+  /// No description provided for @systemNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Something needs a look'**
+  String get systemNeedsAttention;
+
+  /// No description provided for @healthUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Up'**
+  String get healthUp;
+
+  /// No description provided for @healthDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Down'**
+  String get healthDown;
+
+  /// No description provided for @healthOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set up'**
+  String get healthOff;
+
+  /// No description provided for @unitMs.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} ms'**
+  String unitMs(String value);
+
+  /// No description provided for @unitKb.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} KB'**
+  String unitKb(String value);
+
+  /// No description provided for @unitMb.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} MB'**
+  String unitMb(String value);
+
+  /// No description provided for @unitGb.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} GB'**
+  String unitGb(String value);
+
+  /// No description provided for @unitPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}%'**
+  String unitPercent(String value);
+
+  /// No description provided for @uptimeMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String uptimeMinutes(int minutes);
+
+  /// No description provided for @uptimeHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h {minutes} min'**
+  String uptimeHours(int hours, int minutes);
+
+  /// No description provided for @uptimeDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} d {hours} h'**
+  String uptimeDays(int days, int hours);
+
+  /// No description provided for @figureRequestsPerMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests a minute'**
+  String get figureRequestsPerMinute;
+
+  /// No description provided for @figureServerErrors.
+  ///
+  /// In en, this message translates to:
+  /// **'Server errors'**
+  String get figureServerErrors;
+
+  /// No description provided for @figureServerErrorsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} in 5 minutes'**
+  String figureServerErrorsHint(int count);
+
+  /// No description provided for @figureLatency.
+  ///
+  /// In en, this message translates to:
+  /// **'Response time (p95)'**
+  String get figureLatency;
+
+  /// No description provided for @figureLast5Minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 5 minutes'**
+  String get figureLast5Minutes;
+
+  /// No description provided for @figureErrorKinds.
+  ///
+  /// In en, this message translates to:
+  /// **'Kinds of errors'**
+  String get figureErrorKinds;
+
+  /// No description provided for @figureLastDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 24 hours'**
+  String get figureLastDay;
+
+  /// No description provided for @figureFailingJobs.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No job failing} =1{1 job failing} other{{count} jobs failing}}'**
+  String figureFailingJobs(int count);
+
+  /// No description provided for @instanceThisOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Answered'**
+  String get instanceThisOne;
+
+  /// No description provided for @instanceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version} · up {uptime}'**
+  String instanceSubtitle(String version, String uptime);
+
+  /// No description provided for @instanceMemory.
+  ///
+  /// In en, this message translates to:
+  /// **'Memory'**
+  String get instanceMemory;
+
+  /// No description provided for @instanceMemoryValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{total} ({heap} in use by JavaScript)'**
+  String instanceMemoryValue(String total, String heap);
+
+  /// No description provided for @instanceCpu.
+  ///
+  /// In en, this message translates to:
+  /// **'Processor'**
+  String get instanceCpu;
+
+  /// No description provided for @instanceEventLoop.
+  ///
+  /// In en, this message translates to:
+  /// **'Event loop delay'**
+  String get instanceEventLoop;
+
+  /// No description provided for @instanceConnections.
+  ///
+  /// In en, this message translates to:
+  /// **'Database connections'**
+  String get instanceConnections;
+
+  /// No description provided for @instanceConnectionsValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{open} open · {idle} idle · {waiting} waiting · up to {max}'**
+  String instanceConnectionsValue(int open, int idle, int waiting, int max);
+
+  /// No description provided for @instanceRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests a minute'**
+  String get instanceRequests;
+
+  /// No description provided for @instanceStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Started'**
+  String get instanceStarted;
+
+  /// No description provided for @instanceReported.
+  ///
+  /// In en, this message translates to:
+  /// **'Last report'**
+  String get instanceReported;
+
+  /// No description provided for @trafficWindow.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String trafficWindow(int minutes);
+
+  /// No description provided for @trafficSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{requests} requests and {errors} server errors in the last {minutes} minutes'**
+  String trafficSummary(int requests, int errors, int minutes);
+
+  /// No description provided for @trafficMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min ago'**
+  String trafficMinutesAgo(int minutes);
+
+  /// No description provided for @trafficNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get trafficNow;
+
+  /// No description provided for @trafficBar.
+  ///
+  /// In en, this message translates to:
+  /// **'{time} · {requests} requests · {errors} errors'**
+  String trafficBar(String time, int requests, int errors);
+
+  /// No description provided for @trafficRoutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Routes, busiest first'**
+  String get trafficRoutes;
+
+  /// No description provided for @trafficRouteLatency.
+  ///
+  /// In en, this message translates to:
+  /// **'p50 {p50} · p95 {p95} · p99 {p99}'**
+  String trafficRouteLatency(String p50, String p95, String p99);
+
+  /// No description provided for @trafficRouteErrors.
+  ///
+  /// In en, this message translates to:
+  /// **'{latency} · {errors} server errors · {refused} refused'**
+  String trafficRouteErrors(String latency, int errors, int refused);
+
+  /// No description provided for @trafficEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No requests yet'**
+  String get trafficEmpty;
+
+  /// No description provided for @trafficEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests show here as the apps use the API.'**
+  String get trafficEmptyMessage;
+
+  /// No description provided for @errorsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No server errors'**
+  String get errorsEmpty;
+
+  /// No description provided for @errorsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Errors of the last 24 hours show here, the same error on the same route as one.'**
+  String get errorsEmptyMessage;
+
+  /// No description provided for @errorTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{once} other{{count} times}}'**
+  String errorTimes(int count);
+
+  /// No description provided for @errorSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{route} · {times} · last {when}'**
+  String errorSubtitle(String route, String times, String when);
+
+  /// No description provided for @errorRequestId.
+  ///
+  /// In en, this message translates to:
+  /// **'Last request id (finds it in the logs)'**
+  String get errorRequestId;
+
+  /// No description provided for @errorFirstSeen.
+  ///
+  /// In en, this message translates to:
+  /// **'First seen'**
+  String get errorFirstSeen;
+
+  /// No description provided for @errorLastSeen.
+  ///
+  /// In en, this message translates to:
+  /// **'Last seen'**
+  String get errorLastSeen;
+
+  /// No description provided for @errorStack.
+  ///
+  /// In en, this message translates to:
+  /// **'Where it happened'**
+  String get errorStack;
+
+  /// No description provided for @jobRunNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Run now'**
+  String get jobRunNow;
+
+  /// No description provided for @jobRan.
+  ///
+  /// In en, this message translates to:
+  /// **'Done in {duration}'**
+  String jobRan(String duration);
+
+  /// No description provided for @jobRanFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The job failed: its last error says why.'**
+  String get jobRanFailed;
+
+  /// No description provided for @jobAlreadyRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'This job is running right now.'**
+  String get jobAlreadyRunning;
+
+  /// No description provided for @jobSucceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Succeeded'**
+  String get jobSucceeded;
+
+  /// No description provided for @jobFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get jobFailed;
+
+  /// No description provided for @jobRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Running'**
+  String get jobRunning;
+
+  /// No description provided for @jobNeverRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Not run yet'**
+  String get jobNeverRun;
+
+  /// No description provided for @jobSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule (cron)'**
+  String get jobSchedule;
+
+  /// No description provided for @jobByHand.
+  ///
+  /// In en, this message translates to:
+  /// **'Only by hand'**
+  String get jobByHand;
+
+  /// No description provided for @jobNextRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Next run'**
+  String get jobNextRun;
+
+  /// No description provided for @jobLastRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Last run'**
+  String get jobLastRun;
+
+  /// No description provided for @jobLastRunValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{when} · {duration}'**
+  String jobLastRunValue(String when, String duration);
+
+  /// No description provided for @jobLastResult.
+  ///
+  /// In en, this message translates to:
+  /// **'What it did'**
+  String get jobLastResult;
+
+  /// No description provided for @jobRuns.
+  ///
+  /// In en, this message translates to:
+  /// **'Runs'**
+  String get jobRuns;
+
+  /// No description provided for @jobRunsValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{runs} ({failures} failed)'**
+  String jobRunsValue(int runs, int failures);
+
+  /// No description provided for @jobLastError.
+  ///
+  /// In en, this message translates to:
+  /// **'Last error'**
+  String get jobLastError;
+
+  /// No description provided for @jobsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No jobs'**
+  String get jobsEmpty;
+
+  /// No description provided for @dbSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Size'**
+  String get dbSize;
+
+  /// No description provided for @dbConnections.
+  ///
+  /// In en, this message translates to:
+  /// **'Connections'**
+  String get dbConnections;
+
+  /// No description provided for @dbConnectionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'{active} active · up to {max}'**
+  String dbConnectionsHint(int active, int max);
+
+  /// No description provided for @dbCacheHit.
+  ///
+  /// In en, this message translates to:
+  /// **'Read from memory'**
+  String get dbCacheHit;
+
+  /// No description provided for @dbCacheHitHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Below 99%, it needs more memory'**
+  String get dbCacheHitHint;
+
+  /// No description provided for @dbWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get dbWaiting;
+
+  /// No description provided for @dbWaitingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'{locks} on locks · {idle} idle in a transaction'**
+  String dbWaitingHint(int locks, int idle);
+
+  /// No description provided for @dbVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Postgres {version}'**
+  String dbVersion(String version);
+
+  /// No description provided for @dbStatementsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Query timings are off'**
+  String get dbStatementsOff;
+
+  /// No description provided for @dbStatementsOffMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Load pg_stat_statements in Postgres to see the queries taking the most time.'**
+  String get dbStatementsOffMessage;
+
+  /// No description provided for @dbRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Running for over a second'**
+  String get dbRunning;
+
+  /// No description provided for @dbRunningWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'{duration} · waiting for {what}'**
+  String dbRunningWaiting(String duration, String what);
+
+  /// No description provided for @dbSlowest.
+  ///
+  /// In en, this message translates to:
+  /// **'Taking the most time'**
+  String get dbSlowest;
+
+  /// No description provided for @dbQueryStats.
+  ///
+  /// In en, this message translates to:
+  /// **'{calls} runs · {mean} each · {total} in all'**
+  String dbQueryStats(int calls, String mean, String total);
+
+  /// No description provided for @dbTables.
+  ///
+  /// In en, this message translates to:
+  /// **'Tables, biggest first'**
+  String get dbTables;
+
+  /// No description provided for @dbTableRows.
+  ///
+  /// In en, this message translates to:
+  /// **'{rows} rows · {dead} waiting for cleanup'**
+  String dbTableRows(int rows, int dead);
+
+  /// No description provided for @systemStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get systemStatus;
+
+  /// No description provided for @jobExpireClaims.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires missed pickups: the pieces go back on sale, the customer gets a strike, every third one blocks booking for 7 days. Ends offers whose time is up.'**
+  String get jobExpireClaims;
+
+  /// No description provided for @jobExpireClaimsBacklog.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookings past their time'**
+  String get jobExpireClaimsBacklog;
+
+  /// No description provided for @jobCleanTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Deletes sign-in tokens that ran out, or were used or revoked over 7 days ago.'**
+  String get jobCleanTokens;
+
+  /// No description provided for @jobCleanTokensBacklog.
+  ///
+  /// In en, this message translates to:
+  /// **'Tokens to delete'**
+  String get jobCleanTokensBacklog;
+
+  /// No description provided for @jobCleanSearchTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Deletes searches made fewer than 3 times, and not in the last 90 days.'**
+  String get jobCleanSearchTerms;
+
+  /// No description provided for @jobCleanSearchTermsBacklog.
+  ///
+  /// In en, this message translates to:
+  /// **'Searches to delete'**
+  String get jobCleanSearchTermsBacklog;
+
+  /// No description provided for @navActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get navActivity;
+
+  /// No description provided for @activityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Who changed what'**
+  String get activityTitle;
+
+  /// No description provided for @activitySearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name'**
+  String get activitySearch;
+
+  /// No description provided for @activityTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 change} other{{count} changes}}'**
+  String activityTotal(int count);
+
+  /// No description provided for @activityEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No changes yet'**
+  String get activityEmpty;
+
+  /// No description provided for @activityEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Every change made in the dashboard shows here: who made it, and when.'**
+  String get activityEmptyMessage;
+
+  /// No description provided for @activityAreaServiceAreas.
+  ///
+  /// In en, this message translates to:
+  /// **'Service areas'**
+  String get activityAreaServiceAreas;
+
+  /// No description provided for @activityAreaSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get activityAreaSettings;
+
+  /// No description provided for @activityAreaJobs.
+  ///
+  /// In en, this message translates to:
+  /// **'Jobs'**
+  String get activityAreaJobs;
+
+  /// No description provided for @columnWhen.
+  ///
+  /// In en, this message translates to:
+  /// **'When'**
+  String get columnWhen;
+
+  /// No description provided for @columnWho.
+  ///
+  /// In en, this message translates to:
+  /// **'Who'**
+  String get columnWho;
+
+  /// No description provided for @columnWhat.
+  ///
+  /// In en, this message translates to:
+  /// **'What'**
+  String get columnWhat;
+
+  /// No description provided for @columnItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Item'**
+  String get columnItem;
+
+  /// No description provided for @columnFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Fields'**
+  String get columnFields;
+
+  /// No description provided for @activityRemovedAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'A removed account'**
+  String get activityRemovedAccount;
+
+  /// No description provided for @activityRequestId.
+  ///
+  /// In en, this message translates to:
+  /// **'Request id (finds it in the logs)'**
+  String get activityRequestId;
+
+  /// No description provided for @activitySent.
+  ///
+  /// In en, this message translates to:
+  /// **'What was sent'**
+  String get activitySent;
+
+  /// No description provided for @activityNothingSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing was sent'**
+  String get activityNothingSent;
+
+  /// No description provided for @activityStoreCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Added a store'**
+  String get activityStoreCreate;
+
+  /// No description provided for @activityStoreUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Edited a store'**
+  String get activityStoreUpdate;
+
+  /// No description provided for @activityStoreDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted a store'**
+  String get activityStoreDelete;
+
+  /// No description provided for @activityStoreAddBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Added a branch'**
+  String get activityStoreAddBranch;
+
+  /// No description provided for @activityStoreUpdateBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Edited a branch'**
+  String get activityStoreUpdateBranch;
+
+  /// No description provided for @activityStoreAddMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Added someone to a store'**
+  String get activityStoreAddMember;
+
+  /// No description provided for @activityStoreRemoveMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed someone from a store'**
+  String get activityStoreRemoveMember;
+
+  /// No description provided for @activityUserCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Added a team member'**
+  String get activityUserCreate;
+
+  /// No description provided for @activityUserUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Edited an account'**
+  String get activityUserUpdate;
+
+  /// No description provided for @activityUserDisable.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled an account'**
+  String get activityUserDisable;
+
+  /// No description provided for @activityUserEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled an account'**
+  String get activityUserEnable;
+
+  /// No description provided for @activityUserResetPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset a password'**
+  String get activityUserResetPassword;
+
+  /// No description provided for @activityCategoryCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Added a category'**
+  String get activityCategoryCreate;
+
+  /// No description provided for @activityCategoryUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Edited a category'**
+  String get activityCategoryUpdate;
+
+  /// No description provided for @activityServiceAreaCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Added a service area'**
+  String get activityServiceAreaCreate;
+
+  /// No description provided for @activityServiceAreaUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Edited a service area'**
+  String get activityServiceAreaUpdate;
+
+  /// No description provided for @activityServiceAreaDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted a service area'**
+  String get activityServiceAreaDelete;
+
+  /// No description provided for @activitySettingsUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Changed the platform settings'**
+  String get activitySettingsUpdate;
+
+  /// No description provided for @activityOfferRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Took an offer down'**
+  String get activityOfferRemove;
+
+  /// No description provided for @activityJobRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Ran a job by hand'**
+  String get activityJobRun;
 }
 
 class _AdminLocalizationsDelegate

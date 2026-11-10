@@ -1,5 +1,7 @@
 import 'package:kernel/kernel.dart';
 
+import '../../features/activity/data/api_activity_repository.dart';
+import '../../features/activity/domain/activity_entry.dart';
 import '../../features/auth/data/session_auth_repository.dart';
 import '../../features/auth/domain/auth_repository.dart';
 import '../../features/dashboard/data/api_dashboard_repository.dart';
@@ -12,6 +14,8 @@ import '../../features/search/data/api_search_term_repository.dart';
 import '../../features/search/domain/search_term.dart';
 import '../../features/stores/data/api_store_repository.dart';
 import '../../features/stores/domain/store.dart';
+import '../../features/system/data/api_system_repository.dart';
+import '../../features/system/domain/system_repository.dart';
 import '../../features/users/data/api_dashboard_user_repository.dart';
 import '../../features/users/domain/dashboard_user.dart';
 
@@ -37,5 +41,11 @@ final List<Override> dependencies = [
   ),
   searchTermRepositoryProvider.overrideWith(
     (ref) => ApiSearchTermRepository(ref.watch(apiProvider)),
+  ),
+  systemRepositoryProvider.overrideWith(
+    (ref) => ApiSystemRepository(ref.watch(apiProvider)),
+  ),
+  activityRepositoryProvider.overrideWith(
+    (ref) => ApiActivityRepository(ref.watch(apiProvider)),
   ),
 ];

@@ -63,7 +63,15 @@ void main() {
     await tester.pumpWidget(harness(FakeDashboardRepository()));
     await tester.pumpAndSettle();
 
-    for (final label in ['Home', 'Stores', 'Users', 'Offers', 'Categories']) {
+    for (final label in [
+      'Home',
+      'Stores',
+      'Users',
+      'Offers',
+      'Categories',
+      'System',
+      'Activity',
+    ]) {
       expect(find.text(label), findsWidgets, reason: label);
     }
     expect(find.text('12'), findsOneWidget);
@@ -111,12 +119,14 @@ void main() {
     expect(stats.calls, 2);
   });
 
-  testWidgets("editors don't see the Users page in the menu", (tester) async {
+  testWidgets("editors don't see the admin pages in the menu", (tester) async {
     setWindow(tester, 1280);
     await tester.pumpWidget(harness(FakeDashboardRepository(), admin: false));
     await tester.pumpAndSettle();
 
     expect(find.text('Users'), findsNothing);
+    expect(find.text('System'), findsNothing);
+    expect(find.text('Activity'), findsNothing);
     expect(find.text('Offers'), findsWidgets);
   });
 }

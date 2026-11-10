@@ -391,5 +391,444 @@
         "type": "int"
       }
     }
-  }
+  },
+  "navSystem": "System",
+  "systemTitle": "System",
+  "systemTabOverview": "Overview",
+  "systemTabTraffic": "Traffic",
+  "systemTabErrors": "Errors",
+  "systemTabJobs": "Jobs",
+  "systemTabDatabase": "Database",
+  "systemRedis": "Redis (shared cache)",
+  "systemInstances": "Instances",
+  "systemCheckedAt": "Checked",
+  "systemCheckedAtValue": "{time} · every 15 seconds",
+  "@systemCheckedAtValue": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "systemAllGood": "Everything is running",
+  "systemNeedsAttention": "Something needs a look",
+  "healthUp": "Up",
+  "healthDown": "Down",
+  "healthOff": "Not set up",
+  "unitMs": "{value} ms",
+  "@unitMs": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitKb": "{value} KB",
+  "@unitKb": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitMb": "{value} MB",
+  "@unitMb": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitGb": "{value} GB",
+  "@unitGb": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitPercent": "{value}%",
+  "@unitPercent": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uptimeMinutes": "{minutes} min",
+  "@uptimeMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "uptimeHours": "{hours} h {minutes} min",
+  "@uptimeHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "uptimeDays": "{days} d {hours} h",
+  "@uptimeDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "figureRequestsPerMinute": "Requests a minute",
+  "figureServerErrors": "Server errors",
+  "figureServerErrorsHint": "{count} in 5 minutes",
+  "@figureServerErrorsHint": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "figureLatency": "Response time (p95)",
+  "figureLast5Minutes": "Last 5 minutes",
+  "figureErrorKinds": "Kinds of errors",
+  "figureLastDay": "Last 24 hours",
+  "figureFailingJobs": "{count, plural, =0{No job failing} =1{1 job failing} other{{count} jobs failing}}",
+  "@figureFailingJobs": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "instanceThisOne": "Answered",
+  "instanceSubtitle": "Version {version} · up {uptime}",
+  "@instanceSubtitle": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "uptime": {
+        "type": "String"
+      }
+    }
+  },
+  "instanceMemory": "Memory",
+  "instanceMemoryValue": "{total} ({heap} in use by JavaScript)",
+  "@instanceMemoryValue": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      },
+      "heap": {
+        "type": "String"
+      }
+    }
+  },
+  "instanceCpu": "Processor",
+  "instanceEventLoop": "Event loop delay",
+  "instanceConnections": "Database connections",
+  "instanceConnectionsValue": "{open} open · {idle} idle · {waiting} waiting · up to {max}",
+  "@instanceConnectionsValue": {
+    "placeholders": {
+      "open": {
+        "type": "int"
+      },
+      "idle": {
+        "type": "int"
+      },
+      "waiting": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "instanceRequests": "Requests a minute",
+  "instanceStarted": "Started",
+  "instanceReported": "Last report",
+  "trafficWindow": "{minutes} min",
+  "@trafficWindow": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "trafficSummary": "{requests} requests and {errors} server errors in the last {minutes} minutes",
+  "@trafficSummary": {
+    "placeholders": {
+      "requests": {
+        "type": "int"
+      },
+      "errors": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "trafficMinutesAgo": "{minutes} min ago",
+  "@trafficMinutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "trafficNow": "Now",
+  "trafficBar": "{time} · {requests} requests · {errors} errors",
+  "@trafficBar": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "requests": {
+        "type": "int"
+      },
+      "errors": {
+        "type": "int"
+      }
+    }
+  },
+  "trafficRoutes": "Routes, busiest first",
+  "trafficRouteLatency": "p50 {p50} · p95 {p95} · p99 {p99}",
+  "@trafficRouteLatency": {
+    "placeholders": {
+      "p50": {
+        "type": "String"
+      },
+      "p95": {
+        "type": "String"
+      },
+      "p99": {
+        "type": "String"
+      }
+    }
+  },
+  "trafficRouteErrors": "{latency} · {errors} server errors · {refused} refused",
+  "@trafficRouteErrors": {
+    "placeholders": {
+      "latency": {
+        "type": "String"
+      },
+      "errors": {
+        "type": "int"
+      },
+      "refused": {
+        "type": "int"
+      }
+    }
+  },
+  "trafficEmpty": "No requests yet",
+  "trafficEmptyMessage": "Requests show here as the apps use the API.",
+  "errorsEmpty": "No server errors",
+  "errorsEmptyMessage": "Errors of the last 24 hours show here, the same error on the same route as one.",
+  "errorTimes": "{count, plural, =1{once} other{{count} times}}",
+  "@errorTimes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "errorSubtitle": "{route} · {times} · last {when}",
+  "@errorSubtitle": {
+    "placeholders": {
+      "route": {
+        "type": "String"
+      },
+      "times": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "errorRequestId": "Last request id (finds it in the logs)",
+  "errorFirstSeen": "First seen",
+  "errorLastSeen": "Last seen",
+  "errorStack": "Where it happened",
+  "jobRunNow": "Run now",
+  "jobRan": "Done in {duration}",
+  "@jobRan": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "jobRanFailed": "The job failed: its last error says why.",
+  "jobAlreadyRunning": "This job is running right now.",
+  "jobSucceeded": "Succeeded",
+  "jobFailed": "Failed",
+  "jobRunning": "Running",
+  "jobNeverRun": "Not run yet",
+  "jobSchedule": "Schedule (cron)",
+  "jobByHand": "Only by hand",
+  "jobNextRun": "Next run",
+  "jobLastRun": "Last run",
+  "jobLastRunValue": "{when} · {duration}",
+  "@jobLastRunValue": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      },
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "jobLastResult": "What it did",
+  "jobRuns": "Runs",
+  "jobRunsValue": "{runs} ({failures} failed)",
+  "@jobRunsValue": {
+    "placeholders": {
+      "runs": {
+        "type": "int"
+      },
+      "failures": {
+        "type": "int"
+      }
+    }
+  },
+  "jobLastError": "Last error",
+  "jobsEmpty": "No jobs",
+  "dbSize": "Size",
+  "dbConnections": "Connections",
+  "dbConnectionsHint": "{active} active · up to {max}",
+  "@dbConnectionsHint": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "dbCacheHit": "Read from memory",
+  "dbCacheHitHint": "Below 99%, it needs more memory",
+  "dbWaiting": "Waiting",
+  "dbWaitingHint": "{locks} on locks · {idle} idle in a transaction",
+  "@dbWaitingHint": {
+    "placeholders": {
+      "locks": {
+        "type": "int"
+      },
+      "idle": {
+        "type": "int"
+      }
+    }
+  },
+  "dbVersion": "Postgres {version}",
+  "@dbVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "dbStatementsOff": "Query timings are off",
+  "dbStatementsOffMessage": "Load pg_stat_statements in Postgres to see the queries taking the most time.",
+  "dbRunning": "Running for over a second",
+  "dbRunningWaiting": "{duration} · waiting for {what}",
+  "@dbRunningWaiting": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      },
+      "what": {
+        "type": "String"
+      }
+    }
+  },
+  "dbSlowest": "Taking the most time",
+  "dbQueryStats": "{calls} runs · {mean} each · {total} in all",
+  "@dbQueryStats": {
+    "placeholders": {
+      "calls": {
+        "type": "int"
+      },
+      "mean": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "dbTables": "Tables, biggest first",
+  "dbTableRows": "{rows} rows · {dead} waiting for cleanup",
+  "@dbTableRows": {
+    "placeholders": {
+      "rows": {
+        "type": "int"
+      },
+      "dead": {
+        "type": "int"
+      }
+    }
+  },
+  "systemStatus": "Status",
+  "jobExpireClaims": "Expires missed pickups: the pieces go back on sale, the customer gets a strike, every third one blocks booking for 7 days. Ends offers whose time is up.",
+  "jobExpireClaimsBacklog": "Bookings past their time",
+  "jobCleanTokens": "Deletes sign-in tokens that ran out, or were used or revoked over 7 days ago.",
+  "jobCleanTokensBacklog": "Tokens to delete",
+  "jobCleanSearchTerms": "Deletes searches made fewer than 3 times, and not in the last 90 days.",
+  "jobCleanSearchTermsBacklog": "Searches to delete",
+  "navActivity": "Activity",
+  "activityTitle": "Who changed what",
+  "activitySearch": "Search by name",
+  "activityTotal": "{count, plural, =1{1 change} other{{count} changes}}",
+  "@activityTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "activityEmpty": "No changes yet",
+  "activityEmptyMessage": "Every change made in the dashboard shows here: who made it, and when.",
+  "activityAreaServiceAreas": "Service areas",
+  "activityAreaSettings": "Settings",
+  "activityAreaJobs": "Jobs",
+  "columnWhen": "When",
+  "columnWho": "Who",
+  "columnWhat": "What",
+  "columnItem": "Item",
+  "columnFields": "Fields",
+  "activityRemovedAccount": "A removed account",
+  "activityRequestId": "Request id (finds it in the logs)",
+  "activitySent": "What was sent",
+  "activityNothingSent": "Nothing was sent",
+  "activityStoreCreate": "Added a store",
+  "activityStoreUpdate": "Edited a store",
+  "activityStoreDelete": "Deleted a store",
+  "activityStoreAddBranch": "Added a branch",
+  "activityStoreUpdateBranch": "Edited a branch",
+  "activityStoreAddMember": "Added someone to a store",
+  "activityStoreRemoveMember": "Removed someone from a store",
+  "activityUserCreate": "Added a team member",
+  "activityUserUpdate": "Edited an account",
+  "activityUserDisable": "Disabled an account",
+  "activityUserEnable": "Enabled an account",
+  "activityUserResetPassword": "Reset a password",
+  "activityCategoryCreate": "Added a category",
+  "activityCategoryUpdate": "Edited a category",
+  "activityServiceAreaCreate": "Added a service area",
+  "activityServiceAreaUpdate": "Edited a service area",
+  "activityServiceAreaDelete": "Deleted a service area",
+  "activitySettingsUpdate": "Changed the platform settings",
+  "activityOfferRemove": "Took an offer down",
+  "activityJobRun": "Ran a job by hand"
 }

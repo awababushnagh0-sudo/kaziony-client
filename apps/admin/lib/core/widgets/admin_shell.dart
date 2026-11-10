@@ -42,6 +42,10 @@ class AdminShell extends AppView {
         item(Routes.platform, s.navPlatform, SIcons.location),
         if (ref.watch(isAdminProvider))
           item(Routes.searches, s.navSearches, SIcons.search),
+        if (ref.watch(isAdminProvider))
+          item(Routes.system, s.navSystem, SIcons.chart),
+        if (ref.watch(isAdminProvider))
+          item(Routes.activity, s.navActivity, SIcons.clock),
       ],
       userName: user?.name ?? user?.email,
       userDetail: user?.name == null ? null : user?.email,

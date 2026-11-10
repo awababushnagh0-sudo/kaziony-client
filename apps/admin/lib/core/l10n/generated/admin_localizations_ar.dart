@@ -771,4 +771,521 @@ class AdminLocalizationsAr extends AdminLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get navSystem => 'النظام';
+
+  @override
+  String get systemTitle => 'النظام';
+
+  @override
+  String get systemTabOverview => 'نظرة عامة';
+
+  @override
+  String get systemTabTraffic => 'الطلبات';
+
+  @override
+  String get systemTabErrors => 'الأخطاء';
+
+  @override
+  String get systemTabJobs => 'المهام';
+
+  @override
+  String get systemTabDatabase => 'قاعدة البيانات';
+
+  @override
+  String get systemRedis => 'Redis (الذاكرة المشتركة)';
+
+  @override
+  String get systemInstances => 'النسخ العاملة';
+
+  @override
+  String get systemCheckedAt => 'آخر فحص';
+
+  @override
+  String systemCheckedAtValue(String time) {
+    return '$time · كل 15 ثانية';
+  }
+
+  @override
+  String get systemAllGood => 'كل شيء يعمل';
+
+  @override
+  String get systemNeedsAttention => 'هناك ما يحتاج إلى نظرة';
+
+  @override
+  String get healthUp => 'يعمل';
+
+  @override
+  String get healthDown => 'متوقف';
+
+  @override
+  String get healthOff => 'غير مُعَدّ';
+
+  @override
+  String unitMs(String value) {
+    return '$value ms';
+  }
+
+  @override
+  String unitKb(String value) {
+    return '$value KB';
+  }
+
+  @override
+  String unitMb(String value) {
+    return '$value MB';
+  }
+
+  @override
+  String unitGb(String value) {
+    return '$value GB';
+  }
+
+  @override
+  String unitPercent(String value) {
+    return '$value%';
+  }
+
+  @override
+  String uptimeMinutes(int minutes) {
+    return '$minutes د';
+  }
+
+  @override
+  String uptimeHours(int hours, int minutes) {
+    return '$hours س $minutes د';
+  }
+
+  @override
+  String uptimeDays(int days, int hours) {
+    return '$days ي $hours س';
+  }
+
+  @override
+  String get figureRequestsPerMinute => 'طلب في الدقيقة';
+
+  @override
+  String get figureServerErrors => 'أخطاء الخادم';
+
+  @override
+  String figureServerErrorsHint(int count) {
+    return '$count في 5 دقائق';
+  }
+
+  @override
+  String get figureLatency => 'زمن الاستجابة (p95)';
+
+  @override
+  String get figureLast5Minutes => 'آخر 5 دقائق';
+
+  @override
+  String get figureErrorKinds => 'أنواع الأخطاء';
+
+  @override
+  String get figureLastDay => 'آخر 24 ساعة';
+
+  @override
+  String figureFailingJobs(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count مهمة فاشلة',
+      few: '$count مهام فاشلة',
+      two: 'مهمتان فاشلتان',
+      one: 'مهمة فاشلة',
+      zero: 'لا مهمة فاشلة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get instanceThisOne => 'أجابت';
+
+  @override
+  String instanceSubtitle(String version, String uptime) {
+    return 'الإصدار $version · تعمل منذ $uptime';
+  }
+
+  @override
+  String get instanceMemory => 'الذاكرة';
+
+  @override
+  String instanceMemoryValue(String total, String heap) {
+    return '$total ($heap يستخدمها JavaScript)';
+  }
+
+  @override
+  String get instanceCpu => 'المعالج';
+
+  @override
+  String get instanceEventLoop => 'تأخر حلقة الأحداث';
+
+  @override
+  String get instanceConnections => 'اتصالات قاعدة البيانات';
+
+  @override
+  String instanceConnectionsValue(int open, int idle, int waiting, int max) {
+    return '$open مفتوح · $idle خامل · $waiting بانتظار · حتى $max';
+  }
+
+  @override
+  String get instanceRequests => 'طلب في الدقيقة';
+
+  @override
+  String get instanceStarted => 'بدأت';
+
+  @override
+  String get instanceReported => 'آخر تقرير';
+
+  @override
+  String trafficWindow(int minutes) {
+    return '$minutes دقيقة';
+  }
+
+  @override
+  String trafficSummary(int requests, int errors, int minutes) {
+    return '$requests طلب و$errors خطأ في الخادم خلال آخر $minutes دقيقة';
+  }
+
+  @override
+  String trafficMinutesAgo(int minutes) {
+    return 'قبل $minutes دقيقة';
+  }
+
+  @override
+  String get trafficNow => 'الآن';
+
+  @override
+  String trafficBar(String time, int requests, int errors) {
+    return '$time · $requests طلب · $errors خطأ';
+  }
+
+  @override
+  String get trafficRoutes => 'المسارات، الأكثر طلبًا أولًا';
+
+  @override
+  String trafficRouteLatency(String p50, String p95, String p99) {
+    return 'p50 $p50 · p95 $p95 · p99 $p99';
+  }
+
+  @override
+  String trafficRouteErrors(String latency, int errors, int refused) {
+    return '$latency · $errors خطأ في الخادم · $refused مرفوض';
+  }
+
+  @override
+  String get trafficEmpty => 'لا طلبات بعد';
+
+  @override
+  String get trafficEmptyMessage =>
+      'تظهر الطلبات هنا حين تستخدم التطبيقات الخادم.';
+
+  @override
+  String get errorsEmpty => 'لا أخطاء في الخادم';
+
+  @override
+  String get errorsEmptyMessage =>
+      'تظهر هنا أخطاء آخر 24 ساعة، والخطأ نفسه على المسار نفسه مرة واحدة.';
+
+  @override
+  String errorTimes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count مرة',
+      few: '$count مرات',
+      two: 'مرتان',
+      one: 'مرة واحدة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String errorSubtitle(String route, String times, String when) {
+    return '$route · $times · آخرها $when';
+  }
+
+  @override
+  String get errorRequestId => 'رقم آخر طلب (للبحث عنه في السجلات)';
+
+  @override
+  String get errorFirstSeen => 'أول مرة';
+
+  @override
+  String get errorLastSeen => 'آخر مرة';
+
+  @override
+  String get errorStack => 'أين حدث';
+
+  @override
+  String get jobRunNow => 'شغّلها الآن';
+
+  @override
+  String jobRan(String duration) {
+    return 'انتهت في $duration';
+  }
+
+  @override
+  String get jobRanFailed => 'فشلت المهمة: آخر خطأ يقول السبب.';
+
+  @override
+  String get jobAlreadyRunning => 'هذه المهمة تعمل الآن.';
+
+  @override
+  String get jobSucceeded => 'نجحت';
+
+  @override
+  String get jobFailed => 'فشلت';
+
+  @override
+  String get jobRunning => 'تعمل';
+
+  @override
+  String get jobNeverRun => 'لم تعمل بعد';
+
+  @override
+  String get jobSchedule => 'الموعد (cron)';
+
+  @override
+  String get jobByHand => 'يدويًا فقط';
+
+  @override
+  String get jobNextRun => 'التشغيل القادم';
+
+  @override
+  String get jobLastRun => 'آخر تشغيل';
+
+  @override
+  String jobLastRunValue(String when, String duration) {
+    return '$when · $duration';
+  }
+
+  @override
+  String get jobLastResult => 'ما فعلته';
+
+  @override
+  String get jobRuns => 'مرات التشغيل';
+
+  @override
+  String jobRunsValue(int runs, int failures) {
+    return '$runs ($failures فشلت)';
+  }
+
+  @override
+  String get jobLastError => 'آخر خطأ';
+
+  @override
+  String get jobsEmpty => 'لا مهام';
+
+  @override
+  String get dbSize => 'الحجم';
+
+  @override
+  String get dbConnections => 'الاتصالات';
+
+  @override
+  String dbConnectionsHint(int active, int max) {
+    return '$active نشط · حتى $max';
+  }
+
+  @override
+  String get dbCacheHit => 'قراءة من الذاكرة';
+
+  @override
+  String get dbCacheHitHint => 'تحت 99% تحتاج ذاكرة أكثر';
+
+  @override
+  String get dbWaiting => 'بانتظار';
+
+  @override
+  String dbWaitingHint(int locks, int idle) {
+    return '$locks على أقفال · $idle خاملة في معاملة';
+  }
+
+  @override
+  String dbVersion(String version) {
+    return 'Postgres $version';
+  }
+
+  @override
+  String get dbStatementsOff => 'توقيت الاستعلامات متوقف';
+
+  @override
+  String get dbStatementsOffMessage =>
+      'فعّل pg_stat_statements في Postgres لرؤية الاستعلامات الأكثر استهلاكًا للوقت.';
+
+  @override
+  String get dbRunning => 'تعمل منذ أكثر من ثانية';
+
+  @override
+  String dbRunningWaiting(String duration, String what) {
+    return '$duration · بانتظار $what';
+  }
+
+  @override
+  String get dbSlowest => 'الأكثر استهلاكًا للوقت';
+
+  @override
+  String dbQueryStats(int calls, String mean, String total) {
+    return '$calls مرة · $mean للمرة · $total إجمالًا';
+  }
+
+  @override
+  String get dbTables => 'الجداول، الأكبر أولًا';
+
+  @override
+  String dbTableRows(int rows, int dead) {
+    return '$rows صف · $dead بانتظار التنظيف';
+  }
+
+  @override
+  String get systemStatus => 'الحالة';
+
+  @override
+  String get jobExpireClaims =>
+      'تُنهي الحجوزات التي لم تُستلم: تعود القطع للبيع، ويُحسب على الزبون تخلّف، وكل ثالث يمنعه من الحجز 7 أيام. وتُنهي العروض التي انتهى وقتها.';
+
+  @override
+  String get jobExpireClaimsBacklog => 'حجوزات تجاوزت وقتها';
+
+  @override
+  String get jobCleanTokens =>
+      'تحذف رموز الدخول المنتهية، أو المستعملة أو الملغاة منذ أكثر من 7 أيام.';
+
+  @override
+  String get jobCleanTokensBacklog => 'رموز للحذف';
+
+  @override
+  String get jobCleanSearchTerms =>
+      'تحذف عمليات البحث التي تكررت أقل من 3 مرات ولم يُبحث عنها منذ 90 يومًا.';
+
+  @override
+  String get jobCleanSearchTermsBacklog => 'عمليات بحث للحذف';
+
+  @override
+  String get navActivity => 'سجل النشاط';
+
+  @override
+  String get activityTitle => 'من غيّر ماذا';
+
+  @override
+  String get activitySearch => 'ابحث بالاسم';
+
+  @override
+  String activityTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count تغيير',
+      few: '$count تغييرات',
+      two: 'تغييران',
+      one: 'تغيير واحد',
+      zero: 'لا تغييرات',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get activityEmpty => 'لا توجد تغييرات بعد';
+
+  @override
+  String get activityEmptyMessage =>
+      'يظهر هنا كل تغيير في لوحة التحكم: من قام به ومتى.';
+
+  @override
+  String get activityAreaServiceAreas => 'مناطق الخدمة';
+
+  @override
+  String get activityAreaSettings => 'الإعدادات';
+
+  @override
+  String get activityAreaJobs => 'المهام';
+
+  @override
+  String get columnWhen => 'متى';
+
+  @override
+  String get columnWho => 'من';
+
+  @override
+  String get columnWhat => 'ماذا';
+
+  @override
+  String get columnItem => 'العنصر';
+
+  @override
+  String get columnFields => 'الحقول';
+
+  @override
+  String get activityRemovedAccount => 'حساب محذوف';
+
+  @override
+  String get activityRequestId => 'رقم الطلب (للبحث عنه في السجلات)';
+
+  @override
+  String get activitySent => 'ما تم إرساله';
+
+  @override
+  String get activityNothingSent => 'لم يُرسل شيء';
+
+  @override
+  String get activityStoreCreate => 'إضافة متجر';
+
+  @override
+  String get activityStoreUpdate => 'تعديل متجر';
+
+  @override
+  String get activityStoreDelete => 'حذف متجر';
+
+  @override
+  String get activityStoreAddBranch => 'إضافة فرع';
+
+  @override
+  String get activityStoreUpdateBranch => 'تعديل فرع';
+
+  @override
+  String get activityStoreAddMember => 'إضافة شخص إلى متجر';
+
+  @override
+  String get activityStoreRemoveMember => 'إزالة شخص من متجر';
+
+  @override
+  String get activityUserCreate => 'إضافة عضو إلى الفريق';
+
+  @override
+  String get activityUserUpdate => 'تعديل حساب';
+
+  @override
+  String get activityUserDisable => 'إيقاف حساب';
+
+  @override
+  String get activityUserEnable => 'تفعيل حساب';
+
+  @override
+  String get activityUserResetPassword => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get activityCategoryCreate => 'إضافة تصنيف';
+
+  @override
+  String get activityCategoryUpdate => 'تعديل تصنيف';
+
+  @override
+  String get activityServiceAreaCreate => 'إضافة منطقة خدمة';
+
+  @override
+  String get activityServiceAreaUpdate => 'تعديل منطقة خدمة';
+
+  @override
+  String get activityServiceAreaDelete => 'حذف منطقة خدمة';
+
+  @override
+  String get activitySettingsUpdate => 'تغيير إعدادات المنصة';
+
+  @override
+  String get activityOfferRemove => 'إيقاف عرض';
+
+  @override
+  String get activityJobRun => 'تشغيل مهمة يدويًا';
 }

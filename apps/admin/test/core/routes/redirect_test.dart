@@ -79,6 +79,9 @@ void main() {
     final session = SignedIn(user(role: AccountRole.editor));
     expect(go(session, Routes.users), Routes.home);
     expect(go(session, '${Routes.users}/user-1'), Routes.home);
+    expect(go(session, Routes.searches), Routes.home);
+    expect(go(session, Routes.system), Routes.home);
+    expect(go(session, Routes.activity), Routes.home);
     expect(go(session, Routes.stores), isNull);
   });
 }

@@ -1,3 +1,4 @@
+import 'package:admin/features/activity/domain/activity_entry.dart';
 import 'package:admin/features/auth/domain/auth_repository.dart';
 import 'package:admin/features/dashboard/domain/dashboard_stats.dart';
 import 'package:admin/features/platform/domain/platform_settings.dart';
@@ -5,6 +6,12 @@ import 'package:admin/features/platform/domain/service_area.dart';
 import 'package:admin/features/search/domain/search_term.dart';
 import 'package:admin/features/stores/domain/location.dart';
 import 'package:admin/features/stores/domain/store.dart';
+import 'package:admin/features/system/domain/database_stats.dart';
+import 'package:admin/features/system/domain/system_error.dart';
+import 'package:admin/features/system/domain/system_job.dart';
+import 'package:admin/features/system/domain/system_overview.dart';
+import 'package:admin/features/system/domain/system_repository.dart';
+import 'package:admin/features/system/domain/system_traffic.dart';
 import 'package:admin/features/users/domain/dashboard_user.dart';
 import 'package:kernel/kernel.dart';
 
@@ -424,4 +431,220 @@ class FakeSearchTermRepository implements SearchTermRepository {
     ];
     return Ok(SearchTermPage(total: shown.length, items: shown));
   }
+}
+
+ActivityEntry sampleActivity({
+  String id = 'a1',
+  String action = 'store.update',
+  String? actorName = 'Sara',
+  String? targetLabel = 'Pizza Corner',
+  List<ActivityChange> changes = const [
+    ActivityChange(field: 'name', value: 'Pizza Corner'),
+    ActivityChange(field: 'phone', value: null),
+  ],
+}) => ActivityEntry(
+  id: id,
+  action: action,
+  actorName: actorName,
+  targetLabel: targetLabel,
+  changes: changes,
+  requestId: 'req-42',
+  createdAt: DateTime.utc(2026, 11, 9, 10),
+);
+
+class FakeActivityRepository implements ActivityRepository {
+  List<ActivityEntry> entries = [
+    sampleActivity(),
+    sampleActivity(
+      id: 'a2',
+      action: 'job.run',
+      actorName: null,
+      targetLabel: 'expire-claims',
+      changes: const [],
+    ),
+  ];
+  final queries = <ActivityQuery>[];
+
+  @override
+  Future<Result<ActivityPage>> list(ActivityQuery query) async {
+    queries.add(query);
+    final shown = [
+      for (final entry in entries)
+        if (switch (query.filter) {
+          null => true,
+          ActivityArea.stores => entry.action.startsWith('store.'),
+          ActivityArea.jobs => entry.action.startsWith('job.'),
+          _ => false,
+        })
+          entry,
+    ];
+    return Ok(ActivityPage(total: shown.length, items: shown));
+  }
+}
+
+final sampleInstance = SystemInstance(
+  id: 'i1',
+  hostname: 'api-1',
+  version: '1.4.0',
+  nodeVersion: 'v24.11.0',
+  startedAt: DateTime.utc(2026, 11, 7, 9),
+  reportedAt: DateTime.utc(2026, 11, 9, 12),
+  uptime: const Duration(days: 2, hours: 3),
+  memoryBytes: 180 * 1024 * 1024,
+  heapBytes: 90 * 1024 * 1024,
+  cpuPercent: 12.5,
+  eventLoopDelayMs: 21,
+  connections: 4,
+  idleConnections: 3,
+  waitingForConnection: 0,
+  maxConnections: 10,
+  requestsPerMinute: 42,
+  current: true,
+);
+
+SystemOverview sampleOverview({
+  ServiceHealth redis = ServiceHealth.up,
+  int failingJobs = 0,
+  int serverErrors = 0,
+}) => SystemOverview(
+  checkedAt: DateTime.utc(2026, 11, 9, 12),
+  database: const ServiceCheck(health: ServiceHealth.up, latencyMs: 2),
+  redis: ServiceCheck(
+    health: redis,
+    latencyMs: redis == ServiceHealth.up ? 1 : null,
+    detail: redis == ServiceHealth.down ? 'Connection refused' : null,
+  ),
+  instances: [sampleInstance],
+  requestsPerMinute: 42,
+  serverErrors: serverErrors,
+  errorRate: serverErrors / 210,
+  p95Ms: 85,
+  jobs: 2,
+  failingJobs: failingJobs,
+  runningJobs: 0,
+  errorGroups: serverErrors == 0 ? 0 : 1,
+);
+
+final sampleTraffic = SystemTraffic(
+  minutes: [
+    for (var n = 0; n < 15; n++)
+      TrafficMinute(
+        at: DateTime.utc(2026, 11, 9, 11, 45 + n),
+        requests: 40 + n,
+        serverErrors: n == 14 ? 1 : 0,
+        p95Ms: 80,
+      ),
+  ],
+  routes: const [
+    RouteTraffic(
+      method: 'GET',
+      route: '/api/v1/offers',
+      requests: 520,
+      clientErrors: 0,
+      serverErrors: 1,
+      p50Ms: 12,
+      p95Ms: 85,
+      p99Ms: 140,
+    ),
+  ],
+);
+
+final sampleError = SystemError(
+  name: 'TypeError',
+  message: 'Cannot read properties of undefined',
+  method: 'GET',
+  route: '/api/v1/offers',
+  statusCode: 500,
+  count: 3,
+  firstSeenAt: DateTime.utc(2026, 11, 9, 8),
+  lastSeenAt: DateTime.utc(2026, 11, 9, 11, 59),
+  lastRequestId: 'req-42',
+  stack: 'TypeError: Cannot read properties of undefined\n    at browse',
+  instances: 1,
+);
+
+SystemJob sampleJob({
+  String name = 'expire-claims',
+  JobOutcome? outcome = JobOutcome.succeeded,
+  bool running = false,
+  int runs = 12,
+}) => SystemJob(
+  name: name,
+  description: 'Expires reservations',
+  schedule: '* * * * *',
+  nextRunAt: DateTime.utc(2026, 11, 9, 12, 1),
+  running: running,
+  lastStartedAt: outcome == null ? null : DateTime.utc(2026, 11, 9, 12),
+  lastDuration: outcome == null ? null : const Duration(milliseconds: 35),
+  lastOutcome: outcome,
+  lastResult: outcome == null ? const {} : const {'expired': 2},
+  lastError: outcome == JobOutcome.failed ? 'Database went away' : null,
+  runs: runs,
+  failures: outcome == JobOutcome.failed ? 1 : 0,
+  backlog: 0,
+  backlogLabel: 'Reservations past their time',
+);
+
+const sampleDatabase = DatabaseStats(
+  version: '18.1',
+  sizeBytes: 48 * 1024 * 1024,
+  connections: 6,
+  activeConnections: 1,
+  idleInTransaction: 0,
+  waitingOnLocks: 0,
+  maxConnections: 100,
+  cacheHitRatio: 0.995,
+  statementsAvailable: false,
+  slowestQueries: [],
+  running: [],
+  tables: [
+    DatabaseTable(
+      name: 'offers',
+      rows: 1200,
+      bytes: 2 * 1024 * 1024,
+      deadRows: 4,
+    ),
+  ],
+);
+
+class FakeSystemRepository implements SystemRepository {
+  Result<SystemOverview> overviewResult = Ok(sampleOverview());
+  var overviewCalls = 0;
+  Result<SystemTraffic> trafficResult = Ok(sampleTraffic);
+  final trafficWindows = <int>[];
+  Result<List<SystemError>> errorsResult = Ok([sampleError]);
+  Result<List<SystemJob>> jobsResult = Ok([
+    sampleJob(),
+    sampleJob(name: 'clean-refresh-tokens', outcome: null, runs: 0),
+  ]);
+  Result<SystemJob>? runResult;
+  final ran = <String>[];
+  Result<DatabaseStats> databaseResult = const Ok(sampleDatabase);
+
+  @override
+  Future<Result<SystemOverview>> overview() async {
+    overviewCalls++;
+    return overviewResult;
+  }
+
+  @override
+  Future<Result<SystemTraffic>> traffic({required int minutes}) async {
+    trafficWindows.add(minutes);
+    return trafficResult;
+  }
+
+  @override
+  Future<Result<List<SystemError>>> errors() async => errorsResult;
+
+  @override
+  Future<Result<List<SystemJob>>> jobs() async => jobsResult;
+
+  @override
+  Future<Result<SystemJob>> runJob(String name) async {
+    ran.add(name);
+    return runResult ?? Ok(sampleJob(name: name, runs: 13));
+  }
+
+  @override
+  Future<Result<DatabaseStats>> database() async => databaseResult;
 }
