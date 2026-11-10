@@ -40,6 +40,21 @@ class ApiStoreRepository implements StoreRepository {
   }
 
   @override
+  Future<Result<Store>> setOpeningHours(
+    String storeId,
+    OpeningHours hours,
+  ) async {
+    final result = await _api.guard(
+      () => _stores.updateProfile(
+        storeId: storeId,
+        // The fields left out stay as they are.
+        body: UpdateStoreProfileDto(openingHours: hours.toJson()),
+      ),
+    );
+    return result.map(_toStore);
+  }
+
+  @override
   Future<Result<Store>> setImage(
     String storeId,
     StoreImage image,
@@ -69,6 +84,14 @@ Store _toStore(StoreDetailDto dto) => Store(
     nameAr: dto.category.nameAr,
     nameEn: dto.category.nameEn,
   ),
+  city: switch (dto.city) {
+    api.City.tripoli => City.tripoli,
+    api.City.$unknown => null,
+  },
+  area: dto.area,
+  address: dto.address,
+  location: GeoPoint(dto.latitude.toDouble(), dto.longitude.toDouble()),
+  openingHours: OpeningHours.fromJson(dto.openingHours),
   profile: StoreProfile(
     pickupInstructions: dto.pickupInstructions,
     phone: dto.phone,
@@ -81,21 +104,6 @@ Store _toStore(StoreDetailDto dto) => Store(
   isActive: dto.isActive,
   ratingAverage: dto.ratingAverage?.toDouble(),
   ratingCount: dto.ratingCount.toInt(),
-  branches: [
-    for (final branch in dto.branches)
-      Branch(
-        id: branch.id,
-        name: branch.name,
-        city: switch (branch.city) {
-          api.City.tripoli => City.tripoli,
-          api.City.$unknown => null,
-        },
-        area: branch.area,
-        address: branch.address,
-        phone: branch.phone,
-        isActive: branch.isActive,
-      ),
-  ],
   members: [
     for (final member in dto.members)
       StoreMember(
@@ -103,7 +111,6 @@ Store _toStore(StoreDetailDto dto) => Store(
         name: member.name,
         phone: member.phone,
         isOwner: member.role == StoreMemberRole.owner,
-        branchId: member.branchId,
         isActive: member.isActive,
       ),
   ],

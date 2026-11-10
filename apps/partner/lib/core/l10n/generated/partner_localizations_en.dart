@@ -213,16 +213,85 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get discardChanges => 'Discard';
 
   @override
-  String get branchesTitle => 'Branches';
-
-  @override
   String get teamTitle => 'Team';
 
   @override
-  String get yourStoreSection => 'Your store';
+  String get locationTitle => 'Location and hours';
 
   @override
-  String get yourBranch => 'Your branch';
+  String get cityLabel => 'City';
+
+  @override
+  String get areaLabel => 'Area';
+
+  @override
+  String get addressLabel => 'Address';
+
+  @override
+  String get openInMaps => 'Open in Maps';
+
+  @override
+  String get openingHoursTitle => 'Opening hours';
+
+  @override
+  String get openingHoursHint => 'Tap a day to change its hours.';
+
+  @override
+  String get locationTeamHint =>
+      'Our team changes the store\'s name and location, and adds new branches.';
+
+  @override
+  String get requestChange => 'Request a change';
+
+  @override
+  String requestPlaceMessage(String store) {
+    return 'Hello, I\'d like to add a new branch or change the details of the store: $store';
+  }
+
+  @override
+  String requestStaffMessage(String store) {
+    return 'Hello, I\'d like to add or remove staff at the store: $store';
+  }
+
+  @override
+  String get openDay => 'Open';
+
+  @override
+  String get closedAllDay => 'Closed';
+
+  @override
+  String shiftHours(String opens, String closes) {
+    return '$opens – $closes';
+  }
+
+  @override
+  String get opensAt => 'Opens';
+
+  @override
+  String get closesAt => 'Closes';
+
+  @override
+  String get afterBreak => 'After a break';
+
+  @override
+  String get addShift => 'Add hours after a break';
+
+  @override
+  String get removeShift => 'Remove these hours';
+
+  @override
+  String get sameEveryDay => 'Same hours every day';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String todayAt(String store) {
+    return 'Today at $store';
+  }
+
+  @override
+  String get yourStoreSection => 'Your store';
 
   @override
   String get teamHint => 'To add or remove someone, contact our team.';
@@ -288,9 +357,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get inactive => 'Inactive';
-
-  @override
-  String get allBranches => 'All branches';
 
   @override
   String get cityTripoli => 'Tripoli';
@@ -541,10 +607,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get quantityLabel => 'How many pieces';
 
   @override
-  String get holdHelper =>
-      'How long a reservation waits for the customer to come.';
-
-  @override
   String get perCustomerLabel => 'Per customer';
 
   @override
@@ -569,9 +631,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get endsTooLate => 'Offers can last at most 30 days.';
 
   @override
-  String get chooseABranch => 'Choose at least one branch.';
-
-  @override
   String get offerPosted => 'Offer posted.';
 
   @override
@@ -581,17 +640,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get startsLabel => 'Starts';
-
-  @override
-  String branchCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count branches',
-      one: '1 branch',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pauseOffer => 'Pause';
@@ -714,9 +762,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get problemExpired => 'This reservation has expired.';
 
   @override
-  String get problemOtherBranch => 'This offer isn\'t for your branch.';
-
-  @override
   String get problemOther => 'This code can\'t be picked up.';
 
   @override
@@ -729,34 +774,10 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get nextCustomer => 'Next customer';
 
   @override
-  String get counterBranch => 'Your branch';
-
-  @override
-  String get chooseCounterBranch => 'Which branch are you at?';
-
-  @override
-  String get chooseValue => 'Choose';
-
-  @override
-  String counterBranchIs(String name) {
-    return 'Your branch: $name';
-  }
-
-  @override
-  String get redeemWrongBranch =>
-      'This offer isn\'t valid at the branch picked on this phone.';
-
-  @override
   String get refresh => 'Refresh';
 
   @override
-  String get piecesLabel => 'Pieces';
-
-  @override
   String get todayTitle => 'Today';
-
-  @override
-  String get todayAtBranch => 'Today at your branch';
 
   @override
   String get statPickedUp => 'Picked up';
@@ -864,9 +885,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get claimCancelled => 'Cancelled';
 
   @override
-  String get branchLabel => 'Branch';
-
-  @override
   String heldUntilLeft(String time, String left) {
     return '$time ($left left)';
   }
@@ -882,10 +900,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   @override
   String get problemExpiredHint =>
       'Don\'t hand it over. The customer can reserve again if the offer is still on.';
-
-  @override
-  String get problemOtherBranchHint =>
-      'The customer can pick it up at a branch that has this offer.';
 
   @override
   String get checkCustomerTitle => 'Is it the right customer?';
@@ -980,23 +994,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get unlimitedHint => 'Stays up until it ends or you pause it.';
 
   @override
-  String get noBranchChosen => 'No branch chosen';
-
-  @override
-  String get whereTitle => 'Where it shows';
-
-  @override
-  String get showsHere => 'Shows here';
-
-  @override
-  String get hiddenHere => 'Won\'t show here';
-
-  @override
-  String hiddenFromBranches(String branches) {
-    return 'Customers of $branches won\'t see this offer.';
-  }
-
-  @override
   String get listSeparator => ', ';
 
   @override
@@ -1011,11 +1008,6 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
       one: '1 hour',
     );
     return '$_temp0';
-  }
-
-  @override
-  String holdAndPer(String hold, String per) {
-    return 'Held $hold · $per';
   }
 
   @override
@@ -1041,10 +1033,5 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   @override
   String postSummary(String pieces, String when) {
     return '$pieces · ends $when';
-  }
-
-  @override
-  String postSummaryAt(String pieces, String when, String branches) {
-    return '$pieces · ends $when · at $branches only';
   }
 }

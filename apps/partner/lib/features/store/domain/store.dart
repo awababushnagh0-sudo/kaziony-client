@@ -9,35 +9,12 @@ class StoreCategory {
   String name(Locale locale) => locale.languageCode == 'ar' ? nameAr : nameEn;
 }
 
-class Branch {
-  const Branch({
-    required this.id,
-    required this.name,
-    required this.city,
-    required this.area,
-    required this.address,
-    required this.phone,
-    required this.isActive,
-  });
-
-  final String id;
-  final String name;
-
-  /// Null for a city added after this version of the app.
-  final City? city;
-  final String? area;
-  final String? address;
-  final String? phone;
-  final bool isActive;
-}
-
 class StoreMember {
   const StoreMember({
     required this.userId,
     required this.name,
     required this.phone,
     required this.isOwner,
-    required this.branchId,
     required this.isActive,
   });
 
@@ -45,9 +22,6 @@ class StoreMember {
   final String? name;
   final String? phone;
   final bool isOwner;
-
-  /// Staff limited to one branch. Null means all branches.
-  final String? branchId;
   final bool isActive;
 }
 
@@ -75,19 +49,36 @@ class Store {
     required this.id,
     required this.name,
     required this.category,
+    required this.city,
+    required this.area,
+    required this.address,
+    required this.location,
+    required this.openingHours,
     required this.profile,
     required this.logoUrl,
     required this.coverUrl,
     required this.isActive,
     required this.ratingAverage,
     required this.ratingCount,
-    required this.branches,
     required this.members,
   });
 
   final String id;
   final String name;
   final StoreCategory category;
+
+  /// Null for a city added after this version of the app.
+  final City? city;
+
+  /// The neighbourhood, shown with the name: a brand's places share it.
+  final String? area;
+  final String? address;
+
+  /// Where it is on the map. Our team sets it, with the area and address.
+  final GeoPoint location;
+
+  /// The owner sets them.
+  final OpeningHours openingHours;
   final StoreProfile profile;
 
   /// Round, by the store's name wherever customers see it.
@@ -103,9 +94,16 @@ class Store {
   /// first rating.
   final double? ratingAverage;
   final int ratingCount;
-  final List<Branch> branches;
   final List<StoreMember> members;
+
+  /// Its name with its area: [storeLabel].
+  String get label => storeLabel(name, area);
 }
+
+/// A store's name with its area, to tell a brand's places apart, each a
+/// store of its own: "حلويات الساحل · حي الأندلس".
+String storeLabel(String name, String? area) =>
+    area == null || area.isEmpty ? name : '$name · $area';
 
 /// The store's two pictures.
 enum StoreImage { logo, cover }
@@ -115,6 +113,9 @@ abstract interface class StoreRepository {
 
   /// Owners only.
   Future<Result<Store>> updateProfile(String storeId, StoreProfile profile);
+
+  /// Owners only. Leaves the profile as it is.
+  Future<Result<Store>> setOpeningHours(String storeId, OpeningHours hours);
 
   /// Owners only. Replaces [image] with [photo].
   Future<Result<Store>> setImage(

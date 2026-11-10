@@ -29,7 +29,7 @@ class ChooseStoreScreen extends AppView {
             SCard(
               padded: false,
               child: SListTile(
-                title: store.storeName,
+                title: store.label,
                 subtitle: store.isOwner ? s.ownerRole : s.staffRole,
                 icon: SIcons.store,
                 // The router opens the tabs once a store is chosen.

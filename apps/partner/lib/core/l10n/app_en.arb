@@ -73,10 +73,64 @@
   "discardChangesTitle": "Discard your changes?",
   "discardChangesMessage": "Your changes haven't been saved. Leave without saving?",
   "discardChanges": "Discard",
-  "branchesTitle": "Branches",
   "teamTitle": "Team",
+  "locationTitle": "Location and hours",
+  "cityLabel": "City",
+  "areaLabel": "Area",
+  "addressLabel": "Address",
+  "openInMaps": "Open in Maps",
+  "openingHoursTitle": "Opening hours",
+  "openingHoursHint": "Tap a day to change its hours.",
+  "locationTeamHint": "Our team changes the store's name and location, and adds new branches.",
+  "requestChange": "Request a change",
+  "requestPlaceMessage": "Hello, I'd like to add a new branch or change the details of the store: {store}",
+  "@requestPlaceMessage": {
+    "description": "Typed in for our team in WhatsApp",
+    "placeholders": {
+      "store": {
+        "type": "String"
+      }
+    }
+  },
+  "requestStaffMessage": "Hello, I'd like to add or remove staff at the store: {store}",
+  "@requestStaffMessage": {
+    "description": "Typed in for our team in WhatsApp",
+    "placeholders": {
+      "store": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay": "Open",
+  "closedAllDay": "Closed",
+  "shiftHours": "{opens} – {closes}",
+  "@shiftHours": {
+    "description": "When a store opens and closes: \"9:00 AM – 10:00 PM\"",
+    "placeholders": {
+      "opens": {
+        "type": "String"
+      },
+      "closes": {
+        "type": "String"
+      }
+    }
+  },
+  "opensAt": "Opens",
+  "closesAt": "Closes",
+  "afterBreak": "After a break",
+  "addShift": "Add hours after a break",
+  "removeShift": "Remove these hours",
+  "sameEveryDay": "Same hours every day",
+  "done": "Done",
+  "todayAt": "Today at {store}",
+  "@todayAt": {
+    "placeholders": {
+      "store": {
+        "type": "String"
+      }
+    }
+  },
   "yourStoreSection": "Your store",
-  "yourBranch": "Your branch",
   "teamHint": "To add or remove someone, contact our team.",
   "accountSection": "Your account",
   "changePasswordAction": "Change password",
@@ -98,7 +152,6 @@
   "save": "Save",
   "saved": "Saved.",
   "inactive": "Inactive",
-  "allBranches": "All branches",
   "cityTripoli": "Tripoli",
   "oldPasswordLabel": "Current password",
   "wrongOldPassword": "The current password is wrong.",
@@ -212,7 +265,6 @@
   "limitedType": "A set number",
   "unlimitedType": "No limit",
   "quantityLabel": "How many pieces",
-  "holdHelper": "How long a reservation waits for the customer to come.",
   "perCustomerLabel": "Per customer",
   "endsLabel": "Ends",
   "endsTonight": "Tonight",
@@ -221,7 +273,6 @@
   "endsInAWeek": "In a week",
   "endsInPast": "Choose a time that's still to come.",
   "endsTooLate": "Offers can last at most 30 days.",
-  "chooseABranch": "Choose at least one branch.",
   "offerPosted": "Offer posted.",
   "holdValue": "{minutes} min",
   "@holdValue": {
@@ -232,14 +283,6 @@
     }
   },
   "startsLabel": "Starts",
-  "branchCount": "{count, plural, =1{1 branch} other{{count} branches}}",
-  "@branchCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "pauseOffer": "Pause",
   "resumeOffer": "Resume",
   "endOffer": "End the offer",
@@ -285,27 +328,12 @@
   "problemRedeemed": "Already picked up.",
   "problemCancelled": "The customer cancelled this reservation.",
   "problemExpired": "This reservation has expired.",
-  "problemOtherBranch": "This offer isn't for your branch.",
   "problemOther": "This code can't be picked up.",
   "claimNotFound": "No reservation with this code at your store.",
   "pickedUpTitle": "Picked up",
   "nextCustomer": "Next customer",
-  "counterBranch": "Your branch",
-  "chooseCounterBranch": "Which branch are you at?",
-  "chooseValue": "Choose",
-  "counterBranchIs": "Your branch: {name}",
-  "@counterBranchIs": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "redeemWrongBranch": "This offer isn't valid at the branch picked on this phone.",
   "refresh": "Refresh",
-  "piecesLabel": "Pieces",
   "todayTitle": "Today",
-  "todayAtBranch": "Today at your branch",
   "statPickedUp": "Picked up",
   "statNotPickedUp": "Not picked up",
   "statLiveOffers": "Live offers",
@@ -372,7 +400,6 @@
   "claimRedeemed": "Picked up",
   "claimExpired": "Expired",
   "claimCancelled": "Cancelled",
-  "branchLabel": "Branch",
   "heldUntilLeft": "{time} ({left} left)",
   "@heldUntilLeft": {
     "placeholders": {
@@ -387,7 +414,6 @@
   "problemRedeemedHint": "Don't hand it over again. If the customer says they didn't get it, check with your colleagues.",
   "problemCancelledHint": "Don't hand it over. The customer can reserve again if the offer is still on.",
   "problemExpiredHint": "Don't hand it over. The customer can reserve again if the offer is still on.",
-  "problemOtherBranchHint": "The customer can pick it up at a branch that has this offer.",
   "checkCustomerTitle": "Is it the right customer?",
   "checkCustomerMessage": "Make sure you handed {item} to {name} and collected {amount}.",
   "@checkCustomerMessage": {
@@ -504,21 +530,9 @@
     }
   },
   "unlimitedHint": "Stays up until it ends or you pause it.",
-  "noBranchChosen": "No branch chosen",
-  "whereTitle": "Where it shows",
-  "showsHere": "Shows here",
-  "hiddenHere": "Won't show here",
-  "hiddenFromBranches": "Customers of {branches} won't see this offer.",
-  "@hiddenFromBranches": {
-    "placeholders": {
-      "branches": {
-        "type": "String"
-      }
-    }
-  },
   "listSeparator": ", ",
   "@listSeparator": {
-    "description": "Between names in a list: \"Andalus, Gargaresh\""
+    "description": "Between the times a store opens in a day: \"9:00 AM – 1:00 PM, 4:00 PM – 10:00 PM\""
   },
   "reservationsTitle": "Reservations",
   "holdHours": "{hours, plural, =1{1 hour} other{{hours} hours}}",
@@ -526,17 +540,6 @@
     "placeholders": {
       "hours": {
         "type": "int"
-      }
-    }
-  },
-  "holdAndPer": "Held {hold} · {per}",
-  "@holdAndPer": {
-    "placeholders": {
-      "hold": {
-        "type": "String"
-      },
-      "per": {
-        "type": "String"
       }
     }
   },
@@ -558,20 +561,6 @@
         "type": "String"
       },
       "when": {
-        "type": "String"
-      }
-    }
-  },
-  "postSummaryAt": "{pieces} · ends {when} · at {branches} only",
-  "@postSummaryAt": {
-    "placeholders": {
-      "pieces": {
-        "type": "String"
-      },
-      "when": {
-        "type": "String"
-      },
-      "branches": {
         "type": "String"
       }
     }

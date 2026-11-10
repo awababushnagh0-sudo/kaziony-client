@@ -29,3 +29,7 @@ DealStatus? offerStatus(
   ),
   null => null,
 };
+
+/// A hold time as people say it: "30 min", "1 hour", "2 hours".
+String holdLabel(PartnerLocalizations s, int minutes) =>
+    minutes % 60 == 0 ? s.holdHours(minutes ~/ 60) : s.holdValue(minutes);

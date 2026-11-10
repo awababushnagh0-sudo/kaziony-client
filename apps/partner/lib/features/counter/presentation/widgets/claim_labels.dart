@@ -19,7 +19,6 @@ String? claimProblemMessage(BuildContext context, Claim claim) {
     ClaimProblem.alreadyRedeemed => s.problemRedeemed,
     ClaimProblem.cancelled => s.problemCancelled,
     ClaimProblem.expired => s.problemExpired,
-    ClaimProblem.otherBranch => s.problemOtherBranch,
     ClaimProblem.other => s.problemOther,
   };
 }
@@ -33,7 +32,6 @@ String? claimProblemHint(BuildContext context, Claim claim) {
     ClaimProblem.alreadyRedeemed => s.problemRedeemedHint,
     ClaimProblem.cancelled => s.problemCancelledHint,
     ClaimProblem.expired => s.problemExpiredHint,
-    ClaimProblem.otherBranch => s.problemOtherBranchHint,
   };
 }
 

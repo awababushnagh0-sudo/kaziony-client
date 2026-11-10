@@ -21,7 +21,7 @@ class PeriodStats {
   final double? redemptionRate;
 }
 
-/// A store's numbers. Staff limited to a branch get their branch's.
+/// A store's numbers: each of a brand's places has its own.
 class StoreStats {
   const StoreStats({
     required this.liveOffers,

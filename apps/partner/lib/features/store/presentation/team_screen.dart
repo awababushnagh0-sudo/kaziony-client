@@ -4,8 +4,10 @@ import 'package:stellar/stellar.dart';
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../domain/store.dart';
 import 'store_view_model.dart';
+import 'widgets/request_change_button.dart';
 
-/// Who works at the store. Our team adds and removes people.
+/// Who works at the store. Our team adds and removes people: the owner
+/// asks from here, over WhatsApp.
 class TeamScreen extends AppView {
   const TeamScreen({super.key});
 
@@ -28,13 +30,15 @@ class TeamScreen extends AppView {
                     SListTile(
                       icon: SIcons.user,
                       title: member.name ?? s.notSet,
-                      subtitle: _details(s, store, member),
+                      subtitle: _details(s, member),
                       trailing: member.isActive ? null : SBadge(s.inactive),
                     ),
                 ],
               ),
               const Gap(Space.sm),
               SText.caption(s.teamHint),
+              const Gap(Space.md),
+              RequestChangeButton(message: s.requestStaffMessage(store.label)),
             ],
           ),
         ),
@@ -43,18 +47,8 @@ class TeamScreen extends AppView {
   }
 }
 
-/// "Staff · Hay Al Andalus · 0912345678"
-String _details(PartnerLocalizations s, Store store, StoreMember member) {
-  final branchId = member.branchId;
-  return [
-    if (member.isOwner) s.ownerRole else s.staffRole,
-    if (!member.isOwner)
-      branchId == null
-          ? s.allBranches
-          : store.branches
-                .where((branch) => branch.id == branchId)
-                .firstOrNull
-                ?.name,
-    if (member.phone case final phone?) formatLibyanPhone(phone),
-  ].whereType<String>().join(' · ');
-}
+/// "Staff · 0912345678"
+String _details(PartnerLocalizations s, StoreMember member) => [
+  if (member.isOwner) s.ownerRole else s.staffRole,
+  if (member.phone case final phone?) formatLibyanPhone(phone),
+].join(' · ');

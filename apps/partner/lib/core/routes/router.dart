@@ -21,8 +21,8 @@ import '../../features/profile/presentation/about_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/profile/presentation/terms_screen.dart';
 import '../../features/store/domain/current_store.dart';
-import '../../features/store/presentation/branches_screen.dart';
 import '../../features/store/presentation/choose_store_screen.dart';
+import '../../features/store/presentation/location_screen.dart';
 import '../../features/store/presentation/no_store_screen.dart';
 import '../../features/store/presentation/store_info_screen.dart';
 import '../../features/store/presentation/team_screen.dart';
@@ -76,7 +76,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         onExit: LeaveGuard.onExit,
         builder: (_, _) => const StoreInfoScreen(),
       ),
-      GoRoute(path: Routes.branches, builder: (_, _) => const BranchesScreen()),
+      GoRoute(
+        path: Routes.location,
+        // Owners edit the opening hours in place: leaving with changes asks
+        // first.
+        onExit: LeaveGuard.onExit,
+        builder: (_, _) => const LocationScreen(),
+      ),
       GoRoute(path: Routes.team, builder: (_, _) => const TeamScreen()),
       GoRoute(path: Routes.about, builder: (_, _) => const AboutScreen()),
       GoRoute(path: Routes.terms, builder: (_, _) => const TermsScreen()),

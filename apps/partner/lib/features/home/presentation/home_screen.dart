@@ -13,8 +13,9 @@ import '../../store/domain/current_store.dart';
 import 'home_view_model.dart';
 
 /// The day at a glance: today's numbers, the next customers to come and how
-/// the live offers sell. Staff see their branch's day, without the numbers
-/// only owners act on (no-shows, offers).
+/// the live offers sell. Staff see the same day, without the numbers only
+/// owners act on (no-shows, offers). Members of several stores (a brand's
+/// places) see which one it is.
 class HomeScreen extends AppView {
   const HomeScreen({super.key});
 
@@ -95,6 +96,7 @@ class _HomeBody extends AppView {
     final s = PartnerLocalizations.of(context);
     final store = ref.watch(currentStoreProvider);
     final isOwner = store?.isOwner ?? false;
+    final several = ref.watch(myStoresProvider).length > 1;
     final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
     final onTheWay = home.onTheWayAt(now);
     final offers = home.liveOffers.take(Home.offersShown).toList();
@@ -106,7 +108,9 @@ class _HomeBody extends AppView {
           soonest: onTheWay.firstOrNull,
           now: now,
           isOwner: isOwner,
-          title: store?.branchId == null ? s.todayTitle : s.todayAtBranch,
+          title: store != null && several
+              ? s.todayAt(store.label)
+              : s.todayTitle,
         ),
         const Gap(Space.lg),
         // Both lists empty: one picture for the page, not two empty lists.

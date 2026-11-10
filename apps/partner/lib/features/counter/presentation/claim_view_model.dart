@@ -47,14 +47,14 @@ class PickupViewModel extends ViewModel<PickupState> {
 
   /// Returns what went wrong, or null when it's picked up or the claim
   /// changed meanwhile (it's then loaded again, showing why).
-  Future<AppFailure?> confirm({String? branchId}) async {
+  Future<AppFailure?> confirm() async {
     if (state.sending || state.done != null) return null;
     final storeId = ref.read(currentStoreProvider)?.storeId;
     if (storeId == null) return const NotFoundFailure();
     state = const PickupState(sending: true);
     final result = await ref
         .read(claimRepositoryProvider)
-        .redeem(storeId, code, branchId: branchId);
+        .redeem(storeId, code);
     if (!ref.mounted) return null;
     switch (result) {
       case Ok(:final value):

@@ -13,7 +13,7 @@ enum ClaimStatus {
 }
 
 /// Why a code can't be picked up at this counter.
-enum ClaimProblem { alreadyRedeemed, cancelled, expired, otherBranch, other }
+enum ClaimProblem { alreadyRedeemed, cancelled, expired, other }
 
 /// The 8 characters customers show as a QR code, or read out when it won't
 /// scan.
@@ -64,7 +64,6 @@ class Claim {
     required this.offer,
     required this.expiresAt,
     required this.redeemedAt,
-    required this.redeemedBranchId,
     required this.canRedeem,
   });
 
@@ -86,9 +85,6 @@ class Claim {
   final DateTime expiresAt;
   final DateTime? redeemedAt;
 
-  /// Where it was picked up.
-  final String? redeemedBranchId;
-
   /// The server's answer: it can be picked up here, right now.
   final bool canRedeem;
 
@@ -109,31 +105,29 @@ class Claim {
       ClaimStatus.redeemed => ClaimProblem.alreadyRedeemed,
       ClaimStatus.cancelled => ClaimProblem.cancelled,
       ClaimStatus.expired => ClaimProblem.expired,
-      // Still reserved: either its time ran out a moment ago, or the offer
-      // isn't valid at this staff member's branch.
+      // Still reserved: its time ran out a moment ago.
       ClaimStatus.reserved when !expiresAt.isAfter(DateTime.now()) =>
         ClaimProblem.expired,
-      ClaimStatus.reserved => ClaimProblem.otherBranch,
-      null => ClaimProblem.other,
+      ClaimStatus.reserved || null => ClaimProblem.other,
     };
   }
 }
 
 /// Owners and staff both work the counter.
 abstract interface class ClaimRepository {
-  /// Reservations waiting to be picked up, soonest to expire first. Staff
-  /// limited to a branch only get their branch's.
+  /// Reservations waiting to be picked up, soonest to expire first.
   Future<Result<PageResult<Claim>>> upcoming(
     String storeId, {
     required int page,
     required int pageSize,
   });
 
+  /// A code from another store (another place of the same brand too) is
+  /// a [NotFoundFailure].
   Future<Result<Claim>> lookup(String storeId, String code);
 
-  /// Marks it picked up at [branchId] (null when the backend can tell: staff
-  /// limited to a branch, or an offer at one branch only).
-  Future<Result<Claim>> redeem(String storeId, String code, {String? branchId});
+  /// Marks it picked up at this store.
+  Future<Result<Claim>> redeem(String storeId, String code);
 }
 
 /// Wired to the real implementation in `core/providers/dependencies.dart`.

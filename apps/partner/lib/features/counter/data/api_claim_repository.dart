@@ -38,16 +38,13 @@ class ApiClaimRepository implements ClaimRepository {
           .map(_toClaim);
 
   @override
-  Future<Result<Claim>> redeem(
-    String storeId,
-    String code, {
-    String? branchId,
-  }) async => (await _api.guard(
-    () => _claims.redeem(
-      storeId: storeId,
-      body: api.RedeemClaimDto(code: code, branchId: branchId),
-    ),
-  )).map(_toClaim);
+  Future<Result<Claim>> redeem(String storeId, String code) async =>
+      (await _api.guard(
+        () => _claims.redeem(
+          storeId: storeId,
+          body: api.RedeemClaimDto(code: code),
+        ),
+      )).map(_toClaim);
 }
 
 Claim _toClaim(api.PartnerClaimDto dto) => Claim(
@@ -72,6 +69,5 @@ Claim _toClaim(api.PartnerClaimDto dto) => Claim(
   ),
   expiresAt: dto.expiresAt,
   redeemedAt: dto.redeemedAt,
-  redeemedBranchId: dto.redeemedBranchId,
   canRedeem: dto.canRedeem,
 );

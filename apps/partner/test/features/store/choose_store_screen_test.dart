@@ -10,7 +10,8 @@ import 'package:stellar/stellar.dart';
 import '../../fakes.dart';
 
 void main() {
-  testWidgets('lists the stores and remembers the one tapped', (tester) async {
+  testWidgets('lists the stores with their areas, and remembers the one '
+      'tapped', (tester) async {
     final settings = MemorySettingsStore();
     await tester.pumpWidget(
       AppScope(
@@ -18,8 +19,8 @@ void main() {
           ...testOverrides(settings: settings),
           authRepositoryProvider.overrideWithValue(FakeAuthRepository()),
           myStoresProvider.overrideWithValue([
-            store('a'),
-            store('b', isOwner: false),
+            store('a', area: 'Hay Al Andalus'),
+            store('b', isOwner: false, area: 'Gargaresh'),
           ]),
         ],
         child: SApp(
@@ -36,10 +37,11 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    expect(find.text('Store a · Hay Al Andalus'), findsOneWidget);
     expect(find.text('Owner'), findsOneWidget);
     expect(find.text('Staff'), findsOneWidget);
 
-    await tester.tap(find.text('Store b'));
+    await tester.tap(find.text('Store b · Gargaresh'));
     await tester.pumpAndSettle();
     expect(settings.values.values, ['b']);
   });

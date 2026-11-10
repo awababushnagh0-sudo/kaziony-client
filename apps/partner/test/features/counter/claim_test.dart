@@ -45,10 +45,18 @@ void main() {
       );
     });
 
-    test('a refused reservation still on time is for another branch', () {
+    test('a refused reservation still on time has no reason to name', () {
+      expect(claim('ABCD2345', canRedeem: false).problem, ClaimProblem.other);
+    });
+
+    test('a reservation whose time just ran out has expired', () {
       expect(
-        claim('ABCD2345', canRedeem: false).problem,
-        ClaimProblem.otherBranch,
+        claim(
+          'ABCD2345',
+          canRedeem: false,
+          heldFor: const Duration(minutes: -1),
+        ).problem,
+        ClaimProblem.expired,
       );
     });
   });

@@ -1,5 +1,7 @@
 import 'package:kernel/kernel.dart';
 
+import 'store.dart';
+
 /// Where a signed-in member stands with their stores.
 sealed class StoreAccess {
   const StoreAccess();
@@ -83,3 +85,8 @@ final currentStoreProvider = Provider<StoreMembership?>(
     _ => null,
   },
 );
+
+extension StoreMembershipLabel on StoreMembership {
+  /// The store's name with its area, as it's picked: [storeLabel].
+  String get label => storeLabel(storeName, storeArea);
+}

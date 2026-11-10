@@ -40,7 +40,7 @@ void main() {
         GoRoute(path: Routes.profile, builder: (_, _) => const ProfileScreen()),
         stubPage(Routes.home, 'home page'),
         stubPage(Routes.storeInfo, 'store info page'),
-        stubPage(Routes.branches, 'branches page'),
+        stubPage(Routes.location, 'location page'),
         stubPage(Routes.team, 'team page'),
         GoRoute(path: Routes.about, builder: (_, _) => const AboutScreen()),
         GoRoute(path: Routes.terms, builder: (_, _) => const TermsScreen()),
@@ -54,34 +54,26 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('shows the store, its category and who is signed in', (
+  testWidgets('shows the store, its category and area, and who is signed in', (
     tester,
   ) async {
     await open(tester, stores: [store('a')]);
 
     expect(find.text('Store a'), findsOneWidget);
-    expect(find.text('Sweets'), findsOneWidget);
+    expect(find.text('Sweets · Hay Al Andalus'), findsOneWidget);
     expect(find.text('Test'), findsOneWidget);
     expect(find.text('Owner'), findsOneWidget);
   });
 
   testWidgets('pulling down loads the store again', (tester) async {
     await open(tester, stores: [store('a')]);
-    storeRepository.getResult = Ok(
-      storeDetails(
-        branches: [
-          branch('b1', 'Andalus'),
-          branch('b2', 'Gargaresh'),
-          branch('b3', 'Souq'),
-          branch('b4', 'Dahra'),
-        ],
-      ),
-    );
+    storeRepository.getResult = Ok(storeDetails(area: 'Gargaresh'));
 
     await tester.fling(find.text('Store a'), const Offset(0, 400), 1000);
     await tester.pumpAndSettle();
 
-    expect(find.text('4'), findsOneWidget);
+    expect(find.text('Sweets · Gargaresh'), findsOneWidget);
+    expect(find.text('Gargaresh'), findsOneWidget);
   });
 
   testWidgets('opens the store info', (tester) async {
@@ -91,32 +83,29 @@ void main() {
     expect(find.text('store info page'), findsOneWidget);
   });
 
-  testWidgets('owners see how many branches and members, and open them', (
-    tester,
-  ) async {
+  testWidgets('owners see how many members, and open the team', (tester) async {
     await open(tester, stores: [store('a')]);
 
-    expect(find.text('1'), findsOneWidget);
     expect(find.text('2'), findsOneWidget);
     await tap(tester, 'Team');
     expect(find.text('team page'), findsOneWidget);
   });
 
-  testWidgets('staff see their branch, not the team', (tester) async {
-    await open(tester, stores: [store('a', isOwner: false, branchId: 'b1')]);
+  testWidgets('opens the location, with its area', (tester) async {
+    await open(tester, stores: [store('a')]);
 
-    expect(find.text('Staff'), findsOneWidget);
-    expect(find.text('Andalus'), findsOneWidget);
-    expect(find.text('Team'), findsNothing);
-    await tap(tester, 'Your branch');
-    expect(find.text('branches page'), findsOneWidget);
+    expect(find.text('Hay Al Andalus'), findsOneWidget);
+    await tap(tester, 'Location and hours');
+    expect(find.text('location page'), findsOneWidget);
   });
 
-  testWidgets('staff of every branch see the branches', (tester) async {
+  testWidgets('staff see the location, not the team', (tester) async {
     await open(tester, stores: [store('a', isOwner: false)]);
 
-    expect(find.text('Branches'), findsOneWidget);
-    expect(find.text('Your branch'), findsNothing);
+    expect(find.text('Staff'), findsOneWidget);
+    expect(find.text('Team'), findsNothing);
+    await tap(tester, 'Location and hours');
+    expect(find.text('location page'), findsOneWidget);
   });
 
   testWidgets('staff open the store info too', (tester) async {
@@ -190,10 +179,18 @@ void main() {
   });
 
   testWidgets('switches store from a sheet, then shows home', (tester) async {
-    await open(tester, stores: [store('a'), store('b')]);
+    // A brand's two places: the area tells them apart.
+    await open(
+      tester,
+      stores: [
+        store('a', area: 'Hay Al Andalus'),
+        store('b', area: 'Gargaresh'),
+      ],
+    );
 
     await tap(tester, 'Switch store');
-    await tap(tester, 'Store b');
+    expect(find.text('Store a · Hay Al Andalus'), findsOneWidget);
+    await tap(tester, 'Store b · Gargaresh');
 
     expect(settings.values['store.chosen'], 'b');
     expect(find.text('home page'), findsOneWidget);

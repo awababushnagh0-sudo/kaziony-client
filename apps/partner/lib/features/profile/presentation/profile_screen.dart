@@ -9,11 +9,12 @@ import '../../store/domain/current_store.dart';
 import '../../store/domain/store.dart';
 import '../../store/presentation/store_view_model.dart';
 
-/// The store as customers see it across the top (its cover, logo, name and
-/// category), then the store's info, branches and team, the member's own
-/// account, the app's settings and help. Owners change the cover and logo
-/// right there. The page doesn't wait for the store's details: the name
-/// and logo come with the sign-in, and the rest fills in once loaded.
+/// The store as customers see it across the top (its cover, logo, name,
+/// category and area), then the store's info, place and team, the
+/// member's own account, the app's settings and help. Owners change the
+/// cover and logo right there. The page doesn't wait for the store's
+/// details: the name, area and logo come with the sign-in, and the rest
+/// fills in once loaded.
 class ProfileScreen extends AppView {
   const ProfileScreen({super.key});
 
@@ -123,8 +124,8 @@ class ProfileScreen extends AppView {
   }
 }
 
-/// The cover and the logo over its edge, then the store's name and
-/// category.
+/// The cover and the logo over its edge, then the store's name, its
+/// category and its area: the area tells a brand's places apart.
 class _StoreHeader extends StatelessWidget {
   const _StoreHeader({required this.membership, required this.details});
 
@@ -138,6 +139,8 @@ class _StoreHeader extends StatelessWidget {
     final details = this.details;
     final owner = membership.isOwner;
     final category = details?.category.name(Localizations.localeOf(context));
+    final area = details == null ? membership.storeArea : details.area;
+    final about = [?category, ?area].where((part) => part.isNotEmpty);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: Space.md,
@@ -162,7 +165,8 @@ class _StoreHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SText.title(details?.name ?? membership.storeName),
-              if (category != null) SText(category, color: SColor.textMuted),
+              if (about.isNotEmpty)
+                SText(about.join(' · '), color: SColor.textMuted),
             ],
           ),
         ),
@@ -171,10 +175,8 @@ class _StoreHeader extends StatelessWidget {
   }
 }
 
-/// The store's info, as customers see it (owners edit it there). Then,
-/// for owners, the branches and the team, with how many of each; for
-/// staff, the branch they work at, or all the branches when they work at
-/// every one.
+/// The store's info, as customers see it (owners edit it there), and
+/// where it is, with its area. For owners, the team too, with how many.
 class _YourStore extends StatelessWidget {
   const _YourStore({required this.membership, required this.details});
 
@@ -185,14 +187,6 @@ class _YourStore extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = PartnerLocalizations.of(context);
     final details = this.details;
-    final branchId = membership.branchId;
-    void openBranches() => context.push(Routes.branches);
-    final branches = SListTile(
-      icon: SIcons.location,
-      title: s.branchesTitle,
-      value: details == null ? null : '${details.branches.length}',
-      onTap: openBranches,
-    );
     return SListGroup(
       title: s.yourStoreSection,
       separated: true,
@@ -202,26 +196,19 @@ class _YourStore extends StatelessWidget {
           title: s.storeInfoTitle,
           onTap: () => context.push(Routes.storeInfo),
         ),
-        if (membership.isOwner) ...[
-          branches,
+        SListTile(
+          icon: SIcons.location,
+          title: s.locationTitle,
+          value: details == null ? membership.storeArea : details.area,
+          onTap: () => context.push(Routes.location),
+        ),
+        if (membership.isOwner)
           SListTile(
             icon: SIcons.users,
             title: s.teamTitle,
             value: details == null ? null : '${details.members.length}',
             onTap: () => context.push(Routes.team),
           ),
-        ] else if (branchId != null)
-          SListTile(
-            icon: SIcons.location,
-            title: s.yourBranch,
-            value: details?.branches
-                .where((branch) => branch.id == branchId)
-                .firstOrNull
-                ?.name,
-            onTap: openBranches,
-          )
-        else
-          branches,
       ],
     );
   }
@@ -291,7 +278,7 @@ class _YourAccount extends AppView {
       title: PartnerLocalizations.of(context).switchStore,
       options: [
         for (final store in ref.read(myStoresProvider))
-          RadioOption(value: store.storeId, label: store.storeName),
+          RadioOption(value: store.storeId, label: store.label),
       ],
       selected: ref.read(currentStoreProvider)?.storeId,
     );

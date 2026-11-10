@@ -455,29 +455,149 @@ abstract class PartnerLocalizations {
   /// **'Discard'**
   String get discardChanges;
 
-  /// No description provided for @branchesTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Branches'**
-  String get branchesTitle;
-
   /// No description provided for @teamTitle.
   ///
   /// In en, this message translates to:
   /// **'Team'**
   String get teamTitle;
 
+  /// No description provided for @locationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location and hours'**
+  String get locationTitle;
+
+  /// No description provided for @cityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get cityLabel;
+
+  /// No description provided for @areaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Area'**
+  String get areaLabel;
+
+  /// No description provided for @addressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get addressLabel;
+
+  /// No description provided for @openInMaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Maps'**
+  String get openInMaps;
+
+  /// No description provided for @openingHoursTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening hours'**
+  String get openingHoursTitle;
+
+  /// No description provided for @openingHoursHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a day to change its hours.'**
+  String get openingHoursHint;
+
+  /// No description provided for @locationTeamHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Our team changes the store\'s name and location, and adds new branches.'**
+  String get locationTeamHint;
+
+  /// No description provided for @requestChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Request a change'**
+  String get requestChange;
+
+  /// Typed in for our team in WhatsApp
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, I\'d like to add a new branch or change the details of the store: {store}'**
+  String requestPlaceMessage(String store);
+
+  /// Typed in for our team in WhatsApp
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, I\'d like to add or remove staff at the store: {store}'**
+  String requestStaffMessage(String store);
+
+  /// No description provided for @openDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get openDay;
+
+  /// No description provided for @closedAllDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get closedAllDay;
+
+  /// When a store opens and closes: "9:00 AM – 10:00 PM"
+  ///
+  /// In en, this message translates to:
+  /// **'{opens} – {closes}'**
+  String shiftHours(String opens, String closes);
+
+  /// No description provided for @opensAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens'**
+  String get opensAt;
+
+  /// No description provided for @closesAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Closes'**
+  String get closesAt;
+
+  /// No description provided for @afterBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'After a break'**
+  String get afterBreak;
+
+  /// No description provided for @addShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Add hours after a break'**
+  String get addShift;
+
+  /// No description provided for @removeShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove these hours'**
+  String get removeShift;
+
+  /// No description provided for @sameEveryDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Same hours every day'**
+  String get sameEveryDay;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// No description provided for @todayAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Today at {store}'**
+  String todayAt(String store);
+
   /// No description provided for @yourStoreSection.
   ///
   /// In en, this message translates to:
   /// **'Your store'**
   String get yourStoreSection;
-
-  /// No description provided for @yourBranch.
-  ///
-  /// In en, this message translates to:
-  /// **'Your branch'**
-  String get yourBranch;
 
   /// No description provided for @teamHint.
   ///
@@ -604,12 +724,6 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Inactive'**
   String get inactive;
-
-  /// No description provided for @allBranches.
-  ///
-  /// In en, this message translates to:
-  /// **'All branches'**
-  String get allBranches;
 
   /// No description provided for @cityTripoli.
   ///
@@ -1067,12 +1181,6 @@ abstract class PartnerLocalizations {
   /// **'How many pieces'**
   String get quantityLabel;
 
-  /// No description provided for @holdHelper.
-  ///
-  /// In en, this message translates to:
-  /// **'How long a reservation waits for the customer to come.'**
-  String get holdHelper;
-
   /// No description provided for @perCustomerLabel.
   ///
   /// In en, this message translates to:
@@ -1121,12 +1229,6 @@ abstract class PartnerLocalizations {
   /// **'Offers can last at most 30 days.'**
   String get endsTooLate;
 
-  /// No description provided for @chooseABranch.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose at least one branch.'**
-  String get chooseABranch;
-
   /// No description provided for @offerPosted.
   ///
   /// In en, this message translates to:
@@ -1144,12 +1246,6 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Starts'**
   String get startsLabel;
-
-  /// No description provided for @branchCount.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{1 branch} other{{count} branches}}'**
-  String branchCount(int count);
 
   /// No description provided for @pauseOffer.
   ///
@@ -1379,12 +1475,6 @@ abstract class PartnerLocalizations {
   /// **'This reservation has expired.'**
   String get problemExpired;
 
-  /// No description provided for @problemOtherBranch.
-  ///
-  /// In en, this message translates to:
-  /// **'This offer isn\'t for your branch.'**
-  String get problemOtherBranch;
-
   /// No description provided for @problemOther.
   ///
   /// In en, this message translates to:
@@ -1409,59 +1499,17 @@ abstract class PartnerLocalizations {
   /// **'Next customer'**
   String get nextCustomer;
 
-  /// No description provided for @counterBranch.
-  ///
-  /// In en, this message translates to:
-  /// **'Your branch'**
-  String get counterBranch;
-
-  /// No description provided for @chooseCounterBranch.
-  ///
-  /// In en, this message translates to:
-  /// **'Which branch are you at?'**
-  String get chooseCounterBranch;
-
-  /// No description provided for @chooseValue.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose'**
-  String get chooseValue;
-
-  /// No description provided for @counterBranchIs.
-  ///
-  /// In en, this message translates to:
-  /// **'Your branch: {name}'**
-  String counterBranchIs(String name);
-
-  /// No description provided for @redeemWrongBranch.
-  ///
-  /// In en, this message translates to:
-  /// **'This offer isn\'t valid at the branch picked on this phone.'**
-  String get redeemWrongBranch;
-
   /// No description provided for @refresh.
   ///
   /// In en, this message translates to:
   /// **'Refresh'**
   String get refresh;
 
-  /// No description provided for @piecesLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Pieces'**
-  String get piecesLabel;
-
   /// No description provided for @todayTitle.
   ///
   /// In en, this message translates to:
   /// **'Today'**
   String get todayTitle;
-
-  /// No description provided for @todayAtBranch.
-  ///
-  /// In en, this message translates to:
-  /// **'Today at your branch'**
-  String get todayAtBranch;
 
   /// No description provided for @statPickedUp.
   ///
@@ -1607,12 +1655,6 @@ abstract class PartnerLocalizations {
   /// **'Cancelled'**
   String get claimCancelled;
 
-  /// No description provided for @branchLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Branch'**
-  String get branchLabel;
-
   /// No description provided for @heldUntilLeft.
   ///
   /// In en, this message translates to:
@@ -1636,12 +1678,6 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Don\'t hand it over. The customer can reserve again if the offer is still on.'**
   String get problemExpiredHint;
-
-  /// No description provided for @problemOtherBranchHint.
-  ///
-  /// In en, this message translates to:
-  /// **'The customer can pick it up at a branch that has this offer.'**
-  String get problemOtherBranchHint;
 
   /// No description provided for @checkCustomerTitle.
   ///
@@ -1787,37 +1823,7 @@ abstract class PartnerLocalizations {
   /// **'Stays up until it ends or you pause it.'**
   String get unlimitedHint;
 
-  /// No description provided for @noBranchChosen.
-  ///
-  /// In en, this message translates to:
-  /// **'No branch chosen'**
-  String get noBranchChosen;
-
-  /// No description provided for @whereTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Where it shows'**
-  String get whereTitle;
-
-  /// No description provided for @showsHere.
-  ///
-  /// In en, this message translates to:
-  /// **'Shows here'**
-  String get showsHere;
-
-  /// No description provided for @hiddenHere.
-  ///
-  /// In en, this message translates to:
-  /// **'Won\'t show here'**
-  String get hiddenHere;
-
-  /// No description provided for @hiddenFromBranches.
-  ///
-  /// In en, this message translates to:
-  /// **'Customers of {branches} won\'t see this offer.'**
-  String hiddenFromBranches(String branches);
-
-  /// Between names in a list: "Andalus, Gargaresh"
+  /// Between the times a store opens in a day: "9:00 AM – 1:00 PM, 4:00 PM – 10:00 PM"
   ///
   /// In en, this message translates to:
   /// **', '**
@@ -1834,12 +1840,6 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'{hours, plural, =1{1 hour} other{{hours} hours}}'**
   String holdHours(int hours);
-
-  /// No description provided for @holdAndPer.
-  ///
-  /// In en, this message translates to:
-  /// **'Held {hold} · {per}'**
-  String holdAndPer(String hold, String per);
 
   /// No description provided for @noLimitPerCustomer.
   ///
@@ -1870,12 +1870,6 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'{pieces} · ends {when}'**
   String postSummary(String pieces, String when);
-
-  /// No description provided for @postSummaryAt.
-  ///
-  /// In en, this message translates to:
-  /// **'{pieces} · ends {when} · at {branches} only'**
-  String postSummaryAt(String pieces, String when, String branches);
 }
 
 class _PartnerLocalizationsDelegate

@@ -5,7 +5,6 @@ import 'package:partner/core/routes/routes.dart';
 import 'package:partner/features/counter/domain/claim.dart';
 import 'package:partner/features/counter/presentation/claim_screen.dart';
 import 'package:partner/features/store/domain/current_store.dart';
-import 'package:partner/features/store/domain/store.dart';
 
 import '../../fakes.dart';
 import '../../support/pump_app.dart';
@@ -17,13 +16,10 @@ void main() {
     WidgetTester tester, {
     String code = 'ABCD2345',
     Claim? shown,
-    List<Branch>? branches,
-    String? staffBranch,
+    bool isOwner = true,
     bool fromList = false,
   }) async {
     claims = FakeClaimRepository([shown ?? claim('ABCD2345')]);
-    final stores = FakeStoreRepository()
-      ..getResult = Ok(storeDetails(branches: branches));
     await pumpPartnerPages(
       tester,
       initial: Routes.claim(code, fromList: fromList),
@@ -31,16 +27,7 @@ void main() {
         claimRepositoryProvider.overrideWithValue(claims),
         // No ticking clock in tests: the page reads the time when it builds.
         minuteClockProvider.overrideWith((ref) => const Stream.empty()),
-        storeRepositoryProvider.overrideWithValue(stores),
-        currentStoreProvider.overrideWithValue(
-          StoreMembership(
-            storeId: 'a',
-            storeName: 'Store a',
-            storeLogoUrl: null,
-            isOwner: staffBranch == null,
-            branchId: staffBranch,
-          ),
-        ),
+        currentStoreProvider.overrideWithValue(store('a', isOwner: isOwner)),
       ],
       routes: [
         GoRoute(
@@ -68,14 +55,12 @@ void main() {
     expect(find.text('ABCD 2345'), findsOneWidget);
     expect(find.text('Sara'), findsOneWidget);
     expect(find.text('Caramel cake'), findsOneWidget);
-    // The store's only branch is where it's picked up.
-    expect(find.text('Branch'), findsOneWidget);
 
     await tester.tap(find.text('Confirm pickup'));
     await tester.pumpAndSettle();
 
-    // The store's only branch.
-    expect(claims.redeems.single, ('ABCD2345', 'b1'));
+    // Just the code, at the store the app is in: nothing to pick first.
+    expect(claims.redeems.single, ('a', 'ABCD2345'));
     expect(find.text('Picked up'), findsOneWidget);
     expect(find.text('Collect from the customer'), findsOneWidget);
     expect(find.text('4.5 LD'), findsOneWidget);
@@ -136,12 +121,36 @@ void main() {
   });
 
   testWidgets('says when no reservation has the code', (tester) async {
+    // Another place of the brand's codes too: each is a store of its own.
     await open(tester, code: 'WXYZ6789');
 
     expect(
       find.text('No reservation with this code at your store.'),
       findsOneWidget,
     );
+    expect(find.text('Confirm pickup'), findsNothing);
+  });
+
+  testWidgets('staff confirm a pickup the same way', (tester) async {
+    await open(tester, isOwner: false);
+
+    await tester.tap(find.text('Confirm pickup'));
+    await tester.pumpAndSettle();
+
+    expect(claims.redeems.single, ('a', 'ABCD2345'));
+    expect(find.text('Collect from the customer'), findsOneWidget);
+  });
+
+  testWidgets("says why when the pickup didn't go", (tester) async {
+    await open(tester);
+    claims.redeemFailure = const NoConnectionFailure();
+
+    await tester.tap(find.text('Confirm pickup'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('No internet connection'), findsOneWidget);
+    expect(find.text('Confirm pickup'), findsOneWidget);
+    expect(find.text('Collect from the customer'), findsNothing);
   });
 
   testWidgets('shows why when it was picked up elsewhere meanwhile', (
@@ -161,37 +170,6 @@ void main() {
 
     expect(find.text('Already picked up.'), findsOneWidget);
     expect(find.text('Confirm pickup'), findsNothing);
-  });
-
-  testWidgets('asks an owner of several branches where they are, once', (
-    tester,
-  ) async {
-    await open(
-      tester,
-      branches: [branch('b1', 'Andalus'), branch('b2', 'Gargaresh')],
-    );
-
-    await tester.tap(find.text('Confirm pickup'));
-    await tester.pumpAndSettle();
-    expect(find.text('Which branch are you at?'), findsOneWidget);
-    await tester.tap(find.text('Gargaresh'));
-    await tester.pumpAndSettle();
-
-    expect(claims.redeems.single, ('ABCD2345', 'b2'));
-    expect(find.text('Picked up'), findsOneWidget);
-  });
-
-  testWidgets("doesn't ask staff limited to a branch", (tester) async {
-    await open(
-      tester,
-      branches: [branch('b1', 'Andalus'), branch('b2', 'Gargaresh')],
-      staffBranch: 'b1',
-    );
-
-    await tester.tap(find.text('Confirm pickup'));
-    await tester.pumpAndSettle();
-
-    expect(claims.redeems.single, ('ABCD2345', null));
   });
 
   testWidgets('asks before confirming a customer picked from the list', (
@@ -217,7 +195,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Yes, picked up'));
     await tester.pumpAndSettle();
-    expect(claims.redeems.single, ('ABCD2345', 'b1'));
+    expect(claims.redeems.single, ('a', 'ABCD2345'));
     expect(find.text('Collect from the customer'), findsOneWidget);
   });
 

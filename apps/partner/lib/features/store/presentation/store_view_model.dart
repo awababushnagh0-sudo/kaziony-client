@@ -3,7 +3,7 @@ import 'package:kernel/kernel.dart';
 import '../domain/current_store.dart';
 import '../domain/store.dart';
 
-/// The current store's details, for its info, branches and team pages.
+/// The current store's details, for its info, location and team pages.
 class StoreViewModel extends AsyncViewModel<Store> {
   @override
   Future<Store> build() async {

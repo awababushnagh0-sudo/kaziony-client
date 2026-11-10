@@ -31,13 +31,13 @@ class SignedInSession extends SessionController {
   SessionState build() => SignedIn(user);
 }
 
-StoreMembership store(String id, {bool isOwner = true, String? branchId}) =>
+StoreMembership store(String id, {bool isOwner = true, String? area}) =>
     StoreMembership(
       storeId: id,
       storeName: 'Store $id',
+      storeArea: area,
       storeLogoUrl: null,
       isOwner: isOwner,
-      branchId: branchId,
     );
 
 class FakeAuthRepository implements AuthRepository {
@@ -63,7 +63,8 @@ class FakeAuthRepository implements AuthRepository {
 
 Store storeDetails({
   StoreProfile? profile,
-  List<Branch>? branches,
+  String? area = 'Hay Al Andalus',
+  OpeningHours openingHours = OpeningHours.none,
   String? logoUrl,
   double? ratingAverage = 4.5,
   int ratingCount = 37,
@@ -71,6 +72,11 @@ Store storeDetails({
   id: 'a',
   name: 'Store a',
   category: const StoreCategory(nameAr: 'حلويات', nameEn: 'Sweets'),
+  city: City.tripoli,
+  area: area,
+  address: 'Jaraba Street',
+  location: const GeoPoint(32.871, 13.115),
+  openingHours: openingHours,
   profile:
       profile ??
       const StoreProfile(
@@ -85,14 +91,12 @@ Store storeDetails({
   isActive: true,
   ratingAverage: ratingAverage,
   ratingCount: ratingCount,
-  branches: branches ?? [branch('b1', 'Andalus')],
   members: const [
     StoreMember(
       userId: 'u1',
       name: 'Owner One',
       phone: '+218910000001',
       isOwner: true,
-      branchId: null,
       isActive: true,
     ),
     StoreMember(
@@ -100,20 +104,9 @@ Store storeDetails({
       name: 'Staff Two',
       phone: '+218920000002',
       isOwner: false,
-      branchId: 'b1',
       isActive: true,
     ),
   ],
-);
-
-Branch branch(String id, String name) => Branch(
-  id: id,
-  name: name,
-  city: City.tripoli,
-  area: 'Hay Al Andalus',
-  address: null,
-  phone: null,
-  isActive: true,
 );
 
 class FakeStoreRepository implements StoreRepository {
@@ -130,6 +123,24 @@ class FakeStoreRepository implements StoreRepository {
   ) async {
     updates.add(profile);
     return Ok(storeDetails(profile: profile));
+  }
+
+  final hours = <OpeningHours>[];
+
+  /// The next opening hours fail with this, once.
+  AppFailure? failNextHours;
+
+  @override
+  Future<Result<Store>> setOpeningHours(
+    String storeId,
+    OpeningHours hours,
+  ) async {
+    if (failNextHours case final failure?) {
+      failNextHours = null;
+      return Err(failure);
+    }
+    this.hours.add(hours);
+    return Ok(storeDetails(openingHours: hours));
   }
 
   final images = <StoreImage>[];
@@ -290,10 +301,9 @@ Offer offer(
   totalQuantity: type == OfferType.limited ? 10 : null,
   remainingQuantity: type == OfferType.limited ? left : null,
   maxPerUser: 1,
-  claimWindowMinutes: 60,
+  claimWindowMinutes: 120,
   startsAt: DateTime.utc(2026, 10, 25, 8),
   endsAt: DateTime.now().add(const Duration(hours: 5)),
-  branchIds: const ['b1'],
   viewCount: 42,
   claims: const ClaimCounts(reserved: 2, redeemed: 5, expired: 1, cancelled: 0),
 );
@@ -409,7 +419,6 @@ Claim claim(
   ),
   expiresAt: DateTime.now().add(heldFor),
   redeemedAt: redeemedAt,
-  redeemedBranchId: redeemedAt == null ? null : 'b1',
   canRedeem: canRedeem,
 );
 
@@ -421,7 +430,9 @@ class FakeClaimRepository implements ClaimRepository {
 
   final List<Claim> claims;
   final lookups = <String>[];
-  final redeems = <(String, String?)>[];
+
+  /// The store and the code of each pickup.
+  final redeems = <(String, String)>[];
   AppFailure? redeemFailure;
 
   @override
@@ -445,12 +456,8 @@ class FakeClaimRepository implements ClaimRepository {
   }
 
   @override
-  Future<Result<Claim>> redeem(
-    String storeId,
-    String code, {
-    String? branchId,
-  }) async {
-    redeems.add((code, branchId));
+  Future<Result<Claim>> redeem(String storeId, String code) async {
+    redeems.add((storeId, code));
     if (redeemFailure case final failure?) return Err(failure);
     final index = claims.indexWhere((claim) => claim.code == code);
     claims[index] = claim(

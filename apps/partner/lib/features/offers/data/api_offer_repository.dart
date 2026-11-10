@@ -57,12 +57,10 @@ class ApiOfferRepository implements OfferRepository {
           OfferType.unlimited => api.OfferType.unlimited,
         },
         totalQuantity: offer.totalQuantity,
-        claimWindowMinutes: offer.claimWindowMinutes,
         maxPerUser: offer.maxPerUser,
         // The generated client writes dates as they are; in UTC the
         // backend reads the right moment.
         endsAt: offer.endsAt.toUtc(),
-        branchIds: offer.branchIds,
       ),
     ),
   );
@@ -139,7 +137,6 @@ Offer _toOffer(api.PartnerOfferDto dto) => Offer(
   claimWindowMinutes: dto.claimWindowMinutes.toInt(),
   startsAt: dto.startsAt,
   endsAt: dto.endsAt,
-  branchIds: dto.branchIds,
   viewCount: dto.viewCount.toInt(),
   claims: ClaimCounts(
     reserved: dto.claims.reserved.toInt(),

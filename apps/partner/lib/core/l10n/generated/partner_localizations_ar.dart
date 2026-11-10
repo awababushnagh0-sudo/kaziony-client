@@ -216,16 +216,85 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get discardChanges => 'تجاهل';
 
   @override
-  String get branchesTitle => 'الفروع';
-
-  @override
   String get teamTitle => 'الفريق';
 
   @override
-  String get yourStoreSection => 'متجرك';
+  String get locationTitle => 'الموقع وأوقات العمل';
 
   @override
-  String get yourBranch => 'فرعك';
+  String get cityLabel => 'المدينة';
+
+  @override
+  String get areaLabel => 'المنطقة';
+
+  @override
+  String get addressLabel => 'العنوان';
+
+  @override
+  String get openInMaps => 'افتح في الخرائط';
+
+  @override
+  String get openingHoursTitle => 'أوقات العمل';
+
+  @override
+  String get openingHoursHint => 'اضغط على يوم لتغيير أوقاته.';
+
+  @override
+  String get locationTeamHint =>
+      'يغيّر فريقنا اسم المتجر وموقعه، ويضيف الفروع الجديدة.';
+
+  @override
+  String get requestChange => 'اطلب إضافة';
+
+  @override
+  String requestPlaceMessage(String store) {
+    return 'مرحباً، أريد إضافة فرع جديد أو تعديل بيانات متجر: $store';
+  }
+
+  @override
+  String requestStaffMessage(String store) {
+    return 'مرحباً، أريد إضافة أو إزالة موظف في متجر: $store';
+  }
+
+  @override
+  String get openDay => 'مفتوح';
+
+  @override
+  String get closedAllDay => 'مغلق';
+
+  @override
+  String shiftHours(String opens, String closes) {
+    return '$opens – $closes';
+  }
+
+  @override
+  String get opensAt => 'يفتح';
+
+  @override
+  String get closesAt => 'يغلق';
+
+  @override
+  String get afterBreak => 'بعد الاستراحة';
+
+  @override
+  String get addShift => 'أضف فترة بعد استراحة';
+
+  @override
+  String get removeShift => 'احذف هذه الفترة';
+
+  @override
+  String get sameEveryDay => 'نفس الأوقات لكل الأيام';
+
+  @override
+  String get done => 'تم';
+
+  @override
+  String todayAt(String store) {
+    return 'اليوم في $store';
+  }
+
+  @override
+  String get yourStoreSection => 'متجرك';
 
   @override
   String get teamHint => 'لإضافة شخص أو إزالته، تواصل مع فريقنا.';
@@ -291,9 +360,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get inactive => 'متوقف';
-
-  @override
-  String get allBranches => 'كل الفروع';
 
   @override
   String get cityTripoli => 'طرابلس';
@@ -540,9 +606,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get quantityLabel => 'عدد القطع';
 
   @override
-  String get holdHelper => 'المدة التي يُحجز فيها العرض للزبون حتى يصل.';
-
-  @override
   String get perCustomerLabel => 'لكل زبون';
 
   @override
@@ -567,9 +630,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get endsTooLate => 'مدة العرض 30 يومًا كحد أقصى.';
 
   @override
-  String get chooseABranch => 'اختر فرعًا واحدًا على الأقل.';
-
-  @override
   String get offerPosted => 'تم نشر العرض.';
 
   @override
@@ -579,19 +639,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get startsLabel => 'يبدأ';
-
-  @override
-  String branchCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count فرعًا',
-      few: '$count فروع',
-      two: 'فرعان',
-      one: 'فرع واحد',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pauseOffer => 'إيقاف مؤقت';
@@ -712,9 +759,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get problemExpired => 'انتهت مدة هذا الحجز.';
 
   @override
-  String get problemOtherBranch => 'هذا العرض ليس لفرعك.';
-
-  @override
   String get problemOther => 'لا يمكن استلام هذا الرمز.';
 
   @override
@@ -727,34 +771,10 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get nextCustomer => 'الزبون التالي';
 
   @override
-  String get counterBranch => 'فرعك';
-
-  @override
-  String get chooseCounterBranch => 'في أي فرع أنت؟';
-
-  @override
-  String get chooseValue => 'اختر';
-
-  @override
-  String counterBranchIs(String name) {
-    return 'فرعك: $name';
-  }
-
-  @override
-  String get redeemWrongBranch =>
-      'هذا العرض غير متاح في الفرع المختار على هذا الهاتف.';
-
-  @override
   String get refresh => 'تحديث';
 
   @override
-  String get piecesLabel => 'عدد القطع';
-
-  @override
   String get todayTitle => 'اليوم';
-
-  @override
-  String get todayAtBranch => 'اليوم في فرعك';
 
   @override
   String get statPickedUp => 'تم الاستلام';
@@ -867,9 +887,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get claimCancelled => 'ملغي';
 
   @override
-  String get branchLabel => 'الفرع';
-
-  @override
   String heldUntilLeft(String time, String left) {
     return '$time (باقي $left)';
   }
@@ -885,10 +902,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   @override
   String get problemExpiredHint =>
       'لا تسلّم الطلب. يمكن للزبون أن يحجز من جديد إذا كان العرض ما زال متاحًا.';
-
-  @override
-  String get problemOtherBranchHint =>
-      'يمكن للزبون أن يستلمه من فرع فيه هذا العرض.';
 
   @override
   String get checkCustomerTitle => 'هل هو الزبون الصحيح؟';
@@ -983,23 +996,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get unlimitedHint => 'يبقى متاحًا حتى ينتهي وقته أو توقفه.';
 
   @override
-  String get noBranchChosen => 'لم تختر أي فرع';
-
-  @override
-  String get whereTitle => 'أين يظهر العرض؟';
-
-  @override
-  String get showsHere => 'يظهر هنا';
-
-  @override
-  String get hiddenHere => 'لن يظهر هنا';
-
-  @override
-  String hiddenFromBranches(String branches) {
-    return 'لن يرى زبائن $branches هذا العرض.';
-  }
-
-  @override
   String get listSeparator => '، ';
 
   @override
@@ -1016,11 +1012,6 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
       one: 'ساعة',
     );
     return '$_temp0';
-  }
-
-  @override
-  String holdAndPer(String hold, String per) {
-    return 'يُحجز $hold · $per';
   }
 
   @override
@@ -1048,10 +1039,5 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   @override
   String postSummary(String pieces, String when) {
     return '$pieces · ينتهي $when';
-  }
-
-  @override
-  String postSummaryAt(String pieces, String when, String branches) {
-    return '$pieces · ينتهي $when · في $branches فقط';
   }
 }

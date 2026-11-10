@@ -16,6 +16,7 @@ void main() {
   Future<void> open(
     WidgetTester tester, {
     StoreMembership? member,
+    List<StoreMembership>? stores,
     List<Claim>? claims,
     List<Offer>? offers,
     FakeStatsRepository? stats,
@@ -30,6 +31,7 @@ void main() {
       initial: Routes.home,
       overrides: [
         currentStoreProvider.overrideWithValue(member ?? store('a')),
+        myStoresProvider.overrideWithValue(stores ?? [member ?? store('a')]),
         statsRepositoryProvider.overrideWithValue(
           stats ?? FakeStatsRepository(),
         ),
@@ -75,13 +77,30 @@ void main() {
   });
 
   testWidgets('shows staff only their counter numbers', (tester) async {
-    await open(tester, member: store('a', isOwner: false, branchId: 'b1'));
+    await open(tester, member: store('a', isOwner: false));
 
-    expect(find.text('Today at your branch'), findsOneWidget);
+    expect(find.text('Today'), findsOneWidget);
     // On the band, and on the offer's card.
     expect(find.text('Picked up'), findsWidgets);
     expect(find.text('Not picked up'), findsNothing);
     expect(find.text('Last 30 days'), findsNothing);
+  });
+
+  testWidgets('says which store the day is for to members of several', (
+    tester,
+  ) async {
+    // A brand's two places: each its own store, with its own day.
+    final andalus = store('a', area: 'Hay Al Andalus');
+    await open(
+      tester,
+      member: andalus,
+      stores: [
+        andalus,
+        store('b', area: 'Gargaresh'),
+      ],
+    );
+
+    expect(find.text('Today at Store a · Hay Al Andalus'), findsOneWidget);
   });
 
   testWidgets('marks customers due soon and leaves out ones that ran out', (
@@ -123,7 +142,7 @@ void main() {
   testWidgets("staff aren't offered to post", (tester) async {
     await open(
       tester,
-      member: store('a', isOwner: false, branchId: 'b1'),
+      member: store('a', isOwner: false),
       claims: [],
       offers: [],
     );

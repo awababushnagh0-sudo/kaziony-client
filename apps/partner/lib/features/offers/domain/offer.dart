@@ -47,7 +47,6 @@ class Offer {
     required this.claimWindowMinutes,
     required this.startsAt,
     required this.endsAt,
-    required this.branchIds,
     required this.viewCount,
     required this.claims,
   });
@@ -80,11 +79,11 @@ class Offer {
   /// Pieces one customer can take in all; null for no limit.
   final int? maxPerUser;
 
-  /// How long a claim is held for the customer (limited offers).
+  /// How long a claim is held for the customer (limited offers): our
+  /// team's setting, the same for every store, not the offer's own.
   final int claimWindowMinutes;
   final DateTime startsAt;
   final DateTime endsAt;
-  final List<String> branchIds;
   final int viewCount;
   final ClaimCounts claims;
 
@@ -110,10 +109,8 @@ class NewOffer {
     required this.offerPrice,
     required this.type,
     required this.totalQuantity,
-    required this.claimWindowMinutes,
     required this.maxPerUser,
     required this.endsAt,
-    required this.branchIds,
   });
 
   final String productId;
@@ -124,14 +121,10 @@ class NewOffer {
 
   /// Limited offers only.
   final int? totalQuantity;
-  final int? claimWindowMinutes;
 
   /// Null for no limit.
   final int? maxPerUser;
   final DateTime endsAt;
-
-  /// Null for all the store's branches.
-  final List<String>? branchIds;
 }
 
 /// What can change once an offer is posted.

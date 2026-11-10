@@ -5,46 +5,11 @@ import 'package:partner/features/offers/domain/offer.dart';
 import 'package:partner/features/offers/presentation/new_offer_screen.dart';
 import 'package:partner/features/products/domain/product.dart';
 import 'package:partner/features/store/domain/current_store.dart';
-import 'package:partner/features/store/domain/store.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../fakes.dart';
 import '../../support/finders.dart';
 import '../../support/pump_app.dart';
-
-/// A store with two branches, to choose from.
-class _TwoBranches extends FakeStoreRepository {
-  @override
-  Future<Result<Store>> getStore(String storeId) async {
-    final base = storeDetails();
-    return Ok(
-      Store(
-        id: base.id,
-        name: base.name,
-        category: base.category,
-        profile: base.profile,
-        logoUrl: null,
-        coverUrl: null,
-        isActive: true,
-        ratingAverage: base.ratingAverage,
-        ratingCount: base.ratingCount,
-        branches: [
-          ...base.branches,
-          const Branch(
-            id: 'b2',
-            name: 'Gargaresh',
-            city: City.tripoli,
-            area: null,
-            address: null,
-            phone: null,
-            isActive: true,
-          ),
-        ],
-        members: base.members,
-      ),
-    );
-  }
-}
 
 void main() {
   late FakeOfferRepository offers;
@@ -66,7 +31,6 @@ void main() {
         productRepositoryProvider.overrideWithValue(
           FakeProductRepository([product('1')]),
         ),
-        storeRepositoryProvider.overrideWithValue(_TwoBranches()),
         currentStoreProvider.overrideWithValue(store('a')),
       ],
       routes: [
@@ -100,13 +64,10 @@ void main() {
     expect(posted.offerPrice, '5.000');
     expect(posted.type, OfferType.limited);
     expect(posted.totalQuantity, 12);
-    expect(posted.claimWindowMinutes, 60);
     // No limit per customer unless one is set.
     expect(posted.maxPerUser, isNull);
     expect(posted.endsAt.hour, 23);
     expect(posted.endsAt.isAfter(DateTime.now()), isTrue);
-    // All branches.
-    expect(posted.branchIds, isNull);
     expect(find.text('offer page'), findsOneWidget);
   });
 
@@ -140,66 +101,6 @@ void main() {
     final posted = offers.created.single;
     expect(posted.type, OfferType.unlimited);
     expect(posted.totalQuantity, isNull);
-    expect(posted.claimWindowMinutes, isNull);
-  });
-
-  testWidgets('posts in the branches left ticked, and needs one', (
-    tester,
-  ) async {
-    await open(tester, Routes.newOffer('1'));
-    await tester.enterText(amountField(), '5');
-    await tester.enterText(countField(), '3');
-
-    // Folded, saying it shows everywhere.
-    expect(find.text('Andalus'), findsNothing);
-    expect(find.text('All branches'), findsOneWidget);
-    await tester.tap(find.text('Where it shows'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Andalus'));
-    await tester.pump();
-    // Leaving a branch out says who won't see it, here and by the button.
-    expect(find.text("Won't show here"), findsOneWidget);
-    expect(
-      find.text("Customers of Andalus won't see this offer."),
-      findsOneWidget,
-    );
-    expect(find.textContaining('at Gargaresh only'), findsOneWidget);
-
-    // Its name is in the fold's line too now; the tick is the last.
-    await tester.tap(find.text('Gargaresh').last);
-    await tester.pump();
-    expect(find.text('No branch chosen'), findsOneWidget);
-    expect(find.text('Choose at least one branch.'), findsOneWidget);
-    await tester.tap(find.text('Post an offer'));
-    await tester.pumpAndSettle();
-    expect(offers.created, isEmpty);
-
-    await tester.tap(find.text('Gargaresh').last);
-    await tester.tap(find.text('Post an offer'));
-    await tester.pumpAndSettle();
-    expect(offers.created.single.branchIds, ['b2']);
-  });
-
-  testWidgets('all branches are unticked and ticked at once', (tester) async {
-    await open(tester, Routes.newOffer('1'));
-    await tester.enterText(amountField(), '5');
-    await tester.enterText(countField(), '3');
-    await tester.tap(find.text('Where it shows'));
-    await tester.pumpAndSettle();
-
-    // The fold's line and the tick both say it.
-    await tester.tap(find.text('All branches').last);
-    await tester.pump();
-    expect(find.text("Won't show here"), findsNWidgets(2));
-    expect(find.text('Choose at least one branch.'), findsOneWidget);
-
-    await tester.tap(find.text('All branches'));
-    await tester.pump();
-    expect(find.text('Shows here'), findsNWidgets(2));
-    await tester.tap(find.text('Post an offer'));
-    await tester.pumpAndSettle();
-    // Null: every branch, the ones opened later too.
-    expect(offers.created.single.branchIds, isNull);
   });
 
   testWidgets('posts an ended offer again with its price', (tester) async {
@@ -215,28 +116,28 @@ void main() {
     expect(posted.totalQuantity, 10);
   });
 
-  testWidgets('a limit per customer and the hold time, once unfolded', (
+  testWidgets('a limit per customer, once unfolded; no hold time to pick', (
     tester,
   ) async {
     await open(tester, Routes.newOffer('1'));
     await tester.enterText(amountField(), '5');
-    expect(find.text('Held 1 hour · No limit per customer'), findsOneWidget);
+    expect(find.text('No limit per customer'), findsOneWidget);
 
     await tester.tap(find.text('Reservations'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('2 hours'));
+    // How long reservations are held is our team's setting.
+    expect(find.text('Held for'), findsNothing);
+    expect(find.text('2 hours'), findsNothing);
     await tester.tap(find.text('At most'));
     await tester.pumpAndSettle();
     // Starts at 2, one more with the plus.
     await tester.tap(find.byTooltip('More').last);
     await tester.pump();
-    expect(find.text('Held 2 hours · 3 pieces per customer'), findsOneWidget);
+    expect(find.text('3 pieces per customer'), findsOneWidget);
     await tester.tap(find.text('Post an offer'));
     await tester.pumpAndSettle();
 
-    final posted = offers.created.single;
-    expect(posted.claimWindowMinutes, 120);
-    expect(posted.maxPerUser, 3);
+    expect(offers.created.single.maxPerUser, 3);
   });
 
   testWidgets('the price takes only an amount, Arabic digits too', (

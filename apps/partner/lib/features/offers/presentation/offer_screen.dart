@@ -5,8 +5,6 @@ import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
 import '../../../core/widgets/offer_split_bar.dart';
 import '../../store/domain/current_store.dart';
-import '../../store/domain/store.dart';
-import '../../store/presentation/store_view_model.dart';
 import '../domain/offer.dart';
 import 'offer_view_model.dart';
 import 'widgets/offer_labels.dart';
@@ -183,17 +181,16 @@ class _Caption extends StatelessWidget {
   }
 }
 
-class _Body extends AppView {
+class _Body extends StatelessWidget {
   const _Body({required this.offer});
 
   final Offer offer;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final s = PartnerLocalizations.of(context);
     final claims = offer.claims;
     final total = offer.totalQuantity;
-    final branches = ref.watch(storeViewModel).value?.branches;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -225,16 +222,16 @@ class _Body extends AppView {
               // Without a limit, how many saw it is in the box above.
               if (total != null) ...[
                 SFactTile(label: s.seenLabel, value: '${offer.viewCount}'),
+                // Our team's setting, the same for every offer.
                 SFactTile(
                   label: s.holdTitle,
-                  value: s.holdValue(offer.claimWindowMinutes),
+                  value: holdLabel(s, offer.claimWindowMinutes),
                 ),
               ],
               SFactTile(
                 label: s.perCustomerLabel,
                 value: offer.maxPerUser?.toString() ?? s.noLimit,
               ),
-              SFactTile(label: s.branchesTitle, value: _branches(s, branches)),
             ],
           ),
         ),
@@ -289,24 +286,6 @@ class _Body extends AppView {
       value: s.leftOfTotal(offer.remainingQuantity ?? 0, total),
       hot: offer.state == OfferState.live && offer.isRunningOut,
     );
-  }
-
-  /// The branch by name when it's one, "All branches" when it's every one
-  /// that's open; otherwise, or before the store has loaded, how many.
-  String _branches(PartnerLocalizations s, List<Branch>? all) {
-    final ids = offer.branchIds;
-    if (all != null) {
-      final names = [
-        for (final branch in all)
-          if (ids.contains(branch.id)) branch.name,
-      ];
-      if (names.length == 1 && ids.length == 1) return names.single;
-      final open = all.where((branch) => branch.isActive);
-      if (open.length > 1 && open.every((branch) => ids.contains(branch.id))) {
-        return s.allBranches;
-      }
-    }
-    return s.branchCount(ids.length);
   }
 }
 

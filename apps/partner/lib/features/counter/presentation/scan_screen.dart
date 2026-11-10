@@ -4,9 +4,7 @@ import 'package:stellar/stellar.dart';
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
 import '../domain/claim.dart';
-import 'counter_branch_view_model.dart';
 import 'scan_view_model.dart';
-import 'widgets/counter_branch_sheet.dart';
 
 /// The Scan tab: the camera opens right away, reading the customer's code;
 /// the code can also be typed.
@@ -68,8 +66,6 @@ class _ScanScreenState extends AppViewState<ScanScreen> {
     final s = PartnerLocalizations.of(context);
     final stellar = StellarLocalizations.of(context);
     final scanner = ref.watch(qrScannerProvider);
-    final branches = ref.watch(counterBranchesProvider);
-    final branch = branches.current;
     return SScaffold(
       showAppBar: false,
       underStatusBar: true,
@@ -86,15 +82,6 @@ class _ScanScreenState extends AppViewState<ScanScreen> {
         onTorch: _camera.hasTorch
             ? () => setState(() => _torch = !_torch)
             : null,
-        place: branches.choices.isEmpty
-            ? null
-            : ScannerPlace(
-                label: branch?.name ?? s.chooseCounterBranch,
-                semanticLabel: branch == null
-                    ? s.chooseCounterBranch
-                    : s.counterBranchIs(branch.name),
-                onTap: () => chooseCounterBranch(context, ref, branches),
-              ),
         actions: [
           ScannerAction(
             label: s.typeCode,

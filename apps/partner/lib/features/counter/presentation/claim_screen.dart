@@ -3,12 +3,9 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/widgets/reservation_row.dart';
-import '../../store/domain/current_store.dart';
 import '../domain/claim.dart';
 import 'claim_view_model.dart';
-import 'counter_branch_view_model.dart';
 import 'widgets/claim_labels.dart';
-import 'widgets/counter_branch_sheet.dart';
 
 /// A code at the counter: what to collect and how many pieces to hand over,
 /// read across the counter, and the button to confirm it; or why it can't
@@ -28,8 +25,6 @@ class ClaimScreen extends AppView {
     final language = Localizations.localeOf(context).languageCode;
     final claim = ref.watch(claimViewModel(code));
     final pickup = ref.watch(pickupViewModel(code));
-    // Watched so the store's branches load while the cashier looks.
-    final branches = ref.watch(counterBranchesProvider);
 
     if (pickup.done case final done?) {
       return SConfirmationPage(
@@ -61,22 +56,9 @@ class ClaimScreen extends AppView {
         );
         if (!sure || !context.mounted) return;
       }
-      var branchId = branches.branchId;
-      if (branches.mustChoose) {
-        branchId = await chooseCounterBranch(context, ref, branches);
-        if (branchId == null || !context.mounted) return;
-      }
-      final failure = await ref
-          .read(pickupViewModel(code).notifier)
-          .confirm(branchId: branchId);
+      final failure = await ref.read(pickupViewModel(code).notifier).confirm();
       if (failure == null || !context.mounted) return;
-      SSnack.error(
-        context,
-        // The only request errors left are about the branch.
-        failure is ValidationFailure
-            ? s.redeemWrongBranch
-            : failureMessage(context, failure),
-      );
+      SSnack.error(context, failureMessage(context, failure));
     }
 
     final value = claim.value;
@@ -128,15 +110,6 @@ class _Details extends AppView {
     final redeemedAt = claim.redeemedAt;
     String price(String value) => formatPrice(value, languageCode: language);
     String time(DateTime date) => formatWhen(date, languageCode: language);
-    String? branchName(String? id) =>
-        id == null ? null : ref.watch(storeBranchProvider(id))?.name;
-    // Where it's picked up: where it was, or where this counter is.
-    final branch = redeemedAt != null
-        ? branchName(claim.redeemedBranchId)
-        : branchName(
-            ref.watch(currentStoreProvider)?.branchId ??
-                ref.watch(counterBranchesProvider).branchId,
-          );
     final heldUntil = claim.isHeldAt(now)
         ? s.heldUntilLeft(
             time(claim.expiresAt),
@@ -190,15 +163,9 @@ class _Details extends AppView {
               value: claim.customerName ?? s.someCustomer,
             ),
             if (redeemedAt != null)
-              SFactTile(
-                label: s.pickedUpAtLabel,
-                value: [time(redeemedAt), ?branch].join(' · '),
-              )
-            else ...[
+              SFactTile(label: s.pickedUpAtLabel, value: time(redeemedAt))
+            else
               SFactTile(label: s.heldUntil, value: heldUntil),
-              if (branch != null)
-                SFactTile(label: s.branchLabel, value: branch),
-            ],
           ],
         ),
       ],
