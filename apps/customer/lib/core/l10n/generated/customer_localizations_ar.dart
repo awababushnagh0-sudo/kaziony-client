@@ -437,7 +437,12 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   }
 
   @override
-  String get offersNear => 'عروض قريبة من';
+  String offersWithin(String km) {
+    return 'عروض ضمن $km كم';
+  }
+
+  @override
+  String get offersNearby => 'عروض قريبة';
 
   @override
   String get searchHint => 'ابحث عن محل أو عرض';
@@ -762,6 +767,26 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   @override
   String get favoritesEmptyMessage =>
       'اضغط على القلب في صفحة أي محل ليظهر هنا.';
+
+  @override
+  String get notificationsTitle => 'الإشعارات';
+
+  @override
+  String get notificationsEmptyTitle => 'لا إشعارات بعد';
+
+  @override
+  String get notificationsEmptyMessage =>
+      'ستظهر هنا أخبار حجوزاتك ومحلاتك المفضلة.';
+
+  @override
+  String get notificationsSignInTitle => 'سجّل الدخول لتصلك الإشعارات';
+
+  @override
+  String get notificationsSignInMessage =>
+      'اعرف متى يقترب انتهاء حجزك ومتى تنشر محلاتك المفضلة عروضًا.';
+
+  @override
+  String get refresh => 'تحديث';
 
   @override
   String get browseOffers => 'تصفّح العروض';

@@ -4,6 +4,7 @@ import 'package:customer/features/auth/domain/auth_repository.dart';
 import 'package:customer/features/bookings/domain/booking.dart';
 import 'package:customer/features/location/domain/browse_location.dart';
 import 'package:customer/features/location/domain/saved_place.dart';
+import 'package:customer/features/notifications/domain/app_notification.dart';
 import 'package:customer/features/offers/domain/offer.dart';
 import 'package:customer/features/stores/domain/store.dart';
 import 'package:kernel/kernel.dart';
@@ -64,6 +65,7 @@ const zawiya = GeoPoint(32.757, 12.727);
 
 class FakeServiceAreaRepository implements ServiceAreaRepository {
   Result<List<ServiceArea>> result = const Ok([tripoli]);
+  Result<num> radius = const Ok(10);
   var loads = 0;
 
   @override
@@ -71,6 +73,9 @@ class FakeServiceAreaRepository implements ServiceAreaRepository {
     loads++;
     return result;
   }
+
+  @override
+  Future<Result<num>> browseRadiusKm() async => radius;
 }
 
 /// The customer's places on a pretend account; [failure], when set, is
@@ -348,5 +353,16 @@ class FakeStoresRepository implements StoresRepository {
     unfollows.add(storeId);
     if (unfollowFailure case final failure?) return Err(failure);
     return const Ok(null);
+  }
+}
+
+class FakeNotificationsRepository implements NotificationsRepository {
+  Result<List<AppNotification>> result = const Ok([]);
+  var loads = 0;
+
+  @override
+  Future<Result<List<AppNotification>>> list() async {
+    loads++;
+    return result;
   }
 }

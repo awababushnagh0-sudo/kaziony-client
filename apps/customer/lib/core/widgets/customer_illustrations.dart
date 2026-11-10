@@ -28,6 +28,10 @@ enum CustomerIllustrations implements Illustration {
   /// mark in it: a search or a filter that found nothing.
   noResults('no_results', Size(240, 180)),
 
+  /// The brand bag with a golden bell on its corner, among sparkles: the
+  /// notifications before there are any.
+  notifications('notifications', Size(240, 180)),
+
   /// The bag waving hello among sparkles: at the top of the account tab,
   /// beside the greeting.
   bagHello('bag_hello', Size(146, 120)),

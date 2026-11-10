@@ -428,7 +428,12 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   }
 
   @override
-  String get offersNear => 'Offers near';
+  String offersWithin(String km) {
+    return 'Offers within $km km';
+  }
+
+  @override
+  String get offersNearby => 'Offers nearby';
 
   @override
   String get searchHint => 'Search for a store or an offer';
@@ -756,6 +761,26 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   @override
   String get favoritesEmptyMessage =>
       'Tap the heart on a store\'s page to keep it here.';
+
+  @override
+  String get notificationsTitle => 'Notifications';
+
+  @override
+  String get notificationsEmptyTitle => 'No notifications yet';
+
+  @override
+  String get notificationsEmptyMessage =>
+      'News about your bookings and your favorite stores will show up here.';
+
+  @override
+  String get notificationsSignInTitle => 'Sign in to get notifications';
+
+  @override
+  String get notificationsSignInMessage =>
+      'Know when a booking is about to run out and when your favorite stores post offers.';
+
+  @override
+  String get refresh => 'Refresh';
 
   @override
   String get browseOffers => 'Browse offers';

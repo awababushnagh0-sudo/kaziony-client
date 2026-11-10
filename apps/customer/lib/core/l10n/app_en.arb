@@ -183,7 +183,15 @@
       }
     }
   },
-  "offersNear": "Offers near",
+  "offersWithin": "Offers within {km} km",
+  "@offersWithin": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "offersNearby": "Offers nearby",
   "searchHint": "Search for a store or an offer",
   "allCategories": "All",
   "sectionEndingSoon": "Ending soon",
@@ -344,6 +352,12 @@
   "bookingsEmptyMessage": "Reserve an offer and its pickup code shows up here.",
   "favoritesEmptyTitle": "No favorite stores yet",
   "favoritesEmptyMessage": "Tap the heart on a store's page to keep it here.",
+  "notificationsTitle": "Notifications",
+  "notificationsEmptyTitle": "No notifications yet",
+  "notificationsEmptyMessage": "News about your bookings and your favorite stores will show up here.",
+  "notificationsSignInTitle": "Sign in to get notifications",
+  "notificationsSignInMessage": "Know when a booking is about to run out and when your favorite stores post offers.",
+  "refresh": "Refresh",
   "browseOffers": "Browse offers",
   "placesTitle": "Show offers near",
   "addPlace": "Add a place",

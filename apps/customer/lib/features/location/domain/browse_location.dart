@@ -29,9 +29,13 @@ class ServiceArea {
 bool coveredBy(List<ServiceArea> areas, GeoPoint point) =>
     areas.any((area) => area.covers(point));
 
-/// The areas Kaziony works in, from the backend's settings.
+/// The areas Kaziony works in, and how far around a place offers come
+/// from, from the backend's settings.
 abstract interface class ServiceAreaRepository {
   Future<Result<List<ServiceArea>>> areas();
+
+  /// How far from where the customer browses offers are shown, in km.
+  Future<Result<num>> browseRadiusKm();
 }
 
 /// Wired to the real implementation in `core/providers/dependencies.dart`.

@@ -11,6 +11,7 @@ import '../../features/location/domain/browse_location.dart';
 import '../../features/location/presentation/location_screen.dart';
 import '../../features/location/presentation/map_picker_screen.dart';
 import '../../features/location/presentation/places_screen.dart';
+import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/offers/domain/offer.dart';
 import '../../features/offers/presentation/home_screen.dart';
 import '../../features/offers/presentation/offer_screen.dart';
@@ -90,6 +91,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, _) => const FavoritesScreen(),
       ),
       GoRoute(path: Routes.ratings, builder: (_, _) => const RatingsScreen()),
+      GoRoute(
+        path: Routes.notifications,
+        builder: (_, _) => const NotificationsScreen(),
+      ),
       GoRoute(
         path: Routes.bookingPattern,
         builder: (_, state) =>

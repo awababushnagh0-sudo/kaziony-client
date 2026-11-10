@@ -13,6 +13,17 @@ final categoriesProvider = FutureProvider.autoDispose<List<Category>>((
   };
 });
 
+/// How far around the place offers are shown from, in km: under the place
+/// on the home page. Null until the settings come, or when they don't.
+final browseRadiusProvider = FutureProvider.autoDispose<num?>((ref) async {
+  return switch (await ref
+      .watch(serviceAreaRepositoryProvider)
+      .browseRadiusKm()) {
+    Ok(:final value) => value,
+    Err() => null,
+  };
+});
+
 /// The category the home page shows; null for all of them.
 class HomeCategory extends ViewModel<String?> {
   @override

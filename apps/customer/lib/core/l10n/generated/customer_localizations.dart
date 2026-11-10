@@ -773,11 +773,17 @@ abstract class CustomerLocalizations {
   /// **'Kaziony is only in {areas} for now.'**
   String outsideServiceArea(String areas);
 
-  /// No description provided for @offersNear.
+  /// No description provided for @offersWithin.
   ///
   /// In en, this message translates to:
-  /// **'Offers near'**
-  String get offersNear;
+  /// **'Offers within {km} km'**
+  String offersWithin(String km);
+
+  /// No description provided for @offersNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers nearby'**
+  String get offersNearby;
 
   /// No description provided for @searchHint.
   ///
@@ -1324,6 +1330,42 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'Tap the heart on a store\'s page to keep it here.'**
   String get favoritesEmptyMessage;
+
+  /// No description provided for @notificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationsTitle;
+
+  /// No description provided for @notificationsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet'**
+  String get notificationsEmptyTitle;
+
+  /// No description provided for @notificationsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'News about your bookings and your favorite stores will show up here.'**
+  String get notificationsEmptyMessage;
+
+  /// No description provided for @notificationsSignInTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to get notifications'**
+  String get notificationsSignInTitle;
+
+  /// No description provided for @notificationsSignInMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Know when a booking is about to run out and when your favorite stores post offers.'**
+  String get notificationsSignInMessage;
+
+  /// No description provided for @refresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refresh;
 
   /// No description provided for @browseOffers.
   ///

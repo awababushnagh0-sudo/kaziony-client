@@ -16,10 +16,12 @@ import '../../support/pump_app.dart';
 void main() {
   late FakeOffersRepository offers;
   late FakeStoresRepository stores;
+  late FakeServiceAreaRepository areas;
 
   setUp(() {
     offers = FakeOffersRepository();
     stores = FakeStoresRepository();
+    areas = FakeServiceAreaRepository();
   });
 
   Future<void> open(WidgetTester tester, {bool signedIn = false}) =>
@@ -34,10 +36,12 @@ void main() {
           ),
           stubPage(Routes.offerPattern, 'offer page'),
           stubPage(Routes.storePattern, 'store page'),
+          stubPage(Routes.notifications, 'notifications page'),
         ],
         overrides: [
           offersRepositoryProvider.overrideWithValue(offers),
           storesRepositoryProvider.overrideWithValue(stores),
+          serviceAreaRepositoryProvider.overrideWithValue(areas),
           browseLocationProvider.overrideWith(
             () => BrowseLocationController(
               const BrowseLocation(souqAlJuma, pinned: false),
@@ -54,6 +58,40 @@ void main() {
     (widget) =>
         widget is Scrollable && widget.axisDirection == AxisDirection.down,
   );
+
+  testWidgets('says where offers are from and how far around', (tester) async {
+    await open(tester);
+
+    expect(find.text('My current location'), findsOneWidget);
+    expect(find.text('Offers within 10 km'), findsOneWidget);
+  });
+
+  testWidgets('says the distance as it is when it is not whole', (
+    tester,
+  ) async {
+    areas.radius = const Ok(7.5);
+    await open(tester);
+
+    expect(find.text('Offers within 7.5 km'), findsOneWidget);
+  });
+
+  testWidgets('without the settings, still says the offers are nearby', (
+    tester,
+  ) async {
+    areas.radius = const Err(NoConnectionFailure());
+    await open(tester);
+
+    expect(find.text('Offers nearby'), findsOneWidget);
+  });
+
+  testWidgets('the bell opens the notifications', (tester) async {
+    await open(tester);
+
+    await tester.tap(find.byTooltip('Notifications'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('notifications page'), findsOneWidget);
+  });
 
   testWidgets('shows the rows of offers and opens one', (tester) async {
     await open(tester);

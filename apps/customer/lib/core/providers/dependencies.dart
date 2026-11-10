@@ -8,6 +8,8 @@ import '../../features/location/data/api_places_repository.dart';
 import '../../features/location/data/api_service_area_repository.dart';
 import '../../features/location/domain/browse_location.dart';
 import '../../features/location/domain/saved_place.dart';
+import '../../features/notifications/data/no_notifications_repository.dart';
+import '../../features/notifications/domain/app_notification.dart';
 import '../../features/offers/data/api_offers_repository.dart';
 import '../../features/offers/domain/offer.dart';
 import '../../features/stores/data/api_stores_repository.dart';
@@ -29,5 +31,8 @@ final List<Override> dependencies = [
   ),
   storesRepositoryProvider.overrideWith(
     (ref) => ApiStoresRepository(ref.watch(apiProvider)),
+  ),
+  notificationsRepositoryProvider.overrideWithValue(
+    const NoNotificationsRepository(),
   ),
 ];

@@ -45,6 +45,9 @@ abstract final class Routes {
   static const favorites = '/favorites';
   static const ratings = '/ratings';
 
+  /// What the app told the customer: from the bell on home.
+  static const notifications = '/notifications';
+
   /// A reservation's pickup code.
   static const bookingPattern = '/booking/:bookingId';
   static String booking(String bookingId) => '/booking/$bookingId';

@@ -27,4 +27,10 @@ class ApiServiceAreaRepository implements ServiceAreaRepository {
       ],
     );
   }
+
+  @override
+  Future<Result<num>> browseRadiusKm() async {
+    final result = await _api.guard(() => _config.getAppConfig());
+    return result.map((config) => config.browse.radiusKm);
+  }
 }

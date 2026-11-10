@@ -17,8 +17,8 @@ import 'offer_texts.dart';
 import 'widgets/offer_card.dart';
 import 'widgets/offer_card_skeleton.dart';
 
-/// The Home tab: where offers are shown from and search on a band in the
-/// brand's green, the kinds of store, a few words about the app, then rows
+/// The Home tab: where offers are shown from and the notifications on a
+/// band in the brand's green, the kinds of store, a few words about the app, then rows
 /// of offers around (ending soon, nearest, biggest discount) with the
 /// stores near you between them, your favorite stores under them, and the
 /// way to every offer.
@@ -52,28 +52,22 @@ class HomeScreen extends AppView {
               }
             : null,
         slivers: [
-          // Where offers are from and the search, on the brand's green.
+          // Where offers are from and the bell, on the brand's green.
+          // Search has its own tab.
           SliverToBoxAdapter(
             child: SBand(
               color: SColor.brand,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                spacing: Space.md,
-                children: [
-                  SPlaceHeader(
-                    caption: s.offersNear,
-                    place:
-                        location?.name ??
-                        (pinned ? s.pinnedLocation : s.myLocation),
-                    onTap: () => PlacesScreen.open(context, ref),
-                    onBrand: true,
-                  ),
-                  SSearchField.button(
-                    hint: s.searchHint,
-                    color: SColor.surface,
-                    onTap: () => context.go(Routes.search),
-                  ),
-                ],
+              child: SPlaceHeader(
+                place:
+                    location?.name ??
+                    (pinned ? s.pinnedLocation : s.myLocation),
+                detail: _reach(s, ref.watch(browseRadiusProvider).value),
+                onTap: () => PlacesScreen.open(context, ref),
+                trailing: SButton.onBand(
+                  icon: SIcons.notifications,
+                  tooltip: s.notificationsTitle,
+                  onPressed: () => context.push(Routes.notifications),
+                ),
               ),
             ),
           ),
@@ -127,6 +121,14 @@ class HomeScreen extends AppView {
     );
   }
 }
+
+/// What the place means for the offers: how far around it they come from,
+/// in whole km when it's whole ("10", not "10.0").
+String _reach(CustomerLocalizations s, num? radiusKm) => switch (radiusKm) {
+  null => s.offersNearby,
+  final num km when km % 1 == 0 => s.offersWithin('${km.toInt()}'),
+  final num km => s.offersWithin('$km'),
+};
 
 /// Every offer, then each kind of store, with the app's pictures for the
 /// ones it knows.
