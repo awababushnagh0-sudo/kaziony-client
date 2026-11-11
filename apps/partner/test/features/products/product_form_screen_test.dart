@@ -108,9 +108,7 @@ void main() {
       'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwAD'
       'hgGAWjR9awAAAABJRU5ErkJggg==',
     );
-    final ready = PhotoReady(
-      PreparedPhoto(fullPath: 'full.jpg', thumbPath: 'thumb.jpg', preview: png),
-    );
+    final ready = PhotoReady(PreparedPhoto(full: png, thumb: png));
 
     Future<void> pickFromGallery(WidgetTester tester) async {
       // Done typing: the keyboard goes, then the photo is scrolled back to.
@@ -145,7 +143,7 @@ void main() {
       expect(products.created, hasLength(1));
       final (id, photo) = products.photos.single;
       expect(id, 'created');
-      expect(photo.fullPath, 'full.jpg');
+      expect(photo, same(ready.photo));
       expect(find.text('product page'), findsOneWidget);
     });
 
@@ -186,7 +184,7 @@ void main() {
       expect(photos.picks, [PhotoSource.gallery]);
       final (id, photo) = products.photos.single;
       expect(id, '1');
-      expect(photo.fullPath, 'full.jpg');
+      expect(photo, same(ready.photo));
       expect(find.text('Change the photo'), findsOneWidget);
     });
 

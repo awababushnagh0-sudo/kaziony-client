@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:kernel/kernel.dart';
 import 'package:offers_api/partner.dart';
 
@@ -94,8 +92,8 @@ class ApiProductRepository implements ProductRepository {
       (products) => products.setImage(
         storeId: storeId,
         productId: productId,
-        image: File(photo.fullPath),
-        thumb: File(photo.thumbPath),
+        image: photo.fullUpload(),
+        thumb: photo.thumbUpload(),
       ),
       onProgress: onProgress,
     );

@@ -1,4 +1,5 @@
 import 'package:app_settings/app_settings.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -6,23 +7,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'web_photo_picker.dart';
+
 enum PhotoSource { camera, gallery }
 
-/// A photo ready to upload, cropped and small, as JPEG files: the full
+/// A photo ready to upload, small enough for a slow connection: the full
 /// picture and its thumbnail for lists.
 @immutable
 class PreparedPhoto {
-  const PreparedPhoto({
-    required this.fullPath,
-    required this.thumbPath,
-    required this.preview,
-  });
+  const PreparedPhoto({required this.full, required this.thumb});
 
-  final String fullPath;
-  final String thumbPath;
+  final Uint8List full;
+  final Uint8List thumb;
 
-  /// The thumbnail's bytes, to show the photo before it's uploaded.
-  final Uint8List preview;
+  /// Shows the photo before it's uploaded.
+  Uint8List get preview => thumb;
+
+  /// The full picture as an upload's file, for a generated client. A new
+  /// one each time: a file can be sent once, and a failed upload is retried.
+  MultipartFile fullUpload() => MultipartFile.fromBytes(full, filename: 'full');
+
+  /// The thumbnail as an upload's file, like [fullUpload].
+  MultipartFile thumbUpload() =>
+      MultipartFile.fromBytes(thumb, filename: 'thumb');
 }
 
 /// What came of asking for a photo.
@@ -54,7 +61,12 @@ final class PhotoFailed extends PhotoPick {
   final Object error;
 }
 
-/// Takes or picks photos for upload. Tests use a fake.
+/// The photo is too big to upload even once shrunk: a big PNG picked in a
+/// browser, which can't make it smaller. A [PhotoFailed.error].
+final class PhotoTooLarge implements Exception {
+  const PhotoTooLarge();
+}
+
 /// How a photo is cropped.
 enum PhotoShape {
   /// An item's photo.
@@ -67,9 +79,12 @@ enum PhotoShape {
   wide,
 }
 
+/// Takes or picks photos for upload. Tests use a fake.
 abstract interface class PhotoPicker {
   /// Takes or picks a photo, lets the user crop it to [shape] ([cropTitle]
   /// on top), and makes it small enough to upload on a slow connection.
+  /// In a browser it picks a file and shrinks it, without cropping: the
+  /// page shows it cut to [shape] anyway.
   Future<PhotoPick> pick(
     PhotoSource source, {
     required String cropTitle,
@@ -152,9 +167,8 @@ class DevicePhotoPicker implements PhotoPicker {
       );
       return PhotoReady(
         PreparedPhoto(
-          fullPath: full.path,
-          thumbPath: thumb.path,
-          preview: await thumb.readAsBytes(),
+          full: await full.readAsBytes(),
+          thumb: await thumb.readAsBytes(),
         ),
       );
     } on PlatformException catch (error) {
@@ -196,5 +210,5 @@ class DevicePhotoPicker implements PhotoPicker {
 }
 
 final photoPickerProvider = Provider<PhotoPicker>(
-  (ref) => const DevicePhotoPicker(),
+  (ref) => kIsWeb ? const WebPhotoPicker() : const DevicePhotoPicker(),
 );

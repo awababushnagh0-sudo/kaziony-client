@@ -1,8 +1,6 @@
-import 'dart:io';
-
 import 'package:kernel/kernel.dart';
-import 'package:offers_api/partner.dart' hide City;
-import 'package:offers_api/partner.dart' as api show City;
+import 'package:offers_api/partner.dart' hide City, GoLiveItem;
+import 'package:offers_api/partner.dart' as api show City, GoLiveItem;
 
 import '../domain/store.dart';
 
@@ -69,7 +67,7 @@ class ApiStoreRepository implements StoreRepository {
           StoreImage.logo => 'logo',
           StoreImage.cover => 'cover',
         },
-        image: File(photo.fullPath),
+        image: photo.fullUpload(),
       ),
       onProgress: onProgress,
     );

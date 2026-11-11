@@ -95,13 +95,9 @@ void main() {
     await open(tester);
     photos.next = PhotoReady(
       PreparedPhoto(
-        fullPath: 'full.jpg',
-        thumbPath: 'thumb.jpg',
         // A real 1×1 picture, so the preview can be drawn.
-        preview: base64Decode(
-          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwAD'
-          'hgGAWjR9awAAAABJRU5ErkJggg==',
-        ),
+        full: _png,
+        thumb: _png,
       ),
     );
 
@@ -204,3 +200,8 @@ void main() {
     expect(find.text('Show your code at the cashier'), findsOneWidget);
   });
 }
+
+final _png = base64Decode(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwAD'
+  'hgGAWjR9awAAAABJRU5ErkJggg==',
+);
