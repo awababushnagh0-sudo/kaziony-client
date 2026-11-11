@@ -51,6 +51,7 @@ export 'generated/models/error2.dart';
 export 'generated/models/followed_store_dto.dart';
 export 'generated/models/get_api_v1_health_ready_response.dart';
 export 'generated/models/get_api_v1_health_response.dart';
+export 'generated/models/go_live_item.dart';
 export 'generated/models/google_sign_in_dto.dart';
 export 'generated/models/info.dart';
 export 'generated/models/info2.dart';

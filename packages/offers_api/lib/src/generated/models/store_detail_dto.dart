@@ -6,6 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'category_dto.dart';
 import 'city.dart';
+import 'go_live_item.dart';
 import 'store_member_dto.dart';
 
 part 'store_detail_dto.g.dart';
@@ -15,6 +16,7 @@ class StoreDetailDto {
   const StoreDetailDto({
     required this.city,
     required this.openingHours,
+    required this.missingToGoLive,
     required this.id,
     required this.name,
     required this.area,
@@ -40,6 +42,10 @@ class StoreDetailDto {
   
   final City city;
   final dynamic openingHours;
+
+  /// What the store still needs before it can be turned on, in this order.
+  /// (none when it's ready). A live store can't lose them either.
+  final List<GoLiveItem> missingToGoLive;
   final String id;
   final String name;
 
@@ -50,7 +56,7 @@ class StoreDetailDto {
   final num longitude;
   final String? logoUrl;
   final String? coverUrl;
-  final String? phone;
+  final String phone;
   final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
@@ -61,6 +67,8 @@ class StoreDetailDto {
   /// Average stars from customers' pickups, one decimal; null before the first.
   final num? ratingAverage;
   final num ratingCount;
+
+  /// Seen by customers. New stores start off; see [missingToGoLive].
   final bool isActive;
   final DateTime createdAt;
   final CategoryDto category;

@@ -156,31 +156,15 @@ class _PartnerProductsClient implements PartnerProductsClient {
   Future<ProductDto> setImage({
     required String productId,
     required String storeId,
-    required File image,
-    required File thumb,
+    required MultipartFile image,
+    required MultipartFile thumb,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = FormData();
-    _data.files.add(
-      MapEntry(
-        'image',
-        MultipartFile.fromFileSync(
-          image.path,
-          filename: image.path.split(Platform.pathSeparator).last,
-        ),
-      ),
-    );
-    _data.files.add(
-      MapEntry(
-        'thumb',
-        MultipartFile.fromFileSync(
-          thumb.path,
-          filename: thumb.path.split(Platform.pathSeparator).last,
-        ),
-      ),
-    );
+    _data.files.add(MapEntry('image', image));
+    _data.files.add(MapEntry('thumb', thumb));
     final _options = _setStreamType<ProductDto>(
       Options(
             method: 'PUT',

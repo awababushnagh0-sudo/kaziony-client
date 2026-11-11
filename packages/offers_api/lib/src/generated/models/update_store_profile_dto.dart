@@ -26,6 +26,8 @@ class UpdateStoreProfileDto {
   /// Shown to customers on every offer's page: where to go in the shop,.
   /// what to bring.
   final String? pickupInstructions;
+
+  /// How customers reach the store about a pickup: late, or can't find it.
   final String? phone;
 
   /// For customers to get in touch.

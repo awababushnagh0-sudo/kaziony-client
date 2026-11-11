@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, unused_import, invalid_annotation_target, unnecessary_import
 
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -72,6 +73,24 @@ abstract class AdminStoresClient {
   Future<StoreDetailDto> addLocation({
     @Path('storeId') required String storeId,
     @Body() required AddStoreLocationDto body,
+  });
+
+  /// Upload or replace the store logo or cover photo
+  @MultiPart()
+  @PUT('/api/v1/admin/stores/{id}/images/{kind}')
+  Future<StoreDetailDto> setImage({
+    @Path('id') required String id,
+    @Path('kind') required String kind,
+    @Part(name: 'image') required MultipartFile image,
+  });
+
+  /// Remove the store logo or cover photo.
+  ///
+  /// A live store keeps its logo: customers see it (`StoreNotReady`). Another place of the brand using the same photo keeps it.
+  @DELETE('/api/v1/admin/stores/{id}/images/{kind}')
+  Future<StoreDetailDto> removeImage({
+    @Path('id') required String id,
+    @Path('kind') required String kind,
   });
 
   /// Add an owner or staff member.

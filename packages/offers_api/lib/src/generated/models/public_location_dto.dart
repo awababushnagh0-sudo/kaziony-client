@@ -29,7 +29,7 @@ class PublicLocationDto {
   final String? address;
   final num latitude;
   final num longitude;
-  final String? phone;
+  final String phone;
 
   /// Null when no location was sent.
   final num? distanceKm;

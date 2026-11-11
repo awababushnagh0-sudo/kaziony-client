@@ -37,7 +37,7 @@ class PublicStoreDto {
   final String name;
   final String? logoUrl;
   final String? coverUrl;
-  final String? phone;
+  final String phone;
   final String? email;
   final String? facebookUrl;
   final String? instagramUrl;

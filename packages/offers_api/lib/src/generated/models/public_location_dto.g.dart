@@ -14,7 +14,7 @@ PublicLocationDto _$PublicLocationDtoFromJson(Map<String, dynamic> json) =>
       address: json['address'] as String?,
       latitude: json['latitude'] as num,
       longitude: json['longitude'] as num,
-      phone: json['phone'] as String?,
+      phone: json['phone'] as String,
       distanceKm: json['distanceKm'] as num?,
     );
 
@@ -26,6 +26,6 @@ Map<String, dynamic> _$PublicLocationDtoToJson(PublicLocationDto instance) =>
       'address': ?instance.address,
       'latitude': instance.latitude,
       'longitude': instance.longitude,
-      'phone': ?instance.phone,
+      'phone': instance.phone,
       'distanceKm': ?instance.distanceKm,
     };

@@ -109,21 +109,13 @@ class _PartnerStoreClient implements PartnerStoreClient {
   Future<StoreDetailDto> setImage({
     required String kind,
     required String storeId,
-    required File image,
+    required MultipartFile image,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = FormData();
-    _data.files.add(
-      MapEntry(
-        'image',
-        MultipartFile.fromFileSync(
-          image.path,
-          filename: image.path.split(Platform.pathSeparator).last,
-        ),
-      ),
-    );
+    _data.files.add(MapEntry('image', image));
     final _options = _setStreamType<StoreDetailDto>(
       Options(
             method: 'PUT',

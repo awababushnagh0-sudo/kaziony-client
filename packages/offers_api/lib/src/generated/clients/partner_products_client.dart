@@ -3,8 +3,6 @@
 // ignore_for_file: type=lint, unused_import, invalid_annotation_target, unnecessary_import
 
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -65,7 +63,7 @@ abstract class PartnerProductsClient {
   Future<ProductDto> setImage({
     @Path('productId') required String productId,
     @Path('storeId') required String storeId,
-    @Part(name: 'image') required File image,
-    @Part(name: 'thumb') required File thumb,
+    @Part(name: 'image') required MultipartFile image,
+    @Part(name: 'thumb') required MultipartFile thumb,
   });
 }

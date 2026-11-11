@@ -10,6 +10,9 @@ StoreDetailDto _$StoreDetailDtoFromJson(Map<String, dynamic> json) =>
     StoreDetailDto(
       city: City.fromJson(json['city'] as String),
       openingHours: json['openingHours'],
+      missingToGoLive: (json['missingToGoLive'] as List<dynamic>)
+          .map((e) => GoLiveItem.fromJson(e as String))
+          .toList(),
       id: json['id'] as String,
       name: json['name'] as String,
       area: json['area'] as String,
@@ -18,7 +21,7 @@ StoreDetailDto _$StoreDetailDtoFromJson(Map<String, dynamic> json) =>
       longitude: json['longitude'] as num,
       logoUrl: json['logoUrl'] as String?,
       coverUrl: json['coverUrl'] as String?,
-      phone: json['phone'] as String?,
+      phone: json['phone'] as String,
       email: json['email'] as String?,
       facebookUrl: json['facebookUrl'] as String?,
       instagramUrl: json['instagramUrl'] as String?,
@@ -37,6 +40,7 @@ Map<String, dynamic> _$StoreDetailDtoToJson(StoreDetailDto instance) =>
     <String, dynamic>{
       'city': instance.city,
       'openingHours': ?instance.openingHours,
+      'missingToGoLive': instance.missingToGoLive,
       'id': instance.id,
       'name': instance.name,
       'area': instance.area,
@@ -45,7 +49,7 @@ Map<String, dynamic> _$StoreDetailDtoToJson(StoreDetailDto instance) =>
       'longitude': instance.longitude,
       'logoUrl': ?instance.logoUrl,
       'coverUrl': ?instance.coverUrl,
-      'phone': ?instance.phone,
+      'phone': instance.phone,
       'email': ?instance.email,
       'facebookUrl': ?instance.facebookUrl,
       'instagramUrl': ?instance.instagramUrl,

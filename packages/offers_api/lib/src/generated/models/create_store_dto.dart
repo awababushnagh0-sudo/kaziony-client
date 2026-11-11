@@ -15,12 +15,12 @@ class CreateStoreDto {
     required this.city,
     required this.categoryId,
     required this.name,
+    required this.phone,
     required this.owner,
     required this.area,
     required this.latitude,
     required this.longitude,
     this.pickupInstructions,
-    this.phone,
     this.email,
     this.facebookUrl,
     this.instagramUrl,
@@ -37,7 +37,9 @@ class CreateStoreDto {
   /// Shown to customers on every offer's page: where to go in the shop,.
   /// what to bring.
   final String? pickupInstructions;
-  final String? phone;
+
+  /// How customers reach the store about a pickup: late, or can't find it.
+  final String phone;
 
   /// For customers to get in touch.
   final String? email;

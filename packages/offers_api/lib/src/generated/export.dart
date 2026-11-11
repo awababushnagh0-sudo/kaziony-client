@@ -65,6 +65,7 @@ export 'models/offer_store_summary_dto.dart';
 export 'models/public_offer_dto.dart';
 export 'models/public_store_dto.dart';
 export 'models/followed_store_dto.dart';
+export 'models/go_live_item.dart';
 export 'models/store_member_dto.dart';
 export 'models/store_detail_dto.dart';
 export 'models/period_stats_dto.dart';

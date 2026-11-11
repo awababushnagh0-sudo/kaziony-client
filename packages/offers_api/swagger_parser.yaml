@@ -10,6 +10,9 @@ swagger_parser:
   root_client_name: OffersApi
   put_clients_in_folder: true
   enums_to_json: true
+  # Uploads take a MultipartFile, which the web can send (a dart:io File
+  # can only be sent from a phone).
+  use_multipart_file: true
   unknown_enum_value: true
   mark_files_as_generated: true
   original_http_response: false
