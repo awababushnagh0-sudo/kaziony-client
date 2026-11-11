@@ -28,6 +28,18 @@ class StoreDetailsViewModel extends AsyncViewModel<StoreDetails> {
   Future<Result<StoreDetails>> setActive({required bool active}) =>
       _apply(_stores.setActive(storeId, active: active));
 
+  /// Puts [photo] in place of the logo or cover; [onProgress] goes from 0
+  /// to 1.
+  Future<Result<StoreDetails>> setImage(
+    StoreImage image,
+    PreparedPhoto photo, {
+    required void Function(double sent) onProgress,
+  }) => _apply(_stores.setImage(storeId, image, photo, onProgress: onProgress));
+
+  /// A live store keeps its logo: that fails with [StoreCodes.notReady].
+  Future<Result<StoreDetails>> removeImage(StoreImage image) =>
+      _apply(_stores.removeImage(storeId, image));
+
   Future<Result<StoreDetails>> _apply(
     Future<Result<StoreDetails>> change,
   ) async {

@@ -72,13 +72,10 @@ class AddStoreDialog extends AppView {
                   STextInput(
                     controlName: 'phone',
                     label: s.storePhone,
+                    required: true,
                     hint: '0912345678',
+                    helper: s.storePhoneHelp,
                     kind: TextInputKind.phone,
-                  ),
-                  STextInput(
-                    controlName: 'email',
-                    label: s.storeEmail,
-                    kind: TextInputKind.email,
                   ),
                 ],
               ),

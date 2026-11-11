@@ -48,6 +48,20 @@ class Category {
   String name(Locale locale) => locale.languageCode == 'ar' ? nameAr : nameEn;
 }
 
+/// What a store needs before customers see it. New stores start off, and
+/// can be turned on once nothing is missing (the backend checks too).
+enum GoLiveItem { logo, pickupInstructions, openingHours }
+
+/// The backend's codes for a store's own refusals.
+abstract final class StoreCodes {
+  /// Turning on a store that lacks a [GoLiveItem], or emptying one of a
+  /// live store.
+  static const notReady = 'StoreNotReady';
+}
+
+/// A store's photos: the logo by its name, the cover across its page.
+enum StoreImage { logo, cover }
+
 /// One store, for its details page. A brand with several places is
 /// several stores, each with its own place, offers and staff.
 class StoreDetails {
@@ -63,12 +77,14 @@ class StoreDetails {
     required this.longitude,
     required this.teamCount,
     required this.ratingCount,
+    required this.phone,
+    required this.missingToGoLive,
     this.address,
     this.openingHours = OpeningHours.none,
     this.pickupInstructions,
     this.ratingAverage,
     this.logoUrl,
-    this.phone,
+    this.coverUrl,
     this.email,
     this.facebookUrl,
     this.instagramUrl,
@@ -77,7 +93,13 @@ class StoreDetails {
   final String id;
   final String name;
   final Category category;
+
+  /// Seen by customers.
   final bool isActive;
+
+  /// What it still needs before it can be turned on, in order; empty when
+  /// it's ready.
+  final List<GoLiveItem> missingToGoLive;
   final DateTime createdAt;
 
   /// Null for a city this version doesn't know yet.
@@ -102,9 +124,10 @@ class StoreDetails {
   final double? ratingAverage;
   final int ratingCount;
   final String? logoUrl;
+  final String? coverUrl;
 
-  /// Normalized (+2189XXXXXXXX).
-  final String? phone;
+  /// How customers reach it about a pickup. Normalized (+2189XXXXXXXX).
+  final String phone;
   final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
@@ -137,8 +160,8 @@ class EditedStore {
   const EditedStore({
     required this.name,
     required this.categoryId,
+    required this.phone,
     this.pickupInstructions,
-    this.phone,
     this.email,
     this.facebookUrl,
     this.instagramUrl,
@@ -150,7 +173,7 @@ class EditedStore {
   final String? pickupInstructions;
 
   /// Normalized (+2189XXXXXXXX).
-  final String? phone;
+  final String phone;
   final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
@@ -166,19 +189,17 @@ class NewStore {
   const NewStore({
     required this.name,
     required this.categoryId,
+    required this.phone,
     required this.place,
     required this.ownerName,
     required this.ownerPhone,
-    this.phone,
-    this.email,
   });
 
   final String name;
   final String categoryId;
 
-  /// Normalized (+2189XXXXXXXX).
-  final String? phone;
-  final String? email;
+  /// How customers reach it about a pickup. Normalized (+2189XXXXXXXX).
+  final String phone;
   final StorePlace place;
   final String ownerName;
 
@@ -224,6 +245,19 @@ abstract interface class StoreRepository {
 
   /// Disabled stores are hidden from customers and can't post offers.
   Future<Result<StoreDetails>> setActive(String id, {required bool active});
+
+  /// Puts [photo] in place of the store's logo or cover; [onProgress] gets
+  /// the share sent, from 0 to 1.
+  Future<Result<StoreDetails>> setImage(
+    String id,
+    StoreImage image,
+    PreparedPhoto photo, {
+    required void Function(double sent) onProgress,
+  });
+
+  /// Takes the logo or cover off. A live store keeps its logo: that fails
+  /// with [StoreCodes.notReady].
+  Future<Result<StoreDetails>> removeImage(String id, StoreImage image);
 
   /// Fails with a [ConflictFailure] when the store has offers: their claims
   /// are customers' history, so such a store can only be disabled.

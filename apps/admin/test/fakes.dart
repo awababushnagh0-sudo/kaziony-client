@@ -106,11 +106,18 @@ const sampleHours = OpeningHours({
   Weekday.fri: [OpeningShift(opens: 16 * 60, closes: 23 * 60)],
 });
 
-StoreDetails sampleDetails(String id, {bool active = true}) => StoreDetails(
+StoreDetails sampleDetails(
+  String id, {
+  bool active = true,
+  List<GoLiveItem> missing = const [],
+  String? logoUrl,
+  String? coverUrl,
+}) => StoreDetails(
   id: id,
   name: 'Sweet Coast',
   category: sampleCategory,
   isActive: active,
+  missingToGoLive: missing,
   createdAt: DateTime.utc(2026, 10, 15, 12),
   city: City.tripoli,
   area: 'Hay Al Andalus',
@@ -125,6 +132,8 @@ StoreDetails sampleDetails(String id, {bool active = true}) => StoreDetails(
   phone: '+218912345678',
   email: 'hello@sweetcoast.ly',
   instagramUrl: 'https://instagram.com/sweetcoast',
+  logoUrl: logoUrl,
+  coverUrl: coverUrl,
 );
 
 class FakeStoreRepository implements StoreRepository {
@@ -135,6 +144,10 @@ class FakeStoreRepository implements StoreRepository {
   final updates = <(String, EditedStore)>[];
   Result<StoreDetails>? updateResult;
   final activeChanges = <(String, bool)>[];
+  Result<StoreDetails>? setActiveResult;
+  final imageUploads = <(String, StoreImage, PreparedPhoto)>[];
+  final removedImages = <(String, StoreImage)>[];
+  Result<StoreDetails>? removeImageResult;
   final deleted = <String>[];
   Result<void> deleteResult = const Ok(null);
   final resolvedLinks = <String>[];
@@ -176,6 +189,7 @@ class FakeStoreRepository implements StoreRepository {
             name: store.name,
             category: sampleCategory,
             isActive: true,
+            missingToGoLive: const [],
             createdAt: saved.createdAt,
             city: place?.city ?? saved.city,
             area: place?.area ?? saved.area,
@@ -200,7 +214,45 @@ class FakeStoreRepository implements StoreRepository {
     required bool active,
   }) async {
     activeChanges.add((id, active));
-    return Ok(sampleDetails(id, active: active));
+    return setActiveResult ?? Ok(sampleDetails(id, active: active));
+  }
+
+  /// The store with the new photo, the other one as [detailsResult] had it.
+  @override
+  Future<Result<StoreDetails>> setImage(
+    String id,
+    StoreImage image,
+    PreparedPhoto photo, {
+    required void Function(double sent) onProgress,
+  }) async {
+    imageUploads.add((id, image, photo));
+    onProgress(1);
+    final store = detailsResult?.valueOrNull ?? sampleDetails(id);
+    return Ok(
+      _withImages(
+        store,
+        logoUrl: image == StoreImage.logo
+            ? 'https://img.test/logo.jpg'
+            : store.logoUrl,
+        coverUrl: image == StoreImage.cover
+            ? 'https://img.test/cover.jpg'
+            : store.coverUrl,
+      ),
+    );
+  }
+
+  @override
+  Future<Result<StoreDetails>> removeImage(String id, StoreImage image) async {
+    removedImages.add((id, image));
+    if (removeImageResult case final result?) return result;
+    final store = detailsResult?.valueOrNull ?? sampleDetails(id);
+    return Ok(
+      _withImages(
+        store,
+        logoUrl: image == StoreImage.logo ? null : store.logoUrl,
+        coverUrl: image == StoreImage.cover ? null : store.coverUrl,
+      ),
+    );
   }
 
   @override
@@ -247,7 +299,9 @@ class FakeStoreRepository implements StoreRepository {
             id: 'store-new',
             name: brand.name,
             category: brand.category,
-            isActive: true,
+            // Off until our team has checked it.
+            isActive: false,
+            missingToGoLive: const [],
             createdAt: DateTime.utc(2026, 11, 10, 12),
             city: place.city,
             area: place.area,
@@ -702,3 +756,16 @@ class FakeSystemRepository implements SystemRepository {
   @override
   Future<Result<DatabaseStats>> database() async => databaseResult;
 }
+
+/// [store] with these photos, made the way [sampleDetails] makes it.
+StoreDetails _withImages(
+  StoreDetails store, {
+  required String? logoUrl,
+  required String? coverUrl,
+}) => sampleDetails(
+  store.id,
+  active: store.isActive,
+  missing: store.missingToGoLive,
+  logoUrl: logoUrl,
+  coverUrl: coverUrl,
+);

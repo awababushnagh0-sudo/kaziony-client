@@ -26,9 +26,8 @@ class AddStoreViewModel extends ViewModel<AddStoreState> {
         validators: [Validators.required, Validators.maxLength(100)],
       ),
       'categoryId': FormControl<String>(validators: [Validators.required]),
-      'phone': FormControl<String>(validators: [SValidators.libyanPhone]),
-      'email': FormControl<String>(
-        validators: [SValidators.email, Validators.maxLength(255)],
+      'phone': FormControl<String>(
+        validators: [Validators.required, SValidators.libyanPhone],
       ),
       ...placeControls(ref),
       'ownerName': FormControl<String>(
@@ -62,15 +61,13 @@ class AddStoreViewModel extends ViewModel<AddStoreState> {
       return value == null || value.isEmpty ? null : value;
     }
 
-    final phone = text('phone');
     final result = await ref
         .read(storeRepositoryProvider)
         .create(
           NewStore(
             name: text('name')!,
             categoryId: form.control('categoryId').value as String,
-            phone: phone == null ? null : normalizeLibyanPhone(phone),
-            email: text('email'),
+            phone: normalizeLibyanPhone(text('phone')!)!,
             place: place,
             ownerName: text('ownerName')!,
             ownerPhone: normalizeLibyanPhone(text('ownerPhone')!)!,

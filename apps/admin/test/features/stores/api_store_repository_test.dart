@@ -35,7 +35,9 @@ Map<String, Object?> _details({
   'pickupInstructions': null,
   'ratingAverage': null,
   'ratingCount': 0,
-  'isActive': true,
+  'isActive': false,
+  // A kind this version doesn't know yet is left out.
+  'missingToGoLive': ['LOGO', 'SOMETHING_NEW'],
   'createdAt': '2026-11-10T12:00:00.000Z',
   'category': _category,
   'members': [
@@ -96,6 +98,19 @@ void main() {
       }),
     );
     expect(store.teamCount, 1);
+    expect(store.isActive, isFalse);
+    expect(store.missingToGoLive, [GoLiveItem.logo]);
+  });
+
+  test('reads its photos', () {
+    final store = _read({
+      ..._details(),
+      'logoUrl': 'https://img.test/logo.jpg',
+      'coverUrl': 'https://img.test/cover.jpg',
+    });
+
+    expect(store.logoUrl, 'https://img.test/logo.jpg');
+    expect(store.coverUrl, 'https://img.test/cover.jpg');
   });
 
   test('a store without hours has none', () {
@@ -128,6 +143,7 @@ void main() {
       const NewStore(
         name: 'Sweet Coast',
         categoryId: 'cat-sweets',
+        phone: '+218912345678',
         place: StorePlace(
           city: City.tripoli,
           area: 'Gargaresh',
@@ -143,7 +159,9 @@ void main() {
     expect(json['latitude'], 32.9);
     expect(json['longitude'], 13.2);
     expect(json['area'], 'Gargaresh');
+    expect(json['phone'], '+218912345678');
     expect(json.containsKey('address'), isFalse);
+    expect(json.containsKey('email'), isFalse);
     expect(json.containsKey('openingHours'), isFalse);
   });
 
@@ -152,6 +170,7 @@ void main() {
       const NewStore(
         name: 'Sweet Coast',
         categoryId: 'cat-sweets',
+        phone: '+218912345678',
         place: _place,
         ownerName: 'Ahmed',
         ownerPhone: '+218912345678',
@@ -169,12 +188,18 @@ void main() {
 
   test('an edit leaves the place alone unless it is given', () {
     final json = updateStoreBody(
-      const EditedStore(name: 'Sweet Coast', categoryId: 'cat-sweets'),
+      const EditedStore(
+        name: 'Sweet Coast',
+        categoryId: 'cat-sweets',
+        phone: '+218912345678',
+      ),
     ).toJson();
 
     expect(json['name'], 'Sweet Coast');
-    // Empty clears the store's own optional fields.
-    expect(json['phone'], '');
+    // Empty clears the store's own optional fields; the phone is always
+    // there.
+    expect(json['phone'], '+218912345678');
+    expect(json['email'], '');
     for (final field in [
       'city',
       'area',
@@ -192,6 +217,7 @@ void main() {
       const EditedStore(
         name: 'Sweet Coast',
         categoryId: 'cat-sweets',
+        phone: '+218912345678',
         place: StorePlace(
           city: City.tripoli,
           area: 'Gargaresh',

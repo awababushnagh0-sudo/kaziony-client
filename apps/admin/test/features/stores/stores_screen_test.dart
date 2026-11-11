@@ -38,7 +38,6 @@ void setWindow(WidgetTester tester) {
 enum Field {
   name,
   phone,
-  email,
   area,
   address,
   location,
@@ -150,7 +149,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Sweets').last);
     await tester.pumpAndSettle();
-    await type(tester, Field.email, 'hello@sahel.ly');
+    await type(tester, Field.phone, '0915555555');
     await type(tester, Field.area, ' حي الأندلس ');
     await type(tester, Field.saturday, '8-13، 16-23');
     await type(tester, Field.friday, '16:00 - 24');
@@ -184,7 +183,7 @@ void main() {
     final store = stores.created.single;
     expect(store.name, 'حلويات الساحل');
     expect(store.categoryId, sampleCategory.id);
-    expect(store.email, 'hello@sahel.ly');
+    expect(store.phone, '+218915555555');
     expect(store.place.city, City.tripoli);
     expect(store.place.area, 'حي الأندلس');
     expect(store.place.address, isNull);
@@ -203,6 +202,8 @@ void main() {
     expect(store.ownerPhone, '+218912345678');
 
     expect(find.text('Store created'), findsOneWidget);
+    // New stores start off, until they have what customers need.
+    expect(find.text("Customers can't see it yet"), findsOneWidget);
     expect(find.text('0912345678'), findsOneWidget);
     expect(find.text('Tmp-4821-xk'), findsOneWidget);
     // The list reloads behind the dialog.
@@ -229,6 +230,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Sweets').last);
     await tester.pumpAndSettle();
+    await type(tester, Field.phone, '0915555555');
     await type(tester, Field.area, 'Gargaresh');
     await typeLocation(tester, '32.8872, 13.1913');
     await type(tester, Field.owner, 'Sara');
@@ -262,6 +264,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Sweets').last);
     await tester.pumpAndSettle();
+    await type(tester, Field.phone, '0915555555');
     await type(tester, Field.area, 'Gargaresh');
     await typeLocation(tester, '32.8872, 13.1913');
     await type(tester, Field.owner, 'Sara');
@@ -286,6 +289,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Add store'));
     await tester.pumpAndSettle();
+    await type(tester, Field.phone, '0915555555');
     await type(tester, Field.area, 'Gargaresh');
 
     await typeLocation(tester, '48.85, 2.35');

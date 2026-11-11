@@ -854,6 +854,8 @@
   "activityStoreAddLocation": "Added a location",
   "activityStoreAddMember": "Added someone to a store",
   "activityStoreRemoveMember": "Removed someone from a store",
+  "activityStoreSetImage": "Changed a store's photo",
+  "activityStoreRemoveImage": "Removed a store's photo",
   "activityUserCreate": "Added a team member",
   "activityUserUpdate": "Edited an account",
   "activityUserDisable": "Disabled an account",
@@ -866,5 +868,54 @@
   "activityServiceAreaDelete": "Deleted a service area",
   "activitySettingsUpdate": "Changed the platform settings",
   "activityOfferRemove": "Took an offer down",
-  "activityJobRun": "Ran a job by hand"
+  "activityJobRun": "Ran a job by hand",
+  "storePhoneHelp": "Customers call it about their pickup.",
+  "goLiveTitle": "Before customers see it",
+  "goLiveNote": "Customers see the store once it's turned on, and it can't be turned on before these are done.",
+  "goLiveLogo": "Logo",
+  "goLiveLogoWhere": "On the Photos tab, or added by the owner in the store app.",
+  "goLivePickupWhere": "On the Details tab, or written by the owner.",
+  "goLiveHoursWhere": "On the Place tab, or set by the owner.",
+  "goLiveDone": "Done",
+  "goLiveMissing": "Missing",
+  "tabPhotos": "Photos",
+  "storePhotosNote": "Customers see the logo by the store's name and the cover across the top of its page. Click one to choose a photo from your computer: it's uploaded right away.",
+  "storeLogo": "Logo",
+  "storeCover": "Cover photo",
+  "addLogo": "Add a logo",
+  "addCover": "Add a cover photo",
+  "coverHint": "The shop front or what it sells",
+  "removeLogo": "Remove the logo",
+  "removeCover": "Remove the cover",
+  "removeLogoTitle": "Remove {store}'s logo?",
+  "@removeLogoTitle": {
+    "placeholders": {
+      "store": {
+        "type": "String"
+      }
+    }
+  },
+  "removeCoverTitle": "Remove {store}'s cover photo?",
+  "@removeCoverTitle": {
+    "placeholders": {
+      "store": {
+        "type": "String"
+      }
+    }
+  },
+  "removePhotoMessage": "Customers won't see it any more. You can add another one any time.",
+  "photoRemovedDone": "Photo removed",
+  "liveStoreKeepsLogo": "A live store keeps its logo: it can be changed, not removed.",
+  "photoTooLarge": "This photo is over 1 MB. Choose a smaller one, or a JPEG.",
+  "enableStoreNeeds": "Needs: {items}",
+  "@enableStoreNeeds": {
+    "placeholders": {
+      "items": { "type": "String" }
+    }
+  },
+  "storeNotReady": "A store customers see needs a logo, pickup instructions and opening hours.",
+  "storeReadyToGoLive": "Ready to turn on",
+  "storeNotReadyBadge": "Not ready",
+  "storeHiddenTitle": "Customers can't see it yet",
+  "storeHiddenMessage": "Turn it on from its page once it has a logo, pickup instructions and opening hours. The owner can add them from the store app."
 }

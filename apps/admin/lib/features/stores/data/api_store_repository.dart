@@ -1,6 +1,6 @@
 import 'package:kernel/kernel.dart';
-import 'package:offers_api/admin.dart' hide City;
-import 'package:offers_api/admin.dart' as api show City;
+import 'package:offers_api/admin.dart' hide City, GoLiveItem;
+import 'package:offers_api/admin.dart' as api show City, GoLiveItem;
 
 import '../domain/location.dart';
 import '../domain/store.dart';
@@ -59,6 +59,33 @@ class ApiStoreRepository implements StoreRepository {
         id: id,
         body: UpdateStoreDto(isActive: active),
       ),
+    );
+    return result.map(storeDetailsFromDto);
+  }
+
+  @override
+  Future<Result<StoreDetails>> setImage(
+    String id,
+    StoreImage image,
+    PreparedPhoto photo, {
+    required void Function(double sent) onProgress,
+  }) async {
+    final result = await _api.upload(
+      AdminStoresClient.new,
+      (stores) => stores.setImage(
+        id: id,
+        kind: _imageKind(image),
+        image: photo.fullUpload(),
+      ),
+      onProgress: onProgress,
+    );
+    return result.map(storeDetailsFromDto);
+  }
+
+  @override
+  Future<Result<StoreDetails>> removeImage(String id, StoreImage image) async {
+    final result = await _api.guard(
+      () => _stores.removeImage(id: id, kind: _imageKind(image)),
     );
     return result.map(storeDetailsFromDto);
   }
@@ -148,10 +175,20 @@ StoreDetails storeDetailsFromDto(StoreDetailDto dto) => StoreDetails(
   longitude: dto.longitude.toDouble(),
   openingHours: OpeningHours.fromJson(dto.openingHours),
   teamCount: dto.members.length,
+  missingToGoLive: [
+    for (final item in dto.missingToGoLive)
+      ?switch (item) {
+        api.GoLiveItem.logo => GoLiveItem.logo,
+        api.GoLiveItem.pickupInstructions => GoLiveItem.pickupInstructions,
+        api.GoLiveItem.openingHours => GoLiveItem.openingHours,
+        api.GoLiveItem.$unknown => null,
+      },
+  ],
   ratingAverage: dto.ratingAverage?.toDouble(),
   ratingCount: dto.ratingCount.toInt(),
   pickupInstructions: dto.pickupInstructions,
   logoUrl: dto.logoUrl,
+  coverUrl: dto.coverUrl,
   phone: dto.phone,
   email: dto.email,
   facebookUrl: dto.facebookUrl,
@@ -165,7 +202,6 @@ CreateStoreDto createStoreBody(NewStore store) {
     name: store.name,
     categoryId: store.categoryId,
     phone: store.phone,
-    email: store.email,
     city: _toApiCity(place.city),
     area: place.area,
     address: place.address,
@@ -185,7 +221,7 @@ UpdateStoreDto updateStoreBody(EditedStore store) {
     name: store.name,
     categoryId: store.categoryId,
     pickupInstructions: store.pickupInstructions ?? '',
-    phone: store.phone ?? '',
+    phone: store.phone,
     email: store.email ?? '',
     facebookUrl: store.facebookUrl ?? '',
     instagramUrl: store.instagramUrl ?? '',
@@ -222,3 +258,9 @@ api.City _toApiCity(City city) => switch (city) {
 /// A new place without hours sends none.
 Map<String, Object?>? _newOpeningHours(OpeningHours hours) =>
     hours.isEmpty ? null : hours.toJson();
+
+/// The backend's name for [image] in its photo routes.
+String _imageKind(StoreImage image) => switch (image) {
+  StoreImage.logo => 'logo',
+  StoreImage.cover => 'cover',
+};

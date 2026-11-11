@@ -1297,6 +1297,12 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get activityStoreRemoveMember => 'Removed someone from a store';
 
   @override
+  String get activityStoreSetImage => 'Changed a store\'s photo';
+
+  @override
+  String get activityStoreRemoveImage => 'Removed a store\'s photo';
+
+  @override
   String get activityUserCreate => 'Added a team member';
 
   @override
@@ -1334,4 +1340,109 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get activityJobRun => 'Ran a job by hand';
+
+  @override
+  String get storePhoneHelp => 'Customers call it about their pickup.';
+
+  @override
+  String get goLiveTitle => 'Before customers see it';
+
+  @override
+  String get goLiveNote =>
+      'Customers see the store once it\'s turned on, and it can\'t be turned on before these are done.';
+
+  @override
+  String get goLiveLogo => 'Logo';
+
+  @override
+  String get goLiveLogoWhere =>
+      'On the Photos tab, or added by the owner in the store app.';
+
+  @override
+  String get goLivePickupWhere =>
+      'On the Details tab, or written by the owner.';
+
+  @override
+  String get goLiveHoursWhere => 'On the Place tab, or set by the owner.';
+
+  @override
+  String get goLiveDone => 'Done';
+
+  @override
+  String get goLiveMissing => 'Missing';
+
+  @override
+  String get tabPhotos => 'Photos';
+
+  @override
+  String get storePhotosNote =>
+      'Customers see the logo by the store\'s name and the cover across the top of its page. Click one to choose a photo from your computer: it\'s uploaded right away.';
+
+  @override
+  String get storeLogo => 'Logo';
+
+  @override
+  String get storeCover => 'Cover photo';
+
+  @override
+  String get addLogo => 'Add a logo';
+
+  @override
+  String get addCover => 'Add a cover photo';
+
+  @override
+  String get coverHint => 'The shop front or what it sells';
+
+  @override
+  String get removeLogo => 'Remove the logo';
+
+  @override
+  String get removeCover => 'Remove the cover';
+
+  @override
+  String removeLogoTitle(String store) {
+    return 'Remove $store\'s logo?';
+  }
+
+  @override
+  String removeCoverTitle(String store) {
+    return 'Remove $store\'s cover photo?';
+  }
+
+  @override
+  String get removePhotoMessage =>
+      'Customers won\'t see it any more. You can add another one any time.';
+
+  @override
+  String get photoRemovedDone => 'Photo removed';
+
+  @override
+  String get liveStoreKeepsLogo =>
+      'A live store keeps its logo: it can be changed, not removed.';
+
+  @override
+  String get photoTooLarge =>
+      'This photo is over 1 MB. Choose a smaller one, or a JPEG.';
+
+  @override
+  String enableStoreNeeds(String items) {
+    return 'Needs: $items';
+  }
+
+  @override
+  String get storeNotReady =>
+      'A store customers see needs a logo, pickup instructions and opening hours.';
+
+  @override
+  String get storeReadyToGoLive => 'Ready to turn on';
+
+  @override
+  String get storeNotReadyBadge => 'Not ready';
+
+  @override
+  String get storeHiddenTitle => 'Customers can\'t see it yet';
+
+  @override
+  String get storeHiddenMessage =>
+      'Turn it on from its page once it has a logo, pickup instructions and opening hours. The owner can add them from the store app.';
 }

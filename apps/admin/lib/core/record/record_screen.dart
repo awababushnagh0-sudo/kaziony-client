@@ -21,6 +21,7 @@ class RecordScreen<T> extends AppView {
     required this.builder,
     this.status,
     this.actions,
+    this.explain,
     super.key,
   });
 
@@ -41,6 +42,10 @@ class RecordScreen<T> extends AppView {
   /// Its header buttons, e.g. an "Actions" menu.
   final List<Widget> Function(T record)? actions;
 
+  /// Says a failed save this record knows in its own words (a backend
+  /// code); null leaves it to the usual message.
+  final String? Function(BuildContext context, AppFailure failure)? explain;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = AdminLocalizations.of(context);
@@ -58,7 +63,10 @@ class RecordScreen<T> extends AppView {
         case Ok():
           SSnack.success(context, s.savedDone);
         case Err(:final failure):
-          SSnack.error(context, failureMessage(context, failure));
+          SSnack.error(
+            context,
+            explain?.call(context, failure) ?? failureMessage(context, failure),
+          );
       }
     }
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:admin/core/l10n/generated/admin_localizations.dart';
 import 'package:admin/core/providers/access.dart';
 import 'package:admin/features/stores/domain/location.dart';
@@ -17,11 +19,13 @@ Widget harness(
   FakeStoreRepository stores, {
   String at = '/stores/store-1',
   bool admin = true,
+  FakePhotoPicker? photos,
 }) => AppScope(
   overrides: [
     ...testOverrides(kind: AppKind.admin),
     isAdminProvider.overrideWithValue(admin),
     storeRepositoryProvider.overrideWithValue(stores),
+    photoPickerProvider.overrideWithValue(photos ?? FakePhotoPicker()),
     localeProvider.overrideWith(EnglishLocale.new),
   ],
   child: SApp(
@@ -86,6 +90,48 @@ void main() {
     expect(find.text('Show your code at the cashier.'), findsOneWidget);
     expect(find.text('Sweets'), findsWidgets);
     expect(find.text('Oct 15, 2026'), findsOneWidget);
+    // Live with all it needs: nothing to check.
+    expect(find.text('Before customers see it'), findsNothing);
+  });
+
+  testWidgets('a store not ready says what it lacks, and why it stays off', (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..detailsResult = Ok(
+        sampleDetails(
+          'store-1',
+          active: false,
+          missing: const [GoLiveItem.logo, GoLiveItem.openingHours],
+        ),
+      )
+      ..setActiveResult = const Err(
+        ConflictFailure('A live store needs a logo', StoreCodes.notReady),
+      );
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Not ready'), findsOneWidget);
+    expect(find.text('Before customers see it'), findsOneWidget);
+    expect(find.text('Missing'), findsNWidgets(2));
+    expect(find.text('Done'), findsOneWidget);
+
+    await tester.tap(find.text('Actions'));
+    await tester.pumpAndSettle();
+    expect(find.text('Needs: Logo · Opening hours'), findsOneWidget);
+    await tester.tap(find.text('Enable store'));
+    await tester.pumpAndSettle();
+
+    expect(stores.activeChanges, [('store-1', true)]);
+    expect(
+      find.text(
+        'A store customers see needs a logo, pickup instructions and '
+        'opening hours.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('Not ready'), findsOneWidget);
   });
 
   testWidgets('switches to the contact tab', (tester) async {
@@ -149,7 +195,9 @@ void main() {
 
     expect(stores.activeChanges, [('store-1', false)]);
     expect(find.text('Store disabled'), findsOneWidget);
-    expect(find.text('Disabled'), findsOneWidget);
+    // It has all it needs, so it can be turned on again.
+    expect(find.text('Ready to turn on'), findsOneWidget);
+    expect(find.text('Before customers see it'), findsOneWidget);
 
     await chooseAction(tester, 'Enable store');
     expect(stores.activeChanges.last, ('store-1', true));
@@ -287,6 +335,53 @@ void main() {
     await tester.tap(find.text('Details'));
     await tester.pumpAndSettle();
     expect(find.text('Required'), findsOneWidget);
+  });
+
+  testWidgets('keeps its phone: it can change, not be emptied', (tester) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository();
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Contact'));
+    await tester.pumpAndSettle();
+    await tester.enterText(field('Store phone'), '');
+    await tester.pump();
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+
+    expect(stores.updates, isEmpty);
+    expect(find.text('Required'), findsOneWidget);
+  });
+
+  testWidgets('says why a live store keeps its pickup instructions', (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..updateResult = const Err(
+        ConflictFailure(
+          'A live store needs pickup instructions',
+          StoreCodes.notReady,
+        ),
+      );
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(field('Pickup instructions'), '');
+    await tester.pump();
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+
+    expect(stores.updates.single.$2.pickupInstructions, isNull);
+    expect(
+      find.text(
+        'A store customers see needs a logo, pickup instructions and '
+        'opening hours.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('Not saved'), findsOneWidget);
   });
 
   testWidgets('keeps the changes when saving fails', (tester) async {
@@ -580,5 +675,104 @@ void main() {
     expect(find.text('This location is outside Libya.'), findsOneWidget);
     expect(find.text('New location of Sweet Coast'), findsOneWidget);
     expect(stores.opened, ['store-1']);
+  });
+
+  group('photos', () {
+    // A real 1×1 picture, so the preview can be drawn.
+    final png = base64Decode(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwAD'
+      'hgGAWjR9awAAAABJRU5ErkJggg==',
+    );
+
+    Future<void> openPhotos(
+      WidgetTester tester,
+      FakeStoreRepository stores, {
+      FakePhotoPicker? photos,
+    }) async {
+      setWindow(tester);
+      await tester.pumpWidget(harness(stores, photos: photos));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Photos'));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('adds a logo from the computer, uploaded right away', (
+      tester,
+    ) async {
+      final stores = FakeStoreRepository()
+        ..detailsResult = Ok(sampleDetails('store-1', active: false));
+      final photo = PreparedPhoto(full: png, thumb: png);
+      final photos = FakePhotoPicker(PhotoReady(photo));
+      await openPhotos(tester, stores, photos: photos);
+      expect(find.text('Remove the logo'), findsNothing);
+
+      await tester.tap(find.bySemanticsLabel('Add a logo'));
+      await tester.pumpAndSettle();
+
+      expect(photos.picks, [PhotoSource.gallery]);
+      expect(photos.shapes, [PhotoShape.round]);
+      expect(stores.imageUploads.single, ('store-1', StoreImage.logo, photo));
+      expect(find.text('Remove the logo'), findsOneWidget);
+      expect(find.text('Add a cover photo'), findsOneWidget);
+    });
+
+    testWidgets('says when a photo is too big to upload', (tester) async {
+      final stores = FakeStoreRepository();
+      final photos = FakePhotoPicker(const PhotoFailed(PhotoTooLarge()));
+      await openPhotos(tester, stores, photos: photos);
+
+      await tester.tap(find.bySemanticsLabel('Add a cover photo'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('This photo is over 1 MB. Choose a smaller one, or a JPEG.'),
+        findsOneWidget,
+      );
+      expect(stores.imageUploads, isEmpty);
+    });
+
+    testWidgets('removes the cover once confirmed', (tester) async {
+      final stores = FakeStoreRepository()
+        ..detailsResult = Ok(
+          sampleDetails(
+            'store-1',
+            logoUrl: 'https://img.test/logo.jpg',
+            coverUrl: 'https://img.test/cover.jpg',
+          ),
+        );
+      await openPhotos(tester, stores);
+
+      await tester.tap(find.text('Remove the cover'));
+      await tester.pumpAndSettle();
+      expect(
+        find.text("Remove Sweet Coast · Hay Al Andalus's cover photo?"),
+        findsOneWidget,
+      );
+      await tester.tap(find.text('Remove the cover').last);
+      await tester.pumpAndSettle();
+
+      expect(stores.removedImages, [('store-1', StoreImage.cover)]);
+      expect(find.text('Photo removed'), findsOneWidget);
+      expect(find.text('Remove the cover'), findsNothing);
+      expect(find.text('Add a cover photo'), findsOneWidget);
+    });
+
+    testWidgets('a live store keeps its logo: it can only be changed', (
+      tester,
+    ) async {
+      final stores = FakeStoreRepository()
+        ..detailsResult = Ok(
+          sampleDetails('store-1', logoUrl: 'https://img.test/logo.jpg'),
+        );
+      await openPhotos(tester, stores);
+
+      expect(find.text('Remove the logo'), findsNothing);
+      expect(
+        find.text(
+          'A live store keeps its logo: it can be changed, not removed.',
+        ),
+        findsOneWidget,
+      );
+    });
   });
 }

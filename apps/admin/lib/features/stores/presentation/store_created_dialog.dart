@@ -41,6 +41,11 @@ class StoreCreatedDialog extends StatelessWidget {
               color: SColor.danger,
             ),
           ],
+          const Gap(Space.xl),
+          SAlert.warning(
+            title: s.storeHiddenTitle,
+            message: s.storeHiddenMessage,
+          ),
         ],
       ),
     );

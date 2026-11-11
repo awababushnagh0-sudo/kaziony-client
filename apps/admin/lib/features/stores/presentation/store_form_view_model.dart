@@ -28,7 +28,9 @@ class StoreFormViewModel extends RecordForm<StoreDetails> {
     'pickupInstructions': FormControl<String>(
       validators: [Validators.maxLength(500)],
     ),
-    'phone': FormControl<String>(validators: [SValidators.libyanPhone]),
+    'phone': FormControl<String>(
+      validators: [Validators.required, SValidators.libyanPhone],
+    ),
     'email': FormControl<String>(
       validators: [SValidators.email, Validators.maxLength(255)],
     ),
@@ -39,13 +41,12 @@ class StoreFormViewModel extends RecordForm<StoreDetails> {
 
   @override
   Map<String, Object?> valuesOf(StoreDetails store) {
-    final phone = store.phone;
     final LatLng point = (latitude: store.latitude, longitude: store.longitude);
     return {
       'name': store.name,
       'categoryId': store.category.id,
       'pickupInstructions': store.pickupInstructions,
-      'phone': phone == null ? null : formatLibyanPhone(phone),
+      'phone': formatLibyanPhone(store.phone),
       'email': store.email,
       'facebookUrl': store.facebookUrl,
       'instagramUrl': store.instagramUrl,
@@ -69,7 +70,6 @@ class StoreFormViewModel extends RecordForm<StoreDetails> {
 
   @override
   Future<Result<StoreDetails>> submit() async {
-    final phone = text('phone');
     final result = await ref
         .read(record.notifier)
         .save(
@@ -77,7 +77,7 @@ class StoreFormViewModel extends RecordForm<StoreDetails> {
             name: text('name')!,
             categoryId: form.control('categoryId').value as String,
             pickupInstructions: text('pickupInstructions'),
-            phone: phone == null ? null : normalizeLibyanPhone(phone),
+            phone: normalizeLibyanPhone(text('phone')!)!,
             email: text('email'),
             facebookUrl: text('facebookUrl'),
             instagramUrl: text('instagramUrl'),

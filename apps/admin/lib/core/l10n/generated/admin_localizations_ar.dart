@@ -1317,6 +1317,12 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get activityStoreRemoveMember => 'إزالة شخص من متجر';
 
   @override
+  String get activityStoreSetImage => 'تغيير صورة متجر';
+
+  @override
+  String get activityStoreRemoveImage => 'حذف صورة متجر';
+
+  @override
   String get activityUserCreate => 'إضافة عضو إلى الفريق';
 
   @override
@@ -1354,4 +1360,109 @@ class AdminLocalizationsAr extends AdminLocalizations {
 
   @override
   String get activityJobRun => 'تشغيل مهمة يدويًا';
+
+  @override
+  String get storePhoneHelp => 'يتصل به الزبائن بخصوص الاستلام.';
+
+  @override
+  String get goLiveTitle => 'قبل ظهوره للزبائن';
+
+  @override
+  String get goLiveNote =>
+      'يظهر المتجر للزبائن بعد تفعيله، ولا يُفعَّل قبل أن يكتمل ما يلي.';
+
+  @override
+  String get goLiveLogo => 'الشعار';
+
+  @override
+  String get goLiveLogoWhere =>
+      'من تبويب الصور، أو يضيفه صاحب المتجر من تطبيق المتاجر.';
+
+  @override
+  String get goLivePickupWhere =>
+      'في تبويب البيانات الأساسية، أو يكتبها صاحب المتجر.';
+
+  @override
+  String get goLiveHoursWhere => 'في تبويب المكان، أو يضيفها صاحب المتجر.';
+
+  @override
+  String get goLiveDone => 'تم';
+
+  @override
+  String get goLiveMissing => 'ناقص';
+
+  @override
+  String get tabPhotos => 'الصور';
+
+  @override
+  String get storePhotosNote =>
+      'يرى الزبائن الشعار بجانب اسم المتجر، والغلاف أعلى صفحته. اضغط على أيٍّ منهما لتختار صورة من جهازك، وتُرفع فوراً.';
+
+  @override
+  String get storeLogo => 'الشعار';
+
+  @override
+  String get storeCover => 'صورة الغلاف';
+
+  @override
+  String get addLogo => 'أضف الشعار';
+
+  @override
+  String get addCover => 'أضف صورة غلاف';
+
+  @override
+  String get coverHint => 'واجهة المحل أو ما يبيعه';
+
+  @override
+  String get removeLogo => 'احذف الشعار';
+
+  @override
+  String get removeCover => 'احذف الغلاف';
+
+  @override
+  String removeLogoTitle(String store) {
+    return 'حذف شعار $store؟';
+  }
+
+  @override
+  String removeCoverTitle(String store) {
+    return 'حذف صورة غلاف $store؟';
+  }
+
+  @override
+  String get removePhotoMessage =>
+      'لن يراها الزبائن بعد الآن، ويمكنك إضافة غيرها متى شئت.';
+
+  @override
+  String get photoRemovedDone => 'حُذفت الصورة';
+
+  @override
+  String get liveStoreKeepsLogo =>
+      'المتجر الظاهر للزبائن يبقى بشعاره: يمكن تغييره لا حذفه.';
+
+  @override
+  String get photoTooLarge =>
+      'حجم الصورة أكبر من 1 ميغابايت. اختر صورة أصغر، أو بصيغة JPEG.';
+
+  @override
+  String enableStoreNeeds(String items) {
+    return 'ينقصه: $items';
+  }
+
+  @override
+  String get storeNotReady =>
+      'المتجر الظاهر للزبائن يحتاج شعاراً وتعليمات استلام وأوقات عمل.';
+
+  @override
+  String get storeReadyToGoLive => 'جاهز للتفعيل';
+
+  @override
+  String get storeNotReadyBadge => 'غير جاهز';
+
+  @override
+  String get storeHiddenTitle => 'لا يراه الزبائن بعد';
+
+  @override
+  String get storeHiddenMessage =>
+      'فعّله من صفحته بعد أن يكون له شعار وتعليمات استلام وأوقات عمل. يستطيع صاحبه إضافتها من تطبيق المتاجر.';
 }

@@ -10,6 +10,7 @@ import 'add_location_dialog.dart';
 import 'add_store_view_model.dart';
 import 'store_details_view_model.dart';
 import 'store_form_view_model.dart';
+import 'store_photos.dart';
 import 'widgets/place_fields.dart';
 
 /// One store, ERPNext-style: "Stores / name · area" with its status and an
@@ -55,7 +56,10 @@ class _StoreDetailsScreenState extends AppViewState<StoreDetailsScreen> {
           active ? s.storeEnabledDone : s.storeDisabledDone,
         );
       case Err(:final failure):
-        SSnack.error(context, failureMessage(context, failure));
+        SSnack.error(
+          context,
+          _notReady(context, failure) ?? failureMessage(context, failure),
+        );
     }
   }
 
@@ -111,7 +115,8 @@ class _StoreDetailsScreenState extends AppViewState<StoreDetailsScreen> {
         onTap: () => context.go(Routes.stores),
       ),
       title: (store) => store.label,
-      status: (store) => _StatusBadge(active: store.isActive),
+      status: (store) => _StatusBadge(store: store),
+      explain: _notReady,
       actions: (store) => [
         _ActionsMenu(
           store: store,
@@ -170,6 +175,14 @@ class _ActionsMenu extends StatelessWidget {
         else
           MenuEntry(
             label: s.enableStore,
+            description: store.missingToGoLive.isEmpty
+                ? null
+                : s.enableStoreNeeds(
+                    [
+                      for (final item in store.missingToGoLive)
+                        goLiveItemName(s, item),
+                    ].join(' · '),
+                  ),
             icon: SIcons.enable,
             onTap: () => onSetActive(true),
           ),
@@ -261,6 +274,10 @@ class _StoreRecord extends AppView {
           ),
         ),
         RecordTab(
+          label: s.tabPhotos,
+          child: StorePhotos(store: store),
+        ),
+        RecordTab(
           label: s.tabContact,
           child: SFormSection(
             title: s.tabContact,
@@ -271,7 +288,9 @@ class _StoreRecord extends AppView {
                 STextInput(
                   controlName: 'phone',
                   label: s.storePhone,
+                  required: true,
                   hint: '0912345678',
+                  helper: s.storePhoneHelp,
                   kind: TextInputKind.phone,
                 ),
                 STextInput(
@@ -302,6 +321,8 @@ class _StoreRecord extends AppView {
           subtitle: store.category.name(locale),
           imageUrl: store.logoUrl,
         ),
+        if (!store.isActive || store.missingToGoLive.isNotEmpty)
+          _GoLiveFacts(missing: store.missingToGoLive),
         SRecordFacts([
           RecordFact(s.storeTeam, '${store.teamCount}'),
           RecordFact(s.storeRating, switch (store.ratingAverage) {
@@ -323,16 +344,61 @@ class _StoreRecord extends AppView {
   }
 }
 
-class _StatusBadge extends StatelessWidget {
-  const _StatusBadge({required this.active});
+/// Says a store that can't be live yet in our words.
+String? _notReady(BuildContext context, AppFailure failure) =>
+    failure is ConflictFailure && failure.code == StoreCodes.notReady
+    ? AdminLocalizations.of(context).storeNotReady
+    : null;
 
-  final bool active;
+/// What a store needs before customers see it, each added or missing, and
+/// where it's set.
+class _GoLiveFacts extends StatelessWidget {
+  const _GoLiveFacts({required this.missing});
+
+  final List<GoLiveItem> missing;
 
   @override
   Widget build(BuildContext context) {
     final s = AdminLocalizations.of(context);
-    return active
-        ? SBadge(s.storeActive, tone: BadgeTone.success)
-        : SBadge(s.storeDisabled);
+    RecordFact fact(GoLiveItem item, String where) => RecordFact(
+      goLiveItemName(s, item),
+      where,
+      badge: missing.contains(item)
+          ? SBadge(s.goLiveMissing, tone: BadgeTone.warning)
+          : SBadge(s.goLiveDone, tone: BadgeTone.success),
+    );
+    return SRecordFacts([
+      RecordFact(s.goLiveTitle, s.goLiveNote),
+      fact(GoLiveItem.logo, s.goLiveLogoWhere),
+      fact(GoLiveItem.pickupInstructions, s.goLivePickupWhere),
+      fact(GoLiveItem.openingHours, s.goLiveHoursWhere),
+    ]);
+  }
+}
+
+/// What a missing item is called, as the side panel lists it.
+String goLiveItemName(AdminLocalizations s, GoLiveItem item) => switch (item) {
+  GoLiveItem.logo => s.goLiveLogo,
+  GoLiveItem.pickupInstructions => s.storePickupInstructions,
+  GoLiveItem.openingHours => s.sectionHours,
+};
+
+/// Live, off but ready, or off with something missing.
+class _StatusBadge extends StatelessWidget {
+  const _StatusBadge({required this.store});
+
+  final StoreDetails store;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = AdminLocalizations.of(context);
+    return switch (store) {
+      StoreDetails(isActive: true) => SBadge(
+        s.storeActive,
+        tone: BadgeTone.success,
+      ),
+      StoreDetails(missingToGoLive: []) => SBadge(s.storeReadyToGoLive),
+      _ => SBadge(s.storeNotReadyBadge, tone: BadgeTone.warning),
+    };
   }
 }

@@ -2240,6 +2240,18 @@ abstract class AdminLocalizations {
   /// **'Removed someone from a store'**
   String get activityStoreRemoveMember;
 
+  /// No description provided for @activityStoreSetImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Changed a store\'s photo'**
+  String get activityStoreSetImage;
+
+  /// No description provided for @activityStoreRemoveImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed a store\'s photo'**
+  String get activityStoreRemoveImage;
+
   /// No description provided for @activityUserCreate.
   ///
   /// In en, this message translates to:
@@ -2317,6 +2329,186 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'Ran a job by hand'**
   String get activityJobRun;
+
+  /// No description provided for @storePhoneHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers call it about their pickup.'**
+  String get storePhoneHelp;
+
+  /// No description provided for @goLiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Before customers see it'**
+  String get goLiveTitle;
+
+  /// No description provided for @goLiveNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers see the store once it\'s turned on, and it can\'t be turned on before these are done.'**
+  String get goLiveNote;
+
+  /// No description provided for @goLiveLogo.
+  ///
+  /// In en, this message translates to:
+  /// **'Logo'**
+  String get goLiveLogo;
+
+  /// No description provided for @goLiveLogoWhere.
+  ///
+  /// In en, this message translates to:
+  /// **'On the Photos tab, or added by the owner in the store app.'**
+  String get goLiveLogoWhere;
+
+  /// No description provided for @goLivePickupWhere.
+  ///
+  /// In en, this message translates to:
+  /// **'On the Details tab, or written by the owner.'**
+  String get goLivePickupWhere;
+
+  /// No description provided for @goLiveHoursWhere.
+  ///
+  /// In en, this message translates to:
+  /// **'On the Place tab, or set by the owner.'**
+  String get goLiveHoursWhere;
+
+  /// No description provided for @goLiveDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get goLiveDone;
+
+  /// No description provided for @goLiveMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing'**
+  String get goLiveMissing;
+
+  /// No description provided for @tabPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get tabPhotos;
+
+  /// No description provided for @storePhotosNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers see the logo by the store\'s name and the cover across the top of its page. Click one to choose a photo from your computer: it\'s uploaded right away.'**
+  String get storePhotosNote;
+
+  /// No description provided for @storeLogo.
+  ///
+  /// In en, this message translates to:
+  /// **'Logo'**
+  String get storeLogo;
+
+  /// No description provided for @storeCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover photo'**
+  String get storeCover;
+
+  /// No description provided for @addLogo.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a logo'**
+  String get addLogo;
+
+  /// No description provided for @addCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a cover photo'**
+  String get addCover;
+
+  /// No description provided for @coverHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The shop front or what it sells'**
+  String get coverHint;
+
+  /// No description provided for @removeLogo.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove the logo'**
+  String get removeLogo;
+
+  /// No description provided for @removeCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove the cover'**
+  String get removeCover;
+
+  /// No description provided for @removeLogoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {store}\'s logo?'**
+  String removeLogoTitle(String store);
+
+  /// No description provided for @removeCoverTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {store}\'s cover photo?'**
+  String removeCoverTitle(String store);
+
+  /// No description provided for @removePhotoMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers won\'t see it any more. You can add another one any time.'**
+  String get removePhotoMessage;
+
+  /// No description provided for @photoRemovedDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo removed'**
+  String get photoRemovedDone;
+
+  /// No description provided for @liveStoreKeepsLogo.
+  ///
+  /// In en, this message translates to:
+  /// **'A live store keeps its logo: it can be changed, not removed.'**
+  String get liveStoreKeepsLogo;
+
+  /// No description provided for @photoTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'This photo is over 1 MB. Choose a smaller one, or a JPEG.'**
+  String get photoTooLarge;
+
+  /// No description provided for @enableStoreNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs: {items}'**
+  String enableStoreNeeds(String items);
+
+  /// No description provided for @storeNotReady.
+  ///
+  /// In en, this message translates to:
+  /// **'A store customers see needs a logo, pickup instructions and opening hours.'**
+  String get storeNotReady;
+
+  /// No description provided for @storeReadyToGoLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to turn on'**
+  String get storeReadyToGoLive;
+
+  /// No description provided for @storeNotReadyBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Not ready'**
+  String get storeNotReadyBadge;
+
+  /// No description provided for @storeHiddenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers can\'t see it yet'**
+  String get storeHiddenTitle;
+
+  /// No description provided for @storeHiddenMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn it on from its page once it has a logo, pickup instructions and opening hours. The owner can add them from the store app.'**
+  String get storeHiddenMessage;
 }
 
 class _AdminLocalizationsDelegate
