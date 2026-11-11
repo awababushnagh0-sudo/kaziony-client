@@ -40,8 +40,8 @@ class AddLocationViewModel extends ViewModel<AddLocationState> {
     final location = form.control('location');
     await settleLocation(location);
     if (!ref.mounted) return null;
-    final place = readPlace(form);
-    if (form.invalid || place == null) {
+    final place = form.valid ? readPlace(form) : null;
+    if (place == null) {
       form.markAllAsTouched();
       state = const AddLocationState();
       return null;

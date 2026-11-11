@@ -50,8 +50,8 @@ class AddStoreViewModel extends ViewModel<AddStoreState> {
     final location = form.control('location');
     await settleLocation(location);
     if (!ref.mounted) return null;
-    final place = readPlace(form);
-    if (form.invalid || place == null) {
+    final place = form.valid ? readPlace(form) : null;
+    if (place == null) {
       form.markAllAsTouched();
       state = const AddStoreState();
       return null;

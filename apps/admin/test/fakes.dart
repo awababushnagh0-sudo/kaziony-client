@@ -178,7 +178,7 @@ class FakeStoreRepository implements StoreRepository {
             isActive: true,
             createdAt: saved.createdAt,
             city: place?.city ?? saved.city,
-            area: place == null ? saved.area : place.area,
+            area: place?.area ?? saved.area,
             address: place == null ? saved.address : place.address,
             latitude: place?.latitude ?? saved.latitude,
             longitude: place?.longitude ?? saved.longitude,

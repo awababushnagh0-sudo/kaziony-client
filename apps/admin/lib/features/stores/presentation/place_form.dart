@@ -30,7 +30,9 @@ Map<String, AbstractControl<Object?>> placeControls(Ref ref) {
       value: City.tripoli,
       validators: [Validators.required],
     ),
-    'area': FormControl<String>(validators: [Validators.maxLength(100)]),
+    'area': FormControl<String>(
+      validators: [Validators.required, Validators.maxLength(100)],
+    ),
     'address': FormControl<String>(validators: [Validators.maxLength(255)]),
     // Filled before the location's text, so a saved store's point is known
     // by the time its text is checked and isn't sent to the backend again.
@@ -54,7 +56,7 @@ StorePlace? readPlace(FormGroup form) {
 
   return StorePlace(
     city: form.control('city').value as City,
-    area: text('area'),
+    area: text('area')!,
     address: text('address'),
     latitude: point.latitude,
     longitude: point.longitude,

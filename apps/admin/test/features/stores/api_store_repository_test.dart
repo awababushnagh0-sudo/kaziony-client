@@ -111,7 +111,7 @@ void main() {
       api.StoreListItemDto.fromJson({
         'id': 'store-2',
         'name': 'حلويات الساحل',
-        'area': null,
+        'area': 'بن عاشور',
         'logoUrl': null,
         'isActive': true,
         'category': _category,
@@ -119,8 +119,8 @@ void main() {
       }),
     );
 
-    expect(row.area, isNull);
-    expect(row.label, 'حلويات الساحل');
+    expect(row.area, 'بن عاشور');
+    expect(row.label, 'حلويات الساحل · بن عاشور');
   });
 
   test('a new store sends its place, and no hours when it has none', () {
@@ -128,7 +128,12 @@ void main() {
       const NewStore(
         name: 'Sweet Coast',
         categoryId: 'cat-sweets',
-        place: StorePlace(city: City.tripoli, latitude: 32.9, longitude: 13.2),
+        place: StorePlace(
+          city: City.tripoli,
+          area: 'Gargaresh',
+          latitude: 32.9,
+          longitude: 13.2,
+        ),
         ownerName: 'Ahmed',
         ownerPhone: '+218912345678',
       ),
@@ -137,7 +142,8 @@ void main() {
     expect(json['city'], api.City.tripoli);
     expect(json['latitude'], 32.9);
     expect(json['longitude'], 13.2);
-    expect(json.containsKey('area'), isFalse);
+    expect(json['area'], 'Gargaresh');
+    expect(json.containsKey('address'), isFalse);
     expect(json.containsKey('openingHours'), isFalse);
   });
 
@@ -186,12 +192,18 @@ void main() {
       const EditedStore(
         name: 'Sweet Coast',
         categoryId: 'cat-sweets',
-        place: StorePlace(city: City.tripoli, latitude: 32.9, longitude: 13.2),
+        place: StorePlace(
+          city: City.tripoli,
+          area: 'Gargaresh',
+          latitude: 32.9,
+          longitude: 13.2,
+        ),
       ),
     ).toJson();
 
     expect(json['city'], api.City.tripoli);
-    expect(json['area'], '');
+    // Every store has an area: it's changed, never cleared.
+    expect(json['area'], 'Gargaresh');
     expect(json['address'], '');
     expect(json['latitude'], 32.9);
     expect(json['openingHours'], isEmpty);

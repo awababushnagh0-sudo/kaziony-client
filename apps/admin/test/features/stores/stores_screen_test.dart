@@ -229,6 +229,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Sweets').last);
     await tester.pumpAndSettle();
+    await type(tester, Field.area, 'Gargaresh');
     await typeLocation(tester, '32.8872, 13.1913');
     await type(tester, Field.owner, 'Sara');
     await type(tester, Field.ownerPhone, '0921234567');
@@ -261,6 +262,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Sweets').last);
     await tester.pumpAndSettle();
+    await type(tester, Field.area, 'Gargaresh');
     await typeLocation(tester, '32.8872, 13.1913');
     await type(tester, Field.owner, 'Sara');
     await type(tester, Field.ownerPhone, '0921234567');
@@ -284,6 +286,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Add store'));
     await tester.pumpAndSettle();
+    await type(tester, Field.area, 'Gargaresh');
 
     await typeLocation(tester, '48.85, 2.35');
     expect(find.text('This location is outside Libya.'), findsOneWidget);

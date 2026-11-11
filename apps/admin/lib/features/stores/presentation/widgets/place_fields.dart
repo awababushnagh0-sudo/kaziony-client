@@ -36,6 +36,7 @@ class PlaceFields extends StatelessWidget {
             STextInput(
               controlName: 'area',
               label: s.placeArea,
+              required: true,
               hint: s.placeAreaHint,
               helper: s.placeAreaHelp,
             ),

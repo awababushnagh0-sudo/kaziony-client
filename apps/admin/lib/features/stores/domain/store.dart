@@ -9,9 +9,9 @@ class StoreSummary {
     required this.id,
     required this.name,
     required this.category,
+    required this.area,
     required this.isActive,
     required this.createdAt,
-    this.area,
   });
 
   final String id;
@@ -20,17 +20,13 @@ class StoreSummary {
 
   /// The neighbourhood: a brand's places share the name, so it tells them
   /// apart.
-  final String? area;
+  final String area;
   final bool isActive;
   final DateTime createdAt;
 
   /// "حلويات الساحل · حي الأندلس", as the backend labels it in the log.
-  String get label => storeLabel(name, area);
+  String get label => '$name · $area';
 }
-
-/// A store's name with its area, when it has one.
-String storeLabel(String name, String? area) =>
-    area == null ? name : '$name · $area';
 
 /// Null (no filter) shows both.
 enum StoreStatus { active, disabled }
@@ -62,11 +58,11 @@ class StoreDetails {
     required this.isActive,
     required this.createdAt,
     required this.city,
+    required this.area,
     required this.latitude,
     required this.longitude,
     required this.teamCount,
     required this.ratingCount,
-    this.area,
     this.address,
     this.openingHours = OpeningHours.none,
     this.pickupInstructions,
@@ -88,7 +84,7 @@ class StoreDetails {
   final City? city;
 
   /// The neighbourhood, shown with the name.
-  final String? area;
+  final String area;
   final String? address;
   final double latitude;
   final double longitude;
@@ -113,22 +109,22 @@ class StoreDetails {
   final String? facebookUrl;
   final String? instagramUrl;
 
-  String get label => storeLabel(name, area);
+  String get label => '$name · $area';
 }
 
 /// Where a store is, as an admin sets it.
 class StorePlace {
   const StorePlace({
     required this.city,
+    required this.area,
     required this.latitude,
     required this.longitude,
-    this.area,
     this.address,
     this.openingHours = OpeningHours.none,
   });
 
   final City city;
-  final String? area;
+  final String area;
   final String? address;
   final double latitude;
   final double longitude;

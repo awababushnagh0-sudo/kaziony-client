@@ -372,7 +372,14 @@ void main() {
 
     await tester.tap(find.text('Place'));
     await tester.pumpAndSettle();
+    // Every store has an area: it can change, not be emptied.
     await tester.enterText(field('Area'), '');
+    await tester.pump();
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+    expect(find.text('Required'), findsOneWidget);
+    expect(stores.updates, isEmpty);
+    await tester.enterText(field('Area'), 'Gargaresh');
     await tester.enterText(field('Location'), 'https://maps.app.goo.gl/AbC');
     await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
@@ -385,7 +392,7 @@ void main() {
 
     final place = stores.updates.single.$2.place!;
     expect(place.city, City.tripoli);
-    expect(place.area, isNull);
+    expect(place.area, 'Gargaresh');
     expect(place.address, 'Jaraba Street');
     expect(place.latitude, 32.9);
     expect(place.longitude, 13.2);
@@ -538,12 +545,18 @@ void main() {
     await tester.enterText(dialogField('Location'), '32.8872, 13.1913');
     await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
+    // Not without its area: it tells the brand's places apart.
+    await tester.tap(find.text('Add location'));
+    await tester.pumpAndSettle();
+    expect(find.text('Required'), findsOneWidget);
+    expect(stores.addedLocations, isEmpty);
+    await tester.enterText(dialogField('Area'), 'Gargaresh');
     await tester.tap(find.text('Add location'));
     await tester.pumpAndSettle();
 
     final (_, location) = stores.addedLocations.single;
     expect(location.phone, isNull);
-    expect(location.place.area, isNull);
+    expect(location.place.area, 'Gargaresh');
     expect(location.place.openingHours, isEmpty);
   });
 
@@ -557,6 +570,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await chooseAction(tester, 'Add another location');
+    await tester.enterText(dialogField('Area'), 'Gargaresh');
     await tester.enterText(dialogField('Location'), '32.8872, 13.1913');
     await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();

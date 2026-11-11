@@ -190,7 +190,7 @@ UpdateStoreDto updateStoreBody(EditedStore store) {
     facebookUrl: store.facebookUrl ?? '',
     instagramUrl: store.instagramUrl ?? '',
     city: place == null ? null : _toApiCity(place.city),
-    area: place == null ? null : place.area ?? '',
+    area: place?.area,
     address: place == null ? null : place.address ?? '',
     latitude: place?.latitude,
     longitude: place?.longitude,
