@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kernel/kernel.dart';
+import 'package:kernel/testing.dart';
 import 'package:partner/core/routes/routes.dart';
 import 'package:partner/core/widgets/offer_card.dart';
 import 'package:partner/features/counter/domain/claim.dart';
@@ -7,12 +8,24 @@ import 'package:partner/features/home/domain/store_stats.dart';
 import 'package:partner/features/home/presentation/home_screen.dart';
 import 'package:partner/features/offers/domain/offer.dart';
 import 'package:partner/features/store/domain/current_store.dart';
+import 'package:partner/features/store/domain/store.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../fakes.dart';
 import '../../support/pump_app.dart';
 
 void main() {
+  const support = SupportContact(
+    phone: '+218910000000',
+    whatsapp: '218920000000',
+    email: 'support@kaziony.ly',
+    hoursAr: 'السبت إلى الخميس',
+    hoursEn: 'Saturday to Thursday',
+  );
+
+  late FakeStoreRepository storeRepository;
+  late FakeLinkOpener links;
+
   Future<void> open(
     WidgetTester tester, {
     StoreMembership? member,
@@ -20,7 +33,11 @@ void main() {
     List<Claim>? claims,
     List<Offer>? offers,
     FakeStatsRepository? stats,
+    Store? details,
   }) {
+    storeRepository = FakeStoreRepository();
+    if (details != null) storeRepository.getResult = Ok(details);
+    links = FakeLinkOpener();
     // The whole page, so every section is on screen.
     tester.view
       ..physicalSize = const Size(800, 2000)
@@ -41,6 +58,9 @@ void main() {
         offerRepositoryProvider.overrideWithValue(
           FakeOfferRepository(offers ?? [offer('o1')]),
         ),
+        storeRepositoryProvider.overrideWithValue(storeRepository),
+        supportContactProvider.overrideWith((ref) async => support),
+        linkOpenerProvider.overrideWithValue(links),
         // No ticking clock in tests: the page reads the time when it builds.
         minuteClockProvider.overrideWith((ref) => const Stream.empty()),
       ],
@@ -48,6 +68,8 @@ void main() {
         GoRoute(path: Routes.home, builder: (_, _) => const HomeScreen()),
         stubPage(Routes.pickups, 'pickups page'),
         stubPage(Routes.offers, 'offers page'),
+        stubPage(Routes.storeInfo, 'store info page'),
+        stubPage(Routes.location, 'location page'),
         GoRoute(
           path: Routes.offer(':id'),
           builder: (_, state) => SText('offer ${state.pathParameters['id']}'),
@@ -137,6 +159,21 @@ void main() {
     expect(find.text('See all'), findsNothing);
     expect(find.text('No live offers right now.'), findsNothing);
     expect(find.text('Post an offer'), findsOneWidget);
+  });
+
+  testWidgets("a store that isn't live isn't offered to post yet", (
+    tester,
+  ) async {
+    await open(
+      tester,
+      claims: [],
+      offers: [],
+      details: storeDetails(isActive: false),
+    );
+
+    expect(find.text('A quiet day so far'), findsOneWidget);
+    expect(find.text('Your store is ready'), findsOneWidget);
+    expect(find.text('Post an offer'), findsNothing);
   });
 
   testWidgets("staff aren't offered to post", (tester) async {
@@ -260,5 +297,135 @@ void main() {
     await tester.tap(find.text('Try again'));
     await tester.pumpAndSettle();
     expect(find.text('Sara'), findsOneWidget);
+  });
+
+  testWidgets('says nothing about going live once customers see the store', (
+    tester,
+  ) async {
+    await open(tester);
+
+    expect(find.text("Customers can't see your store yet"), findsNothing);
+    expect(find.text('Your store is ready'), findsNothing);
+  });
+
+  testWidgets('tells the owner what customers need before they can see it', (
+    tester,
+  ) async {
+    await open(
+      tester,
+      details: storeDetails(
+        isActive: false,
+        missingToGoLive: GoLiveItem.values,
+      ),
+    );
+
+    expect(find.text("Customers can't see your store yet"), findsOneWidget);
+    expect(
+      find.text('Add these, then our team will turn it on for customers.'),
+      findsOneWidget,
+    );
+    expect(find.text('Logo'), findsOneWidget);
+    expect(find.text('Pickup instructions'), findsOneWidget);
+    expect(find.text('Opening hours'), findsOneWidget);
+    // In that order.
+    expect(
+      tester.getTopLeft(find.text('Logo')).dy,
+      lessThan(tester.getTopLeft(find.text('Pickup instructions')).dy),
+    );
+    expect(
+      tester.getTopLeft(find.text('Pickup instructions')).dy,
+      lessThan(tester.getTopLeft(find.text('Opening hours')).dy),
+    );
+    expect(find.text('Your store is ready'), findsNothing);
+  });
+
+  for (final (item, label, page) in [
+    (GoLiveItem.logo, 'Logo', 'store info page'),
+    (GoLiveItem.pickupInstructions, 'Pickup instructions', 'store info page'),
+    (GoLiveItem.openingHours, 'Opening hours', 'location page'),
+  ]) {
+    testWidgets('"$label" opens where the owner adds it', (tester) async {
+      await open(
+        tester,
+        details: storeDetails(isActive: false, missingToGoLive: [item]),
+      );
+
+      await tester.tap(find.text(label));
+      await tester.pumpAndSettle();
+
+      expect(find.text(page), findsOneWidget);
+    });
+  }
+
+  testWidgets("staff see what's missing, without opening it", (tester) async {
+    await open(
+      tester,
+      member: store('a', isOwner: false),
+      details: storeDetails(
+        isActive: false,
+        missingToGoLive: [GoLiveItem.logo],
+      ),
+    );
+
+    expect(find.text("Customers can't see your store yet"), findsOneWidget);
+    expect(
+      find.text("The store's owner needs to add these first."),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.text('Logo'));
+    await tester.pumpAndSettle();
+    expect(find.text('store info page'), findsNothing);
+  });
+
+  testWidgets('a ready store waits for our team, and the owner can ask', (
+    tester,
+  ) async {
+    await open(tester, details: storeDetails(isActive: false));
+
+    expect(find.text('Your store is ready'), findsOneWidget);
+    expect(
+      find.text('Our team will turn it on for customers soon.'),
+      findsOneWidget,
+    );
+    expect(find.text("Customers can't see your store yet"), findsNothing);
+
+    await tester.tap(find.text('Message us on WhatsApp'));
+    await tester.pumpAndSettle();
+
+    final link = links.opened.single;
+    expect('${link.origin}${link.path}', 'https://wa.me/218920000000');
+    expect(
+      link.queryParameters['text'],
+      'Hello, my store is ready. Please turn it on for customers: '
+      'Store a · Hay Al Andalus',
+    );
+  });
+
+  testWidgets('staff see a ready store waits, without the chat', (
+    tester,
+  ) async {
+    await open(
+      tester,
+      member: store('a', isOwner: false),
+      details: storeDetails(isActive: false),
+    );
+
+    expect(find.text('Your store is ready'), findsOneWidget);
+    expect(find.text('Message us on WhatsApp'), findsNothing);
+  });
+
+  testWidgets('pulling down shows the store once our team turned it on', (
+    tester,
+  ) async {
+    await open(tester, details: storeDetails(isActive: false));
+    expect(find.text('Your store is ready'), findsOneWidget);
+
+    storeRepository.getResult = Ok(storeDetails());
+    // Far enough down the test's tall page to reload it.
+    await tester.fling(find.text('Today'), const Offset(0, 800), 1000);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Your store is ready'), findsNothing);
   });
 }

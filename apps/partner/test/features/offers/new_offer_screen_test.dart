@@ -71,6 +71,31 @@ void main() {
     expect(find.text('offer page'), findsOneWidget);
   });
 
+  testWidgets("says when customers can't see the store yet, so it can't post", (
+    tester,
+  ) async {
+    await open(tester, Routes.newOffer('1'));
+    offers.failNextCreate = const ForbiddenFailure(
+      code: 'StoreDisabled',
+      serverMessage: "Your store isn't live, so it can't post offers.",
+    );
+
+    await tester.enterText(amountField(), '5');
+    await tester.enterText(countField(), '12');
+    await tester.tap(find.text('Post an offer'));
+    await tester.pumpAndSettle();
+
+    expect(offers.created, isEmpty);
+    expect(
+      find.text(
+        "Customers can't see your store yet, so it can't post offers. Home "
+        "shows what's left.",
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('offer page'), findsNothing);
+  });
+
   testWidgets('a price at the regular one or over is not typed, and says '
       'why', (tester) async {
     await open(tester, Routes.newOffer('1'));

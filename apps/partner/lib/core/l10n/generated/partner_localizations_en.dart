@@ -193,6 +193,10 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get storeInfoHint => 'Customers see this on your store\'s page.';
 
   @override
+  String get liveStoreNeedsPickupInstructions =>
+      'Customers see your store, so the pickup instructions can\'t be empty.';
+
+  @override
   String get storeNameLabel => 'Store name';
 
   @override
@@ -235,6 +239,10 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get openingHoursHint => 'Tap a day to change its hours.';
+
+  @override
+  String get liveStoreNeedsOpeningHours =>
+      'Customers see your store, so it needs opening hours on at least one day.';
 
   @override
   String get locationTeamHint =>
@@ -850,6 +858,36 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   @override
   String get quietDayStaffMessage =>
       'When your store posts an offer, customers who reserve it will show up here.';
+
+  @override
+  String get storeNotLiveTitle => 'Customers can\'t see your store yet';
+
+  @override
+  String get storeNotLiveOwnerMessage =>
+      'Add these, then our team will turn it on for customers.';
+
+  @override
+  String get storeNotLiveStaffMessage =>
+      'The store\'s owner needs to add these first.';
+
+  @override
+  String get storeReadyTitle => 'Your store is ready';
+
+  @override
+  String get storeReadyMessage =>
+      'Our team will turn it on for customers soon.';
+
+  @override
+  String get messageUsOnWhatsApp => 'Message us on WhatsApp';
+
+  @override
+  String turnOnStoreMessage(String store) {
+    return 'Hello, my store is ready. Please turn it on for customers: $store';
+  }
+
+  @override
+  String get storeNotLiveCantPost =>
+      'Customers can\'t see your store yet, so it can\'t post offers. Home shows what\'s left.';
 
   @override
   String get soonestFirst => 'Soonest to end first';

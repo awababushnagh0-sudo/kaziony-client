@@ -419,6 +419,12 @@ abstract class PartnerLocalizations {
   /// **'Customers see this on your store\'s page.'**
   String get storeInfoHint;
 
+  /// No description provided for @liveStoreNeedsPickupInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers see your store, so the pickup instructions can\'t be empty.'**
+  String get liveStoreNeedsPickupInstructions;
+
   /// No description provided for @storeNameLabel.
   ///
   /// In en, this message translates to:
@@ -502,6 +508,12 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Tap a day to change its hours.'**
   String get openingHoursHint;
+
+  /// No description provided for @liveStoreNeedsOpeningHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers see your store, so it needs opening hours on at least one day.'**
+  String get liveStoreNeedsOpeningHours;
 
   /// No description provided for @locationTeamHint.
   ///
@@ -1606,6 +1618,54 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'When your store posts an offer, customers who reserve it will show up here.'**
   String get quietDayStaffMessage;
+
+  /// No description provided for @storeNotLiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers can\'t see your store yet'**
+  String get storeNotLiveTitle;
+
+  /// No description provided for @storeNotLiveOwnerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add these, then our team will turn it on for customers.'**
+  String get storeNotLiveOwnerMessage;
+
+  /// No description provided for @storeNotLiveStaffMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The store\'s owner needs to add these first.'**
+  String get storeNotLiveStaffMessage;
+
+  /// No description provided for @storeReadyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your store is ready'**
+  String get storeReadyTitle;
+
+  /// No description provided for @storeReadyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Our team will turn it on for customers soon.'**
+  String get storeReadyMessage;
+
+  /// No description provided for @messageUsOnWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Message us on WhatsApp'**
+  String get messageUsOnWhatsApp;
+
+  /// Typed in for our team in WhatsApp
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, my store is ready. Please turn it on for customers: {store}'**
+  String turnOnStoreMessage(String store);
+
+  /// No description provided for @storeNotLiveCantPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers can\'t see your store yet, so it can\'t post offers. Home shows what\'s left.'**
+  String get storeNotLiveCantPost;
 
   /// No description provided for @soonestFirst.
   ///

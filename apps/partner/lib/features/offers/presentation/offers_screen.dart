@@ -7,8 +7,10 @@ import '../../../core/widgets/offer_card.dart';
 import '../../../core/widgets/offer_card_skeleton.dart';
 import '../../../core/widgets/partner_illustrations.dart';
 import '../../store/domain/current_store.dart';
+import '../../store/presentation/store_view_model.dart';
 import '../domain/offer.dart';
 import 'offers_view_model.dart';
+import 'widgets/offer_labels.dart';
 import 'widgets/start_offer.dart';
 
 /// The Offers tab: everyone in the store sees the offers; owners post them.
@@ -23,6 +25,7 @@ class OffersScreen extends AppView {
     final ended = ref.watch(showEndedOffersProvider);
     final offers = ref.watch(offersViewModel);
     final isOwner = ref.watch(currentStoreProvider)?.isOwner ?? false;
+    final live = ref.watch(storeIsLiveProvider);
     // Not while loading: the empty list kept from the ended ones isn't the
     // current one.
     final firstEmpty =
@@ -38,7 +41,7 @@ class OffersScreen extends AppView {
           SButton.text(
             label: s.postOffer,
             icon: SIcons.add,
-            onPressed: () => startOffer(context),
+            onPressed: live ? () => startOffer(context) : null,
           ),
       ],
       body: Column(
@@ -96,6 +99,7 @@ class _OfferList extends AppView {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = PartnerLocalizations.of(context);
     final viewModel = ref.read(offersViewModel.notifier);
+    final live = ref.watch(storeIsLiveProvider);
     // Said from the list, which stays: the card moves to its new group.
     Future<void> resume(Offer offer) async {
       final failure = await viewModel.resume(offer.id);
@@ -103,7 +107,7 @@ class _OfferList extends AppView {
       if (failure == null) {
         SSnack.success(context, s.offerResumed);
       } else {
-        SSnack.error(context, failureMessage(context, failure));
+        SSnack.error(context, offerFailureMessage(context, failure));
       }
     }
 
@@ -122,8 +126,12 @@ class _OfferList extends AppView {
           return SEmptyView(
             illustration: PartnerIllustrations.noOffers,
             title: s.noOffersTitle,
-            message: isOwner ? s.noOffersMessage : null,
-            actionLabel: isOwner ? s.postOffer : null,
+            message: !isOwner
+                ? null
+                : live
+                ? s.noOffersMessage
+                : s.storeNotLiveCantPost,
+            actionLabel: isOwner && live ? s.postOffer : null,
             onAction: () => startOffer(context),
           );
         }
@@ -137,7 +145,7 @@ class _OfferList extends AppView {
               offer: offer,
               onTap: () => context.push(Routes.offer(offer.id)),
               action: isOwner && offer.canResume
-                  ? _ResumeButton(onPressed: () => resume(offer))
+                  ? _ResumeButton(onPressed: live ? () => resume(offer) : null)
                   : null,
             );
             final group = _Group.of(offer);
@@ -184,7 +192,8 @@ class _OfferList extends AppView {
 class _ResumeButton extends AppStatefulView {
   const _ResumeButton({required this.onPressed});
 
-  final Future<void> Function() onPressed;
+  /// Null while the store is off.
+  final Future<void> Function()? onPressed;
 
   @override
   AppViewState<_ResumeButton> createState() => _ResumeButtonState();
@@ -193,9 +202,9 @@ class _ResumeButton extends AppStatefulView {
 class _ResumeButtonState extends AppViewState<_ResumeButton> {
   var _busy = false;
 
-  Future<void> _press() async {
+  Future<void> _press(Future<void> Function() onPressed) async {
     setState(() => _busy = true);
-    await widget.onPressed();
+    await onPressed();
     // Gone once the list shows it running.
     if (mounted) setState(() => _busy = false);
   }
@@ -206,6 +215,9 @@ class _ResumeButtonState extends AppViewState<_ResumeButton> {
     icon: SIcons.resume,
     loading: _busy,
     expand: true,
-    onPressed: _press,
+    onPressed: switch (widget.onPressed) {
+      final onPressed? => () => _press(onPressed),
+      null => null,
+    },
   );
 }

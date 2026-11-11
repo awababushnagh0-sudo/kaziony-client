@@ -5,17 +5,21 @@ import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
 import '../../../core/widgets/offer_card.dart';
 import '../../../core/widgets/partner_illustrations.dart';
+import '../../../core/widgets/request_change_button.dart';
 import '../../../core/widgets/reservation_row.dart';
 import '../../counter/domain/claim.dart';
 import '../../offers/domain/offer.dart';
 import '../../offers/presentation/widgets/start_offer.dart';
 import '../../store/domain/current_store.dart';
+import '../../store/domain/store.dart';
+import '../../store/presentation/store_view_model.dart';
 import 'home_view_model.dart';
 
 /// The day at a glance: today's numbers, the next customers to come and how
 /// the live offers sell. Staff see the same day, without the numbers only
 /// owners act on (no-shows, offers). Members of several stores (a brand's
-/// places) see which one it is.
+/// places) see which one it is. While customers can't see the store, it
+/// says what's left before they can.
 class HomeScreen extends AppView {
   const HomeScreen({super.key});
 
@@ -23,8 +27,13 @@ class HomeScreen extends AppView {
   Widget build(BuildContext context, WidgetRef ref) {
     final home = ref.watch(homeViewModel);
     Future<void> refresh() async {
-      final failure = await ref.read(homeViewModel.notifier).refresh();
-      if (failure != null && context.mounted) {
+      final (homeFailure, storeFailure) = await (
+        ref.read(homeViewModel.notifier).refresh(),
+        // Our team may have turned the store on since.
+        ref.read(storeViewModel.notifier).refresh(),
+      ).wait;
+      if ((homeFailure ?? storeFailure) case final failure?
+          when context.mounted) {
         SSnack.error(context, failureMessage(context, failure));
       }
     }
@@ -95,6 +104,9 @@ class _HomeBody extends AppView {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = PartnerLocalizations.of(context);
     final store = ref.watch(currentStoreProvider);
+    // Kept loaded here, so what the owner adds on the store's pages shows
+    // when they come back.
+    final details = ref.watch(storeViewModel).value;
     final isOwner = store?.isOwner ?? false;
     final several = ref.watch(myStoresProvider).length > 1;
     final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
@@ -113,13 +125,23 @@ class _HomeBody extends AppView {
               : s.todayTitle,
         ),
         const Gap(Space.lg),
+        if (details != null && !details.isActive) ...[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+            child: _NotLive(details, isOwner: isOwner),
+          ),
+          const Gap(Space.lg),
+        ],
         // Both lists empty: one picture for the page, not two empty lists.
         if (onTheWay.isEmpty && offers.isEmpty)
           SEmptyView(
             illustration: PartnerIllustrations.noOffers,
             title: s.quietDayTitle,
             message: isOwner ? s.quietDayOwnerMessage : s.quietDayStaffMessage,
-            actionLabel: isOwner ? s.postOffer : null,
+            // Not while the store is off: the card above says why.
+            actionLabel: isOwner && (details?.isActive ?? true)
+                ? s.postOffer
+                : null,
             onAction: () => startOffer(context),
           )
         else ...[
@@ -141,6 +163,76 @@ class _HomeBody extends AppView {
           if (offers.isEmpty) _Nothing(s.noLiveOffers) else _LiveOffers(offers),
         ],
         const Gap(Space.xl),
+      ],
+    );
+  }
+}
+
+/// Why customers can't see the store yet: what it still needs, each
+/// opening the page the owner adds it on; or, with nothing missing, that
+/// our team turns it on soon, with a chat to ask. Staff see where it
+/// stands without the actions: only owners change the store.
+class _NotLive extends StatelessWidget {
+  const _NotLive(this.store, {required this.isOwner});
+
+  final Store store;
+  final bool isOwner;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = PartnerLocalizations.of(context);
+    final missing = store.missingToGoLive;
+    if (missing.isEmpty) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: Space.md,
+        children: [
+          SAlert.warning(
+            title: s.storeReadyTitle,
+            message: s.storeReadyMessage,
+          ),
+          if (isOwner)
+            RequestChangeButton(
+              label: s.messageUsOnWhatsApp,
+              message: s.turnOnStoreMessage(store.label),
+            ),
+        ],
+      );
+    }
+    SListTile row(GoLiveItem item) {
+      // The logo is changed with the pictures, at the top of the store's
+      // info.
+      final (icon, title, route) = switch (item) {
+        GoLiveItem.logo => (SIcons.image, s.storeLogo, Routes.storeInfo),
+        GoLiveItem.pickupInstructions => (
+          SIcons.document,
+          s.pickupInstructionsLabel,
+          Routes.storeInfo,
+        ),
+        GoLiveItem.openingHours => (
+          SIcons.clock,
+          s.openingHoursTitle,
+          Routes.location,
+        ),
+      };
+      return SListTile(
+        icon: icon,
+        title: title,
+        onTap: isOwner ? () => context.push(route) : null,
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: Space.md,
+      children: [
+        SAlert.warning(
+          title: s.storeNotLiveTitle,
+          message: isOwner
+              ? s.storeNotLiveOwnerMessage
+              : s.storeNotLiveStaffMessage,
+        ),
+        SListGroup(children: [for (final item in missing) row(item)]),
       ],
     );
   }

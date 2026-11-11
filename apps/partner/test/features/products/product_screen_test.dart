@@ -6,6 +6,7 @@ import 'package:partner/features/products/domain/product.dart';
 import 'package:partner/features/products/presentation/product_form_screen.dart';
 import 'package:partner/features/products/presentation/product_screen.dart';
 import 'package:partner/features/store/domain/current_store.dart';
+import 'package:partner/features/store/presentation/store_view_model.dart';
 
 import '../../fakes.dart';
 import '../../support/finders.dart';
@@ -14,7 +15,7 @@ import '../../support/pump_app.dart';
 void main() {
   late FakeProductRepository products;
 
-  Future<void> open(WidgetTester tester, String id) async {
+  Future<void> open(WidgetTester tester, String id, {bool live = true}) async {
     products = FakeProductRepository([
       product('1', price: '4.500'),
       product('2', isArchived: true),
@@ -26,6 +27,7 @@ void main() {
         productRepositoryProvider.overrideWithValue(products),
         currentStoreProvider.overrideWithValue(store('a')),
         photoPickerProvider.overrideWithValue(FakePhotoPicker()),
+        storeIsLiveProvider.overrideWithValue(live),
       ],
       routes: [
         GoRoute(
@@ -52,6 +54,21 @@ void main() {
     await tester.tap(find.text('Post an offer'));
     await tester.pumpAndSettle();
     expect(find.text('new offer page'), findsOneWidget);
+  });
+
+  testWidgets("doesn't post while the store isn't live", (tester) async {
+    await open(tester, '1', live: false);
+
+    await tester.tap(find.text('Post an offer'));
+    await tester.pumpAndSettle();
+    expect(find.text('new offer page'), findsNothing);
+    expect(
+      find.text(
+        "Customers can't see your store yet, so it can't post offers. "
+        "Home shows what's left.",
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('shows the edit when back from editing', (tester) async {

@@ -7,6 +7,7 @@ import '../../products/presentation/product_photo_view_model.dart';
 import '../../products/presentation/widgets/product_photo_field.dart';
 import 'quick_offer_view_model.dart';
 import 'widgets/offer_fields.dart';
+import 'widgets/offer_labels.dart';
 import 'widgets/post_offer_bar.dart';
 
 /// Posts an offer for something new in one go: its photo, name and
@@ -84,7 +85,10 @@ class QuickOfferScreen extends AppView {
             const SDivider(),
             OfferFields(viewModel: viewModel, state: state),
             if (state.failure case final failure?)
-              SText(failureMessage(context, failure), color: SColor.danger),
+              SText(
+                offerFailureMessage(context, failure),
+                color: SColor.danger,
+              ),
           ],
         ),
       ),

@@ -68,6 +68,8 @@ Store storeDetails({
   String? logoUrl,
   double? ratingAverage = 4.5,
   int ratingCount = 37,
+  bool isActive = true,
+  List<GoLiveItem> missingToGoLive = const [],
 }) => Store(
   id: 'a',
   name: 'Store a',
@@ -88,7 +90,8 @@ Store storeDetails({
       ),
   logoUrl: logoUrl,
   coverUrl: null,
-  isActive: true,
+  isActive: isActive,
+  missingToGoLive: missingToGoLive,
   ratingAverage: ratingAverage,
   ratingCount: ratingCount,
   members: const [
@@ -113,6 +116,9 @@ class FakeStoreRepository implements StoreRepository {
   Result<Store> getResult = Ok(storeDetails());
   final updates = <StoreProfile>[];
 
+  /// The next profile update fails with this, once.
+  AppFailure? failNextUpdate;
+
   @override
   Future<Result<Store>> getStore(String storeId) async => getResult;
 
@@ -121,6 +127,10 @@ class FakeStoreRepository implements StoreRepository {
     String storeId,
     StoreProfile profile,
   ) async {
+    if (failNextUpdate case final failure?) {
+      failNextUpdate = null;
+      return Err(failure);
+    }
     updates.add(profile);
     return Ok(storeDetails(profile: profile));
   }

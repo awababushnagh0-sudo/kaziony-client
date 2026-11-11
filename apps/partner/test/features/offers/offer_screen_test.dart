@@ -5,6 +5,7 @@ import 'package:partner/features/offers/domain/offer.dart';
 import 'package:partner/features/offers/presentation/edit_offer_screen.dart';
 import 'package:partner/features/offers/presentation/offer_screen.dart';
 import 'package:partner/features/store/domain/current_store.dart';
+import 'package:partner/features/store/presentation/store_view_model.dart';
 
 import '../../fakes.dart';
 import '../../support/finders.dart';
@@ -17,6 +18,7 @@ void main() {
     WidgetTester tester, {
     Offer? shown,
     bool isOwner = true,
+    bool live = true,
   }) async {
     offers = FakeOfferRepository([shown ?? offer('o1')]);
     tester.view
@@ -29,6 +31,7 @@ void main() {
       overrides: [
         offerRepositoryProvider.overrideWithValue(offers),
         currentStoreProvider.overrideWithValue(store('a', isOwner: isOwner)),
+        storeIsLiveProvider.overrideWithValue(live),
       ],
       routes: [
         GoRoute(
@@ -105,6 +108,26 @@ void main() {
     await tester.tap(find.text('Post it again'));
     await tester.pumpAndSettle();
     expect(find.text('new offer page'), findsOneWidget);
+  });
+
+  testWidgets("a store that isn't live can't resume or post again yet", (
+    tester,
+  ) async {
+    await open(
+      tester,
+      shown: offer('o1', status: OfferStatus.paused, state: OfferState.paused),
+      live: false,
+    );
+
+    await tester.tap(find.text('Resume'));
+    await tester.pumpAndSettle();
+    expect(offers.actions, isEmpty);
+    expect(
+      find.text(
+        "Customers can't see your store yet, so it can't post offers. Home shows what's left.",
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('a live offer is not posted again until it is over', (

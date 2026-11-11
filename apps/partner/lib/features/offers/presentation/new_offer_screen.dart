@@ -7,6 +7,7 @@ import '../../products/presentation/product_view_model.dart';
 import 'new_offer_view_model.dart';
 import 'offer_view_model.dart';
 import 'widgets/offer_fields.dart';
+import 'widgets/offer_labels.dart';
 import 'widgets/post_offer_bar.dart';
 
 /// Posts an offer from [productId], or posts [fromOfferId] again.
@@ -85,7 +86,10 @@ class _NewOfferForm extends AppView {
             ),
             OfferFields(viewModel: viewModel, state: state),
             if (state.failure case final failure?)
-              SText(failureMessage(context, failure), color: SColor.danger),
+              SText(
+                offerFailureMessage(context, failure),
+                color: SColor.danger,
+              ),
           ],
         ),
       ),

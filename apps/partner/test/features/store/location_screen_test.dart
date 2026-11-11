@@ -211,6 +211,34 @@ void main() {
     expect(stores.hours.single.days[Weekday.sat], const [nineToTen]);
   });
 
+  testWidgets('says why a live store keeps a day with hours', (tester) async {
+    await open(
+      tester,
+      hours: const OpeningHours({
+        Weekday.sat: [nineToTen],
+      }),
+    );
+    stores.failNextHours = const ConflictFailure(
+      'A live store needs opening hours',
+      'StoreNotReady',
+    );
+    // Its only day with hours, closed.
+    await tap(tester, find.text('Saturday'));
+    await tap(tester, find.text('Closed'));
+    await tap(tester, find.text('Done'));
+
+    await tap(tester, find.text('Save changes'));
+
+    expect(
+      find.text(
+        'Customers see your store, so it needs opening hours on at least '
+        'one day.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('A live store needs opening hours'), findsNothing);
+  });
+
   testWidgets('the owner asks our team on WhatsApp for a change or a new '
       'place', (tester) async {
     await open(tester);

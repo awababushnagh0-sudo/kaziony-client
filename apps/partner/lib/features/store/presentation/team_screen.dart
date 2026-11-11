@@ -2,9 +2,9 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
+import '../../../core/widgets/request_change_button.dart';
 import '../domain/store.dart';
 import 'store_view_model.dart';
-import 'widgets/request_change_button.dart';
 
 /// Who works at the store. Our team adds and removes people: the owner
 /// asks from here, over WhatsApp.

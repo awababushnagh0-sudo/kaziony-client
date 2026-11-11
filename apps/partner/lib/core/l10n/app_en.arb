@@ -67,6 +67,7 @@
   "coverHint": "Your shop front or what you sell",
   "storeImagesHint": "Customers see your logo by your name, and the cover across the top of your page.",
   "storeInfoHint": "Customers see this on your store's page.",
+  "liveStoreNeedsPickupInstructions": "Customers see your store, so the pickup instructions can't be empty.",
   "storeNameLabel": "Store name",
   "storeNameHint": "Our team sets your store's name and category. Contact us to change them.",
   "saveChanges": "Save changes",
@@ -81,6 +82,7 @@
   "openInMaps": "Open in Maps",
   "openingHoursTitle": "Opening hours",
   "openingHoursHint": "Tap a day to change its hours.",
+  "liveStoreNeedsOpeningHours": "Customers see your store, so it needs opening hours on at least one day.",
   "locationTeamHint": "Our team changes the store's name and location, and adds new branches.",
   "requestChange": "Request a change",
   "requestPlaceMessage": "Hello, I'd like to add a new branch or change the details of the store: {store}",
@@ -385,6 +387,22 @@
   "quietDayTitle": "A quiet day so far",
   "quietDayOwnerMessage": "Post an offer, and customers who reserve it will show up here on their way.",
   "quietDayStaffMessage": "When your store posts an offer, customers who reserve it will show up here.",
+  "storeNotLiveTitle": "Customers can't see your store yet",
+  "storeNotLiveOwnerMessage": "Add these, then our team will turn it on for customers.",
+  "storeNotLiveStaffMessage": "The store's owner needs to add these first.",
+  "storeReadyTitle": "Your store is ready",
+  "storeReadyMessage": "Our team will turn it on for customers soon.",
+  "messageUsOnWhatsApp": "Message us on WhatsApp",
+  "turnOnStoreMessage": "Hello, my store is ready. Please turn it on for customers: {store}",
+  "@turnOnStoreMessage": {
+    "description": "Typed in for our team in WhatsApp",
+    "placeholders": {
+      "store": {
+        "type": "String"
+      }
+    }
+  },
+  "storeNotLiveCantPost": "Customers can't see your store yet, so it can't post offers. Home shows what's left.",
   "soonestFirst": "Soonest to end first",
   "pickupsEndNote": "Reservations stay here until they're picked up or their time runs out.",
   "collectFromCustomer": "Collect from the customer",

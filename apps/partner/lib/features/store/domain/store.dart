@@ -38,7 +38,10 @@ class StoreProfile {
 
   /// Shown on every offer's page: where to go in the shop, what to bring.
   final String? pickupInstructions;
-  final String? phone;
+
+  /// How customers reach the store about a pickup. Every store has one: it
+  /// can change, not be cleared.
+  final String phone;
   final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
@@ -58,6 +61,7 @@ class Store {
     required this.logoUrl,
     required this.coverUrl,
     required this.isActive,
+    required this.missingToGoLive,
     required this.ratingAverage,
     required this.ratingCount,
     required this.members,
@@ -87,8 +91,14 @@ class Store {
   /// Wide, across the top of the store's page.
   final String? coverUrl;
 
-  /// Disabled stores can't post offers.
+  /// Customers see it. New stores start off, and our team turns them on
+  /// once they have what customers need. Stores that are off can't post
+  /// offers.
   final bool isActive;
+
+  /// What customers need that the store still lacks, in the order to add
+  /// it; empty when it's ready. A live store can't lose them either.
+  final List<GoLiveItem> missingToGoLive;
 
   /// Customers' stars after a pickup (1 to 5), one decimal. Null before the
   /// first rating.
@@ -107,6 +117,9 @@ String storeLabel(String name, String? area) =>
 
 /// The store's two pictures.
 enum StoreImage { logo, cover }
+
+/// What a store needs before customers can see it. The owner adds each.
+enum GoLiveItem { logo, pickupInstructions, openingHours }
 
 abstract interface class StoreRepository {
   Future<Result<Store>> getStore(String storeId);

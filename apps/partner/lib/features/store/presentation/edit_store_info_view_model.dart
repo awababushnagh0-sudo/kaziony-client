@@ -37,7 +37,10 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
       'pickupInstructions': FormControl<String>(
         validators: [Validators.maxLength(500)],
       ),
-      'phone': FormControl<String>(validators: [SValidators.libyanPhone]),
+      // Customers call it about a pickup: it can change, not be cleared.
+      'phone': FormControl<String>(
+        validators: [Validators.required, SValidators.libyanPhone],
+      ),
       'email': FormControl<String>(
         validators: [SValidators.email, Validators.maxLength(255)],
       ),
@@ -67,14 +70,14 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
     if (storeId == null) return false;
     state = const EditStoreInfoState(changed: true, saving: true);
 
-    final phone = _text('phone');
     final result = await ref
         .read(storeRepositoryProvider)
         .updateProfile(
           storeId,
           StoreProfile(
             pickupInstructions: _text('pickupInstructions'),
-            phone: phone == null ? null : normalizeLibyanPhone(phone),
+            // The form checked it's there, and a Libyan number.
+            phone: normalizeLibyanPhone(_text('phone')!)!,
             email: _text('email'),
             facebookUrl: _text('facebookUrl'),
             instagramUrl: _text('instagramUrl'),
@@ -95,10 +98,9 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
 
   void _fill(Store store) {
     final profile = store.profile;
-    final phone = profile.phone;
     final values = {
       'pickupInstructions': profile.pickupInstructions,
-      'phone': phone == null ? null : formatLibyanPhone(phone),
+      'phone': formatLibyanPhone(profile.phone),
       'email': profile.email,
       'facebookUrl': profile.facebookUrl,
       'instagramUrl': profile.instagramUrl,

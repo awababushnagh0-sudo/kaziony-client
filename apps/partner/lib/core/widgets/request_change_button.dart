@@ -1,16 +1,19 @@
 import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
-import '../../../../core/l10n/generated/partner_localizations.dart';
+import '../l10n/generated/partner_localizations.dart';
 
 /// Asks our team for what only they change (the store's place, a new
-/// place, who works there): opens a WhatsApp chat with them, [message]
-/// typed in.
+/// place, who works there, turning it on): opens a WhatsApp chat with
+/// them, [message] typed in.
 class RequestChangeButton extends AppStatefulView {
-  const RequestChangeButton({required this.message, super.key});
+  const RequestChangeButton({required this.message, this.label, super.key});
 
   /// In the app's language, naming the store, so our team knows which.
   final String message;
+
+  /// What the button says, when not "Request a change".
+  final String? label;
 
   @override
   AppViewState<RequestChangeButton> createState() =>
@@ -45,7 +48,7 @@ class _RequestChangeButtonState extends AppViewState<RequestChangeButton> {
     // Loaded with the page, so the chat opens at once.
     ref.watch(supportContactProvider);
     return SButton.secondary(
-      label: PartnerLocalizations.of(context).requestChange,
+      label: widget.label ?? PartnerLocalizations.of(context).requestChange,
       icon: SIcons.chat,
       expand: true,
       loading: _opening,

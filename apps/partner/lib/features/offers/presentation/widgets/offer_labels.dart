@@ -1,3 +1,4 @@
+import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../../core/l10n/generated/partner_localizations.dart';
@@ -33,3 +34,13 @@ DealStatus? offerStatus(
 /// A hold time as people say it: "30 min", "1 hour", "2 hours".
 String holdLabel(PartnerLocalizations s, int minutes) =>
     minutes % 60 == 0 ? s.holdHours(minutes ~/ 60) : s.holdValue(minutes);
+
+/// Why posting or resuming an offer was refused, in the app's words.
+String offerFailureMessage(BuildContext context, AppFailure failure) {
+  final s = PartnerLocalizations.of(context);
+  return switch (failure) {
+    // Customers can't see the store yet: home says what's left.
+    ForbiddenFailure(code: 'StoreDisabled') => s.storeNotLiveCantPost,
+    _ => failureMessage(context, failure),
+  };
+}

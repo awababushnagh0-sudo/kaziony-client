@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
+import '../../store/presentation/store_view_model.dart';
 import '../domain/product.dart';
 import 'product_view_model.dart';
 
@@ -231,11 +232,18 @@ class _Action extends AppView {
         onPressed: () => _setArchived(context, ref, product),
       );
     }
-    return SButton(
+    final live = ref.watch(storeIsLiveProvider);
+    final post = SButton(
       label: s.postOffer,
       icon: SIcons.offers,
       expand: true,
-      onPressed: () => context.push(Routes.newOffer(product.id)),
+      onPressed: live ? () => context.push(Routes.newOffer(product.id)) : null,
+    );
+    if (live) return post;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: Space.sm,
+      children: [post, SText.caption(s.storeNotLiveCantPost)],
     );
   }
 }

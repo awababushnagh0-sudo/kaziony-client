@@ -4,6 +4,7 @@ import 'package:stellar/stellar.dart';
 import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
 import '../../../core/widgets/partner_illustrations.dart';
+import '../../store/presentation/store_view_model.dart';
 import 'products_view_model.dart';
 import 'widgets/product_card.dart';
 import 'widgets/product_cards_skeleton.dart';
@@ -86,6 +87,7 @@ class _ProductList extends AppView {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final viewModel = ref.read(productsViewModel.notifier);
+    final live = ref.watch(storeIsLiveProvider);
     return SAsyncView(
       value: ref.watch(productsViewModel),
       onRetry: () => ref.invalidate(productsViewModel),
@@ -109,7 +111,8 @@ class _ProductList extends AppView {
             return ProductCard(
               product: product,
               onTap: () => context.push(Routes.product(product.id)),
-              onPostOffer: product.isArchived
+              // Not while the store is off.
+              onPostOffer: product.isArchived || !live
                   ? null
                   : () => context.push(Routes.newOffer(product.id)),
             );

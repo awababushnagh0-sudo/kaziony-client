@@ -196,6 +196,10 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get storeInfoHint => 'يرى الزبائن هذه المعلومات في صفحة متجرك.';
 
   @override
+  String get liveStoreNeedsPickupInstructions =>
+      'متجرك ظاهر للزبائن، فلا يمكن ترك تعليمات الاستلام فارغة.';
+
+  @override
   String get storeNameLabel => 'اسم المتجر';
 
   @override
@@ -238,6 +242,10 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get openingHoursHint => 'اضغط على يوم لتغيير أوقاته.';
+
+  @override
+  String get liveStoreNeedsOpeningHours =>
+      'متجرك ظاهر للزبائن، فيجب أن تحدد أوقات العمل ليوم واحد على الأقل.';
 
   @override
   String get locationTeamHint =>
@@ -851,6 +859,35 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   @override
   String get quietDayStaffMessage =>
       'عندما ينشر متجرك عرضًا، سيظهر هنا الزبائن الذين يحجزونه.';
+
+  @override
+  String get storeNotLiveTitle => 'متجرك لا يظهر للزبائن بعد';
+
+  @override
+  String get storeNotLiveOwnerMessage =>
+      'أضف ما يلي، وبعدها يفعّله فريقنا ليراه الزبائن.';
+
+  @override
+  String get storeNotLiveStaffMessage =>
+      'يحتاج مالك المتجر إلى إضافة ما يلي أولًا.';
+
+  @override
+  String get storeReadyTitle => 'متجرك جاهز';
+
+  @override
+  String get storeReadyMessage => 'سيفعّله فريقنا قريبًا ليراه الزبائن.';
+
+  @override
+  String get messageUsOnWhatsApp => 'راسلنا على واتساب';
+
+  @override
+  String turnOnStoreMessage(String store) {
+    return 'مرحباً، متجري جاهز. أرجو تفعيله ليراه الزبائن: $store';
+  }
+
+  @override
+  String get storeNotLiveCantPost =>
+      'متجرك لا يظهر للزبائن بعد، لذا لا يمكنه نشر العروض. تجد في الرئيسية ما تبقّى.';
 
   @override
   String get soonestFirst => 'أقرب انتهاء أولًا';

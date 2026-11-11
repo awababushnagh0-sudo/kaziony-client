@@ -2,13 +2,13 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
+import '../../../core/widgets/request_change_button.dart';
 import '../domain/current_store.dart';
 import '../domain/store.dart';
 import 'edit_opening_hours_view_model.dart';
 import 'opening_day_sheet.dart';
 import 'store_view_model.dart';
 import 'widgets/opening_hours_labels.dart';
-import 'widgets/request_change_button.dart';
 
 /// Where the store is, the way there in the phone's maps, and when it's
 /// open. Each of a brand's places is a store of its own, with this page.
@@ -174,7 +174,11 @@ class _EditableHours extends AppView {
         ),
         SText.caption(s.openingHoursHint),
         if (failure != null)
-          SText(failureMessage(context, failure), color: SColor.danger),
+          SText(switch (failure) {
+            ConflictFailure(code: 'StoreNotReady') =>
+              s.liveStoreNeedsOpeningHours,
+            _ => failureMessage(context, failure),
+          }, color: SColor.danger),
       ],
     );
   }

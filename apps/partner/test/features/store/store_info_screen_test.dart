@@ -122,7 +122,7 @@ void main() {
     await open(tester);
 
     await tester.enterText(textField('Email'), 'hello@store.ly');
-    await tester.enterText(textField('Phone number'), '');
+    await tester.enterText(textField('Phone number'), '092 000 0002');
     await tester.enterText(
       textField('Pickup instructions'),
       '  Ask at the counter; bring a bag ',
@@ -132,7 +132,7 @@ void main() {
 
     final saved = stores.updates.single;
     expect(saved.email, 'hello@store.ly');
-    expect(saved.phone, isNull);
+    expect(saved.phone, '+218920000002');
     expect(saved.pickupInstructions, 'Ask at the counter; bring a bag');
     expect(find.text('Saved.'), findsOneWidget);
     // Saved: the values stay, with nothing left to save.
@@ -162,6 +162,44 @@ void main() {
 
     expect(stores.updates, isEmpty);
     expect(find.text('Enter a valid email'), findsOneWidget);
+  });
+
+  testWidgets("doesn't save without a phone: customers call it", (
+    tester,
+  ) async {
+    await open(tester);
+
+    await tester.enterText(textField('Phone number'), '');
+    await tester.pump();
+    await tap(tester, find.text('Save changes'));
+
+    expect(stores.updates, isEmpty);
+    expect(find.text('Required'), findsOneWidget);
+  });
+
+  testWidgets('says why a live store keeps its pickup instructions', (
+    tester,
+  ) async {
+    await open(tester);
+    stores.failNextUpdate = const ConflictFailure(
+      'A live store needs pickup instructions',
+      'StoreNotReady',
+    );
+
+    await tester.enterText(textField('Pickup instructions'), '');
+    await tester.pump();
+    await tap(tester, find.text('Save changes'));
+
+    expect(
+      find.text(
+        "Customers see your store, so the pickup instructions can't be "
+        'empty.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('A live store needs pickup instructions'), findsNothing);
+    // Still there to put back and save.
+    expect(find.text('Save changes'), findsOneWidget);
   });
 
   testWidgets('asks before leaving with changes, and stays if told to', (

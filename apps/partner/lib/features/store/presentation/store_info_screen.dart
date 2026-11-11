@@ -137,7 +137,13 @@ class _Editable extends StatelessWidget {
               onSubmitted: onSave,
             ),
             if (failure != null)
-              SText(failureMessage(context, failure), color: SColor.danger),
+              SText(switch (failure) {
+                // Of what's saved here, a live store needs the pickup
+                // instructions.
+                ConflictFailure(code: 'StoreNotReady') =>
+                  s.liveStoreNeedsPickupInstructions,
+                _ => failureMessage(context, failure),
+              }, color: SColor.danger),
           ],
         ),
         const Gap(Space.sm),
@@ -157,7 +163,6 @@ class _ReadOnly extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = PartnerLocalizations.of(context);
     final profile = store.profile;
-    final phone = profile.phone;
     String shown(String? value) =>
         value == null || value.isEmpty ? s.notSet : value;
     return Column(
@@ -188,10 +193,8 @@ class _ReadOnly extends StatelessWidget {
             ),
             SFactTile(
               label: s.phoneLabel,
-              value: phone == null
-                  ? s.notSet
-                  // "091 000 0001" keeps its order in Arabic.
-                  : '\u2066${formatLibyanPhone(phone)}\u2069',
+              // "091 000 0001" keeps its order in Arabic.
+              value: '\u2066${formatLibyanPhone(profile.phone)}\u2069',
             ),
             SFactTile(label: s.emailLabel, value: shown(profile.email)),
             SFactTile(

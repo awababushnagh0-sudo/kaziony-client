@@ -24,10 +24,11 @@ class ApiStoreRepository implements StoreRepository {
     final result = await _api.guard(
       () => _stores.updateProfile(
         storeId: storeId,
-        // An empty value clears the field on the server.
+        // An empty value clears the field on the server; the phone can't
+        // be cleared.
         body: UpdateStoreProfileDto(
           pickupInstructions: profile.pickupInstructions ?? '',
-          phone: profile.phone ?? '',
+          phone: profile.phone,
           email: profile.email ?? '',
           facebookUrl: profile.facebookUrl ?? '',
           instagramUrl: profile.instagramUrl ?? '',
@@ -100,6 +101,16 @@ Store _toStore(StoreDetailDto dto) => Store(
   logoUrl: dto.logoUrl,
   coverUrl: dto.coverUrl,
   isActive: dto.isActive,
+  missingToGoLive: [
+    for (final item in dto.missingToGoLive)
+      ?switch (item) {
+        api.GoLiveItem.logo => GoLiveItem.logo,
+        api.GoLiveItem.pickupInstructions => GoLiveItem.pickupInstructions,
+        api.GoLiveItem.openingHours => GoLiveItem.openingHours,
+        // One added after this version of the app.
+        api.GoLiveItem.$unknown => null,
+      },
+  ],
   ratingAverage: dto.ratingAverage?.toDouble(),
   ratingCount: dto.ratingCount.toInt(),
   members: [

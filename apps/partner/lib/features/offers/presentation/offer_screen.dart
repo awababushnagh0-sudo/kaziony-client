@@ -5,6 +5,7 @@ import '../../../core/l10n/generated/partner_localizations.dart';
 import '../../../core/routes/routes.dart';
 import '../../../core/widgets/offer_split_bar.dart';
 import '../../store/domain/current_store.dart';
+import '../../store/presentation/store_view_model.dart';
 import '../domain/offer.dart';
 import 'offer_view_model.dart';
 import 'widgets/offer_labels.dart';
@@ -318,7 +319,7 @@ Future<void> _run(
   if (failure == null) {
     SSnack.success(context, done);
   } else {
-    SSnack.error(context, failureMessage(context, failure));
+    SSnack.error(context, offerFailureMessage(context, failure));
   }
 }
 
@@ -334,52 +335,67 @@ class _Actions extends AppView {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = PartnerLocalizations.of(context);
     final viewModel = ref.read(offerViewModel(offer.id).notifier);
+    final live = ref.watch(storeIsLiveProvider);
     void edit() => context.push(Routes.editOffer(offer.id));
-    if (!offer.canChange) {
-      return SButton(
-        label: s.repostOffer,
-        icon: SIcons.repost,
-        expand: true,
-        onPressed: () =>
-            context.push(Routes.newOffer(offer.productId, from: offer.id)),
-      );
-    }
-    return Row(
-      spacing: Space.md,
-      children: [
-        Expanded(
-          child: offer.canResume
-              ? SButton(
-                  label: s.resumeOffer,
-                  icon: SIcons.resume,
-                  expand: true,
-                  onPressed: () =>
-                      _run(context, viewModel.resume(), s.offerResumed),
-                )
-              : SButton.soft(
-                  label: s.pauseOffer,
-                  icon: SIcons.pause,
-                  expand: true,
-                  onPressed: () =>
-                      _run(context, viewModel.pause(), s.offerPausedDone),
-                ),
-        ),
-        Expanded(
-          child: offer.canResume
-              ? SButton.soft(
-                  label: s.edit,
-                  icon: SIcons.edit,
-                  expand: true,
-                  onPressed: edit,
-                )
-              : SButton(
-                  label: s.edit,
-                  icon: SIcons.edit,
-                  expand: true,
-                  onPressed: edit,
-                ),
-        ),
-      ],
+    final Widget actions = !offer.canChange
+        ? SButton(
+            label: s.repostOffer,
+            icon: SIcons.repost,
+            expand: true,
+            onPressed: live
+                ? () => context.push(
+                    Routes.newOffer(offer.productId, from: offer.id),
+                  )
+                : null,
+          )
+        : Row(
+            spacing: Space.md,
+            children: [
+              Expanded(
+                child: offer.canResume
+                    ? SButton(
+                        label: s.resumeOffer,
+                        icon: SIcons.resume,
+                        expand: true,
+                        onPressed: live
+                            ? () => _run(
+                                context,
+                                viewModel.resume(),
+                                s.offerResumed,
+                              )
+                            : null,
+                      )
+                    : SButton.soft(
+                        label: s.pauseOffer,
+                        icon: SIcons.pause,
+                        expand: true,
+                        onPressed: () =>
+                            _run(context, viewModel.pause(), s.offerPausedDone),
+                      ),
+              ),
+              Expanded(
+                child: offer.canResume
+                    ? SButton.soft(
+                        label: s.edit,
+                        icon: SIcons.edit,
+                        expand: true,
+                        onPressed: edit,
+                      )
+                    : SButton(
+                        label: s.edit,
+                        icon: SIcons.edit,
+                        expand: true,
+                        onPressed: edit,
+                      ),
+              ),
+            ],
+          );
+    // Posting again and resuming wait for the store to be on.
+    if (live || (offer.canChange && !offer.canResume)) return actions;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: Space.sm,
+      children: [actions, SText.caption(s.storeNotLiveCantPost)],
     );
   }
 }

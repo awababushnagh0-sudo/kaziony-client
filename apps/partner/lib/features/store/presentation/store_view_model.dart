@@ -47,3 +47,11 @@ class StoreViewModel extends AsyncViewModel<Store> {
 final storeViewModel = AsyncNotifierProvider.autoDispose<StoreViewModel, Store>(
   StoreViewModel.new,
 );
+
+/// Whether the current store can post offers and resume them: not while
+/// it's off (a new store, until our team turns it on). True until the
+/// store has loaded, so the buttons don't go grey and back for most
+/// stores; the backend refuses anyway.
+final storeIsLiveProvider = Provider.autoDispose<bool>(
+  (ref) => ref.watch(storeViewModel).value?.isActive ?? true,
+);
