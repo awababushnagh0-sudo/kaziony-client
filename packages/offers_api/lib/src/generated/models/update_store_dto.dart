@@ -32,7 +32,7 @@ class UpdateStoreDto {
   final City? city;
 
   /// The neighbourhood, shown with the store's name: it tells a brand's.
-  /// places apart.
+  /// places apart, so every store has one.
   final String? area;
   final String? address;
   final num? latitude;

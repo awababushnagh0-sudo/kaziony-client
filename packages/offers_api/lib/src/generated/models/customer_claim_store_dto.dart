@@ -21,7 +21,7 @@ class CustomerClaimStoreDto {
   final String name;
 
   /// The neighbourhood, shown with the name.
-  final String? area;
+  final String area;
   final String? logoUrl;
 
   Map<String, Object?> toJson() => _$CustomerClaimStoreDtoToJson(this);

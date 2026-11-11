@@ -25,7 +25,7 @@ class PublicLocationDto {
   
   final City city;
   final dynamic openingHours;
-  final String? area;
+  final String area;
   final String? address;
   final num latitude;
   final num longitude;

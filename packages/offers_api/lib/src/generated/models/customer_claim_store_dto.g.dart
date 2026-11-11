@@ -11,7 +11,7 @@ CustomerClaimStoreDto _$CustomerClaimStoreDtoFromJson(
 ) => CustomerClaimStoreDto(
   id: json['id'] as String,
   name: json['name'] as String,
-  area: json['area'] as String?,
+  area: json['area'] as String,
   logoUrl: json['logoUrl'] as String?,
 );
 
@@ -20,6 +20,6 @@ Map<String, dynamic> _$CustomerClaimStoreDtoToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'name': instance.name,
-  'area': ?instance.area,
+  'area': instance.area,
   'logoUrl': ?instance.logoUrl,
 };

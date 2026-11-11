@@ -44,7 +44,7 @@ class StoreDetailDto {
   final String name;
 
   /// The neighbourhood, shown with the name.
-  final String? area;
+  final String area;
   final String? address;
   final num latitude;
   final num longitude;

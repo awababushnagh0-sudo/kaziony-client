@@ -21,7 +21,7 @@ class MembershipStoreDto {
   final String name;
 
   /// The neighbourhood: tells a brand's places apart.
-  final String? area;
+  final String area;
   final String? logoUrl;
 
   Map<String, Object?> toJson() => _$MembershipStoreDtoToJson(this);

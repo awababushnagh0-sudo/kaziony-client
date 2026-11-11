@@ -16,6 +16,7 @@ class CreateStoreDto {
     required this.categoryId,
     required this.name,
     required this.owner,
+    required this.area,
     required this.latitude,
     required this.longitude,
     this.pickupInstructions,
@@ -23,7 +24,6 @@ class CreateStoreDto {
     this.email,
     this.facebookUrl,
     this.instagramUrl,
-    this.area,
     this.address,
     this.openingHours,
   });
@@ -48,8 +48,8 @@ class CreateStoreDto {
   final NewMerchantDto owner;
 
   /// The neighbourhood, shown with the store's name: it tells a brand's.
-  /// places apart.
-  final String? area;
+  /// places apart, so every store has one.
+  final String area;
   final String? address;
   final num latitude;
   final num longitude;

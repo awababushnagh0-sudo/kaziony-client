@@ -10,7 +10,7 @@ PublicLocationDto _$PublicLocationDtoFromJson(Map<String, dynamic> json) =>
     PublicLocationDto(
       city: City.fromJson(json['city'] as String),
       openingHours: json['openingHours'],
-      area: json['area'] as String?,
+      area: json['area'] as String,
       address: json['address'] as String?,
       latitude: json['latitude'] as num,
       longitude: json['longitude'] as num,
@@ -22,7 +22,7 @@ Map<String, dynamic> _$PublicLocationDtoToJson(PublicLocationDto instance) =>
     <String, dynamic>{
       'city': instance.city,
       'openingHours': ?instance.openingHours,
-      'area': ?instance.area,
+      'area': instance.area,
       'address': ?instance.address,
       'latitude': instance.latitude,
       'longitude': instance.longitude,

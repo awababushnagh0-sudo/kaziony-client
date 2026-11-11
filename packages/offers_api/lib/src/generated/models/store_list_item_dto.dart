@@ -26,7 +26,7 @@ class StoreListItemDto {
   final String name;
 
   /// The neighbourhood, shown with the name.
-  final String? area;
+  final String area;
   final String? logoUrl;
   final bool isActive;
   final CategoryDto category;

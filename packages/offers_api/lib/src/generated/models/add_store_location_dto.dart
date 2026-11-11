@@ -12,10 +12,10 @@ part 'add_store_location_dto.g.dart';
 class AddStoreLocationDto {
   const AddStoreLocationDto({
     required this.city,
+    required this.area,
     required this.latitude,
     required this.longitude,
     this.phone,
-    this.area,
     this.address,
     this.openingHours,
   });
@@ -28,8 +28,8 @@ class AddStoreLocationDto {
   final String? phone;
 
   /// The neighbourhood, shown with the store's name: it tells a brand's.
-  /// places apart.
-  final String? area;
+  /// places apart, so every store has one.
+  final String area;
   final String? address;
   final num latitude;
   final num longitude;

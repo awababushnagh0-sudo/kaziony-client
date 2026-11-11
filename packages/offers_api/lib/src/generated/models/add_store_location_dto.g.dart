@@ -9,10 +9,10 @@ part of 'add_store_location_dto.dart';
 AddStoreLocationDto _$AddStoreLocationDtoFromJson(Map<String, dynamic> json) =>
     AddStoreLocationDto(
       city: City.fromJson(json['city'] as String),
+      area: json['area'] as String,
       latitude: json['latitude'] as num,
       longitude: json['longitude'] as num,
       phone: json['phone'] as String?,
-      area: json['area'] as String?,
       address: json['address'] as String?,
       openingHours: json['openingHours'],
     );
@@ -22,7 +22,7 @@ Map<String, dynamic> _$AddStoreLocationDtoToJson(
 ) => <String, dynamic>{
   'city': instance.city,
   'phone': ?instance.phone,
-  'area': ?instance.area,
+  'area': instance.area,
   'address': ?instance.address,
   'latitude': instance.latitude,
   'longitude': instance.longitude,
