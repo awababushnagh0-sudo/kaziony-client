@@ -1,11 +1,11 @@
 {
-    "name": "Offers Admin",
-    "short_name": "Offers Admin",
+    "name": "Kaziony Admin",
+    "short_name": "Kaziony",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#FFFFFF",
+    "background_color": "#FAF4E6",
     "theme_color": "#171717",
-    "description": "Offers admin dashboard",
+    "description": "Kaziony admin dashboard",
     "orientation": "any",
     "prefer_related_applications": false,
     "icons": [

@@ -3,7 +3,6 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/customer_localizations.dart';
 import '../../../core/routes/routes.dart';
-import '../../../core/widgets/customer_illustrations.dart';
 
 const _pageCount = 3;
 const _turnDuration = Duration(milliseconds: 300);
@@ -77,7 +76,7 @@ class _HelloPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SIllustration(CustomerIllustrations.logo),
+        const SIllustration(SIllustrations.logo),
         const Gap(Space.xl),
         SBrandTitle(name: s.appTitle, tagline: s.tagline),
         const Gap(Space.xl),

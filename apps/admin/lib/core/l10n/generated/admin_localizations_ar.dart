@@ -44,7 +44,7 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get noRatingsYet => 'لا توجد تقييمات بعد';
 
   @override
-  String get appTitle => 'إدارة العروض';
+  String get appTitle => 'كزيوني';
 
   @override
   String get loginTitle => 'تسجيل الدخول';

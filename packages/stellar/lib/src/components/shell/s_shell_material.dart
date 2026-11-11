@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../foundation/s_scope.dart';
 import '../../foundation/s_tokens.dart';
 import '../icon/s_icon_material.dart';
+import '../illustration/s_illustration.dart';
 import '../menu/s_menu_button.dart';
 import '../menu/s_menu_material.dart';
 import 's_shell.dart';
@@ -10,6 +11,9 @@ import 's_shell.dart';
 /// Wider than this, the side menu stays open next to the page.
 const shellBreakpoint = 900.0;
 const _menuWidth = 232.0;
+
+/// The logo about as tall as the name and the line under it.
+const _logoWidth = 48.0;
 
 /// Lets pages inside a narrow shell show a button that opens the menu.
 class ShellScope extends InheritedWidget {
@@ -35,6 +39,7 @@ class SShellMaterial extends StatefulWidget implements SShell {
     required this.items,
     required this.body,
     this.subtitle,
+    this.logo,
     this.userName,
     this.userDetail,
     this.userActions = const [],
@@ -43,6 +48,7 @@ class SShellMaterial extends StatefulWidget implements SShell {
 
   final String title;
   final String? subtitle;
+  final Illustration? logo;
   final List<NavItemSpec> items;
   final Widget body;
   final String? userName;
@@ -114,25 +120,34 @@ class _SideMenu extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: Space.sm),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
+                spacing: Space.sm,
                 children: [
-                  Text(
-                    shell.title,
-                    style: TextStyle(
-                      fontSize: context.style.text.body,
-                      fontWeight: SFontWeight.semibold.value,
-                      color: c.text,
+                  if (shell.logo case final logo?)
+                    SizedBox(width: _logoWidth, child: SIllustration(logo)),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          shell.title,
+                          style: TextStyle(
+                            fontSize: context.style.text.body,
+                            fontWeight: SFontWeight.semibold.value,
+                            color: c.text,
+                          ),
+                        ),
+                        if (shell.subtitle != null)
+                          Text(
+                            shell.subtitle!,
+                            style: TextStyle(
+                              fontSize: context.style.text.tiny,
+                              color: c.textSubtle,
+                            ),
+                          ),
+                      ],
                     ),
                   ),
-                  if (shell.subtitle != null)
-                    Text(
-                      shell.subtitle!,
-                      style: TextStyle(
-                        fontSize: context.style.text.tiny,
-                        color: c.textSubtle,
-                      ),
-                    ),
                 ],
               ),
             ),

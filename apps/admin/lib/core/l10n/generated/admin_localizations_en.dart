@@ -41,7 +41,7 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get noRatingsYet => 'No ratings yet';
 
   @override
-  String get appTitle => 'Offers Admin';
+  String get appTitle => 'Kaziony';
 
   @override
   String get loginTitle => 'Sign in';

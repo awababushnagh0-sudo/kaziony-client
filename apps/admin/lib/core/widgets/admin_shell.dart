@@ -32,6 +32,7 @@ class AdminShell extends AppView {
     return SShell(
       title: s.appTitle,
       subtitle: s.appSubtitle,
+      logo: SIllustrations.logo,
       items: [
         item(Routes.home, s.navHome, SIcons.home),
         item(Routes.stores, s.navStores, SIcons.store),

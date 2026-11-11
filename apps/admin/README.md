@@ -1,6 +1,6 @@
 # admin
 
-Offers admin dashboard (Flutter Web). See the [repo README](../../README.md) to run it.
+Kaziony admin dashboard (Flutter Web). See the [repo README](../../README.md) to run it.
 
 ```
 lib/

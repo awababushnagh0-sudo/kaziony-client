@@ -1,5 +1,5 @@
 name: admin
-description: "Offers admin dashboard (web)"
+description: "Kaziony admin dashboard (web)"
 publish_to: none
 version: 1.0.0+1
 resolution: workspace

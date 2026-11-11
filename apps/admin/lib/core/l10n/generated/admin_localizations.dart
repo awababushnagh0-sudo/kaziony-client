@@ -131,7 +131,7 @@ abstract class AdminLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'Offers Admin'**
+  /// **'Kaziony'**
   String get appTitle;
 
   /// No description provided for @loginTitle.

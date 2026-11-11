@@ -4,10 +4,6 @@ import 'package:stellar/stellar.dart';
 /// The pictures only this app shows, in its own `assets/illustrations`.
 /// Shown with `SIllustration`, like stellar's own.
 enum CustomerIllustrations implements Illustration {
-  /// The brand bag smiling, with orange rays: on the welcome and sign-in
-  /// pages.
-  logo('logo', Size(192, 130)),
-
   /// A green pin with the bag in it, on a folded map: on the location page.
   location('location', Size(160, 130)),
 

@@ -4,7 +4,6 @@ import 'package:stellar/stellar.dart';
 import '../../../core/l10n/generated/customer_localizations.dart';
 import '../../../core/routes/routes.dart';
 import '../../../core/widgets/back_button.dart';
-import '../../../core/widgets/customer_illustrations.dart';
 import 'sign_in_view_model.dart';
 
 /// Every way to sign in, on one page, or go on as a guest. At the end of
@@ -52,7 +51,7 @@ class SignInScreen extends AppView {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SIllustration(CustomerIllustrations.logo),
+          const SIllustration(SIllustrations.logo),
           const Gap(Space.xl),
           SText.display(s.signInTitle, align: TextAlign.center),
           const Gap(Space.sm),

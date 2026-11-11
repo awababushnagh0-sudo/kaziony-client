@@ -21,9 +21,13 @@ abstract interface class Illustration {
   String? get package;
 }
 
-/// The pictures stellar's own components show, bundled with it. Pictures
-/// only one app shows are in that app.
+/// The pictures stellar's own components show, and those more than one app
+/// shows, bundled with it. Pictures only one app shows are in that app.
 enum SIllustrations implements Illustration {
+  /// The brand: the bag smiling, with orange rays. On the customer app's
+  /// welcome and sign-in pages, and beside the dashboard's name.
+  logo('logo', Size(192, 130)),
+
   /// Two speech bubbles, "ع" and "A": choosing the app's language.
   languages('languages', Size(140, 104)),
 

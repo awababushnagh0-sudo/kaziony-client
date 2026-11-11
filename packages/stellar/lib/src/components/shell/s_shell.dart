@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../icon/s_icon.dart';
+import '../illustration/s_illustration.dart';
 import 's_shell_material.dart';
 
 /// Side menu layout: the dashboard's frame around every page. Wide screens
@@ -8,7 +9,7 @@ import 's_shell_material.dart';
 /// their app bar.
 abstract interface class SShell implements Widget {
   /// [title] is the app's name at the top of the side menu, with a quiet
-  /// [subtitle] under it. [body] is the current page, usually an SScaffold.
+  /// [subtitle] under it and its [logo] beside them. [body] is the current page, usually an SScaffold.
   /// [userName] and [userDetail] show at the bottom of the side menu;
   /// tapping them opens [userActions].
   const factory SShell({
@@ -16,6 +17,7 @@ abstract interface class SShell implements Widget {
     required List<NavItemSpec> items,
     required Widget body,
     String? subtitle,
+    Illustration? logo,
     String? userName,
     String? userDetail,
     List<ShellMenuAction> userActions,
