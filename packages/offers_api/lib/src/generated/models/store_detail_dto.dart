@@ -33,6 +33,7 @@ class StoreDetailDto {
     required this.ratingAverage,
     required this.ratingCount,
     required this.isActive,
+    required this.wasLive,
     required this.createdAt,
     required this.category,
     required this.members,
@@ -70,6 +71,10 @@ class StoreDetailDto {
 
   /// Seen by customers. New stores start off; see [missingToGoLive].
   final bool isActive;
+
+  /// Has been on for customers: one that's off now was turned off, rather.
+  /// than waiting for its first day.
+  final bool wasLive;
   final DateTime createdAt;
   final CategoryDto category;
   final List<StoreMemberDto> members;

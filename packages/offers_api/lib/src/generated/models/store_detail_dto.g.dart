@@ -29,6 +29,7 @@ StoreDetailDto _$StoreDetailDtoFromJson(Map<String, dynamic> json) =>
       ratingAverage: json['ratingAverage'] as num?,
       ratingCount: json['ratingCount'] as num,
       isActive: json['isActive'] as bool,
+      wasLive: json['wasLive'] as bool,
       createdAt: DateTime.parse(json['createdAt'] as String),
       category: CategoryDto.fromJson(json['category'] as Map<String, dynamic>),
       members: (json['members'] as List<dynamic>)
@@ -57,6 +58,7 @@ Map<String, dynamic> _$StoreDetailDtoToJson(StoreDetailDto instance) =>
       'ratingAverage': ?instance.ratingAverage,
       'ratingCount': instance.ratingCount,
       'isActive': instance.isActive,
+      'wasLive': instance.wasLive,
       'createdAt': instance.createdAt.toIso8601String(),
       'category': instance.category,
       'members': instance.members,
