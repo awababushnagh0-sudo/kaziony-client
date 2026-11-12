@@ -18,7 +18,7 @@ enum Weekday {
 }
 
 /// One stretch of a day a store is open, in minutes after midnight. A close
-/// earlier than the open is past midnight.
+/// earlier than the open is past midnight; the same as it, a whole day.
 @immutable
 class OpeningShift {
   const OpeningShift({required this.opens, required this.closes});
@@ -99,6 +99,119 @@ class OpeningHours {
   /// null when it hasn't said.
   List<OpeningShift>? on(DateTime date) => days[Weekday.of(date)];
 
+  /// Whether the store is open at [at], in the phone's time (a shift
+  /// runs [OpeningShift.opens] up to, not at, [OpeningShift.closes]); null
+  /// when the hours don't say that day, and no shift from the day before
+  /// runs into it. As the backend reads them to hold a booking.
+  bool? openAt(DateTime at) {
+    final local = at.toLocal();
+    if (_shiftAt(local) != null) return true;
+    return days.containsKey(Weekday.of(local)) ? false : null;
+  }
+
+  /// When the store closes, open at [at]: the end of the shift it's in,
+  /// or of the next when one starts as it ends (to midnight and from it).
+  /// Null when it isn't open then, or doesn't close within a week.
+  DateTime? closesAfter(DateTime at) {
+    var shift = _shiftAt(at.toLocal());
+    for (var i = 0; shift != null && i < _week; i++) {
+      final next = _shiftAt(shift.closes);
+      if (next == null) return shift.closes;
+      shift = next;
+    }
+    return null;
+  }
+
+  /// When the store next opens after [at], within a week; null when the
+  /// hours don't say.
+  DateTime? opensAfter(DateTime at) {
+    final local = at.toLocal();
+    DateTime? first;
+    for (var day = 0; day <= _week; day++) {
+      final date = DateTime(local.year, local.month, local.day + day);
+      for (final shift in _timesOn(date) ?? const <_Times>[]) {
+        if (shift.opens.isAfter(local) &&
+            (first == null || shift.opens.isBefore(first))) {
+          first = shift.opens;
+        }
+      }
+      if (first != null) return first;
+    }
+    return null;
+  }
+
+  /// The last time in ([after], [until]] the store closes, and isn't open
+  /// again right away; null when it doesn't close in that time.
+  DateTime? lastClosing(DateTime after, DateTime until) {
+    final from = after.toLocal();
+    final to = until.toLocal();
+    DateTime? last;
+    // From the day before: its shift past midnight can close after [from].
+    for (
+      var date = DateTime(from.year, from.month, from.day - 1);
+      !date.isAfter(to);
+      date = DateTime(date.year, date.month, date.day + 1)
+    ) {
+      for (final shift in _timesOn(date) ?? const <_Times>[]) {
+        final closes = shift.closes;
+        if (closes.isAfter(from) &&
+            !closes.isAfter(to) &&
+            (last == null || closes.isAfter(last)) &&
+            _shiftAt(closes) == null) {
+          last = closes;
+        }
+      }
+    }
+    return last;
+  }
+
+  /// Whether the store closes at [at] exactly: the end of a booking held
+  /// until it closes.
+  bool closesAt(DateTime at) =>
+      lastClosing(
+        at.subtract(const Duration(minutes: 1)),
+        at,
+      )?.isAtSameMomentAs(at) ??
+      false;
+
+  static const _week = 7;
+
+  /// The shift the store is open in at [at]: today's, or yesterday's past
+  /// midnight.
+  _Times? _shiftAt(DateTime at) {
+    final today = DateTime(at.year, at.month, at.day);
+    for (final date in [
+      DateTime(today.year, today.month, today.day - 1),
+      today,
+    ]) {
+      for (final shift in _timesOn(date) ?? const <_Times>[]) {
+        if (!shift.opens.isAfter(at) && at.isBefore(shift.closes)) {
+          return shift;
+        }
+      }
+    }
+    return null;
+  }
+
+  /// [date]'s shifts as times on it (a close at or before the open is the
+  /// next day's); null when the hours don't say that day.
+  List<_Times>? _timesOn(DateTime date) => days[Weekday.of(date)]
+      ?.map(
+        (shift) => (
+          opens: DateTime(date.year, date.month, date.day, 0, shift.opens),
+          closes: DateTime(
+            date.year,
+            date.month,
+            date.day,
+            0,
+            shift.closes <= shift.opens
+                ? shift.closes + Duration.minutesPerDay
+                : shift.closes,
+          ),
+        ),
+      )
+      .toList();
+
   /// These hours with [day] set to [shifts] (empty: closed); with every
   /// day set to them when [everyDay].
   OpeningHours withDay(
@@ -148,3 +261,6 @@ class OpeningHours {
   @override
   String toString() => 'OpeningHours($days)';
 }
+
+/// A shift on a given day.
+typedef _Times = ({DateTime opens, DateTime closes});
