@@ -19,6 +19,26 @@ import '../domain/booking.dart';
   BookingStatus.expired => (s.statusExpired, BadgeTone.neutral),
 };
 
+/// Why a booking ended that the customer didn't cancel, and that it
+/// doesn't count against them.
+({String title, String message}) cancelledFor(
+  CustomerLocalizations s,
+  CancelReason reason,
+) => switch (reason) {
+  CancelReason.offerRemoved => (
+    title: s.cancelledByUsTitle,
+    message: s.cancelledOfferRemoved,
+  ),
+  CancelReason.storeOff => (
+    title: s.cancelledByUsTitle,
+    message: s.cancelledStoreOff,
+  ),
+  CancelReason.customer || CancelReason.other => (
+    title: s.cancelledNotByYouTitle,
+    message: s.cancelledNotByYou,
+  ),
+};
+
 /// The day a past booking is filed under: "Today", "Yesterday", the day
 /// with its weekday this year, or the date in another.
 String bookingDay(

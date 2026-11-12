@@ -164,6 +164,42 @@ void main() {
     expect(find.textContaining('book this offer again'), findsNothing);
   });
 
+  testWidgets("cancelled by us, it says why and that it doesn't count", (
+    tester,
+  ) async {
+    bookings.bookings = [
+      booking(
+        status: BookingStatus.cancelled,
+        canCancel: false,
+        cancelReason: CancelReason.offerRemoved,
+      ),
+    ];
+    await open(tester);
+
+    expect(find.text('Kaziony cancelled this booking'), findsOneWidget);
+    expect(
+      find.text("We took this offer down. This doesn't count against you."),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('cancelled by the customer, there is nothing to explain', (
+    tester,
+  ) async {
+    bookings.bookings = [
+      booking(
+        status: BookingStatus.cancelled,
+        canCancel: false,
+        cancelReason: CancelReason.customer,
+      ),
+    ];
+    await open(tester);
+
+    expect(find.text('Cancelled'), findsOneWidget);
+    expect(find.text('Kaziony cancelled this booking'), findsNothing);
+    expect(find.text('This booking was cancelled'), findsNothing);
+  });
+
   testWidgets('once over, it hides the code', (tester) async {
     bookings.bookings = [booking(status: BookingStatus.pickedUp)];
     await open(tester);

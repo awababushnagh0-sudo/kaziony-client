@@ -1487,6 +1487,48 @@ abstract class CustomerLocalizations {
   /// **'Know when a booking is about to run out and when your favorite stores post offers.'**
   String get notificationsSignInMessage;
 
+  /// No description provided for @notificationBookingCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Your booking at {store} was cancelled'**
+  String notificationBookingCancelled(String store);
+
+  /// A notification's line: the offer, then what happened to it
+  ///
+  /// In en, this message translates to:
+  /// **'{offer}. {why}'**
+  String notificationAbout(String offer, String why);
+
+  /// No description provided for @cancelledByUsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Kaziony cancelled this booking'**
+  String get cancelledByUsTitle;
+
+  /// No description provided for @cancelledOfferRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'We took this offer down. This doesn\'t count against you.'**
+  String get cancelledOfferRemoved;
+
+  /// No description provided for @cancelledStoreOff.
+  ///
+  /// In en, this message translates to:
+  /// **'This shop can\'t take bookings right now. This doesn\'t count against you.'**
+  String get cancelledStoreOff;
+
+  /// No description provided for @cancelledNotByYouTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This booking was cancelled'**
+  String get cancelledNotByYouTitle;
+
+  /// No description provided for @cancelledNotByYou.
+  ///
+  /// In en, this message translates to:
+  /// **'It wasn\'t your doing, so it doesn\'t count against you.'**
+  String get cancelledNotByYou;
+
   /// No description provided for @refresh.
   ///
   /// In en, this message translates to:

@@ -196,6 +196,7 @@ Booking booking({
   bool canRate = false,
   bool cancelEndsBooking = false,
   int? myRating,
+  CancelReason? cancelReason,
   Duration ago = const Duration(minutes: 18),
 }) => Booking(
   id: id,
@@ -215,6 +216,7 @@ Booking booking({
   limited: limited,
   canRate: canRate,
   myRating: myRating,
+  cancelReason: cancelReason,
 );
 
 class FakeOffersRepository implements OffersRepository {
@@ -388,11 +390,23 @@ class FakeStoresRepository implements StoresRepository {
 
 class FakeNotificationsRepository implements NotificationsRepository {
   Result<List<AppNotification>> result = const Ok([]);
+  Result<int> unread = const Ok(0);
   var loads = 0;
+  var markedRead = 0;
 
   @override
   Future<Result<List<AppNotification>>> list() async {
     loads++;
     return result;
+  }
+
+  @override
+  Future<Result<int>> unreadCount() async => unread;
+
+  @override
+  Future<Result<void>> markAllRead() async {
+    markedRead++;
+    unread = const Ok(0);
+    return const Ok(null);
   }
 }

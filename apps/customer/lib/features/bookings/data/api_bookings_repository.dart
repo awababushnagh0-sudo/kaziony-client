@@ -100,5 +100,15 @@ class ApiBookingsRepository implements BookingsRepository {
     limited: claim.offer.type == api.OfferType.limited,
     canRate: claim.canRate,
     myRating: claim.myRating?.toInt(),
+    cancelReason: toCancelReason(claim.cancelReason),
   );
 }
+
+/// Null for a booking that isn't cancelled.
+CancelReason? toCancelReason(api.CancelReason? reason) => switch (reason) {
+  null => null,
+  api.CancelReason.customer => CancelReason.customer,
+  api.CancelReason.offerRemoved => CancelReason.offerRemoved,
+  api.CancelReason.storeOff => CancelReason.storeOff,
+  api.CancelReason.$unknown => CancelReason.other,
+};

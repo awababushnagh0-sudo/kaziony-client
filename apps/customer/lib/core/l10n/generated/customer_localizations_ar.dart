@@ -903,6 +903,32 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
       'اعرف متى يقترب انتهاء حجزك ومتى تنشر محلاتك المفضلة عروضًا.';
 
   @override
+  String notificationBookingCancelled(String store) {
+    return 'أُلغي حجزك في $store';
+  }
+
+  @override
+  String notificationAbout(String offer, String why) {
+    return '$offer. $why';
+  }
+
+  @override
+  String get cancelledByUsTitle => 'ألغى كزيوني هذا الحجز';
+
+  @override
+  String get cancelledOfferRemoved => 'أوقفنا هذا العرض، ولا يُحسب هذا عليك.';
+
+  @override
+  String get cancelledStoreOff =>
+      'هذا المحل لا يستقبل الحجوزات حاليًا، ولا يُحسب هذا عليك.';
+
+  @override
+  String get cancelledNotByYouTitle => 'أُلغي هذا الحجز';
+
+  @override
+  String get cancelledNotByYou => 'لم يكن ذلك منك، فلا يُحسب عليك.';
+
+  @override
   String get refresh => 'تحديث';
 
   @override

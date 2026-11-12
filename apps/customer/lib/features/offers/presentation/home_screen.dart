@@ -7,6 +7,7 @@ import '../../../core/widgets/customer_illustrations.dart';
 import '../../../core/widgets/no_offers_view.dart';
 import '../../location/domain/browse_location.dart';
 import '../../location/presentation/places_screen.dart';
+import '../../notifications/presentation/notifications_view_model.dart';
 import '../../stores/domain/store.dart';
 import '../../stores/presentation/stores_view_model.dart';
 import '../../stores/presentation/widgets/store_logo_row.dart';
@@ -42,7 +43,8 @@ class HomeScreen extends AppView {
                 ref
                   ..invalidate(categoriesProvider)
                   ..invalidate(nearbyStoresProvider)
-                  ..invalidate(favoriteStoresViewModel);
+                  ..invalidate(favoriteStoresViewModel)
+                  ..invalidate(unreadNotificationsProvider);
                 final failure = await ref
                     .read(homeFeedProvider.notifier)
                     .refresh();
@@ -66,6 +68,7 @@ class HomeScreen extends AppView {
                 trailing: SButton.onBand(
                   icon: SIcons.notifications,
                   tooltip: s.notificationsTitle,
+                  count: ref.watch(unreadNotificationsProvider).value ?? 0,
                   onPressed: () => context.push(Routes.notifications),
                 ),
               ),

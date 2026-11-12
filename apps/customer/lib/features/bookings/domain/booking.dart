@@ -12,6 +12,22 @@ enum BookingStatus {
   cancelled,
 }
 
+/// Who cancelled a booking. Only the customer's own cancels count against
+/// them.
+enum CancelReason {
+  /// The customer did.
+  customer,
+
+  /// Our team took the offer down.
+  offerRemoved,
+
+  /// Our team turned the store off.
+  storeOff,
+
+  /// Not the customer, for a reason added after this version of the app.
+  other,
+}
+
 /// A reservation of an offer: the code to show at the counter.
 class Booking {
   const Booking({
@@ -35,6 +51,7 @@ class Booking {
     this.storeLogoUrl,
     this.pickedUpAt,
     this.myRating,
+    this.cancelReason,
   });
 
   final String id;
@@ -77,6 +94,16 @@ class Booking {
   /// The stars (1 to 5) the customer gave the store: one rating per store,
   /// from this pickup or another. Null before they rate it.
   final int? myRating;
+
+  /// Who cancelled it, once cancelled.
+  final CancelReason? cancelReason;
+
+  /// Cancelled, but not by the customer: it doesn't count against them,
+  /// and the app says why.
+  bool get cancelledForCustomer =>
+      status == BookingStatus.cancelled &&
+      cancelReason != null &&
+      cancelReason != CancelReason.customer;
 
   /// Still to be picked up: reserved and not past its time.
   bool isActiveAt(DateTime now) =>

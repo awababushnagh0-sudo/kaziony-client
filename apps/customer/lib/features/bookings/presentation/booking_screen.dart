@@ -224,6 +224,9 @@ class _Past extends StatelessWidget {
           note: booking.storeName,
           dimmed: booking.status != BookingStatus.pickedUp,
         ),
+        if (booking.cancelReason case final reason?
+            when booking.cancelledForCustomer)
+          _CancelledFor(reason),
         SListGroup(
           children: [
             SFactTile(label: s.factPieces, value: '${booking.quantity}'),
@@ -246,6 +249,23 @@ class _Past extends StatelessWidget {
           _Rating(booking: booking),
       ],
     );
+  }
+}
+
+/// Who cancelled a booking the customer didn't, and that it doesn't count
+/// against them.
+class _CancelledFor extends StatelessWidget {
+  const _CancelledFor(this.reason);
+
+  final CancelReason reason;
+
+  @override
+  Widget build(BuildContext context) {
+    final (:title, :message) = cancelledFor(
+      CustomerLocalizations.of(context),
+      reason,
+    );
+    return SAlert.warning(title: title, message: message);
   }
 }
 

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:customer/core/routes/routes.dart';
 import 'package:customer/features/location/domain/browse_location.dart';
+import 'package:customer/features/notifications/domain/app_notification.dart';
 import 'package:customer/features/offers/domain/offer.dart';
 import 'package:customer/features/offers/presentation/home_screen.dart';
 import 'package:customer/features/offers/presentation/widgets/offer_card.dart';
@@ -17,11 +18,13 @@ void main() {
   late FakeOffersRepository offers;
   late FakeStoresRepository stores;
   late FakeServiceAreaRepository areas;
+  late FakeNotificationsRepository notifications;
 
   setUp(() {
     offers = FakeOffersRepository();
     stores = FakeStoresRepository();
     areas = FakeServiceAreaRepository();
+    notifications = FakeNotificationsRepository();
   });
 
   Future<void> open(WidgetTester tester, {bool signedIn = false}) =>
@@ -42,6 +45,7 @@ void main() {
           offersRepositoryProvider.overrideWithValue(offers),
           storesRepositoryProvider.overrideWithValue(stores),
           serviceAreaRepositoryProvider.overrideWithValue(areas),
+          notificationsRepositoryProvider.overrideWithValue(notifications),
           browseLocationProvider.overrideWith(
             () => BrowseLocationController(
               const BrowseLocation(souqAlJuma, pinned: false),
@@ -82,6 +86,16 @@ void main() {
     await open(tester);
 
     expect(find.text('Offers nearby'), findsOneWidget);
+  });
+
+  testWidgets("the bell counts the notifications the customer hasn't seen", (
+    tester,
+  ) async {
+    notifications.unread = const Ok(2);
+    await open(tester, signedIn: true);
+
+    final bell = find.byTooltip('Notifications');
+    expect(find.descendant(of: bell, matching: find.text('2')), findsOneWidget);
   });
 
   testWidgets('the bell opens the notifications', (tester) async {

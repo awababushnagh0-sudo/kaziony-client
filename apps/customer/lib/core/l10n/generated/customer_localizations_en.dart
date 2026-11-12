@@ -891,6 +891,34 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
       'Know when a booking is about to run out and when your favorite stores post offers.';
 
   @override
+  String notificationBookingCancelled(String store) {
+    return 'Your booking at $store was cancelled';
+  }
+
+  @override
+  String notificationAbout(String offer, String why) {
+    return '$offer. $why';
+  }
+
+  @override
+  String get cancelledByUsTitle => 'Kaziony cancelled this booking';
+
+  @override
+  String get cancelledOfferRemoved =>
+      'We took this offer down. This doesn\'t count against you.';
+
+  @override
+  String get cancelledStoreOff =>
+      'This shop can\'t take bookings right now. This doesn\'t count against you.';
+
+  @override
+  String get cancelledNotByYouTitle => 'This booking was cancelled';
+
+  @override
+  String get cancelledNotByYou =>
+      'It wasn\'t your doing, so it doesn\'t count against you.';
+
+  @override
   String get refresh => 'Refresh';
 
   @override

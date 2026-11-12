@@ -2,13 +2,16 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/customer_localizations.dart';
+import '../../../core/routes/routes.dart';
 import '../../../core/widgets/customer_illustrations.dart';
 import '../../../core/widgets/sign_in_prompt.dart';
+import '../../bookings/presentation/booking_texts.dart';
+import '../domain/app_notification.dart';
 import 'notifications_view_model.dart';
 
 /// What the app told the customer, the newest first, opened from the bell
-/// on home. With none, a picture and the way to look again; signed out,
-/// the way to sign in.
+/// on home; each opens what it's about. With none, a picture and the way to
+/// look again; signed out, the way to sign in.
 class NotificationsScreen extends AppView {
   const NotificationsScreen({super.key});
 
@@ -58,11 +61,9 @@ class _Notifications extends AppView {
           slivers: [
             SliverList.separated(
               itemCount: notifications.length,
-              itemBuilder: (_, i) => SListTile(
-                icon: SIcons.notifications,
-                title: notifications[i].title,
-                subtitle: notifications[i].body,
-                value: formatWhen(
+              itemBuilder: (_, i) => _Notification(
+                notifications[i],
+                sent: formatWhen(
                   notifications[i].sentAt,
                   languageCode: language,
                 ),
@@ -73,5 +74,31 @@ class _Notifications extends AppView {
         );
       },
     );
+  }
+}
+
+class _Notification extends StatelessWidget {
+  const _Notification(this.notification, {required this.sent});
+
+  final AppNotification notification;
+  final String sent;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = CustomerLocalizations.of(context);
+    return switch (notification) {
+      final BookingCancelledNotification n => SListTile(
+        icon: SIcons.notifications,
+        title: s.notificationBookingCancelled(
+          [n.storeName, n.storeArea].join(' · '),
+        ),
+        subtitle: s.notificationAbout(
+          n.offerTitle,
+          cancelledFor(s, n.reason).message,
+        ),
+        value: sent,
+        onTap: () => context.push(Routes.booking(n.bookingId)),
+      ),
+    };
   }
 }
