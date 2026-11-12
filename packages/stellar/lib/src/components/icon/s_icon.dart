@@ -45,6 +45,9 @@ enum SIcons {
   /// A customer's reservations.
   bookings,
 
+  /// Brought by a store's own driver.
+  delivery,
+
   /// Offers and stores a customer saved.
   favorites,
 

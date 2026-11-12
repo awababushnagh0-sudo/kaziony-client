@@ -186,6 +186,11 @@ IconData materialIcon(SIcons icon) => switch (icon) {
     fontFamily: _f,
     fontPackage: _p,
   ), // ticket
+  SIcons.delivery => const IconData(
+    0xe194,
+    fontFamily: _f,
+    fontPackage: _p,
+  ), // truck
   SIcons.favorites => const IconData(
     0xe0f2,
     fontFamily: _f,
