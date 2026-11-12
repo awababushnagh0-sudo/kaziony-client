@@ -188,6 +188,19 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get closedToday => 'مغلق اليوم';
 
   @override
+  String storeClosesIn(String time) {
+    return 'يغلق بعد $time';
+  }
+
+  @override
+  String get storeClosedNow => 'مغلق الآن';
+
+  @override
+  String storeOpensAt(String when) {
+    return 'يفتح $when';
+  }
+
+  @override
   String hoursBetween(String open, String close) {
     return '$open – $close';
   }
@@ -565,6 +578,50 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get holdMessage => 'من وقت الحجز، ولا يتجاوز نهاية العرض.';
 
   @override
+  String get holdShort => 'وقت أقل';
+
+  @override
+  String holdUntilClosing(String time) {
+    return 'يغلق المحل $time، فاستلم قبلها.';
+  }
+
+  @override
+  String holdUntilOfferEnds(String time) {
+    return 'ينتهي العرض $time، فاستلم قبلها.';
+  }
+
+  @override
+  String get bookingClosedTitle => 'الحجز يفتح مع فتح المحل';
+
+  @override
+  String get bookingTooLateTitle => 'توقف الحجز لقرب إغلاق المحل';
+
+  @override
+  String bookingTooLateMessage(String time, String minutes) {
+    return 'يغلق المحل $time، ويتوقف الحجز قبلها بـ$minutes.';
+  }
+
+  @override
+  String bookingClosedButton(String when) {
+    return 'مغلق الآن · يفتح $when';
+  }
+
+  @override
+  String bookingTooLateButton(String time) {
+    return 'فات وقت الحجز · يغلق $time';
+  }
+
+  @override
+  String reserveShortUntilClosing(String time, String close) {
+    return 'عندك $time فقط للاستلام: يغلق المحل $close';
+  }
+
+  @override
+  String reserveShortUntilEnd(String time, String end) {
+    return 'عندك $time فقط للاستلام: ينتهي العرض $end';
+  }
+
+  @override
   String holdHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
@@ -635,6 +692,16 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   }
 
   @override
+  String reserveHoldUntilClosingNote(String time, String close) {
+    return 'عندك $time للاستلام، حتى يغلق المحل $close. وتدفع نقدًا وقتها.';
+  }
+
+  @override
+  String reserveHoldUntilEndNote(String time, String end) {
+    return 'عندك $time للاستلام، حتى ينتهي العرض $end. وتدفع نقدًا وقتها.';
+  }
+
+  @override
   String get reserveUntilEndNote =>
       'رمزك صالح حتى نهاية العرض، وتدفع نقدًا عند الاستلام.';
 
@@ -678,6 +745,13 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String get reserveEnded => 'انتهى هذا العرض.';
+
+  @override
+  String get reserveStoreClosed => 'المحل مغلق الآن. احجز عندما يفتح.';
+
+  @override
+  String get reserveStoreClosingSoon =>
+      'يغلق المحل قريبًا، ولا يكفي الوقت للوصول.';
 
   @override
   String get reservePaused => 'الحجز موقوف لأيام بسبب استلامات فاتتك.';
@@ -758,6 +832,11 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String get pickupTimeLeftLabel => 'متبقي للاستلام';
+
+  @override
+  String pickupUntilClosing(String time) {
+    return 'حتى يغلق المحل $time';
+  }
 
   @override
   String oneCodeFor(int count) {

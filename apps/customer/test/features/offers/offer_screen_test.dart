@@ -266,6 +266,102 @@ void main() {
     expect(find.text('You have 2 hours to pick up'), findsOneWidget);
   });
 
+  testWidgets('the store closing first, it says so before booking', (
+    tester,
+  ) async {
+    offers.offers = [
+      offer(location: placeOpenUntil(const Duration(hours: 12, minutes: 40))),
+    ];
+    await open(tester);
+
+    expect(find.text('Closes in 40 minutes'), findsOneWidget);
+    expect(find.text('You have 40 minutes to pick up'), findsOneWidget);
+    expect(
+      find.textContaining(
+        RegExp('^The store closes at 12:40.PM: pick up before then.\$'),
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('Less time'), findsOneWidget);
+    expect(
+      find.textContaining(
+        RegExp('^Only 40 minutes to pick up: the store closes at 12:40.PM\$'),
+      ),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.text('Reserve now'));
+    await tester.pumpAndSettle();
+    expect(
+      find.textContaining(
+        RegExp(
+          '^You have 40 minutes to pick up, until the store closes at '
+          '12:40.PM. You pay cash then.\$',
+        ),
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('while the store is closed, the button says when it opens', (
+    tester,
+  ) async {
+    offers.offers = [
+      offer(
+        location: placeOpenUntil(
+          const Duration(hours: 23),
+          opens: const Duration(hours: 14),
+        ),
+      ),
+    ];
+    await open(tester);
+
+    expect(find.text('Closed now'), findsOneWidget);
+    expect(find.text('Booking opens when the store does'), findsOneWidget);
+    // Under the hours, and in Good to know.
+    expect(find.textContaining(RegExp('^Opens 2:00.PM\$')), findsNWidgets(2));
+    final closed = find.textContaining(RegExp('^Closed now · opens 2:00.PM\$'));
+    expect(closed, findsOneWidget);
+    expect(find.text('Reserve now'), findsNothing);
+    await tester.tap(closed);
+    await tester.pumpAndSettle();
+    expect(find.text('Confirm reservation'), findsNothing);
+  });
+
+  testWidgets('too close to closing, booking has stopped', (tester) async {
+    offers.offers = [
+      offer(location: placeOpenUntil(const Duration(hours: 12, minutes: 10))),
+    ];
+    await open(tester);
+
+    expect(
+      find.textContaining(RegExp('^Too late to book · closes 12:10.PM\$')),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Booking has stopped: the store closes soon'),
+      findsOneWidget,
+    );
+    expect(find.text('Reserve now'), findsNothing);
+  });
+
+  testWidgets('a code good until the end is given while closed', (
+    tester,
+  ) async {
+    offers.offers = [
+      offer(
+        limited: false,
+        location: placeOpenUntil(
+          const Duration(hours: 23),
+          opens: const Duration(hours: 14),
+        ),
+      ),
+    ];
+    await open(tester);
+
+    expect(find.text('Reserve now'), findsOneWidget);
+  });
+
   testWidgets('while booking is paused, the button says until when', (
     tester,
   ) async {
@@ -359,6 +455,25 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('pickup code page'), findsNothing);
+  });
+
+  testWidgets('refused as the store closed meanwhile, the sheet says so', (
+    tester,
+  ) async {
+    bookings.reserveResult = const Err(
+      ConflictFailure('The store is closed now', 'StoreClosed'),
+    );
+    await open(tester);
+
+    await tester.tap(find.text('Reserve now'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Confirm reservation'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('The store is closed now. Book once it opens.'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('refused for a pause, the sheet says until when', (tester) async {

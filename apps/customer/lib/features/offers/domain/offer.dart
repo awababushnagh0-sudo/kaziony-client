@@ -1,5 +1,7 @@
 import 'package:kernel/kernel.dart';
 
+import 'booking_window.dart';
+
 /// A kind of store (bakeries, sweets, cafés): what offers are filtered by.
 class Category {
   const Category({
@@ -84,6 +86,7 @@ class Offer {
     required this.discountPercent,
     required this.limited,
     required this.claimWindowMinutes,
+    required this.lastBookingMinutes,
     required this.startsAt,
     required this.endsAt,
     required this.store,
@@ -108,7 +111,8 @@ class Offer {
   final int discountPercent;
 
   /// Counted pieces, held for [claimWindowMinutes] once reserved (never
-  /// past the offer's end); else a code good until the offer ends.
+  /// past the offer's end, nor the store's closing: [bookingAt]); else a
+  /// code good until the offer ends.
   final bool limited;
   final int? remaining;
   final int? total;
@@ -116,6 +120,10 @@ class Offer {
   /// The most one customer can take; null for no limit.
   final int? maxPerUser;
   final int claimWindowMinutes;
+
+  /// Counted pieces can't be booked in the store's last minutes before it
+  /// closes, nor while it's closed.
+  final int lastBookingMinutes;
 
   /// When it can be picked up: from [startsAt] until [endsAt].
   final DateTime startsAt;
@@ -139,6 +147,18 @@ class Offer {
 
   /// No offer needs more at once; keeps the picker short.
   static const _unlimitedMax = 10;
+
+  /// What reserving it at [now] gets, by the store's hours; null for a
+  /// code good until the offer ends, whenever it's taken.
+  BookingWindow? bookingAt(DateTime now) => limited
+      ? BookingWindow.at(
+          now,
+          hours: location.hours,
+          holdMinutes: claimWindowMinutes,
+          endsAt: endsAt,
+          lastBookingMinutes: lastBookingMinutes,
+        )
+      : null;
 
   /// A few pieces left: worth saying in orange.
   bool get almostGone => limited && (remaining ?? 0) <= _almostGone;

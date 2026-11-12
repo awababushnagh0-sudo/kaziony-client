@@ -153,6 +153,21 @@ const place = StoreLocation(
   distanceKm: 1.2,
 );
 
+/// [place], open on Mondays (as [now] is) from 8 AM until [closes] (a
+/// time of day).
+StoreLocation placeOpenUntil(
+  Duration closes, {
+  Duration opens = const Duration(hours: 8),
+}) => StoreLocation(
+  point: place.point,
+  area: place.area,
+  hours: OpeningHours({
+    Weekday.mon: [
+      OpeningShift(opens: opens.inMinutes, closes: closes.inMinutes),
+    ],
+  }),
+);
+
 /// A counted offer with [remaining] of 10 left.
 Offer offer({
   String id = 'o1',
@@ -176,6 +191,7 @@ Offer offer({
   total: limited ? 10 : null,
   maxPerUser: maxPerUser,
   claimWindowMinutes: claimWindowMinutes,
+  lastBookingMinutes: 20,
   startsAt: startsAt ?? now.subtract(const Duration(hours: 1)),
   endsAt: endsAt ?? now.add(const Duration(hours: 5)),
   store: OfferStore(
@@ -200,6 +216,7 @@ Booking booking({
   Duration ago = const Duration(minutes: 18),
   String? deliveryPhone,
   DateTime? sentForDeliveryAt,
+  StoreLocation location = place,
 }) => Booking(
   id: id,
   code: 'A2GUGPJ7',
@@ -212,7 +229,7 @@ Booking booking({
   offerTitle: 'Kunafa box',
   offerPrice: '15.000',
   storeName: 'Sweet shop',
-  location: place,
+  location: location,
   canCancel: canCancel,
   cancelEndsBooking: cancelEndsBooking,
   limited: limited,

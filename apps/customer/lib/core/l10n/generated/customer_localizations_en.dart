@@ -181,6 +181,19 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get closedToday => 'Closed today';
 
   @override
+  String storeClosesIn(String time) {
+    return 'Closes in $time';
+  }
+
+  @override
+  String get storeClosedNow => 'Closed now';
+
+  @override
+  String storeOpensAt(String when) {
+    return 'Opens $when';
+  }
+
+  @override
   String hoursBetween(String open, String close) {
     return '$open – $close';
   }
@@ -560,6 +573,51 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
       'From when you reserve, and never past the offer\'s end.';
 
   @override
+  String get holdShort => 'Less time';
+
+  @override
+  String holdUntilClosing(String time) {
+    return 'The store closes at $time: pick up before then.';
+  }
+
+  @override
+  String holdUntilOfferEnds(String time) {
+    return 'The offer ends at $time: pick up before then.';
+  }
+
+  @override
+  String get bookingClosedTitle => 'Booking opens when the store does';
+
+  @override
+  String get bookingTooLateTitle =>
+      'Booking has stopped: the store closes soon';
+
+  @override
+  String bookingTooLateMessage(String time, String minutes) {
+    return 'The store closes at $time, and booking stops $minutes before.';
+  }
+
+  @override
+  String bookingClosedButton(String when) {
+    return 'Closed now · opens $when';
+  }
+
+  @override
+  String bookingTooLateButton(String time) {
+    return 'Too late to book · closes $time';
+  }
+
+  @override
+  String reserveShortUntilClosing(String time, String close) {
+    return 'Only $time to pick up: the store closes at $close';
+  }
+
+  @override
+  String reserveShortUntilEnd(String time, String end) {
+    return 'Only $time to pick up: the offer ends at $end';
+  }
+
+  @override
   String holdHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
@@ -626,6 +684,16 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   }
 
   @override
+  String reserveHoldUntilClosingNote(String time, String close) {
+    return 'You have $time to pick up, until the store closes at $close. You pay cash then.';
+  }
+
+  @override
+  String reserveHoldUntilEndNote(String time, String end) {
+    return 'You have $time to pick up, until the offer ends at $end. You pay cash then.';
+  }
+
+  @override
   String get reserveUntilEndNote =>
       'Your code works until the offer ends. You pay cash when you pick up.';
 
@@ -668,6 +736,14 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String get reserveEnded => 'This offer has ended.';
+
+  @override
+  String get reserveStoreClosed =>
+      'The store is closed now. Book once it opens.';
+
+  @override
+  String get reserveStoreClosingSoon =>
+      'The store closes too soon to get there in time.';
 
   @override
   String get reservePaused =>
@@ -745,6 +821,11 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String get pickupTimeLeftLabel => 'Left to pick up';
+
+  @override
+  String pickupUntilClosing(String time) {
+    return 'Until the store closes at $time';
+  }
 
   @override
   String oneCodeFor(int count) {

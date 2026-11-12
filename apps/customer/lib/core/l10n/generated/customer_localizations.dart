@@ -335,6 +335,24 @@ abstract class CustomerLocalizations {
   /// **'Closed today'**
   String get closedToday;
 
+  /// No description provided for @storeClosesIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Closes in {time}'**
+  String storeClosesIn(String time);
+
+  /// No description provided for @storeClosedNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed now'**
+  String get storeClosedNow;
+
+  /// No description provided for @storeOpensAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens {when}'**
+  String storeOpensAt(String when);
+
   /// No description provided for @hoursBetween.
   ///
   /// In en, this message translates to:
@@ -1007,6 +1025,66 @@ abstract class CustomerLocalizations {
   /// **'From when you reserve, and never past the offer\'s end.'**
   String get holdMessage;
 
+  /// No description provided for @holdShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Less time'**
+  String get holdShort;
+
+  /// No description provided for @holdUntilClosing.
+  ///
+  /// In en, this message translates to:
+  /// **'The store closes at {time}: pick up before then.'**
+  String holdUntilClosing(String time);
+
+  /// No description provided for @holdUntilOfferEnds.
+  ///
+  /// In en, this message translates to:
+  /// **'The offer ends at {time}: pick up before then.'**
+  String holdUntilOfferEnds(String time);
+
+  /// No description provided for @bookingClosedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking opens when the store does'**
+  String get bookingClosedTitle;
+
+  /// No description provided for @bookingTooLateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking has stopped: the store closes soon'**
+  String get bookingTooLateTitle;
+
+  /// No description provided for @bookingTooLateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The store closes at {time}, and booking stops {minutes} before.'**
+  String bookingTooLateMessage(String time, String minutes);
+
+  /// No description provided for @bookingClosedButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed now · opens {when}'**
+  String bookingClosedButton(String when);
+
+  /// No description provided for @bookingTooLateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Too late to book · closes {time}'**
+  String bookingTooLateButton(String time);
+
+  /// No description provided for @reserveShortUntilClosing.
+  ///
+  /// In en, this message translates to:
+  /// **'Only {time} to pick up: the store closes at {close}'**
+  String reserveShortUntilClosing(String time, String close);
+
+  /// No description provided for @reserveShortUntilEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Only {time} to pick up: the offer ends at {end}'**
+  String reserveShortUntilEnd(String time, String end);
+
   /// No description provided for @holdHours.
   ///
   /// In en, this message translates to:
@@ -1091,6 +1169,18 @@ abstract class CustomerLocalizations {
   /// **'You have {time} to pick up, and you pay cash then.'**
   String reserveHoldNote(String time);
 
+  /// No description provided for @reserveHoldUntilClosingNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You have {time} to pick up, until the store closes at {close}. You pay cash then.'**
+  String reserveHoldUntilClosingNote(String time, String close);
+
+  /// No description provided for @reserveHoldUntilEndNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You have {time} to pick up, until the offer ends at {end}. You pay cash then.'**
+  String reserveHoldUntilEndNote(String time, String end);
+
   /// No description provided for @reserveUntilEndNote.
   ///
   /// In en, this message translates to:
@@ -1150,6 +1240,18 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'This offer has ended.'**
   String get reserveEnded;
+
+  /// No description provided for @reserveStoreClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'The store is closed now. Book once it opens.'**
+  String get reserveStoreClosed;
+
+  /// No description provided for @reserveStoreClosingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'The store closes too soon to get there in time.'**
+  String get reserveStoreClosingSoon;
 
   /// No description provided for @reservePaused.
   ///
@@ -1240,6 +1342,12 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'Left to pick up'**
   String get pickupTimeLeftLabel;
+
+  /// No description provided for @pickupUntilClosing.
+  ///
+  /// In en, this message translates to:
+  /// **'Until the store closes at {time}'**
+  String pickupUntilClosing(String time);
 
   /// No description provided for @oneCodeFor.
   ///

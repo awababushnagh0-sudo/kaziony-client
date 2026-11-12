@@ -68,6 +68,28 @@ void main() {
     expect(find.byTooltip('Close'), findsOneWidget);
   });
 
+  testWidgets('held until the store closes, the pass says so', (tester) async {
+    bookings.bookings = [
+      booking(
+        left: const Duration(minutes: 40),
+        location: placeOpenUntil(const Duration(hours: 12, minutes: 40)),
+      ),
+    ];
+    await open(tester);
+
+    expect(find.text('40:00'), findsOneWidget);
+    expect(
+      find.textContaining(RegExp('^Until the store closes at 12:40.PM\$')),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('held for the usual time, nothing more is said', (tester) async {
+    await open(tester);
+
+    expect(find.textContaining('Until the store closes'), findsNothing);
+  });
+
   testWidgets('the place opens the way there, and its phone calls', (
     tester,
   ) async {

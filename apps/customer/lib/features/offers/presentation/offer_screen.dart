@@ -9,6 +9,7 @@ import '../../../core/widgets/store_location_box.dart';
 import '../../bookings/presentation/bookings_view_model.dart';
 import '../../bookings/presentation/reserve_sheet.dart';
 import '../../bookings/presentation/reserve_view_model.dart';
+import '../domain/booking_window.dart';
 import '../domain/offer.dart';
 import 'offer_texts.dart';
 import 'offer_view_model.dart';
@@ -189,12 +190,8 @@ class _Body extends AppView {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (offer.limited)
-                SListTile(
-                  icon: SIcons.hourglass,
-                  title: s.holdTitle(s.holdTime(offer.claimWindowMinutes)),
-                  subtitle: s.holdMessage,
-                )
+              if (offer.bookingAt(now) case final window?)
+                _HoldTile(offer: offer, window: window, now: now)
               else
                 SListTile(
                   icon: SIcons.hourglass,
@@ -349,10 +346,65 @@ class _StoreCard extends StatelessWidget {
   }
 }
 
+/// Good to know, for counted pieces: how long they're held once reserved
+/// now, and in orange why when it's less (the store closes, or the offer
+/// ends); while they can't be booked, why and until when.
+class _HoldTile extends StatelessWidget {
+  const _HoldTile({
+    required this.offer,
+    required this.window,
+    required this.now,
+  });
+
+  final Offer offer;
+  final BookingWindow window;
+  final DateTime now;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = CustomerLocalizations.of(context);
+    final language = Localizations.localeOf(context).languageCode;
+    String at(DateTime time) =>
+        formatWhen(time, languageCode: language, now: now);
+    final short = SBadge(s.holdShort, tone: BadgeTone.warning);
+    return switch (window) {
+      BookingHeld(short: false) => SListTile(
+        icon: SIcons.hourglass,
+        title: s.holdTitle(s.holdTime(offer.claimWindowMinutes)),
+        subtitle: s.holdMessage,
+      ),
+      BookingHeld(:final minutes, :final until, :final end) => SListTile(
+        icon: SIcons.hourglass,
+        title: s.holdTitle(s.holdTime(minutes)),
+        subtitle: end == HeldEnd.storeCloses
+            ? s.holdUntilClosing(at(until))
+            : s.holdUntilOfferEnds(at(until)),
+        trailing: short,
+      ),
+      BookingClosed(:final opensAt) => SListTile(
+        icon: SIcons.hourglass,
+        title: s.bookingClosedTitle,
+        subtitle: opensAt == null
+            ? s.storeClosedNow
+            : s.storeOpensAt(at(opensAt)),
+      ),
+      BookingTooLate(:final closesAt) => SListTile(
+        icon: SIcons.hourglass,
+        title: s.bookingTooLateTitle,
+        subtitle: s.bookingTooLateMessage(
+          at(closesAt),
+          s.holdTime(offer.lastBookingMinutes),
+        ),
+      ),
+    };
+  }
+}
+
 /// The way to reserve, with how many beside it when more than one can be
 /// taken: signing in first, or the pickup code once reserved. While
-/// booking is paused for the customer, until when instead; holding the
-/// most reservations at once, said over it before they try.
+/// booking is paused for the customer, or the store is closed or about to,
+/// why instead; holding the most reservations at once, or less time than
+/// usual to pick up, said over it before they try.
 class _Footer extends AppView {
   const _Footer({required this.detail});
 
@@ -379,8 +431,8 @@ class _Footer extends AppView {
     final signedIn = ref.watch(sessionProvider) is SignedIn;
     final standing = ref.watch(bookingStandingProvider).value;
     final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
+    final language = Localizations.localeOf(context).languageCode;
     if (standing != null && standing.pausedAt(now)) {
-      final language = Localizations.localeOf(context).languageCode;
       return SDealFooter(
         action: SButton(
           label: s.bookingPausedUntil(
@@ -390,6 +442,33 @@ class _Footer extends AppView {
           onPressed: null,
         ),
       );
+    }
+    final window = offer.bookingAt(now);
+    switch (window) {
+      case BookingClosed(:final opensAt):
+        return SDealFooter(
+          action: SButton(
+            label: opensAt == null
+                ? s.storeClosedNow
+                : s.bookingClosedButton(
+                    formatWhen(opensAt, languageCode: language, now: now),
+                  ),
+            expand: true,
+            onPressed: null,
+          ),
+        );
+      case BookingTooLate(:final closesAt):
+        return SDealFooter(
+          action: SButton(
+            label: s.bookingTooLateButton(
+              formatWhen(closesAt, languageCode: language, now: now),
+            ),
+            expand: true,
+            onPressed: null,
+          ),
+        );
+      case BookingHeld() || null:
+        break;
     }
     final quantity = ref.watch(reserveViewModel(offer)).quantity;
     return Column(
@@ -403,6 +482,25 @@ class _Footer extends AppView {
         if (standing != null && standing.full && offer.limited)
           SText.caption(
             s.reserveFullNote(standing.maxActiveReservations),
+            align: TextAlign.center,
+          ),
+        if (window case BookingHeld(
+          short: true,
+          :final minutes,
+          :final until,
+          :final end,
+        ))
+          SText.caption(
+            end == HeldEnd.storeCloses
+                ? s.reserveShortUntilClosing(
+                    s.holdTime(minutes),
+                    formatWhen(until, languageCode: language, now: now),
+                  )
+                : s.reserveShortUntilEnd(
+                    s.holdTime(minutes),
+                    formatWhen(until, languageCode: language, now: now),
+                  ),
+            color: SColor.warning,
             align: TextAlign.center,
           ),
         SDealFooter(

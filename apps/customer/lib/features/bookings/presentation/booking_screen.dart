@@ -223,14 +223,27 @@ class _Ticket extends StatelessWidget {
               weight: SFontWeight.bold,
               align: TextAlign.center,
             )
-          else if (booking.limited)
+          else if (booking.limited) ...[
             SCountdown(
               label: s.pickupTimeLeftLabel,
               time: countdown(booking.expiresAt.difference(now)),
               left: booking.expiresAt.difference(now),
               total: booking.expiresAt.difference(booking.createdAt),
-            )
-          else
+            ),
+            // Held until the store closes, sooner than usual: why.
+            if (booking.location.hours.closesAt(booking.expiresAt))
+              SText.caption(
+                s.pickupUntilClosing(
+                  formatWhen(
+                    booking.expiresAt,
+                    languageCode: language,
+                    now: now,
+                  ),
+                ),
+                color: SColor.warning,
+                align: TextAlign.center,
+              ),
+          ] else
             SText(
               s.validUntil(
                 formatWhen(booking.expiresAt, languageCode: language),

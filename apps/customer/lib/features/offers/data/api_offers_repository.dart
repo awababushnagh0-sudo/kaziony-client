@@ -95,6 +95,7 @@ Offer toOffer(api.PublicOfferDto offer) => Offer(
   total: offer.totalQuantity?.toInt(),
   maxPerUser: offer.maxPerUser?.toInt(),
   claimWindowMinutes: offer.claimWindowMinutes.toInt(),
+  lastBookingMinutes: offer.lastBookingMinutes.toInt(),
   startsAt: offer.startsAt.toLocal(),
   endsAt: offer.endsAt.toLocal(),
   store: OfferStore(

@@ -145,6 +145,8 @@ String reserveFailureMessage(
     ConflictFailure(code: 'SoldOut') => s.soldOut,
     ConflictFailure(code: 'OfferNotStarted') => s.reserveNotStarted,
     ConflictFailure(code: 'OfferEnded') => s.reserveEnded,
+    ConflictFailure(code: 'StoreClosed') => s.reserveStoreClosed,
+    ConflictFailure(code: 'StoreClosingSoon') => s.reserveStoreClosingSoon,
     ForbiddenFailure(code: 'ClaimBanned') =>
       pausedUntil == null
           ? s.reservePaused

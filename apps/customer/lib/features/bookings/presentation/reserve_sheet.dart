@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/customer_localizations.dart';
 import '../../../core/routes/routes.dart';
+import '../../offers/domain/booking_window.dart';
 import '../../offers/domain/offer.dart';
 import '../../offers/presentation/home_view_model.dart';
 import '../../offers/presentation/offer_texts.dart';
@@ -13,7 +14,8 @@ import 'reserve_view_model.dart';
 
 /// Asks to confirm the pieces of [offer] picked on its page
 /// ([reserveViewModel]), reserves them, and opens the pickup code. The
-/// sheet says how long they're held and, when refused, why.
+/// sheet says how long they're held (until the store closes, when that's
+/// sooner) and, when refused, why.
 Future<void> reserve(BuildContext context, WidgetRef ref, Offer offer) async {
   final s = CustomerLocalizations.of(context);
   final provider = reserveViewModel(offer);
@@ -54,9 +56,7 @@ class _Confirm extends AppView {
       spacing: Space.lg,
       children: [
         SText(
-          offer.limited
-              ? s.reserveHoldNote(s.holdTime(offer.claimWindowMinutes))
-              : s.reserveUntilEndNote,
+          _holdNote(context, offer.bookingAt(now), now),
           color: SColor.textMuted,
           align: TextAlign.center,
         ),
@@ -83,4 +83,24 @@ class _Confirm extends AppView {
       ],
     );
   }
+}
+
+/// How long the pieces are held once reserved now, and until when when
+/// that's less than usual; for a code, until the offer ends. Should the
+/// store close meanwhile, why it can't be booked, as the backend would say.
+String _holdNote(BuildContext context, BookingWindow? window, DateTime now) {
+  final s = CustomerLocalizations.of(context);
+  final language = Localizations.localeOf(context).languageCode;
+  String at(DateTime time) =>
+      formatWhen(time, languageCode: language, now: now);
+  return switch (window) {
+    null => s.reserveUntilEndNote,
+    BookingHeld(:final minutes, :final until, end: HeldEnd.storeCloses) =>
+      s.reserveHoldUntilClosingNote(s.holdTime(minutes), at(until)),
+    BookingHeld(:final minutes, :final until, end: HeldEnd.offerEnds) =>
+      s.reserveHoldUntilEndNote(s.holdTime(minutes), at(until)),
+    BookingHeld(:final minutes) => s.reserveHoldNote(s.holdTime(minutes)),
+    BookingClosed() => s.reserveStoreClosed,
+    BookingTooLate() => s.reserveStoreClosingSoon,
+  };
 }

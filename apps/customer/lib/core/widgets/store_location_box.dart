@@ -59,8 +59,8 @@ Widget storeDirectionsTile(
   );
 }
 
-/// [location]'s hours on [now]'s day and its phone, as rows of a list
-/// group: those the store said.
+/// [location]'s hours on [now]'s day, with whether it's open now, and its
+/// phone, as rows of a list group: those the store said.
 List<Widget> storeLocationDetails(
   BuildContext context,
   WidgetRef ref,
@@ -70,8 +70,15 @@ List<Widget> storeLocationDetails(
   final s = CustomerLocalizations.of(context);
   final hours = hoursOn(context, location.hours, now);
   final phone = location.phone;
+  final open = _openNow(context, location.hours, now);
   return [
-    if (hours != null) SListTile(icon: SIcons.clock, title: hours),
+    if (hours != null)
+      SListTile(
+        icon: SIcons.clock,
+        title: hours,
+        subtitle: open.opens,
+        trailing: open.badge,
+      ),
     if (phone != null)
       SListTile(
         icon: SIcons.phone,
@@ -129,6 +136,51 @@ String? hoursOn(BuildContext context, OpeningHours hours, DateTime day) {
         .join(s.listSeparator),
   );
 }
+
+/// Beside the hours, how the store is at [now]: orange once it closes
+/// within [_closingSoon], red while it's closed (on a day it opens), with
+/// when it opens again. Nothing while it's open for a while yet, or on a
+/// day it didn't say.
+({Widget? badge, String? opens}) _openNow(
+  BuildContext context,
+  OpeningHours hours,
+  DateTime now,
+) {
+  final s = CustomerLocalizations.of(context);
+  switch (hours.openAt(now)) {
+    case true:
+      final left = hours.closesAfter(now)?.difference(now);
+      if (left == null || left > _closingSoon) break;
+      final minutes = (left.inSeconds / Duration.secondsPerMinute).ceil();
+      return (
+        badge: SBadge(
+          s.storeClosesIn(s.holdTime(minutes)),
+          tone: BadgeTone.warning,
+        ),
+        opens: null,
+      );
+    case false:
+      final opens = hours.opensAfter(now);
+      final language = Localizations.localeOf(context).languageCode;
+      return (
+        // "Closed today" says it already.
+        badge: hours.on(now)?.isEmpty ?? true
+            ? null
+            : SBadge(s.storeClosedNow, tone: BadgeTone.danger),
+        opens: opens == null
+            ? null
+            : s.storeOpensAt(
+                formatWhen(opens, languageCode: language, now: now),
+              ),
+      );
+    case null:
+      break;
+  }
+  return (badge: null, opens: null);
+}
+
+/// As people look out for a store about to close.
+const _closingSoon = Duration(hours: 1);
 
 /// Opens the way to [location] in the phone's maps, or says it couldn't.
 Future<void> openDirections(
