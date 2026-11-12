@@ -22,6 +22,8 @@ UpdateStoreDto _$UpdateStoreDtoFromJson(Map<String, dynamic> json) =>
       facebookUrl: json['facebookUrl'] as String?,
       instagramUrl: json['instagramUrl'] as String?,
       isActive: json['isActive'] as bool?,
+      delivers: json['delivers'] as bool?,
+      deliveryPhone: json['deliveryPhone'] as String?,
     );
 
 Map<String, dynamic> _$UpdateStoreDtoToJson(UpdateStoreDto instance) =>
@@ -40,4 +42,6 @@ Map<String, dynamic> _$UpdateStoreDtoToJson(UpdateStoreDto instance) =>
       'facebookUrl': ?instance.facebookUrl,
       'instagramUrl': ?instance.instagramUrl,
       'isActive': ?instance.isActive,
+      'delivers': ?instance.delivers,
+      'deliveryPhone': ?instance.deliveryPhone,
     };

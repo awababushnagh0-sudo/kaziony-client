@@ -15,6 +15,8 @@ UpdateStoreProfileDto _$UpdateStoreProfileDtoFromJson(
   email: json['email'] as String?,
   facebookUrl: json['facebookUrl'] as String?,
   instagramUrl: json['instagramUrl'] as String?,
+  delivers: json['delivers'] as bool?,
+  deliveryPhone: json['deliveryPhone'] as String?,
 );
 
 Map<String, dynamic> _$UpdateStoreProfileDtoToJson(
@@ -26,4 +28,6 @@ Map<String, dynamic> _$UpdateStoreProfileDtoToJson(
   'email': ?instance.email,
   'facebookUrl': ?instance.facebookUrl,
   'instagramUrl': ?instance.instagramUrl,
+  'delivers': ?instance.delivers,
+  'deliveryPhone': ?instance.deliveryPhone,
 };

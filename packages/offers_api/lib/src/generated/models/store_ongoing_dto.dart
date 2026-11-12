@@ -11,6 +11,7 @@ class StoreOngoingDto {
   const StoreOngoingDto({
     required this.liveOffers,
     required this.openBookings,
+    required this.outForDelivery,
   });
   
   factory StoreOngoingDto.fromJson(Map<String, Object?> json) => _$StoreOngoingDtoFromJson(json);
@@ -23,6 +24,11 @@ class StoreOngoingDto {
   /// the store is off gives the customer no strike, unless our team cancels.
   /// them (`POST /admin/stores/{id}/cancel-bookings`).
   final num openBookings;
+
+  /// Bookings the store's drivers are bringing. Neither turning the store.
+  /// off nor cancelling its bookings touches them: the store closes each as.
+  /// delivered or not.
+  final num outForDelivery;
 
   Map<String, Object?> toJson() => _$StoreOngoingDtoToJson(this);
 }

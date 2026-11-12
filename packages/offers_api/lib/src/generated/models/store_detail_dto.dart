@@ -30,6 +30,8 @@ class StoreDetailDto {
     required this.facebookUrl,
     required this.instagramUrl,
     required this.pickupInstructions,
+    required this.delivers,
+    required this.deliveryPhone,
     required this.ratingAverage,
     required this.ratingCount,
     required this.isActive,
@@ -64,6 +66,12 @@ class StoreDetailDto {
 
   /// Shown to customers on every offer's page.
   final String? pickupInstructions;
+
+  /// Has its own drivers: customers with a booking call to have it brought.
+  final bool delivers;
+
+  /// The drivers' number, if not [phone].
+  final String? deliveryPhone;
 
   /// Average stars from customers' pickups, one decimal; null before the first.
   final num? ratingAverage;

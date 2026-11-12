@@ -21,8 +21,10 @@ class PartnerClaimDto {
     required this.offer,
     required this.expiresAt,
     required this.redeemedAt,
+    required this.sentForDeliveryAt,
     required this.createdAt,
     required this.canRedeem,
+    required this.canSendForDelivery,
     required this.problem,
     required this.problemCode,
   });
@@ -42,10 +44,17 @@ class PartnerClaimDto {
   final ClaimOfferDto offer;
   final DateTime expiresAt;
   final DateTime? redeemedAt;
+
+  /// When the store sent it with its driver (OUT_FOR_DELIVERY, or delivered).
+  final DateTime? sentForDeliveryAt;
   final DateTime createdAt;
 
-  /// True if it can be redeemed right now at this store.
+  /// True if it can be redeemed right now at this store: handed over at the.
+  /// counter, or at the door by a driver with the app.
   final bool canRedeem;
+
+  /// The store delivers, and it's still waiting: it can go with the driver.
+  final bool canSendForDelivery;
 
   /// Why it can't be redeemed, to show the cashier.
   final String? problem;

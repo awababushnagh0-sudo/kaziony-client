@@ -25,6 +25,8 @@ class UpdateStoreDto {
     this.facebookUrl,
     this.instagramUrl,
     this.isActive,
+    this.delivers,
+    this.deliveryPhone,
   });
   
   factory UpdateStoreDto.fromJson(Map<String, Object?> json) => _$UpdateStoreDtoFromJson(json);
@@ -58,6 +60,13 @@ class UpdateStoreDto {
 
   /// Disabled stores are hidden from customers and can't post offers.
   final bool? isActive;
+
+  /// Has its own drivers: customers with a booking can call to have it.
+  /// brought. Delivery is between them and the store, not us.
+  final bool? delivers;
+
+  /// The drivers' number customers call; empty for the store's phone.
+  final String? deliveryPhone;
 
   Map<String, Object?> toJson() => _$UpdateStoreDtoToJson(this);
 }

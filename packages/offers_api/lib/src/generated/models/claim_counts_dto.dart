@@ -10,6 +10,7 @@ part 'claim_counts_dto.g.dart';
 class ClaimCountsDto {
   const ClaimCountsDto({
     required this.reserved,
+    required this.outForDelivery,
     required this.redeemed,
     required this.expired,
     required this.cancelled,
@@ -18,6 +19,9 @@ class ClaimCountsDto {
   factory ClaimCountsDto.fromJson(Map<String, Object?> json) => _$ClaimCountsDtoFromJson(json);
   
   final num reserved;
+
+  /// Sent with the store's driver, not closed yet.
+  final num outForDelivery;
   final num redeemed;
   final num expired;
   final num cancelled;

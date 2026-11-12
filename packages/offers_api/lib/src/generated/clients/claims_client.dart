@@ -28,7 +28,7 @@ abstract class ClaimsClient {
 
   /// My claims (newest first, the active ones, or the rated ones).
   ///
-  /// [active] - true: only reservations that can still be used.
+  /// [active] - true: only bookings still under way: waiting, or out for delivery.
   ///
   /// [rated] - true: only pickups I rated, the latest rating first: one per store, the.
   /// pickup my rating is from.

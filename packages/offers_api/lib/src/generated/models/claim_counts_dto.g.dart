@@ -9,6 +9,7 @@ part of 'claim_counts_dto.dart';
 ClaimCountsDto _$ClaimCountsDtoFromJson(Map<String, dynamic> json) =>
     ClaimCountsDto(
       reserved: json['reserved'] as num,
+      outForDelivery: json['outForDelivery'] as num,
       redeemed: json['redeemed'] as num,
       expired: json['expired'] as num,
       cancelled: json['cancelled'] as num,
@@ -17,6 +18,7 @@ ClaimCountsDto _$ClaimCountsDtoFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$ClaimCountsDtoToJson(ClaimCountsDto instance) =>
     <String, dynamic>{
       'reserved': instance.reserved,
+      'outForDelivery': instance.outForDelivery,
       'redeemed': instance.redeemed,
       'expired': instance.expired,
       'cancelled': instance.cancelled,

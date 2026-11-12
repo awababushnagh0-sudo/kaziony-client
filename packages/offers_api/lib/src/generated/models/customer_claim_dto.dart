@@ -23,6 +23,7 @@ class CustomerClaimDto {
     required this.totalPrice,
     required this.expiresAt,
     required this.redeemedAt,
+    required this.sentForDeliveryAt,
     required this.cancelledAt,
     required this.createdAt,
     required this.offer,
@@ -37,6 +38,7 @@ class CustomerClaimDto {
   factory CustomerClaimDto.fromJson(Map<String, Object?> json) => _$CustomerClaimDtoFromJson(json);
   
   /// EXPIRED as soon as expiresAt passes, even before the cleanup job runs.
+  /// OUT_FOR_DELIVERY has no time limit: the store closes it.
   final ClaimStatus status;
 
   /// Who cancelled it, when CANCELLED: anything but CUSTOMER wasn't the.
@@ -53,9 +55,12 @@ class CustomerClaimDto {
   /// What to pay in cash: offerPrice × quantity, LD with 3 decimals.
   final String totalPrice;
 
-  /// Pick up and pay before this time.
+  /// Pick up and pay before this time (not once out for delivery).
   final DateTime expiresAt;
   final DateTime? redeemedAt;
+
+  /// When the store sent it with its driver (OUT_FOR_DELIVERY, or delivered).
+  final DateTime? sentForDeliveryAt;
   final DateTime? cancelledAt;
   final DateTime createdAt;
   final CustomerClaimOfferDto offer;

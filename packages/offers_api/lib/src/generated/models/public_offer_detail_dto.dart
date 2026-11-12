@@ -72,7 +72,8 @@ class PublicOfferDetailDto {
   /// Where to pick it up: the store's place.
   final PublicLocationDto location;
 
-  /// The logged-in customer's active reservation for this offer, if any.
+  /// The logged-in customer's open booking for this offer, if any: waiting.
+  /// to be picked up, or out for delivery.
   final String? myActiveClaimId;
 
   /// The store's: where to go in the shop, what to bring.

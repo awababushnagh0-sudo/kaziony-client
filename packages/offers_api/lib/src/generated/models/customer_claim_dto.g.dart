@@ -21,6 +21,9 @@ CustomerClaimDto _$CustomerClaimDtoFromJson(
   redeemedAt: json['redeemedAt'] == null
       ? null
       : DateTime.parse(json['redeemedAt'] as String),
+  sentForDeliveryAt: json['sentForDeliveryAt'] == null
+      ? null
+      : DateTime.parse(json['sentForDeliveryAt'] as String),
   cancelledAt: json['cancelledAt'] == null
       ? null
       : DateTime.parse(json['cancelledAt'] as String),
@@ -46,6 +49,7 @@ Map<String, dynamic> _$CustomerClaimDtoToJson(CustomerClaimDto instance) =>
       'totalPrice': instance.totalPrice,
       'expiresAt': instance.expiresAt.toIso8601String(),
       'redeemedAt': ?instance.redeemedAt?.toIso8601String(),
+      'sentForDeliveryAt': ?instance.sentForDeliveryAt?.toIso8601String(),
       'cancelledAt': ?instance.cancelledAt?.toIso8601String(),
       'createdAt': instance.createdAt.toIso8601String(),
       'offer': instance.offer,

@@ -10,6 +10,7 @@ StoreStatsDto _$StoreStatsDtoFromJson(Map<String, dynamic> json) =>
     StoreStatsDto(
       liveOffers: json['liveOffers'] as num,
       activeReservations: json['activeReservations'] as num,
+      outForDelivery: json['outForDelivery'] as num,
       today: PeriodStatsDto.fromJson(json['today'] as Map<String, dynamic>),
       last30Days: PeriodStatsDto.fromJson(
         json['last30Days'] as Map<String, dynamic>,
@@ -23,6 +24,7 @@ Map<String, dynamic> _$StoreStatsDtoToJson(StoreStatsDto instance) =>
     <String, dynamic>{
       'liveOffers': instance.liveOffers,
       'activeReservations': instance.activeReservations,
+      'outForDelivery': instance.outForDelivery,
       'today': instance.today,
       'last30Days': instance.last30Days,
       'topOffers': instance.topOffers,

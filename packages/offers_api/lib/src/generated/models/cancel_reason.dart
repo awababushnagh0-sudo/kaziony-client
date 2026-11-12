@@ -14,6 +14,8 @@ enum CancelReason {
   offerRemoved('OFFER_REMOVED'),
   @JsonValue('STORE_OFF')
   storeOff('STORE_OFF'),
+  @JsonValue('NOT_DELIVERED')
+  notDelivered('NOT_DELIVERED'),
   /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
   $unknown(null);
 

@@ -13,6 +13,7 @@ class CustomerClaimStoreDto {
     required this.name,
     required this.area,
     required this.logoUrl,
+    required this.deliveryPhone,
   });
   
   factory CustomerClaimStoreDto.fromJson(Map<String, Object?> json) => _$CustomerClaimStoreDtoFromJson(json);
@@ -23,6 +24,11 @@ class CustomerClaimStoreDto {
   /// The neighbourhood, shown with the name.
   final String area;
   final String? logoUrl;
+
+  /// Set when the store delivers with its own drivers: the number to call.
+  /// to have the booking brought. Delivery and any fee are between the.
+  /// customer and the store.
+  final String? deliveryPhone;
 
   Map<String, Object?> toJson() => _$CustomerClaimStoreDtoToJson(this);
 }

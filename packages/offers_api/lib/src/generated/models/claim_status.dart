@@ -5,10 +5,13 @@
 import 'package:json_annotation/json_annotation.dart';
 
 /// EXPIRED as soon as expiresAt passes, even before the cleanup job runs.
+/// OUT_FOR_DELIVERY has no time limit: the store closes it.
 @JsonEnum()
 enum ClaimStatus {
   @JsonValue('RESERVED')
   reserved('RESERVED'),
+  @JsonValue('OUT_FOR_DELIVERY')
+  outForDelivery('OUT_FOR_DELIVERY'),
   @JsonValue('REDEEMED')
   redeemed('REDEEMED'),
   @JsonValue('EXPIRED')

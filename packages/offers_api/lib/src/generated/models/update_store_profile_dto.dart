@@ -15,6 +15,8 @@ class UpdateStoreProfileDto {
     this.email,
     this.facebookUrl,
     this.instagramUrl,
+    this.delivers,
+    this.deliveryPhone,
   });
   
   factory UpdateStoreProfileDto.fromJson(Map<String, Object?> json) => _$UpdateStoreProfileDtoFromJson(json);
@@ -34,6 +36,13 @@ class UpdateStoreProfileDto {
   final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
+
+  /// Has its own drivers: customers with a booking can call to have it.
+  /// brought. Delivery is between them and the store, not us.
+  final bool? delivers;
+
+  /// The drivers' number customers call; empty for the store's phone.
+  final String? deliveryPhone;
 
   Map<String, Object?> toJson() => _$UpdateStoreProfileDtoToJson(this);
 }

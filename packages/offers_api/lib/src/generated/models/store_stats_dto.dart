@@ -14,6 +14,7 @@ class StoreStatsDto {
   const StoreStatsDto({
     required this.liveOffers,
     required this.activeReservations,
+    required this.outForDelivery,
     required this.today,
     required this.last30Days,
     required this.topOffers,
@@ -26,6 +27,10 @@ class StoreStatsDto {
 
   /// Customers on their way (reserved, not expired).
   final num activeReservations;
+
+  /// Bookings the store's drivers are bringing, for the store to close as.
+  /// delivered or not (a day on, they close as delivered).
+  final num outForDelivery;
 
   /// Since midnight, Libya time.
   final PeriodStatsDto today;
