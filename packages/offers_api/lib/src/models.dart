@@ -103,6 +103,7 @@ export 'generated/models/store_list_dto.dart';
 export 'generated/models/store_list_item_dto.dart';
 export 'generated/models/store_member_dto.dart';
 export 'generated/models/store_member_role.dart';
+export 'generated/models/store_ongoing_dto.dart';
 export 'generated/models/store_stats_dto.dart';
 export 'generated/models/support_contact_dto.dart';
 export 'generated/models/system_activity_dto.dart';

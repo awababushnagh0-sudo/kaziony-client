@@ -158,6 +158,22 @@
     }
   },
   "disableStoreMessage": "Customers won't see the store or its offers, and its team can't post new ones. You can enable it again at any time.",
+  "disableStoreOffers": "{count, plural, =1{Its live offer is hidden with it.} other{Its {count} live offers are hidden with it.}}",
+  "@disableStoreOffers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "disableStoreBookings": "{count, plural, =1{1 booking is waiting to be picked up. It stays valid, and if the customer misses it, it won't count against them.} other{{count} bookings are waiting to be picked up. They stay valid, and a missed one won't count against the customer.}}",
+  "@disableStoreBookings": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "deleteStoreTitle": "Delete {store}?",
   "@deleteStoreTitle": {
     "placeholders": {

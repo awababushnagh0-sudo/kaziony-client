@@ -135,6 +135,18 @@ class StoreDetails {
   String get label => '$name · $area';
 }
 
+/// What a store has under way, said before turning it off.
+class StoreOngoing {
+  const StoreOngoing({required this.liveOffers, required this.openBookings});
+
+  /// On now or coming up: hidden while the store is off.
+  final int liveOffers;
+
+  /// Waiting to be picked up. They stay valid, and one missed while the
+  /// store is off doesn't count against the customer.
+  final int openBookings;
+}
+
 /// Where a store is, as an admin sets it.
 class StorePlace {
   const StorePlace({
@@ -245,6 +257,9 @@ abstract interface class StoreRepository {
 
   /// Disabled stores are hidden from customers and can't post offers.
   Future<Result<StoreDetails>> setActive(String id, {required bool active});
+
+  /// What turning the store off touches.
+  Future<Result<StoreOngoing>> ongoing(String id);
 
   /// Puts [photo] in place of the store's logo or cover; [onProgress] gets
   /// the share sent, from 0 to 1.

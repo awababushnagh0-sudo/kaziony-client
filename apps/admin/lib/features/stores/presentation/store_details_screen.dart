@@ -36,10 +36,22 @@ class _StoreDetailsScreenState extends AppViewState<StoreDetailsScreen> {
   Future<void> _setActive(StoreDetails store, {required bool active}) async {
     final s = AdminLocalizations.of(context);
     if (!active) {
+      setState(() => _busy = true);
+      // Said without them if they can't be read: turning off can't wait.
+      final ongoing = (await _viewModel.ongoing()).valueOrNull;
+      if (!mounted) return;
+      setState(() => _busy = false);
       final confirmed = await SDialog.confirm(
         context,
         title: s.disableStoreTitle(store.label),
-        message: s.disableStoreMessage,
+        message: [
+          s.disableStoreMessage,
+          if (ongoing case StoreOngoing(:final liveOffers) when liveOffers > 0)
+            s.disableStoreOffers(liveOffers),
+          if (ongoing case StoreOngoing(:final openBookings)
+              when openBookings > 0)
+            s.disableStoreBookings(openBookings),
+        ].join('\n\n'),
         confirmLabel: s.disableStore,
         destructive: true,
       );

@@ -328,6 +328,29 @@ class AdminLocalizationsEn extends AdminLocalizations {
       'Customers won\'t see the store or its offers, and its team can\'t post new ones. You can enable it again at any time.';
 
   @override
+  String disableStoreOffers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Its $count live offers are hidden with it.',
+      one: 'Its live offer is hidden with it.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String disableStoreBookings(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count bookings are waiting to be picked up. They stay valid, and a missed one won\'t count against the customer.',
+      one: '1 booking is waiting to be picked up. It stays valid, and if the customer misses it, it won\'t count against them.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String deleteStoreTitle(String store) {
     return 'Delete $store?';
   }

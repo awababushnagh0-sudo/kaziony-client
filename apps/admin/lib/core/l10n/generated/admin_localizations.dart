@@ -650,6 +650,18 @@ abstract class AdminLocalizations {
   /// **'Customers won\'t see the store or its offers, and its team can\'t post new ones. You can enable it again at any time.'**
   String get disableStoreMessage;
 
+  /// No description provided for @disableStoreOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Its live offer is hidden with it.} other{Its {count} live offers are hidden with it.}}'**
+  String disableStoreOffers(int count);
+
+  /// No description provided for @disableStoreBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 booking is waiting to be picked up. It stays valid, and if the customer misses it, it won\'t count against them.} other{{count} bookings are waiting to be picked up. They stay valid, and a missed one won\'t count against the customer.}}'**
+  String disableStoreBookings(int count);
+
   /// No description provided for @deleteStoreTitle.
   ///
   /// In en, this message translates to:

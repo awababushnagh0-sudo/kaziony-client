@@ -13,6 +13,7 @@ import '../models/create_store_dto.dart';
 import '../models/create_store_response_dto.dart';
 import '../models/store_detail_dto.dart';
 import '../models/store_list_dto.dart';
+import '../models/store_ongoing_dto.dart';
 import '../models/update_store_dto.dart';
 
 part 'admin_stores_client.g.dart';
@@ -51,7 +52,7 @@ abstract class AdminStoresClient {
 
   /// Edit, disable or enable a store.
   ///
-  /// Send only the fields to change. An empty string clears an optional field (phone, email, links).
+  /// Send only the fields to change. An empty string clears an optional field (email, links).
   @PATCH('/api/v1/admin/stores/{id}')
   Future<StoreDetailDto> update({
     @Path('id') required String id,
@@ -63,6 +64,14 @@ abstract class AdminStoresClient {
   /// Removes its products and team links; the merchant accounts stay. A store with offers keeps its customers' history and can only be disabled: 409 with error "StoreHasOffers".
   @DELETE('/api/v1/admin/stores/{id}')
   Future<void> remove({
+    @Path('id') required String id,
+  });
+
+  /// What a store has under way: live offers and open bookings.
+  ///
+  /// For the dashboard to say what turning the store off touches: its offers hide, and its bookings stay valid.
+  @GET('/api/v1/admin/stores/{id}/ongoing')
+  Future<StoreOngoingDto> ongoing({
     @Path('id') required String id,
   });
 

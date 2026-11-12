@@ -78,6 +78,7 @@ export 'models/new_merchant_dto.dart';
 export 'models/create_store_dto.dart';
 export 'models/new_account_dto.dart';
 export 'models/create_store_response_dto.dart';
+export 'models/store_ongoing_dto.dart';
 export 'models/update_store_dto.dart';
 export 'models/add_store_location_dto.dart';
 export 'models/add_member_dto.dart';

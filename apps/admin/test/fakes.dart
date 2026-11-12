@@ -145,6 +145,9 @@ class FakeStoreRepository implements StoreRepository {
   Result<StoreDetails>? updateResult;
   final activeChanges = <(String, bool)>[];
   Result<StoreDetails>? setActiveResult;
+  Result<StoreOngoing> ongoingResult = const Ok(
+    StoreOngoing(liveOffers: 0, openBookings: 0),
+  );
   final imageUploads = <(String, StoreImage, PreparedPhoto)>[];
   final removedImages = <(String, StoreImage)>[];
   Result<StoreDetails>? removeImageResult;
@@ -216,6 +219,9 @@ class FakeStoreRepository implements StoreRepository {
     activeChanges.add((id, active));
     return setActiveResult ?? Ok(sampleDetails(id, active: active));
   }
+
+  @override
+  Future<Result<StoreOngoing>> ongoing(String id) async => ongoingResult;
 
   /// The store with the new photo, the other one as [detailsResult] had it.
   @override

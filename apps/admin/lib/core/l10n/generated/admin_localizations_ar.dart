@@ -332,6 +332,29 @@ class AdminLocalizationsAr extends AdminLocalizations {
       'لن يرى الزبائن المتجر ولا عروضه، ولن يستطيع فريقه نشر عروض جديدة. يمكنك تفعيله مجددًا في أي وقت.';
 
   @override
+  String disableStoreOffers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'تُخفى معه عروضه الجارية ($count).',
+      one: 'يُخفى معه عرضه الجاري.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String disableStoreBookings(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'حجوزات بانتظار الاستلام: $count. تبقى صالحة، وما يفوت الزبائن منها لا يُحسب عليهم.',
+      one: 'حجز واحد بانتظار الاستلام. يبقى صالحاً، وإن فات الزبونَ لا يُحسب عليه.',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String deleteStoreTitle(String store) {
     return 'حذف $store؟';
   }

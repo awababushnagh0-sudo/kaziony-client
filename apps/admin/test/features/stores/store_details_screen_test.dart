@@ -204,6 +204,44 @@ void main() {
     expect(find.text('Active'), findsOneWidget);
   });
 
+  testWidgets('says what turning it off touches before confirming', (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..ongoingResult = const Ok(StoreOngoing(liveOffers: 2, openBookings: 1));
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await chooseAction(tester, 'Disable store');
+
+    expect(
+      find.textContaining('Its 2 live offers are hidden with it.'),
+      findsOneWidget,
+    );
+    expect(
+      find.textContaining(
+        '1 booking is waiting to be picked up. It stays valid, and if the '
+        "customer misses it, it won't count against them.",
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('still asks when what it touches can\'t be read', (tester) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..ongoingResult = const Err(NoConnectionFailure());
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await chooseAction(tester, 'Disable store');
+    await tester.tap(find.text('Disable store').last);
+    await tester.pumpAndSettle();
+
+    expect(stores.activeChanges, [('store-1', false)]);
+  });
+
   testWidgets('keeps the store when the confirmation is cancelled', (
     tester,
   ) async {

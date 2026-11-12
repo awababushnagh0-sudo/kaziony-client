@@ -28,6 +28,9 @@ class StoreDetailsViewModel extends AsyncViewModel<StoreDetails> {
   Future<Result<StoreDetails>> setActive({required bool active}) =>
       _apply(_stores.setActive(storeId, active: active));
 
+  /// What turning it off touches, read fresh for the confirmation.
+  Future<Result<StoreOngoing>> ongoing() => _stores.ongoing(storeId);
+
   /// Puts [photo] in place of the logo or cover; [onProgress] goes from 0
   /// to 1.
   Future<Result<StoreDetails>> setImage(

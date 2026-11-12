@@ -64,6 +64,17 @@ class ApiStoreRepository implements StoreRepository {
   }
 
   @override
+  Future<Result<StoreOngoing>> ongoing(String id) async {
+    final result = await _api.guard(() => _stores.ongoing(id: id));
+    return result.map(
+      (dto) => StoreOngoing(
+        liveOffers: dto.liveOffers.toInt(),
+        openBookings: dto.openBookings.toInt(),
+      ),
+    );
+  }
+
+  @override
   Future<Result<StoreDetails>> setImage(
     String id,
     StoreImage image,
