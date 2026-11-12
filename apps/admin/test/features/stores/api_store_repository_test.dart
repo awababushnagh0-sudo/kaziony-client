@@ -36,6 +36,7 @@ Map<String, Object?> _details({
   'ratingAverage': null,
   'ratingCount': 0,
   'isActive': false,
+  'wasLive': false,
   // A kind this version doesn't know yet is left out.
   'missingToGoLive': ['LOGO', 'SOMETHING_NEW'],
   'createdAt': '2026-11-10T12:00:00.000Z',
