@@ -1285,7 +1285,7 @@ class AdminLocalizationsAr extends AdminLocalizations {
 
   @override
   String get jobExpireClaims =>
-      'تُنهي الحجوزات التي لم تُستلم: تعود القطع للبيع، ويُحسب على الزبون تخلّف، وكل ثالث يمنعه من الحجز 7 أيام. وتُنهي العروض التي انتهى وقتها.';
+      'تُنهي الحجوزات التي لم تُستلم: تعود القطع للبيع ويُحسب على الزبون تخلّف، وثلاثة توقف حجزه 3 أيام (7 إن أُوقف مؤخرًا). وتُغلق التوصيلات المفتوحة منذ يوم على أنها وصلت، وتُنهي العروض التي انتهى وقتها.';
 
   @override
   String get jobExpireClaimsBacklog => 'حجوزات تجاوزت وقتها';
@@ -1540,4 +1540,40 @@ class AdminLocalizationsAr extends AdminLocalizations {
   @override
   String get storeHiddenMessage =>
       'فعّله من صفحته بعد أن يكون له شعار وتعليمات استلام وأوقات عمل. يستطيع صاحبه إضافتها من تطبيق المتاجر.';
+
+  @override
+  String disableStoreDeliveries(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count حجزًا مع سائق المحل، ويبقى للمحل أن يغلقها.',
+      few: '$count حجوزات مع سائق المحل، ويبقى للمحل أن يغلقها.',
+      two: 'حجزان مع سائق المحل، ويبقى للمحل أن يغلقهما.',
+      one: 'حجز واحد مع سائق المحل، ويبقى للمحل أن يغلقه.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get sectionDelivery => 'التوصيل';
+
+  @override
+  String get deliveryNote =>
+      'للمحلات التي لديها سائقون. يتصل الزبون صاحب الحجز ليطلب التوصيل، والتوصيل وأي رسوم له بينه وبين المحل.';
+
+  @override
+  String get storeDelivery => 'التوصيل';
+
+  @override
+  String get deliveryPickupOnly => 'استلام فقط';
+
+  @override
+  String get deliveryToo => 'يوصّل أيضًا';
+
+  @override
+  String get storeDeliveryPhone => 'رقم التوصيل';
+
+  @override
+  String get storeDeliveryPhoneHelp =>
+      'إن تُرك فارغًا يتصل الزبائن برقم المحل.';
 }

@@ -51,6 +51,9 @@ class _StoreDetailsScreenState extends AppViewState<StoreDetailsScreen> {
           if (ongoing case StoreOngoing(:final openBookings)
               when openBookings > 0)
             s.disableStoreBookings(openBookings),
+          if (ongoing case StoreOngoing(:final outForDelivery)
+              when outForDelivery > 0)
+            s.disableStoreDeliveries(outForDelivery),
         ].join('\n\n'),
         confirmLabel: s.disableStore,
         destructive: true,
@@ -358,39 +361,69 @@ class _StoreRecord extends AppView {
         ),
         RecordTab(
           label: s.tabContact,
-          child: SFormSection(
-            title: s.tabContact,
-            divider: false,
-            child: SFieldGrid(
-              columns: 3,
-              children: [
-                STextInput(
-                  controlName: 'phone',
-                  label: s.storePhone,
-                  required: true,
-                  hint: '0912345678',
-                  helper: s.storePhoneHelp,
-                  kind: TextInputKind.phone,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SFormSection(
+                title: s.tabContact,
+                child: SFieldGrid(
+                  columns: 3,
+                  children: [
+                    STextInput(
+                      controlName: 'phone',
+                      label: s.storePhone,
+                      required: true,
+                      hint: '0912345678',
+                      helper: s.storePhoneHelp,
+                      kind: TextInputKind.phone,
+                    ),
+                    STextInput(
+                      controlName: 'email',
+                      label: s.storeEmail,
+                      kind: TextInputKind.email,
+                    ),
+                    STextInput(
+                      controlName: 'facebookUrl',
+                      label: s.storeFacebook,
+                      hint: 'https://facebook.com/...',
+                      kind: TextInputKind.url,
+                    ),
+                    STextInput(
+                      controlName: 'instagramUrl',
+                      label: s.storeInstagram,
+                      hint: 'https://instagram.com/...',
+                      kind: TextInputKind.url,
+                    ),
+                  ],
                 ),
-                STextInput(
-                  controlName: 'email',
-                  label: s.storeEmail,
-                  kind: TextInputKind.email,
+              ),
+              SFormSection(
+                title: s.sectionDelivery,
+                note: s.deliveryNote,
+                divider: false,
+                child: SFieldGrid(
+                  columns: 3,
+                  children: [
+                    SSelectInput<bool>(
+                      controlName: 'delivers',
+                      label: s.storeDelivery,
+                      required: true,
+                      options: [
+                        SelectOption(false, s.deliveryPickupOnly),
+                        SelectOption(true, s.deliveryToo),
+                      ],
+                    ),
+                    STextInput(
+                      controlName: 'deliveryPhone',
+                      label: s.storeDeliveryPhone,
+                      hint: formatLibyanPhone(store.phone),
+                      helper: s.storeDeliveryPhoneHelp,
+                      kind: TextInputKind.phone,
+                    ),
+                  ],
                 ),
-                STextInput(
-                  controlName: 'facebookUrl',
-                  label: s.storeFacebook,
-                  hint: 'https://facebook.com/...',
-                  kind: TextInputKind.url,
-                ),
-                STextInput(
-                  controlName: 'instagramUrl',
-                  label: s.storeInstagram,
-                  hint: 'https://instagram.com/...',
-                  kind: TextInputKind.url,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ],

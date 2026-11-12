@@ -36,6 +36,9 @@ class StoreFormViewModel extends RecordForm<StoreDetails> {
     ),
     'facebookUrl': FormControl<String>(validators: [SValidators.url]),
     'instagramUrl': FormControl<String>(validators: [SValidators.url]),
+    'delivers': FormControl<bool>(value: false),
+    // Empty: customers call the store's phone.
+    'deliveryPhone': FormControl<String>(validators: [SValidators.libyanPhone]),
     ...placeControls(ref),
   };
 
@@ -50,6 +53,11 @@ class StoreFormViewModel extends RecordForm<StoreDetails> {
       'email': store.email,
       'facebookUrl': store.facebookUrl,
       'instagramUrl': store.instagramUrl,
+      'delivers': store.delivers,
+      'deliveryPhone': switch (store.deliveryPhone) {
+        final phone? => formatLibyanPhone(phone),
+        null => null,
+      },
       'city': store.city,
       'area': store.area,
       'address': store.address,
@@ -81,6 +89,11 @@ class StoreFormViewModel extends RecordForm<StoreDetails> {
             email: text('email'),
             facebookUrl: text('facebookUrl'),
             instagramUrl: text('instagramUrl'),
+            delivers: form.control('delivers').value as bool? ?? false,
+            deliveryPhone: switch (text('deliveryPhone')) {
+              final phone? => normalizeLibyanPhone(phone),
+              null => null,
+            },
             place: differs(placeFields) ? readPlace(form) : null,
           ),
         );

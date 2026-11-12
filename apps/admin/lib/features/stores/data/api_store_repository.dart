@@ -70,6 +70,7 @@ class ApiStoreRepository implements StoreRepository {
       (dto) => StoreOngoing(
         liveOffers: dto.liveOffers.toInt(),
         openBookings: dto.openBookings.toInt(),
+        outForDelivery: dto.outForDelivery.toInt(),
       ),
     );
   }
@@ -209,6 +210,8 @@ StoreDetails storeDetailsFromDto(StoreDetailDto dto) => StoreDetails(
   email: dto.email,
   facebookUrl: dto.facebookUrl,
   instagramUrl: dto.instagramUrl,
+  delivers: dto.delivers,
+  deliveryPhone: dto.deliveryPhone,
 );
 
 @visibleForTesting
@@ -241,6 +244,8 @@ UpdateStoreDto updateStoreBody(EditedStore store) {
     email: store.email ?? '',
     facebookUrl: store.facebookUrl ?? '',
     instagramUrl: store.instagramUrl ?? '',
+    delivers: store.delivers,
+    deliveryPhone: store.deliveryPhone ?? '',
     city: place == null ? null : _toApiCity(place.city),
     area: place?.area,
     address: place == null ? null : place.address ?? '',

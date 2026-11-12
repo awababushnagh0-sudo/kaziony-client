@@ -37,6 +37,8 @@ Map<String, Object?> _details({
   'ratingCount': 0,
   'isActive': false,
   'wasLive': false,
+  'delivers': true,
+  'deliveryPhone': '+218921234567',
   // A kind this version doesn't know yet is left out.
   'missingToGoLive': ['LOGO', 'SOMETHING_NEW'],
   'createdAt': '2026-11-10T12:00:00.000Z',
@@ -101,6 +103,8 @@ void main() {
     expect(store.teamCount, 1);
     expect(store.isActive, isFalse);
     expect(store.missingToGoLive, [GoLiveItem.logo]);
+    expect(store.delivers, isTrue);
+    expect(store.deliveryPhone, '+218921234567');
   });
 
   test('reads its photos', () {
@@ -193,6 +197,7 @@ void main() {
         name: 'Sweet Coast',
         categoryId: 'cat-sweets',
         phone: '+218912345678',
+        delivers: true,
       ),
     ).toJson();
 
@@ -201,6 +206,9 @@ void main() {
     // there.
     expect(json['phone'], '+218912345678');
     expect(json['email'], '');
+    // Delivery goes with them: no number of its own is the store's phone.
+    expect(json['delivers'], isTrue);
+    expect(json['deliveryPhone'], '');
     for (final field in [
       'city',
       'area',
@@ -219,6 +227,7 @@ void main() {
         name: 'Sweet Coast',
         categoryId: 'cat-sweets',
         phone: '+218912345678',
+        delivers: false,
         place: StorePlace(
           city: City.tripoli,
           area: 'Gargaresh',

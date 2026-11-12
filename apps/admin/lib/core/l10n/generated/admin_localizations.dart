@@ -2123,7 +2123,7 @@ abstract class AdminLocalizations {
   /// No description provided for @jobExpireClaims.
   ///
   /// In en, this message translates to:
-  /// **'Expires missed pickups: the pieces go back on sale, the customer gets a strike, every third one blocks booking for 7 days. Ends offers whose time is up.'**
+  /// **'Expires missed pickups: the pieces go back on sale and the customer gets a strike; 3 pause booking for 3 days (7 after a recent pause). Closes deliveries left open a day as delivered, and ends offers whose time is up.'**
   String get jobExpireClaims;
 
   /// No description provided for @jobExpireClaimsBacklog.
@@ -2575,6 +2575,54 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'Turn it on from its page once it has a logo, pickup instructions and opening hours. The owner can add them from the store app.'**
   String get storeHiddenMessage;
+
+  /// No description provided for @disableStoreDeliveries.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 booking is out with the store\'s driver. It\'s left to the store to close.} other{{count} bookings are out with the store\'s drivers. They\'re left to the store to close.}}'**
+  String disableStoreDeliveries(int count);
+
+  /// No description provided for @sectionDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get sectionDelivery;
+
+  /// No description provided for @deliveryNote.
+  ///
+  /// In en, this message translates to:
+  /// **'For stores with their own drivers. Customers with a booking call to have it brought; delivery and any fee are between them and the store.'**
+  String get deliveryNote;
+
+  /// No description provided for @storeDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get storeDelivery;
+
+  /// No description provided for @deliveryPickupOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup only'**
+  String get deliveryPickupOnly;
+
+  /// No description provided for @deliveryToo.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivers too'**
+  String get deliveryToo;
+
+  /// No description provided for @storeDeliveryPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Number for delivery'**
+  String get storeDeliveryPhone;
+
+  /// No description provided for @storeDeliveryPhoneHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty: customers call the store\'s phone.'**
+  String get storeDeliveryPhoneHelp;
 }
 
 class _AdminLocalizationsDelegate

@@ -204,6 +204,28 @@ void main() {
     expect(find.text('Active'), findsOneWidget);
   });
 
+  testWidgets('says turning it off leaves deliveries under way to the store', (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..ongoingResult = const Ok(
+        StoreOngoing(liveOffers: 0, openBookings: 0, outForDelivery: 2),
+      );
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await chooseAction(tester, 'Disable store');
+
+    expect(
+      find.textContaining(
+        "2 bookings are out with the store's drivers. They're left to the "
+        'store to close.',
+      ),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('says what turning it off touches before confirming', (
     tester,
   ) async {
@@ -441,6 +463,29 @@ void main() {
     expect(find.text('Saved'), findsOneWidget);
     expect(find.text('Not saved'), findsNothing);
     expect(find.text('Actions'), findsOneWidget);
+  });
+
+  testWidgets('sets whether the store delivers, and its number for it', (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository();
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Contact'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.bySubtype<SSelectInput<bool>>());
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Delivers too').last);
+    await tester.pumpAndSettle();
+    await tester.enterText(field('Number for delivery'), '093 123 4567');
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+
+    final (_, edited) = stores.updates.single;
+    expect(edited.delivers, isTrue);
+    expect(edited.deliveryPhone, '+218931234567');
   });
 
   testWidgets("doesn't save invalid fields", (tester) async {

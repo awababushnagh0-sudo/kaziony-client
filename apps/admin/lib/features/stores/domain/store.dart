@@ -91,6 +91,8 @@ class StoreDetails {
     this.email,
     this.facebookUrl,
     this.instagramUrl,
+    this.delivers = false,
+    this.deliveryPhone,
   });
 
   final String id;
@@ -135,12 +137,23 @@ class StoreDetails {
   final String? facebookUrl;
   final String? instagramUrl;
 
+  /// Has its own drivers: customers with a booking call to have it brought.
+  /// Delivery and any fee are between them and the store.
+  final bool delivers;
+
+  /// The number customers call for that; null for [phone].
+  final String? deliveryPhone;
+
   String get label => '$name · $area';
 }
 
 /// What a store has under way, said before turning it off.
 class StoreOngoing {
-  const StoreOngoing({required this.liveOffers, required this.openBookings});
+  const StoreOngoing({
+    required this.liveOffers,
+    required this.openBookings,
+    this.outForDelivery = 0,
+  });
 
   /// On now or coming up: hidden while the store is off.
   final int liveOffers;
@@ -148,6 +161,10 @@ class StoreOngoing {
   /// Waiting to be picked up. They stay valid, and one missed while the
   /// store is off doesn't count against the customer.
   final int openBookings;
+
+  /// With the store's drivers: neither turning it off nor cancelling its
+  /// bookings touches them. The store closes each.
+  final int outForDelivery;
 }
 
 /// Where a store is, as an admin sets it.
@@ -176,10 +193,12 @@ class EditedStore {
     required this.name,
     required this.categoryId,
     required this.phone,
+    required this.delivers,
     this.pickupInstructions,
     this.email,
     this.facebookUrl,
     this.instagramUrl,
+    this.deliveryPhone,
     this.place,
   });
 
@@ -192,6 +211,10 @@ class EditedStore {
   final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
+  final bool delivers;
+
+  /// Normalized; null for the store's [phone].
+  final String? deliveryPhone;
 
   /// Null keeps the place as it is: the owner sets the opening hours too,
   /// from the store app, and an edit of the name shouldn't undo theirs (or

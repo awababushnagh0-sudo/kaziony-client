@@ -1261,7 +1261,7 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get jobExpireClaims =>
-      'Expires missed pickups: the pieces go back on sale, the customer gets a strike, every third one blocks booking for 7 days. Ends offers whose time is up.';
+      'Expires missed pickups: the pieces go back on sale and the customer gets a strike; 3 pause booking for 3 days (7 after a recent pause). Closes deliveries left open a day as delivered, and ends offers whose time is up.';
 
   @override
   String get jobExpireClaimsBacklog => 'Bookings past their time';
@@ -1513,4 +1513,39 @@ class AdminLocalizationsEn extends AdminLocalizations {
   @override
   String get storeHiddenMessage =>
       'Turn it on from its page once it has a logo, pickup instructions and opening hours. The owner can add them from the store app.';
+
+  @override
+  String disableStoreDeliveries(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count bookings are out with the store\'s drivers. They\'re left to the store to close.',
+      one: '1 booking is out with the store\'s driver. It\'s left to the store to close.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get sectionDelivery => 'Delivery';
+
+  @override
+  String get deliveryNote =>
+      'For stores with their own drivers. Customers with a booking call to have it brought; delivery and any fee are between them and the store.';
+
+  @override
+  String get storeDelivery => 'Delivery';
+
+  @override
+  String get deliveryPickupOnly => 'Pickup only';
+
+  @override
+  String get deliveryToo => 'Delivers too';
+
+  @override
+  String get storeDeliveryPhone => 'Number for delivery';
+
+  @override
+  String get storeDeliveryPhoneHelp =>
+      'Empty: customers call the store\'s phone.';
 }
