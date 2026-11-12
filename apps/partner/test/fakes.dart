@@ -88,6 +88,8 @@ Store storeDetails({
         email: null,
         facebookUrl: null,
         instagramUrl: null,
+        delivers: false,
+        deliveryPhone: null,
       ),
   logoUrl: logoUrl,
   coverUrl: null,
@@ -317,7 +319,13 @@ Offer offer(
   startsAt: DateTime.utc(2026, 10, 25, 8),
   endsAt: DateTime.now().add(const Duration(hours: 5)),
   viewCount: 42,
-  claims: const ClaimCounts(reserved: 2, redeemed: 5, expired: 1, cancelled: 0),
+  claims: const ClaimCounts(
+    reserved: 2,
+    outForDelivery: 0,
+    redeemed: 5,
+    expired: 1,
+    cancelled: 0,
+  ),
 );
 
 /// Serves [offers] filtered by status or ended like the API, and records
@@ -415,6 +423,8 @@ Claim claim(
   int quantity = 1,
   String totalPrice = '4.500',
   Duration heldFor = const Duration(minutes: 40),
+  DateTime? sentForDeliveryAt,
+  bool canSendForDelivery = false,
 }) => Claim(
   id: 'c-$code',
   code: code,
@@ -431,11 +441,26 @@ Claim claim(
   ),
   expiresAt: DateTime.now().add(heldFor),
   redeemedAt: redeemedAt,
+  sentForDeliveryAt: sentForDeliveryAt,
   canRedeem: canRedeem,
+  canSendForDelivery: canSendForDelivery,
+);
+
+/// A booking out with the store's driver for [out].
+Claim outForDelivery(
+  String code, {
+  Duration out = const Duration(minutes: 30),
+  String? customerName = 'Sara',
+}) => claim(
+  code,
+  status: ClaimStatus.outForDelivery,
+  customerName: customerName,
+  sentForDeliveryAt: DateTime.now().subtract(out),
 );
 
 /// Looks codes up in [claims]; redeeming one marks it picked up, unless
-/// [redeemFailure] says otherwise.
+/// [redeemFailure] says otherwise. The delivery steps move it along the
+/// same way, and are recorded.
 class FakeClaimRepository implements ClaimRepository {
   FakeClaimRepository([List<Claim>? claims])
     : claims = claims ?? [claim('ABCD2345')];
@@ -480,16 +505,72 @@ class FakeClaimRepository implements ClaimRepository {
     );
     return Ok(claims[index]);
   }
+
+  /// What the delivery steps were asked: the step and the code or id.
+  final deliverySteps = <(String, String)>[];
+  AppFailure? deliveryFailure;
+
+  @override
+  Future<Result<PageResult<Claim>>> deliveries(
+    String storeId, {
+    required int page,
+    required int pageSize,
+  }) async {
+    final out = [
+      for (final claim in claims)
+        if (claim.isOutForDelivery) claim,
+    ];
+    return Ok(PageResult(items: out, total: out.length));
+  }
+
+  @override
+  Future<Result<Claim>> sendForDelivery(String storeId, String code) =>
+      _step('send', code, (c) => c.code == code, ClaimStatus.outForDelivery);
+
+  @override
+  Future<Result<Claim>> delivered(String storeId, String claimId) =>
+      _step('delivered', claimId, (c) => c.id == claimId, ClaimStatus.redeemed);
+
+  @override
+  Future<Result<Claim>> notDelivered(String storeId, String claimId) => _step(
+    'notDelivered',
+    claimId,
+    (c) => c.id == claimId,
+    ClaimStatus.cancelled,
+  );
+
+  Future<Result<Claim>> _step(
+    String step,
+    String key,
+    bool Function(Claim claim) which,
+    ClaimStatus to,
+  ) async {
+    deliverySteps.add((step, key));
+    if (deliveryFailure case final failure?) return Err(failure);
+    final index = claims.indexWhere(which);
+    final was = claims[index];
+    claims[index] = claim(
+      was.code,
+      status: to,
+      canRedeem: to == ClaimStatus.outForDelivery,
+      customerName: was.customerName,
+      sentForDeliveryAt: was.sentForDeliveryAt ?? DateTime.now(),
+      redeemedAt: to == ClaimStatus.redeemed ? DateTime.now() : null,
+    );
+    return Ok(claims[index]);
+  }
 }
 
 StoreStats stats({
   int onTheWay = 3,
+  int outForDelivery = 0,
   int redeemedToday = 9,
   int claimsToday = 14,
   int expiredToday = 2,
 }) => StoreStats(
   liveOffers: 3,
   onTheWay: onTheWay,
+  outForDelivery: outForDelivery,
   today: PeriodStats(
     claims: claimsToday,
     redeemed: redeemedToday,

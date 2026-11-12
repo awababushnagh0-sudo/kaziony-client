@@ -32,6 +32,8 @@ class ApiStoreRepository implements StoreRepository {
           email: profile.email ?? '',
           facebookUrl: profile.facebookUrl ?? '',
           instagramUrl: profile.instagramUrl ?? '',
+          delivers: profile.delivers,
+          deliveryPhone: profile.deliveryPhone ?? '',
         ),
       ),
     );
@@ -97,6 +99,8 @@ Store _toStore(StoreDetailDto dto) => Store(
     email: dto.email,
     facebookUrl: dto.facebookUrl,
     instagramUrl: dto.instagramUrl,
+    delivers: dto.delivers,
+    deliveryPhone: dto.deliveryPhone,
   ),
   logoUrl: dto.logoUrl,
   coverUrl: dto.coverUrl,

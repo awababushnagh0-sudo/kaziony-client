@@ -12,6 +12,7 @@ class EditStoreInfoState {
     this.changed = false,
     this.saving = false,
     this.failure,
+    this.delivers = false,
   });
 
   /// A field differs from the saved store: there's something to save, and
@@ -19,6 +20,9 @@ class EditStoreInfoState {
   final bool changed;
   final bool saving;
   final AppFailure? failure;
+
+  /// "We deliver" is picked: the drivers' number shows.
+  final bool delivers;
 }
 
 /// What customers see of the store, edited in place on the info page: the
@@ -29,7 +33,7 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
   late final FormGroup form;
 
   /// What the saved values were, as the fields show them.
-  Map<String, String?> _saved = const {};
+  Map<String, Object?> _saved = const {};
 
   @override
   EditStoreInfoState build() {
@@ -46,6 +50,11 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
       ),
       'facebookUrl': FormControl<String>(validators: [SValidators.url]),
       'instagramUrl': FormControl<String>(validators: [SValidators.url]),
+      'delivers': FormControl<bool>(value: false),
+      // Empty: customers call the store's phone.
+      'deliveryPhone': FormControl<String>(
+        validators: [SValidators.libyanPhone],
+      ),
     });
     final edits = form.valueChanges.listen((_) => _compare());
     ref.onDispose(() {
@@ -56,7 +65,7 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
       if (next.value case final saved? when !state.changed) _fill(saved);
     });
     if (ref.read(storeViewModel).value case final saved?) _fill(saved);
-    return const EditStoreInfoState();
+    return EditStoreInfoState(delivers: _delivers);
   }
 
   /// Returns true when the store was saved.
@@ -68,7 +77,11 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
     }
     final storeId = ref.read(currentStoreProvider)?.storeId;
     if (storeId == null) return false;
-    state = const EditStoreInfoState(changed: true, saving: true);
+    state = EditStoreInfoState(
+      changed: true,
+      saving: true,
+      delivers: _delivers,
+    );
 
     final result = await ref
         .read(storeRepositoryProvider)
@@ -81,17 +94,26 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
             email: _text('email'),
             facebookUrl: _text('facebookUrl'),
             instagramUrl: _text('instagramUrl'),
+            delivers: _delivers,
+            deliveryPhone: switch (_text('deliveryPhone')) {
+              final phone? => normalizeLibyanPhone(phone),
+              null => null,
+            },
           ),
         );
     if (!ref.mounted) return false;
 
     switch (result) {
       case Ok(:final value):
-        state = const EditStoreInfoState();
+        state = EditStoreInfoState(delivers: value.profile.delivers);
         _fill(value);
         ref.read(storeViewModel.notifier).replace(value);
       case Err(:final failure):
-        state = EditStoreInfoState(changed: true, failure: failure);
+        state = EditStoreInfoState(
+          changed: true,
+          failure: failure,
+          delivers: _delivers,
+        );
     }
     return result.isOk;
   }
@@ -104,9 +126,15 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
       'email': profile.email,
       'facebookUrl': profile.facebookUrl,
       'instagramUrl': profile.instagramUrl,
+      'delivers': profile.delivers,
+      'deliveryPhone': switch (profile.deliveryPhone) {
+        final phone? => formatLibyanPhone(phone),
+        null => null,
+      },
     };
     _saved = {
-      for (final MapEntry(:key, :value) in values.entries) key: _normal(value),
+      for (final MapEntry(:key, :value) in values.entries)
+        key: value is String? ? _normal(value) : value,
     };
     for (final MapEntry(:key, :value) in values.entries) {
       form.control(key).reset(value: value);
@@ -115,16 +143,22 @@ class EditStoreInfoViewModel extends ViewModel<EditStoreInfoState> {
 
   void _compare() {
     final changed = form.controls.keys.any(
-      (name) => _text(name) != _saved[name],
+      (name) => _value(name) != _saved[name],
     );
-    if (changed != state.changed) {
+    final delivers = _delivers;
+    if (changed != state.changed || delivers != state.delivers) {
       state = EditStoreInfoState(
         changed: changed,
         saving: state.saving,
         failure: state.failure,
+        delivers: delivers,
       );
     }
   }
+
+  bool get _delivers => form.control('delivers').value as bool? ?? false;
+
+  Object? _value(String name) => name == 'delivers' ? _delivers : _text(name);
 
   /// The field's text without spaces around it, or null when it's empty.
   String? _text(String name) => _normal(form.control(name).value as String?);

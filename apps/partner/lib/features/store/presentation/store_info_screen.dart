@@ -10,7 +10,7 @@ import 'store_view_model.dart';
 
 /// The store as customers see it. Owners edit what's theirs right here:
 /// the pictures upload as soon as they're picked, and the pickup
-/// instructions and contact details save with "Save changes", which shows
+/// instructions, contact details and delivery save with "Save changes", which shows
 /// once something changed; leaving with changes asks first. The name and
 /// category are our team's to change. Staff only read it.
 class StoreInfoScreen extends AppView {
@@ -117,6 +117,25 @@ class _Editable extends StatelessWidget {
               label: s.phoneLabel,
               kind: TextInputKind.phone,
             ),
+            SChoiceInput<bool>.segmented(
+              controlName: 'delivers',
+              label: s.deliveryLabel,
+              options: [
+                SelectOption(false, s.pickupOnly),
+                SelectOption(true, s.weDeliver),
+              ],
+            ),
+            if (edit.delivers) ...[
+              SText.caption(s.weDeliverHint),
+              STextInput(
+                controlName: 'deliveryPhone',
+                label: s.deliveryPhoneLabel,
+                // What customers call when it's left empty.
+                hint: formatLibyanPhone(store.profile.phone),
+                helper: s.deliveryPhoneHelper,
+                kind: TextInputKind.phone,
+              ),
+            ],
             STextInput(
               controlName: 'email',
               label: s.emailLabel,
@@ -165,6 +184,8 @@ class _ReadOnly extends StatelessWidget {
     final profile = store.profile;
     String shown(String? value) =>
         value == null || value.isEmpty ? s.notSet : value;
+    // "091 000 0001" keeps its order in Arabic.
+    String phone(String value) => '\u2066${formatLibyanPhone(value)}\u2069';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -191,11 +212,16 @@ class _ReadOnly extends StatelessWidget {
               label: s.pickupInstructionsLabel,
               value: shown(profile.pickupInstructions),
             ),
+            SFactTile(label: s.phoneLabel, value: phone(profile.phone)),
             SFactTile(
-              label: s.phoneLabel,
-              // "091 000 0001" keeps its order in Arabic.
-              value: '\u2066${formatLibyanPhone(profile.phone)}\u2069',
+              label: s.deliveryLabel,
+              value: profile.delivers ? s.weDeliver : s.pickupOnly,
             ),
+            if (profile.delivers)
+              SFactTile(
+                label: s.deliveryPhoneLabel,
+                value: phone(profile.deliveryPhone ?? profile.phone),
+              ),
             SFactTile(label: s.emailLabel, value: shown(profile.email)),
             SFactTile(
               label: s.facebookLabel,

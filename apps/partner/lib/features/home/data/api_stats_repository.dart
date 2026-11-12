@@ -15,6 +15,7 @@ class ApiStatsRepository implements StatsRepository {
         (dto) => StoreStats(
           liveOffers: dto.liveOffers.toInt(),
           onTheWay: dto.activeReservations.toInt(),
+          outForDelivery: dto.outForDelivery.toInt(),
           today: _toPeriod(dto.today),
           last30Days: _toPeriod(dto.last30Days),
         ),

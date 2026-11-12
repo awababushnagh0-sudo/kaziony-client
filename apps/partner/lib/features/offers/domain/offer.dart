@@ -13,6 +13,7 @@ enum OfferState { live, scheduled, soldOut, paused, ended, removed }
 class ClaimCounts {
   const ClaimCounts({
     required this.reserved,
+    required this.outForDelivery,
     required this.redeemed,
     required this.expired,
     required this.cancelled,
@@ -21,10 +22,16 @@ class ClaimCounts {
   /// Waiting for the customer to come.
   final int reserved;
 
-  /// Picked up at the counter.
+  /// With the store's drivers.
+  final int outForDelivery;
+
+  /// Picked up at the counter, or delivered.
   final int redeemed;
   final int expired;
   final int cancelled;
+
+  /// Taken and not handed over yet: coming to the counter or being brought.
+  int get onTheWay => reserved + outForDelivery;
 }
 
 class Offer {

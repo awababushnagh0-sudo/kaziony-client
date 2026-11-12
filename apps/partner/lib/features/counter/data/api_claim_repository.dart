@@ -15,13 +15,27 @@ class ApiClaimRepository implements ClaimRepository {
     String storeId, {
     required int page,
     required int pageSize,
-  }) async {
+  }) => _list(storeId, api.ClaimStatus.reserved, page, pageSize);
+
+  @override
+  Future<Result<PageResult<Claim>>> deliveries(
+    String storeId, {
+    required int page,
+    required int pageSize,
+  }) => _list(storeId, api.ClaimStatus.outForDelivery, page, pageSize);
+
+  Future<Result<PageResult<Claim>>> _list(
+    String storeId,
+    api.ClaimStatus status,
+    int page,
+    int pageSize,
+  ) async {
     final result = await _api.guard(
       () => _claims.list(
         storeId: storeId,
         page: page,
         pageSize: pageSize,
-        status: api.ClaimStatus.reserved,
+        status: status,
       ),
     );
     return result.map(
@@ -45,6 +59,27 @@ class ApiClaimRepository implements ClaimRepository {
           body: api.RedeemClaimDto(code: code),
         ),
       )).map(_toClaim);
+
+  @override
+  Future<Result<Claim>> sendForDelivery(String storeId, String code) async =>
+      (await _api.guard(
+        () => _claims.sendForDelivery(
+          storeId: storeId,
+          body: api.RedeemClaimDto(code: code),
+        ),
+      )).map(_toClaim);
+
+  @override
+  Future<Result<Claim>> delivered(String storeId, String claimId) async =>
+      (await _api.guard(
+        () => _claims.delivered(storeId: storeId, claimId: claimId),
+      )).map(_toClaim);
+
+  @override
+  Future<Result<Claim>> notDelivered(String storeId, String claimId) async =>
+      (await _api.guard(
+        () => _claims.notDelivered(storeId: storeId, claimId: claimId),
+      )).map(_toClaim);
 }
 
 Claim _toClaim(api.PartnerClaimDto dto) => Claim(
@@ -54,6 +89,7 @@ Claim _toClaim(api.PartnerClaimDto dto) => Claim(
   totalPrice: dto.totalPrice,
   status: switch (dto.status) {
     api.ClaimStatus.reserved => ClaimStatus.reserved,
+    api.ClaimStatus.outForDelivery => ClaimStatus.outForDelivery,
     api.ClaimStatus.redeemed => ClaimStatus.redeemed,
     api.ClaimStatus.expired => ClaimStatus.expired,
     api.ClaimStatus.cancelled => ClaimStatus.cancelled,
@@ -69,5 +105,7 @@ Claim _toClaim(api.PartnerClaimDto dto) => Claim(
   ),
   expiresAt: dto.expiresAt,
   redeemedAt: dto.redeemedAt,
+  sentForDeliveryAt: dto.sentForDeliveryAt,
   canRedeem: dto.canRedeem,
+  canSendForDelivery: dto.canSendForDelivery,
 );

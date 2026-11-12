@@ -1089,4 +1089,123 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String postSummary(String pieces, String when) {
     return '$pieces · ينتهي $when';
   }
+
+  @override
+  String get claimOutForDelivery => 'مع السائق';
+
+  @override
+  String get sendForDelivery => 'أرسل للتوصيل';
+
+  @override
+  String get markDelivered => 'تم التوصيل';
+
+  @override
+  String get notDelivered => 'لم يتم';
+
+  @override
+  String get sentForDeliveryTitle => 'مع السائق الآن';
+
+  @override
+  String get driverCollects => 'يستلمها السائق من الزبون';
+
+  @override
+  String get deliveredTitle => 'تم التوصيل';
+
+  @override
+  String get paidOnDelivery => 'تُدفع عند التوصيل';
+
+  @override
+  String checkSendMessage(String item, String name, String amount) {
+    return 'سيأخذ السائق $item إلى $name ويستلم $amount.';
+  }
+
+  @override
+  String checkDeliveredMessage(String item, String name, String amount) {
+    return 'تأكّد أن السائق سلّم $item إلى $name واستلم $amount.';
+  }
+
+  @override
+  String get notDeliveredTitle => 'لم يتم التوصيل؟';
+
+  @override
+  String notDeliveredMessage(String name) {
+    return 'يُلغى الحجز وتعود قطعه للبيع، ويصل $name إشعار بذلك دون أن يُحسب عليه.';
+  }
+
+  @override
+  String get cancelBooking => 'إلغاء الحجز';
+
+  @override
+  String get keepIt => 'إبقاؤه';
+
+  @override
+  String get notDeliveredDone => 'أُلغي الحجز وعادت قطعه للبيع.';
+
+  @override
+  String outForDeliverySince(String time) {
+    return 'مع السائق منذ $time';
+  }
+
+  @override
+  String get outForDeliveryHint =>
+      'أغلقه عند التوصيل، أو إن لم يتم. بعد يوم يُعتبر قد وصل.';
+
+  @override
+  String get deliveredAtLabel => 'وقت التوصيل';
+
+  @override
+  String get sentForDeliveryAtLabel => 'مع السائق منذ';
+
+  @override
+  String get deliveriesTitle => 'التوصيلات';
+
+  @override
+  String get noDeliveriesTitle => 'لا توصيلات حاليًا';
+
+  @override
+  String get noDeliveriesMessage =>
+      'تظهر هنا الحجوزات التي يأخذها السائق حتى تغلقها.';
+
+  @override
+  String get longestOutFirst => 'الأقدم أولًا';
+
+  @override
+  String get deliveriesEndNote =>
+      'التوصيل الذي يبقى مفتوحًا يومًا يُعتبر قد وصل.';
+
+  @override
+  String deliveriesOut(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count توصيلًا بانتظار الإغلاق',
+      few: '$count توصيلات بانتظار الإغلاق',
+      two: 'توصيلان بانتظار الإغلاق',
+      one: 'توصيل واحد بانتظار الإغلاق',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deliveriesOutHint =>
+      'حدّد لكل منها هل وصل. بعد يوم تُعتبر قد وصلت.';
+
+  @override
+  String get deliveryLabel => 'التوصيل';
+
+  @override
+  String get pickupOnly => 'استلام فقط';
+
+  @override
+  String get weDeliver => 'نوصّل أيضًا';
+
+  @override
+  String get weDeliverHint =>
+      'يرى الزبون صاحب الحجز رقمًا يتصل به ليطلب التوصيل، والتوصيل وأي رسوم له بينك وبينه. عندما يأخذ السائق حجزًا، ابحث عن رمزه واضغط «أرسل للتوصيل».';
+
+  @override
+  String get deliveryPhoneLabel => 'رقم التوصيل';
+
+  @override
+  String get deliveryPhoneHelper => 'اتركه فارغًا ليتصل الزبائن برقم المحل.';
 }

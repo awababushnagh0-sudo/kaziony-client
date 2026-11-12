@@ -42,7 +42,7 @@ class OfferSplitBar extends StatelessWidget {
         keyed: apart != OfferCount.pickedUp,
       ),
       SplitPart(
-        count: offer.claims.reserved,
+        count: offer.claims.onTheWay,
         label: s.figureOnTheWay,
         tone: SplitTone.underway,
       ),

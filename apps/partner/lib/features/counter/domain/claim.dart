@@ -4,7 +4,11 @@ enum ClaimStatus {
   /// Waiting for the customer to come.
   reserved,
 
-  /// Picked up at the counter.
+  /// With the store's driver, on its way to the customer: no time limit,
+  /// until the store says it was delivered or not.
+  outForDelivery,
+
+  /// Picked up at the counter, or delivered.
   redeemed,
 
   /// Not picked up in time.
@@ -64,7 +68,9 @@ class Claim {
     required this.offer,
     required this.expiresAt,
     required this.redeemedAt,
+    required this.sentForDeliveryAt,
     required this.canRedeem,
+    required this.canSendForDelivery,
   });
 
   final String id;
@@ -85,8 +91,17 @@ class Claim {
   final DateTime expiresAt;
   final DateTime? redeemedAt;
 
-  /// The server's answer: it can be picked up here, right now.
+  /// When the store's driver took it.
+  final DateTime? sentForDeliveryAt;
+
+  /// The server's answer: it can be picked up here, right now (or handed
+  /// over at the door, when it's out for delivery).
   final bool canRedeem;
+
+  /// The store delivers and it's still waiting: its driver can take it.
+  final bool canSendForDelivery;
+
+  bool get isOutForDelivery => status == ClaimStatus.outForDelivery;
 
   /// Still held for the customer at [now].
   bool isHeldAt(DateTime now) =>
@@ -108,7 +123,9 @@ class Claim {
       // Still reserved: its time ran out a moment ago.
       ClaimStatus.reserved when !expiresAt.isAfter(DateTime.now()) =>
         ClaimProblem.expired,
-      ClaimStatus.reserved || null => ClaimProblem.other,
+      ClaimStatus.reserved ||
+      ClaimStatus.outForDelivery ||
+      null => ClaimProblem.other,
     };
   }
 }
@@ -128,6 +145,24 @@ abstract interface class ClaimRepository {
 
   /// Marks it picked up at this store.
   Future<Result<Claim>> redeem(String storeId, String code);
+
+  /// Bookings out with the store's drivers, the longest out first.
+  Future<Result<PageResult<Claim>>> deliveries(
+    String storeId, {
+    required int page,
+    required int pageSize,
+  });
+
+  /// The customer called to have it brought, and the driver takes it.
+  Future<Result<Claim>> sendForDelivery(String storeId, String code);
+
+  /// The driver handed it over: it counts as a pickup.
+  Future<Result<Claim>> delivered(String storeId, String claimId);
+
+  /// It didn't happen (the customer cancelled on the phone, or wasn't
+  /// there): cancelled with no strike, the pieces back on sale, and the
+  /// customer told.
+  Future<Result<Claim>> notDelivered(String storeId, String claimId);
 }
 
 /// Wired to the real implementation in `core/providers/dependencies.dart`.

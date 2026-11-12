@@ -34,6 +34,8 @@ class StoreProfile {
     required this.email,
     required this.facebookUrl,
     required this.instagramUrl,
+    required this.delivers,
+    required this.deliveryPhone,
   });
 
   /// Shown on every offer's page: where to go in the shop, what to bring.
@@ -45,6 +47,13 @@ class StoreProfile {
   final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
+
+  /// Has its own drivers: customers with a booking can call to have it
+  /// brought. Delivery and any fee are between them and the store.
+  final bool delivers;
+
+  /// The number customers call for that; null for [phone].
+  final String? deliveryPhone;
 }
 
 class Store {

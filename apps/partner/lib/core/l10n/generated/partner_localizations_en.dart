@@ -1084,4 +1084,123 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String postSummary(String pieces, String when) {
     return '$pieces · ends $when';
   }
+
+  @override
+  String get claimOutForDelivery => 'Out for delivery';
+
+  @override
+  String get sendForDelivery => 'Send for delivery';
+
+  @override
+  String get markDelivered => 'Delivered';
+
+  @override
+  String get notDelivered => 'Didn\'t happen';
+
+  @override
+  String get sentForDeliveryTitle => 'With your driver';
+
+  @override
+  String get driverCollects => 'For the driver to collect';
+
+  @override
+  String get deliveredTitle => 'Delivered';
+
+  @override
+  String get paidOnDelivery => 'Paid on delivery';
+
+  @override
+  String checkSendMessage(String item, String name, String amount) {
+    return 'Your driver takes $item to $name, and collects $amount.';
+  }
+
+  @override
+  String checkDeliveredMessage(String item, String name, String amount) {
+    return 'Make sure your driver handed $item to $name and collected $amount.';
+  }
+
+  @override
+  String get notDeliveredTitle => 'The delivery didn\'t happen?';
+
+  @override
+  String notDeliveredMessage(String name) {
+    return 'The booking is cancelled and its pieces go back on sale. $name is told, and it doesn\'t count against them.';
+  }
+
+  @override
+  String get cancelBooking => 'Cancel the booking';
+
+  @override
+  String get keepIt => 'Keep it';
+
+  @override
+  String get notDeliveredDone =>
+      'Booking cancelled. Its pieces are back on sale.';
+
+  @override
+  String outForDeliverySince(String time) {
+    return 'With your driver since $time';
+  }
+
+  @override
+  String get outForDeliveryHint =>
+      'Close it once it\'s delivered, or if it didn\'t happen. After a day, it\'s taken as delivered.';
+
+  @override
+  String get deliveredAtLabel => 'Delivered';
+
+  @override
+  String get sentForDeliveryAtLabel => 'With the driver since';
+
+  @override
+  String get deliveriesTitle => 'Deliveries';
+
+  @override
+  String get noDeliveriesTitle => 'No deliveries out';
+
+  @override
+  String get noDeliveriesMessage =>
+      'Bookings your driver takes show here until you close them.';
+
+  @override
+  String get longestOutFirst => 'Longest out first';
+
+  @override
+  String get deliveriesEndNote =>
+      'A delivery left open a day is taken as delivered.';
+
+  @override
+  String deliveriesOut(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count deliveries to close',
+      one: '1 delivery to close',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deliveriesOutHint =>
+      'Say if each was delivered. After a day, they\'re taken as delivered.';
+
+  @override
+  String get deliveryLabel => 'Delivery';
+
+  @override
+  String get pickupOnly => 'Pickup only';
+
+  @override
+  String get weDeliver => 'We deliver too';
+
+  @override
+  String get weDeliverHint =>
+      'Customers with a booking see a number to call to have it brought. Delivery and any fee are between you and them. When your driver takes one, look its code up and tap Send for delivery.';
+
+  @override
+  String get deliveryPhoneLabel => 'Number for delivery';
+
+  @override
+  String get deliveryPhoneHelper =>
+      'Leave it empty and customers call your store\'s number.';
 }

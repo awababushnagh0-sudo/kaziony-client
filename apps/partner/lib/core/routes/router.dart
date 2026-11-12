@@ -4,6 +4,7 @@ import 'package:stellar/stellar.dart';
 import '../../features/auth/presentation/change_password/change_password_screen.dart';
 import '../../features/auth/presentation/login/login_screen.dart';
 import '../../features/counter/presentation/claim_screen.dart';
+import '../../features/counter/presentation/deliveries_screen.dart';
 import '../../features/counter/presentation/pickups_screen.dart';
 import '../../features/counter/presentation/scan_screen.dart';
 import '../../features/counter/presentation/type_code_screen.dart';
@@ -94,6 +95,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       // The counter, over the Scan tab.
       GoRoute(path: Routes.typeCode, builder: (_, _) => const TypeCodeScreen()),
       GoRoute(path: Routes.pickups, builder: (_, _) => const PickupsScreen()),
+      GoRoute(
+        path: Routes.deliveries,
+        builder: (_, _) => const DeliveriesScreen(),
+      ),
       GoRoute(
         path: Routes.claim(':code'),
         builder: (_, state) => ClaimScreen(

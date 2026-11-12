@@ -17,8 +17,8 @@ import 'home_view_model.dart';
 
 /// The day at a glance: today's numbers, the next customers to come and how
 /// the live offers sell. Staff see the same day, without the numbers only
-/// owners act on (no-shows, offers). Members of several stores (a brand's
-/// places) see which one it is. While customers can't see the store, it
+/// owners act on (no-shows, offers), and the deliveries out to close.
+/// Members of several stores (a brand's places) see which one it is. While customers can't see the store, it
 /// says what's left before they can.
 class HomeScreen extends AppView {
   const HomeScreen({super.key});
@@ -129,6 +129,13 @@ class _HomeBody extends AppView {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: Space.lg),
             child: _NotLive(details, isOwner: isOwner),
+          ),
+          const Gap(Space.lg),
+        ],
+        if (home.stats.outForDelivery > 0) ...[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+            child: _Deliveries(home.stats.outForDelivery),
           ),
           const Gap(Space.lg),
         ],
@@ -248,6 +255,29 @@ class _NotLive extends StatelessWidget {
               : s.storeNotLiveStaffMessage,
         ),
         SListGroup(children: [for (final item in missing) row(item)]),
+      ],
+    );
+  }
+}
+
+/// Bookings out with the store's drivers, for the store to close before a
+/// day passes and they're taken as delivered.
+class _Deliveries extends StatelessWidget {
+  const _Deliveries(this.count);
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = PartnerLocalizations.of(context);
+    return SListGroup(
+      children: [
+        SListTile(
+          icon: SIcons.delivery,
+          title: s.deliveriesOut(count),
+          subtitle: s.deliveriesOutHint,
+          onTap: () => context.push(Routes.deliveries),
+        ),
       ],
     );
   }

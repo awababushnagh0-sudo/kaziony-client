@@ -67,6 +67,7 @@ void main() {
       routes: [
         GoRoute(path: Routes.home, builder: (_, _) => const HomeScreen()),
         stubPage(Routes.pickups, 'pickups page'),
+        stubPage(Routes.deliveries, 'deliveries page'),
         stubPage(Routes.offers, 'offers page'),
         stubPage(Routes.storeInfo, 'store info page'),
         stubPage(Routes.location, 'location page'),
@@ -252,6 +253,32 @@ void main() {
     expect(find.text('Offer o1'), findsOneWidget);
     expect(find.textContaining('left of'), findsNothing);
     expect(find.text('No limit'), findsOneWidget);
+  });
+
+  testWidgets('reminds the store of deliveries to close, and opens them', (
+    tester,
+  ) async {
+    await open(
+      tester,
+      stats: FakeStatsRepository()..result = Ok(stats(outForDelivery: 2)),
+    );
+
+    expect(
+      find.text(
+        "Say if each was delivered. After a day, they're taken as "
+        'delivered.',
+      ),
+      findsOneWidget,
+    );
+    await tester.tap(find.text('2 deliveries to close'));
+    await tester.pumpAndSettle();
+    expect(find.text('deliveries page'), findsOneWidget);
+  });
+
+  testWidgets('says nothing of deliveries when none are out', (tester) async {
+    await open(tester);
+
+    expect(find.textContaining('to close'), findsNothing);
   });
 
   testWidgets('the band opens who is on their way', (tester) async {

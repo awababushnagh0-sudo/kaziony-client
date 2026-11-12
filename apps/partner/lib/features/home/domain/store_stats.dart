@@ -26,6 +26,7 @@ class StoreStats {
   const StoreStats({
     required this.liveOffers,
     required this.onTheWay,
+    required this.outForDelivery,
     required this.today,
     required this.last30Days,
   });
@@ -35,6 +36,10 @@ class StoreStats {
 
   /// Reservations not picked up yet and still held.
   final int onTheWay;
+
+  /// Out with the store's drivers, for the store to close as delivered or
+  /// not (a day on, they close as delivered).
+  final int outForDelivery;
 
   /// Since midnight, Libya time.
   final PeriodStats today;

@@ -46,6 +46,10 @@ class ClaimStatusBadge extends StatelessWidget {
     final s = PartnerLocalizations.of(context);
     return switch (status) {
       ClaimStatus.reserved => SBadge(s.claimReserved, tone: BadgeTone.success),
+      ClaimStatus.outForDelivery => SBadge(
+        s.claimOutForDelivery,
+        tone: BadgeTone.warning,
+      ),
       ClaimStatus.redeemed => SBadge(s.claimRedeemed, tone: BadgeTone.success),
       ClaimStatus.expired => SBadge(s.claimExpired, tone: BadgeTone.warning),
       ClaimStatus.cancelled => SBadge(s.claimCancelled),

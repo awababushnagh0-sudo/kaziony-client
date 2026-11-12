@@ -140,6 +140,76 @@ void main() {
     expect(find.text('Save changes'), findsNothing);
   });
 
+  testWidgets('the owner turns delivery on, with a number for it', (
+    tester,
+  ) async {
+    await open(tester);
+
+    expect(find.text('Pickup only'), findsOneWidget);
+    expect(textField('Number for delivery'), findsNothing);
+    await tap(tester, find.text('We deliver too'));
+    expect(find.text('Save changes'), findsOneWidget);
+    await tester.enterText(textField('Number for delivery'), '092 123 4567');
+    await tester.pump();
+    await tap(tester, find.text('Save changes'));
+
+    final saved = stores.updates.single;
+    expect(saved.delivers, isTrue);
+    expect(saved.deliveryPhone, '+218921234567');
+    // Saved: still on, with its number.
+    expect(find.text('0921234567'), findsOneWidget);
+    expect(find.text('Save changes'), findsNothing);
+  });
+
+  testWidgets("leaves the delivery number to the store's phone when empty", (
+    tester,
+  ) async {
+    await open(tester);
+
+    await tap(tester, find.text('We deliver too'));
+    await tap(tester, find.text('Save changes'));
+
+    final saved = stores.updates.single;
+    expect(saved.delivers, isTrue);
+    expect(saved.deliveryPhone, isNull);
+  });
+
+  testWidgets("doesn't save a wrong delivery number", (tester) async {
+    await open(tester);
+
+    await tap(tester, find.text('We deliver too'));
+    await tester.enterText(textField('Number for delivery'), '12345');
+    await tester.pump();
+    await tap(tester, find.text('Save changes'));
+
+    expect(stores.updates, isEmpty);
+  });
+
+  testWidgets('staff see that the store delivers, and its number', (
+    tester,
+  ) async {
+    await open(
+      tester,
+      isOwner: false,
+      loaded: Ok(
+        storeDetails(
+          profile: const StoreProfile(
+            pickupInstructions: null,
+            phone: '+218910000001',
+            email: null,
+            facebookUrl: null,
+            instagramUrl: null,
+            delivers: true,
+            deliveryPhone: '+218921234567',
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('We deliver too'), findsOneWidget);
+    expect(find.text('\u20660921234567\u2069'), findsOneWidget);
+  });
+
   testWidgets('putting a field back leaves nothing to save', (tester) async {
     await open(tester);
 

@@ -140,6 +140,7 @@ Offer _toOffer(api.PartnerOfferDto dto) => Offer(
   viewCount: dto.viewCount.toInt(),
   claims: ClaimCounts(
     reserved: dto.claims.reserved.toInt(),
+    outForDelivery: dto.claims.outForDelivery.toInt(),
     redeemed: dto.claims.redeemed.toInt(),
     expired: dto.claims.expired.toInt(),
     cancelled: dto.claims.cancelled.toInt(),

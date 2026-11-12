@@ -1948,6 +1948,198 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'{pieces} · ends {when}'**
   String postSummary(String pieces, String when);
+
+  /// No description provided for @claimOutForDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Out for delivery'**
+  String get claimOutForDelivery;
+
+  /// No description provided for @sendForDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Send for delivery'**
+  String get sendForDelivery;
+
+  /// No description provided for @markDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get markDelivered;
+
+  /// No description provided for @notDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t happen'**
+  String get notDelivered;
+
+  /// No description provided for @sentForDeliveryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'With your driver'**
+  String get sentForDeliveryTitle;
+
+  /// No description provided for @driverCollects.
+  ///
+  /// In en, this message translates to:
+  /// **'For the driver to collect'**
+  String get driverCollects;
+
+  /// No description provided for @deliveredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get deliveredTitle;
+
+  /// No description provided for @paidOnDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid on delivery'**
+  String get paidOnDelivery;
+
+  /// No description provided for @checkSendMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your driver takes {item} to {name}, and collects {amount}.'**
+  String checkSendMessage(String item, String name, String amount);
+
+  /// No description provided for @checkDeliveredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Make sure your driver handed {item} to {name} and collected {amount}.'**
+  String checkDeliveredMessage(String item, String name, String amount);
+
+  /// No description provided for @notDeliveredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The delivery didn\'t happen?'**
+  String get notDeliveredTitle;
+
+  /// No description provided for @notDeliveredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The booking is cancelled and its pieces go back on sale. {name} is told, and it doesn\'t count against them.'**
+  String notDeliveredMessage(String name);
+
+  /// No description provided for @cancelBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel the booking'**
+  String get cancelBooking;
+
+  /// No description provided for @keepIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it'**
+  String get keepIt;
+
+  /// No description provided for @notDeliveredDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking cancelled. Its pieces are back on sale.'**
+  String get notDeliveredDone;
+
+  /// No description provided for @outForDeliverySince.
+  ///
+  /// In en, this message translates to:
+  /// **'With your driver since {time}'**
+  String outForDeliverySince(String time);
+
+  /// No description provided for @outForDeliveryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Close it once it\'s delivered, or if it didn\'t happen. After a day, it\'s taken as delivered.'**
+  String get outForDeliveryHint;
+
+  /// No description provided for @deliveredAtLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get deliveredAtLabel;
+
+  /// No description provided for @sentForDeliveryAtLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'With the driver since'**
+  String get sentForDeliveryAtLabel;
+
+  /// No description provided for @deliveriesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Deliveries'**
+  String get deliveriesTitle;
+
+  /// No description provided for @noDeliveriesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No deliveries out'**
+  String get noDeliveriesTitle;
+
+  /// No description provided for @noDeliveriesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookings your driver takes show here until you close them.'**
+  String get noDeliveriesMessage;
+
+  /// No description provided for @longestOutFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Longest out first'**
+  String get longestOutFirst;
+
+  /// No description provided for @deliveriesEndNote.
+  ///
+  /// In en, this message translates to:
+  /// **'A delivery left open a day is taken as delivered.'**
+  String get deliveriesEndNote;
+
+  /// No description provided for @deliveriesOut.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 delivery to close} other{{count} deliveries to close}}'**
+  String deliveriesOut(int count);
+
+  /// No description provided for @deliveriesOutHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Say if each was delivered. After a day, they\'re taken as delivered.'**
+  String get deliveriesOutHint;
+
+  /// No description provided for @deliveryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get deliveryLabel;
+
+  /// No description provided for @pickupOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup only'**
+  String get pickupOnly;
+
+  /// No description provided for @weDeliver.
+  ///
+  /// In en, this message translates to:
+  /// **'We deliver too'**
+  String get weDeliver;
+
+  /// No description provided for @weDeliverHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers with a booking see a number to call to have it brought. Delivery and any fee are between you and them. When your driver takes one, look its code up and tap Send for delivery.'**
+  String get weDeliverHint;
+
+  /// No description provided for @deliveryPhoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Number for delivery'**
+  String get deliveryPhoneLabel;
+
+  /// No description provided for @deliveryPhoneHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave it empty and customers call your store\'s number.'**
+  String get deliveryPhoneHelper;
 }
 
 class _PartnerLocalizationsDelegate

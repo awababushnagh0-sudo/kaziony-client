@@ -39,6 +39,7 @@ abstract final class Routes {
   // The counter, over the Scan tab.
   static const typeCode = '$scan/type';
   static const pickups = '/pickups';
+  static const deliveries = '/deliveries';
 
   /// [fromList]: opened by tapping a name, not by the customer's code, so
   /// the page asks before confirming.

@@ -593,5 +593,84 @@
         "type": "String"
       }
     }
-  }
+  },
+  "claimOutForDelivery": "Out for delivery",
+  "sendForDelivery": "Send for delivery",
+  "markDelivered": "Delivered",
+  "notDelivered": "Didn't happen",
+  "sentForDeliveryTitle": "With your driver",
+  "driverCollects": "For the driver to collect",
+  "deliveredTitle": "Delivered",
+  "paidOnDelivery": "Paid on delivery",
+  "checkSendMessage": "Your driver takes {item} to {name}, and collects {amount}.",
+  "@checkSendMessage": {
+    "placeholders": {
+      "item": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "checkDeliveredMessage": "Make sure your driver handed {item} to {name} and collected {amount}.",
+  "@checkDeliveredMessage": {
+    "placeholders": {
+      "item": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "notDeliveredTitle": "The delivery didn't happen?",
+  "notDeliveredMessage": "The booking is cancelled and its pieces go back on sale. {name} is told, and it doesn't count against them.",
+  "@notDeliveredMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "cancelBooking": "Cancel the booking",
+  "keepIt": "Keep it",
+  "notDeliveredDone": "Booking cancelled. Its pieces are back on sale.",
+  "outForDeliverySince": "With your driver since {time}",
+  "@outForDeliverySince": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "outForDeliveryHint": "Close it once it's delivered, or if it didn't happen. After a day, it's taken as delivered.",
+  "deliveredAtLabel": "Delivered",
+  "sentForDeliveryAtLabel": "With the driver since",
+  "deliveriesTitle": "Deliveries",
+  "noDeliveriesTitle": "No deliveries out",
+  "noDeliveriesMessage": "Bookings your driver takes show here until you close them.",
+  "longestOutFirst": "Longest out first",
+  "deliveriesEndNote": "A delivery left open a day is taken as delivered.",
+  "deliveriesOut": "{count, plural, =1{1 delivery to close} other{{count} deliveries to close}}",
+  "@deliveriesOut": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deliveriesOutHint": "Say if each was delivered. After a day, they're taken as delivered.",
+  "deliveryLabel": "Delivery",
+  "pickupOnly": "Pickup only",
+  "weDeliver": "We deliver too",
+  "weDeliverHint": "Customers with a booking see a number to call to have it brought. Delivery and any fee are between you and them. When your driver takes one, look its code up and tap Send for delivery.",
+  "deliveryPhoneLabel": "Number for delivery",
+  "deliveryPhoneHelper": "Leave it empty and customers call your store's number."
 }
