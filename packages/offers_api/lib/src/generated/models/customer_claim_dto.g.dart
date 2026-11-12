@@ -10,6 +10,9 @@ CustomerClaimDto _$CustomerClaimDtoFromJson(
   Map<String, dynamic> json,
 ) => CustomerClaimDto(
   status: ClaimStatus.fromJson(json['status'] as String),
+  cancelReason: json['cancelReason'] == null
+      ? null
+      : CancelReason.fromJson(json['cancelReason'] as String),
   id: json['id'] as String,
   code: json['code'] as String,
   quantity: json['quantity'] as num,
@@ -36,6 +39,7 @@ CustomerClaimDto _$CustomerClaimDtoFromJson(
 Map<String, dynamic> _$CustomerClaimDtoToJson(CustomerClaimDto instance) =>
     <String, dynamic>{
       'status': instance.status,
+      'cancelReason': ?instance.cancelReason,
       'id': instance.id,
       'code': instance.code,
       'quantity': instance.quantity,

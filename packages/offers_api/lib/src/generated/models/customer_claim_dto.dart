@@ -4,6 +4,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
+import 'cancel_reason.dart';
 import 'claim_status.dart';
 import 'customer_claim_offer_dto.dart';
 import 'customer_claim_store_dto.dart';
@@ -15,6 +16,7 @@ part 'customer_claim_dto.g.dart';
 class CustomerClaimDto {
   const CustomerClaimDto({
     required this.status,
+    required this.cancelReason,
     required this.id,
     required this.code,
     required this.quantity,
@@ -36,6 +38,10 @@ class CustomerClaimDto {
   
   /// EXPIRED as soon as expiresAt passes, even before the cleanup job runs.
   final ClaimStatus status;
+
+  /// Who cancelled it, when CANCELLED: anything but CUSTOMER wasn't the.
+  /// customer's doing, and doesn't count against them.
+  final CancelReason? cancelReason;
   final String id;
 
   /// Show this as a QR code at the counter.

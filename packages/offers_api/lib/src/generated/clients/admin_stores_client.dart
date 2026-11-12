@@ -9,6 +9,7 @@ import 'package:retrofit/retrofit.dart';
 import '../models/add_member_dto.dart';
 import '../models/add_member_response_dto.dart';
 import '../models/add_store_location_dto.dart';
+import '../models/cancelled_bookings_dto.dart';
 import '../models/create_store_dto.dart';
 import '../models/create_store_response_dto.dart';
 import '../models/store_detail_dto.dart';
@@ -72,6 +73,14 @@ abstract class AdminStoresClient {
   /// For the dashboard to say what turning the store off touches: its offers hide, and its bookings stay valid.
   @GET('/api/v1/admin/stores/{id}/ongoing')
   Future<StoreOngoingDto> ongoing({
+    @Path('id') required String id,
+  });
+
+  /// Cancel the bookings waiting at a store that's off.
+  ///
+  /// Each customer is told why in the app, and it doesn't count against them; the pieces go back. Pickups already made stay. Only for a store that's off: 409 with error "StoreIsLive".
+  @POST('/api/v1/admin/stores/{id}/cancel-bookings')
+  Future<CancelledBookingsDto> cancelBookings({
     @Path('id') required String id,
   });
 

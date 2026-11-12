@@ -193,6 +193,33 @@ class _AdminStoresClient implements AdminStoresClient {
   }
 
   @override
+  Future<CancelledBookingsDto> cancelBookings({required String id}) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<CancelledBookingsDto>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/admin/stores/${id}/cancel-bookings',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late CancelledBookingsDto _value;
+    try {
+      _value = CancelledBookingsDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<StoreDetailDto> addLocation({
     required String storeId,
     required AddStoreLocationDto body,

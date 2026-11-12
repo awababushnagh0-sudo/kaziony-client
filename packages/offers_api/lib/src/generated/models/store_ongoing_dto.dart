@@ -20,7 +20,8 @@ class StoreOngoingDto {
   final num liveOffers;
 
   /// Bookings waiting to be picked up. They stay valid, and one missed while.
-  /// the store is off gives the customer no strike.
+  /// the store is off gives the customer no strike, unless our team cancels.
+  /// them (`POST /admin/stores/{id}/cancel-bookings`).
   final num openBookings;
 
   Map<String, Object?> toJson() => _$StoreOngoingDtoToJson(this);

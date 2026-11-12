@@ -26,6 +26,7 @@ import 'clients/admin_audit_log_client.dart';
 import 'clients/partner_products_client.dart';
 import 'clients/claims_client.dart';
 import 'clients/partner_claims_client.dart';
+import 'clients/notifications_client.dart';
 import 'clients/admin_stats_client.dart';
 
 /// Offers API `v1.0`.
@@ -65,6 +66,7 @@ class OffersApi {
   PartnerProductsClient? _partnerProducts;
   ClaimsClient? _claims;
   PartnerClaimsClient? _partnerClaims;
+  NotificationsClient? _notifications;
   AdminStatsClient? _adminStats;
 
   AuthClient get auth => _auth ??= AuthClient(_dio, baseUrl: _baseUrl);
@@ -110,6 +112,8 @@ class OffersApi {
   ClaimsClient get claims => _claims ??= ClaimsClient(_dio, baseUrl: _baseUrl);
 
   PartnerClaimsClient get partnerClaims => _partnerClaims ??= PartnerClaimsClient(_dio, baseUrl: _baseUrl);
+
+  NotificationsClient get notifications => _notifications ??= NotificationsClient(_dio, baseUrl: _baseUrl);
 
   AdminStatsClient get adminStats => _adminStats ??= AdminStatsClient(_dio, baseUrl: _baseUrl);
 }

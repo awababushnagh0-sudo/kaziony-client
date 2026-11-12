@@ -47,9 +47,9 @@ write auth.dart "Shared by all apps: login, tokens, profile, app config." \
   auth_client.dart app_config_client.dart health_client.dart
 write partner.dart "Partner app: the store, products, offers, claims at the counter." \
   $(ls partner_*_client.dart | sort)
-write customer.dart "Customer app: browsing, store pages, claims, follows, places." \
+write customer.dart "Customer app: browsing, store pages, claims, follows, places, notifications." \
   offers_client.dart stores_client.dart claims_client.dart categories_client.dart \
-  places_client.dart
+  places_client.dart notifications_client.dart
 write admin.dart "Admin dashboard." \
   $(ls admin_*_client.dart | sort) categories_client.dart
 

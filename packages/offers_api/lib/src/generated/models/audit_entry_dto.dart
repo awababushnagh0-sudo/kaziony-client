@@ -27,7 +27,8 @@ class AuditEntryDto {
   final String id;
 
   /// What was done, as `area.verb`: store.create, store.update, store.delete,.
-  /// store.addLocation, store.setImage, store.removeImage, store.addMember,.
+  /// store.addLocation, store.setImage, store.removeImage,.
+  /// store.cancelBookings, store.addMember,.
   /// store.removeMember, user.create, user.update, user.setStatus,.
   /// user.resetPassword, category.create, category.update,.
   /// serviceArea.create, serviceArea.update, serviceArea.delete,.
