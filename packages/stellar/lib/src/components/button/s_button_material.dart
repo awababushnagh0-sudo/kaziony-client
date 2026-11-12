@@ -277,6 +277,7 @@ class SBandButtonMaterial extends StatelessWidget implements SButton {
     required this.icon,
     required this.tooltip,
     required this.onPressed,
+    this.count = 0,
     super.key,
   });
 
@@ -285,6 +286,7 @@ class SBandButtonMaterial extends StatelessWidget implements SButton {
   /// Also what screen readers say.
   final String tooltip;
   final VoidCallback? onPressed;
+  final int count;
 
   @override
   Widget build(BuildContext context) {
@@ -306,10 +308,17 @@ class SBandButtonMaterial extends StatelessWidget implements SButton {
             child: InkWell(
               onTap: onPressed,
               child: Center(
-                child: Icon(
-                  materialIcon(icon),
-                  size: SIconSize.md.pixels,
-                  color: c.primary,
+                // As on the nav bar's tabs.
+                child: Badge(
+                  isLabelVisible: count > 0,
+                  label: Text('$count'),
+                  backgroundColor: c.accent,
+                  textColor: c.onAccent,
+                  child: Icon(
+                    materialIcon(icon),
+                    size: SIconSize.md.pixels,
+                    color: c.primary,
+                  ),
                 ),
               ),
             ),

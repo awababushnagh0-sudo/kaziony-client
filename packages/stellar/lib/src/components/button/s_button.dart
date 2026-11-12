@@ -87,11 +87,13 @@ abstract interface class SButton implements Widget {
   /// its color (`SBand`): beside the place at the top of a home page
   /// (`SPlaceHeader`'s trailing), as tall as it is given room for.
   /// [tooltip] is required so the button always has a name for screen
-  /// readers.
+  /// readers. [count] is how many there are to see behind it (unread
+  /// notifications), on an orange dot over the icon; none at 0.
   const factory SButton.onBand({
     required SIcons icon,
     required String tooltip,
     required VoidCallback? onPressed,
+    int count,
     Key? key,
   }) = SBandButtonMaterial;
 
