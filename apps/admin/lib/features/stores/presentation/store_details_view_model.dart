@@ -31,6 +31,9 @@ class StoreDetailsViewModel extends AsyncViewModel<StoreDetails> {
   /// What turning it off touches, read fresh for the confirmation.
   Future<Result<StoreOngoing>> ongoing() => _stores.ongoing(storeId);
 
+  /// Once it's off: its customers are told why. How many it cancelled.
+  Future<Result<int>> cancelBookings() => _stores.cancelBookings(storeId);
+
   /// Puts [photo] in place of the logo or cover; [onProgress] goes from 0
   /// to 1.
   Future<Result<StoreDetails>> setImage(

@@ -56,10 +56,23 @@ class _StoreDetailsScreenState extends AppViewState<StoreDetailsScreen> {
         destructive: true,
       );
       if (!confirmed || !mounted) return;
+      if (!await _apply(store, active: false)) return;
+      // Then whether its customers hear it from us, or keep their bookings.
+      final waiting = ongoing?.openBookings ?? 0;
+      if (waiting > 0 && ref.read(isAdminProvider) && mounted) {
+        await _cancelBookings(store, waiting: waiting);
+      }
+      return;
     }
+    await _apply(store, active: true);
+  }
+
+  /// Whether it went through.
+  Future<bool> _apply(StoreDetails store, {required bool active}) async {
+    final s = AdminLocalizations.of(context);
     setState(() => _busy = true);
     final result = await _viewModel.setActive(active: active);
-    if (!mounted) return;
+    if (!mounted) return false;
     setState(() => _busy = false);
     switch (result) {
       case Ok():
@@ -67,11 +80,55 @@ class _StoreDetailsScreenState extends AppViewState<StoreDetailsScreen> {
           context,
           active ? s.storeEnabledDone : s.storeDisabledDone,
         );
+        return true;
       case Err(:final failure):
         SSnack.error(
           context,
           _notReady(context, failure) ?? failureMessage(context, failure),
         );
+        return false;
+    }
+  }
+
+  /// Asks before cancelling the bookings waiting at a store that's off;
+  /// [waiting] is how many, read again when not given.
+  Future<void> _cancelBookings(StoreDetails store, {int? waiting}) async {
+    final s = AdminLocalizations.of(context);
+    if (waiting == null) {
+      setState(() => _busy = true);
+      final ongoing = await _viewModel.ongoing();
+      if (!mounted) return;
+      setState(() => _busy = false);
+      switch (ongoing) {
+        case Ok(:final value):
+          waiting = value.openBookings;
+        case Err(:final failure):
+          SSnack.error(context, failureMessage(context, failure));
+          return;
+      }
+      if (waiting == 0) {
+        SSnack.success(context, s.noBookingsWaiting);
+        return;
+      }
+    }
+    final confirmed = await SDialog.confirm(
+      context,
+      title: s.cancelStoreBookingsTitle(waiting, store.label),
+      message: s.cancelStoreBookingsMessage,
+      confirmLabel: s.cancelBookingsConfirm,
+      cancelLabel: s.keepBookings,
+      destructive: true,
+    );
+    if (!confirmed || !mounted) return;
+    setState(() => _busy = true);
+    final result = await _viewModel.cancelBookings();
+    if (!mounted) return;
+    setState(() => _busy = false);
+    switch (result) {
+      case Ok(:final value):
+        SSnack.success(context, s.bookingsCancelledDone(value));
+      case Err(:final failure):
+        SSnack.error(context, failureMessage(context, failure));
     }
   }
 
@@ -133,9 +190,10 @@ class _StoreDetailsScreenState extends AppViewState<StoreDetailsScreen> {
         _ActionsMenu(
           store: store,
           busy: _busy,
-          canDelete: ref.watch(isAdminProvider),
+          isAdmin: ref.watch(isAdminProvider),
           onAddLocation: () => _addLocation(store),
           onSetActive: (active) => _setActive(store, active: active),
+          onCancelBookings: () => _cancelBookings(store),
           onDelete: () => _delete(store),
         ),
       ],
@@ -149,19 +207,21 @@ class _ActionsMenu extends StatelessWidget {
   const _ActionsMenu({
     required this.store,
     required this.busy,
-    required this.canDelete,
+    required this.isAdmin,
     required this.onAddLocation,
     required this.onSetActive,
+    required this.onCancelBookings,
     required this.onDelete,
   });
 
   final StoreDetails store;
   final bool busy;
 
-  /// Only admins delete stores.
-  final bool canDelete;
+  /// Only admins cancel a store's bookings and delete stores.
+  final bool isAdmin;
   final VoidCallback onAddLocation;
   final ValueChanged<bool> onSetActive;
+  final VoidCallback onCancelBookings;
   final VoidCallback onDelete;
 
   @override
@@ -198,7 +258,14 @@ class _ActionsMenu extends StatelessWidget {
             icon: SIcons.enable,
             onTap: () => onSetActive(true),
           ),
-        if (canDelete) ...[
+        if (!store.isActive && isAdmin)
+          MenuEntry(
+            label: s.cancelStoreBookings,
+            description: s.cancelStoreBookingsHint,
+            icon: SIcons.bookings,
+            onTap: onCancelBookings,
+          ),
+        if (isAdmin) ...[
           null,
           MenuEntry(
             label: s.deleteStore,

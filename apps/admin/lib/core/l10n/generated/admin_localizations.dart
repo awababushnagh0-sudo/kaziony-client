@@ -662,6 +662,54 @@ abstract class AdminLocalizations {
   /// **'{count, plural, =1{1 booking is waiting to be picked up. It stays valid, and if the customer misses it, it won\'t count against them.} other{{count} bookings are waiting to be picked up. They stay valid, and a missed one won\'t count against the customer.}}'**
   String disableStoreBookings(int count);
 
+  /// No description provided for @cancelStoreBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel its bookings'**
+  String get cancelStoreBookings;
+
+  /// No description provided for @cancelStoreBookingsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers are told why, and it doesn\'t count against them'**
+  String get cancelStoreBookingsHint;
+
+  /// No description provided for @cancelStoreBookingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Cancel the booking waiting at {store}?} other{Cancel the {count} bookings waiting at {store}?}}'**
+  String cancelStoreBookingsTitle(int count, String store);
+
+  /// No description provided for @cancelStoreBookingsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Each customer is told why in the app, and it doesn\'t count against them; the pieces go back to the offers. Or keep them: they stay valid for pickup.'**
+  String get cancelStoreBookingsMessage;
+
+  /// No description provided for @cancelBookingsConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel the bookings'**
+  String get cancelBookingsConfirm;
+
+  /// No description provided for @keepBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep them'**
+  String get keepBookings;
+
+  /// No description provided for @bookingsCancelledDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Booking cancelled: its customer was told} other{{count} bookings cancelled: their customers were told}}'**
+  String bookingsCancelledDone(int count);
+
+  /// No description provided for @noBookingsWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'No bookings are waiting at this store'**
+  String get noBookingsWaiting;
+
   /// No description provided for @deleteStoreTitle.
   ///
   /// In en, this message translates to:
@@ -2263,6 +2311,12 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'Removed a store\'s photo'**
   String get activityStoreRemoveImage;
+
+  /// No description provided for @activityStoreCancelBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled a store\'s bookings'**
+  String get activityStoreCancelBookings;
 
   /// No description provided for @activityUserCreate.
   ///

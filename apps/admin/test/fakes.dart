@@ -223,6 +223,15 @@ class FakeStoreRepository implements StoreRepository {
   @override
   Future<Result<StoreOngoing>> ongoing(String id) async => ongoingResult;
 
+  Result<int> cancelBookingsResult = const Ok(0);
+  final bookingsCancelled = <String>[];
+
+  @override
+  Future<Result<int>> cancelBookings(String id) async {
+    bookingsCancelled.add(id);
+    return cancelBookingsResult;
+  }
+
   /// The store with the new photo, the other one as [detailsResult] had it.
   @override
   Future<Result<StoreDetails>> setImage(

@@ -228,6 +228,97 @@ void main() {
     );
   });
 
+  testWidgets('once off, an admin can cancel the bookings waiting there', (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..ongoingResult = const Ok(StoreOngoing(liveOffers: 0, openBookings: 2))
+      ..cancelBookingsResult = const Ok(2);
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await chooseAction(tester, 'Disable store');
+    await tester.tap(find.text('Disable store').last);
+    await tester.pumpAndSettle();
+
+    expect(stores.activeChanges, [('store-1', false)]);
+    expect(
+      find.text(
+        'Cancel the 2 bookings waiting at Sweet Coast · Hay Al Andalus?',
+      ),
+      findsOneWidget,
+    );
+    await tester.tap(find.text('Cancel the bookings'));
+    await tester.pumpAndSettle();
+
+    expect(stores.bookingsCancelled, ['store-1']);
+    expect(
+      find.text('2 bookings cancelled: their customers were told'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('keeps the bookings when the admin says so', (tester) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..ongoingResult = const Ok(StoreOngoing(liveOffers: 0, openBookings: 1));
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await chooseAction(tester, 'Disable store');
+    await tester.tap(find.text('Disable store').last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Keep them'));
+    await tester.pumpAndSettle();
+
+    expect(stores.activeChanges, [('store-1', false)]);
+    expect(stores.bookingsCancelled, isEmpty);
+  });
+
+  testWidgets("an editor isn't asked to cancel the bookings", (tester) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..ongoingResult = const Ok(StoreOngoing(liveOffers: 0, openBookings: 1));
+    await tester.pumpWidget(harness(stores, admin: false));
+    await tester.pumpAndSettle();
+
+    await chooseAction(tester, 'Disable store');
+    await tester.tap(find.text('Disable store').last);
+    await tester.pumpAndSettle();
+
+    expect(stores.activeChanges, [('store-1', false)]);
+    expect(find.text('Keep them'), findsNothing);
+  });
+
+  testWidgets("a store that's off cancels its bookings from the menu", (
+    tester,
+  ) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()
+      ..detailsResult = Ok(sampleDetails('store-1', active: false));
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    // None waiting: nothing to ask.
+    await chooseAction(tester, 'Cancel its bookings');
+    expect(find.text('No bookings are waiting at this store'), findsOneWidget);
+    expect(stores.bookingsCancelled, isEmpty);
+
+    stores
+      ..ongoingResult = const Ok(StoreOngoing(liveOffers: 0, openBookings: 1))
+      ..cancelBookingsResult = const Ok(1);
+    await chooseAction(tester, 'Cancel its bookings');
+    await tester.tap(find.text('Cancel the bookings'));
+    await tester.pumpAndSettle();
+
+    expect(stores.bookingsCancelled, ['store-1']);
+    expect(
+      find.text('Booking cancelled: its customer was told'),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('still asks when what it touches can\'t be read', (tester) async {
     setWindow(tester);
     final stores = FakeStoreRepository()

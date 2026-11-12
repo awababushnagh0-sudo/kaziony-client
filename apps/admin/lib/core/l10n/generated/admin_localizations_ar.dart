@@ -358,6 +358,52 @@ class AdminLocalizationsAr extends AdminLocalizations {
   }
 
   @override
+  String get cancelStoreBookings => 'إلغاء حجوزاته';
+
+  @override
+  String get cancelStoreBookingsHint =>
+      'يُبلَّغ الزبائن بالسبب، ولا يُحسب عليهم';
+
+  @override
+  String cancelStoreBookingsTitle(int count, String store) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'إلغاء $count حجزًا منتظرًا في $store؟',
+      few: 'إلغاء $count حجوزات منتظرة في $store؟',
+      two: 'إلغاء الحجزين المنتظرين في $store؟',
+      one: 'إلغاء الحجز المنتظر في $store؟',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get cancelStoreBookingsMessage =>
+      'يُبلَّغ كل زبون بالسبب في التطبيق، ولا يُحسب عليه، وتعود القطع إلى العروض. أو أبقِها: تظل صالحة للاستلام.';
+
+  @override
+  String get cancelBookingsConfirm => 'ألغِ الحجوزات';
+
+  @override
+  String get keepBookings => 'أبقِها';
+
+  @override
+  String bookingsCancelledDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'أُلغي $count حجزًا وأُبلغ أصحابها',
+      few: 'أُلغيت $count حجوزات وأُبلغ أصحابها',
+      two: 'أُلغي الحجزان وأُبلغ صاحباهما',
+      one: 'أُلغي الحجز وأُبلغ صاحبه',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get noBookingsWaiting => 'لا حجوزات منتظرة في هذا المتجر';
+
+  @override
   String deleteStoreTitle(String store) {
     return 'حذف $store؟';
   }
@@ -1347,6 +1393,9 @@ class AdminLocalizationsAr extends AdminLocalizations {
 
   @override
   String get activityStoreRemoveImage => 'حذف صورة متجر';
+
+  @override
+  String get activityStoreCancelBookings => 'إلغاء حجوزات متجر';
 
   @override
   String get activityUserCreate => 'إضافة عضو إلى الفريق';

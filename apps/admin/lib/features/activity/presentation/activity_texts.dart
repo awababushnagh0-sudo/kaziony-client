@@ -13,6 +13,7 @@ String activityActionText(AdminLocalizations s, ActivityEntry entry) =>
       'store.removeMember' => s.activityStoreRemoveMember,
       'store.setImage' => s.activityStoreSetImage,
       'store.removeImage' => s.activityStoreRemoveImage,
+      'store.cancelBookings' => s.activityStoreCancelBookings,
       'user.create' => s.activityUserCreate,
       'user.update' => s.activityUserUpdate,
       'user.setStatus' =>

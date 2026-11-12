@@ -57,6 +57,9 @@ abstract final class StoreCodes {
   /// Turning on a store that lacks a [GoLiveItem], or emptying one of a
   /// live store.
   static const notReady = 'StoreNotReady';
+
+  /// Cancelling the bookings of a store that's on: it serves them.
+  static const isLive = 'StoreIsLive';
 }
 
 /// A store's photos: the logo by its name, the cover across its page.
@@ -260,6 +263,11 @@ abstract interface class StoreRepository {
 
   /// What turning the store off touches.
   Future<Result<StoreOngoing>> ongoing(String id);
+
+  /// Cancels the bookings waiting at a store that's off, telling each
+  /// customer why; how many it cancelled. A live store's fail with
+  /// [StoreCodes.isLive].
+  Future<Result<int>> cancelBookings(String id);
 
   /// Puts [photo] in place of the store's logo or cover; [onProgress] gets
   /// the share sent, from 0 to 1.

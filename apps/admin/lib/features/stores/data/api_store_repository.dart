@@ -75,6 +75,11 @@ class ApiStoreRepository implements StoreRepository {
   }
 
   @override
+  Future<Result<int>> cancelBookings(String id) async =>
+      (await _api.guard(() => _stores.cancelBookings(id: id)))
+          .map((dto) => dto.cancelled.toInt());
+
+  @override
   Future<Result<StoreDetails>> setImage(
     String id,
     StoreImage image,

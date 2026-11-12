@@ -351,6 +351,48 @@ class AdminLocalizationsEn extends AdminLocalizations {
   }
 
   @override
+  String get cancelStoreBookings => 'Cancel its bookings';
+
+  @override
+  String get cancelStoreBookingsHint =>
+      'Customers are told why, and it doesn\'t count against them';
+
+  @override
+  String cancelStoreBookingsTitle(int count, String store) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Cancel the $count bookings waiting at $store?',
+      one: 'Cancel the booking waiting at $store?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get cancelStoreBookingsMessage =>
+      'Each customer is told why in the app, and it doesn\'t count against them; the pieces go back to the offers. Or keep them: they stay valid for pickup.';
+
+  @override
+  String get cancelBookingsConfirm => 'Cancel the bookings';
+
+  @override
+  String get keepBookings => 'Keep them';
+
+  @override
+  String bookingsCancelledDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bookings cancelled: their customers were told',
+      one: 'Booking cancelled: its customer was told',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get noBookingsWaiting => 'No bookings are waiting at this store';
+
+  @override
   String deleteStoreTitle(String store) {
     return 'Delete $store?';
   }
@@ -1324,6 +1366,9 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get activityStoreRemoveImage => 'Removed a store\'s photo';
+
+  @override
+  String get activityStoreCancelBookings => 'Cancelled a store\'s bookings';
 
   @override
   String get activityUserCreate => 'Added a team member';
