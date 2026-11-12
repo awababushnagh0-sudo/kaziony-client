@@ -28,6 +28,7 @@ class PublicOfferDetailDto {
     required this.totalQuantity,
     required this.maxPerUser,
     required this.claimWindowMinutes,
+    required this.lastBookingMinutes,
     required this.startsAt,
     required this.endsAt,
     required this.store,
@@ -63,8 +64,14 @@ class PublicOfferDetailDto {
   final num? maxPerUser;
 
   /// How long a reservation is held after claiming (our setting, the same.
-  /// everywhere), unless the offer ends first.
+  /// everywhere), unless the offer ends first, or the store closes first and.
+  /// isn't open again by then (location.openingHours, Libya time): then.
+  /// until it closes.
   final num claimWindowMinutes;
+
+  /// LIMITED offers can't be booked while the store is closed, nor in the.
+  /// last this many minutes before it closes.
+  final num lastBookingMinutes;
   final DateTime startsAt;
   final DateTime endsAt;
   final OfferStoreSummaryDto store;

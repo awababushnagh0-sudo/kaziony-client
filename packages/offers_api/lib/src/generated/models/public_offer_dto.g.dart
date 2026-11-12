@@ -22,6 +22,7 @@ PublicOfferDto _$PublicOfferDtoFromJson(Map<String, dynamic> json) =>
       totalQuantity: json['totalQuantity'] as num?,
       maxPerUser: json['maxPerUser'] as num?,
       claimWindowMinutes: json['claimWindowMinutes'] as num,
+      lastBookingMinutes: json['lastBookingMinutes'] as num,
       startsAt: DateTime.parse(json['startsAt'] as String),
       endsAt: DateTime.parse(json['endsAt'] as String),
       store: OfferStoreSummaryDto.fromJson(
@@ -48,6 +49,7 @@ Map<String, dynamic> _$PublicOfferDtoToJson(PublicOfferDto instance) =>
       'totalQuantity': ?instance.totalQuantity,
       'maxPerUser': ?instance.maxPerUser,
       'claimWindowMinutes': instance.claimWindowMinutes,
+      'lastBookingMinutes': instance.lastBookingMinutes,
       'startsAt': instance.startsAt.toIso8601String(),
       'endsAt': instance.endsAt.toIso8601String(),
       'store': instance.store,
