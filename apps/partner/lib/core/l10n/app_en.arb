@@ -402,6 +402,17 @@
       }
     }
   },
+  "storeOffTitle": "Your store is off for customers",
+  "storeOffMessage": "Customers can't see it or its offers right now. Bookings already made can still be picked up.",
+  "askWhyStoreOffMessage": "Hello, my store is off for customers. Could you tell me why? {store}",
+  "@askWhyStoreOffMessage": {
+    "description": "Typed in for our team in WhatsApp",
+    "placeholders": {
+      "store": {
+        "type": "String"
+      }
+    }
+  },
   "storeNotLiveCantPost": "Customers can't see your store yet, so it can't post offers. Home shows what's left.",
   "soonestFirst": "Soonest to end first",
   "pickupsEndNote": "Reservations stay here until they're picked up or their time runs out.",

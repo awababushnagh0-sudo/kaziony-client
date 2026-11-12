@@ -886,6 +886,18 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   }
 
   @override
+  String get storeOffTitle => 'Your store is off for customers';
+
+  @override
+  String get storeOffMessage =>
+      'Customers can\'t see it or its offers right now. Bookings already made can still be picked up.';
+
+  @override
+  String askWhyStoreOffMessage(String store) {
+    return 'Hello, my store is off for customers. Could you tell me why? $store';
+  }
+
+  @override
   String get storeNotLiveCantPost =>
       'Customers can\'t see your store yet, so it can\'t post offers. Home shows what\'s left.';
 

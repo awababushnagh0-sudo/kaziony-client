@@ -101,6 +101,7 @@ Store _toStore(StoreDetailDto dto) => Store(
   logoUrl: dto.logoUrl,
   coverUrl: dto.coverUrl,
   isActive: dto.isActive,
+  wasLive: dto.wasLive,
   missingToGoLive: [
     for (final item in dto.missingToGoLive)
       ?switch (item) {

@@ -168,10 +168,11 @@ class _HomeBody extends AppView {
   }
 }
 
-/// Why customers can't see the store yet: what it still needs, each
-/// opening the page the owner adds it on; or, with nothing missing, that
-/// our team turns it on soon, with a chat to ask. Staff see where it
-/// stands without the actions: only owners change the store.
+/// Why customers can't see the store: our team turned it off, with a chat
+/// to ask why; or, before its first day, what it still needs, each opening
+/// the page the owner adds it on, or with nothing missing, that our team
+/// turns it on soon, with a chat to ask. Staff see where it stands without
+/// the actions: only owners change the store.
 class _NotLive extends StatelessWidget {
   const _NotLive(this.store, {required this.isOwner});
 
@@ -181,6 +182,20 @@ class _NotLive extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = PartnerLocalizations.of(context);
+    if (store.wasLive) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: Space.md,
+        children: [
+          SAlert.warning(title: s.storeOffTitle, message: s.storeOffMessage),
+          if (isOwner)
+            RequestChangeButton(
+              label: s.messageUsOnWhatsApp,
+              message: s.askWhyStoreOffMessage(store.label),
+            ),
+        ],
+      );
+    }
     final missing = store.missingToGoLive;
     if (missing.isEmpty) {
       return Column(

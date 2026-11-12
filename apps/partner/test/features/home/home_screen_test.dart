@@ -402,6 +402,50 @@ void main() {
     );
   });
 
+  testWidgets('a store our team turned off says so, and the owner can ask '
+      'why', (tester) async {
+    await open(
+      tester,
+      details: storeDetails(
+        isActive: false,
+        wasLive: true,
+        missingToGoLive: [GoLiveItem.logo],
+      ),
+    );
+
+    expect(find.text('Your store is off for customers'), findsOneWidget);
+    expect(
+      find.text(
+        "Customers can't see it or its offers right now. Bookings already "
+        'made can still be picked up.',
+      ),
+      findsOneWidget,
+    );
+    // Not waiting for its first day: neither the list nor the wait.
+    expect(find.text('Your store is ready'), findsNothing);
+    expect(find.text("Customers can't see your store yet"), findsNothing);
+    expect(find.text('Logo'), findsNothing);
+
+    await tester.tap(find.text('Message us on WhatsApp'));
+    await tester.pumpAndSettle();
+    expect(
+      links.opened.single.queryParameters['text'],
+      'Hello, my store is off for customers. Could you tell me why? '
+      'Store a · Hay Al Andalus',
+    );
+  });
+
+  testWidgets('staff see the store is off, without the chat', (tester) async {
+    await open(
+      tester,
+      member: store('a', isOwner: false),
+      details: storeDetails(isActive: false, wasLive: true),
+    );
+
+    expect(find.text('Your store is off for customers'), findsOneWidget);
+    expect(find.text('Message us on WhatsApp'), findsNothing);
+  });
+
   testWidgets('staff see a ready store waits, without the chat', (
     tester,
   ) async {

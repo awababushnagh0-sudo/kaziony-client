@@ -886,6 +886,18 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   }
 
   @override
+  String get storeOffTitle => 'متجرك متوقف عن الظهور للزبائن';
+
+  @override
+  String get storeOffMessage =>
+      'لا يرى الزبائن متجرك ولا عروضه الآن. الحجوزات التي تمت يمكن استلامها.';
+
+  @override
+  String askWhyStoreOffMessage(String store) {
+    return 'مرحبًا، متجري متوقف عن الظهور للزبائن. هل يمكنكم إخباري بالسبب؟ $store';
+  }
+
+  @override
   String get storeNotLiveCantPost =>
       'متجرك لا يظهر للزبائن بعد، لذا لا يمكنه نشر العروض. تجد في الرئيسية ما تبقّى.';
 

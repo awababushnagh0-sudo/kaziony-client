@@ -69,6 +69,7 @@ Store storeDetails({
   double? ratingAverage = 4.5,
   int ratingCount = 37,
   bool isActive = true,
+  bool wasLive = false,
   List<GoLiveItem> missingToGoLive = const [],
 }) => Store(
   id: 'a',
@@ -91,6 +92,7 @@ Store storeDetails({
   logoUrl: logoUrl,
   coverUrl: null,
   isActive: isActive,
+  wasLive: wasLive,
   missingToGoLive: missingToGoLive,
   ratingAverage: ratingAverage,
   ratingCount: ratingCount,

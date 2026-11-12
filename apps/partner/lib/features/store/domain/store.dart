@@ -61,6 +61,7 @@ class Store {
     required this.logoUrl,
     required this.coverUrl,
     required this.isActive,
+    required this.wasLive,
     required this.missingToGoLive,
     required this.ratingAverage,
     required this.ratingCount,
@@ -95,6 +96,10 @@ class Store {
   /// once they have what customers need. Stores that are off can't post
   /// offers.
   final bool isActive;
+
+  /// Has been on for customers: one that's off now was turned off by our
+  /// team, rather than waiting for its first day.
+  final bool wasLive;
 
   /// What customers need that the store still lacks, in the order to add
   /// it; empty when it's ready. A live store can't lose them either.

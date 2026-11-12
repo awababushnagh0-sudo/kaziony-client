@@ -1661,6 +1661,24 @@ abstract class PartnerLocalizations {
   /// **'Hello, my store is ready. Please turn it on for customers: {store}'**
   String turnOnStoreMessage(String store);
 
+  /// No description provided for @storeOffTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your store is off for customers'**
+  String get storeOffTitle;
+
+  /// No description provided for @storeOffMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers can\'t see it or its offers right now. Bookings already made can still be picked up.'**
+  String get storeOffMessage;
+
+  /// Typed in for our team in WhatsApp
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, my store is off for customers. Could you tell me why? {store}'**
+  String askWhyStoreOffMessage(String store);
+
   /// No description provided for @storeNotLiveCantPost.
   ///
   /// In en, this message translates to:
