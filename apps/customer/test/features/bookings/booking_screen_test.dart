@@ -307,4 +307,120 @@ void main() {
 
     expect(find.textContaining('How was your pickup'), findsNothing);
   });
+
+  group('at a store that delivers', () {
+    testWidgets('offers its number to have the booking brought', (
+      tester,
+    ) async {
+      bookings.bookings = [booking(deliveryPhone: '+218921234567')];
+      await open(tester);
+
+      expect(find.text('This shop delivers'), findsOneWidget);
+      expect(
+        find.text(
+          'Call \u20660921234567\u2069 and read them your code. Delivery and '
+          'any fee are arranged with the store.',
+        ),
+        findsOneWidget,
+      );
+      await tester.ensureVisible(find.text('This shop delivers'));
+      await tester.tap(find.text('This shop delivers'));
+      await tester.pump();
+
+      expect(links.opened, [Uri(scheme: 'tel', path: '+218921234567')]);
+    });
+
+    testWidgets("says nothing of delivery at a store that doesn't", (
+      tester,
+    ) async {
+      await open(tester);
+
+      expect(find.text('This shop delivers'), findsNothing);
+    });
+
+    testWidgets('once on its way, cancelling is a call to the store', (
+      tester,
+    ) async {
+      bookings.bookings = [
+        booking(
+          status: BookingStatus.outForDelivery,
+          canCancel: false,
+          // Its time would be up: on its way, it has none.
+          left: const Duration(minutes: -30),
+          deliveryPhone: '+218921234567',
+          sentForDeliveryAt: DateTime(2026, 11, 12, 14, 20),
+        ),
+      ];
+      await open(tester);
+
+      expect(find.text('Your booking is on its way'), findsOneWidget);
+      expect(find.text('On its way'), findsOneWidget);
+      expect(
+        find.textContaining("With the store's driver since 2:20"),
+        findsOneWidget,
+      );
+      expect(find.text('Left to pick up'), findsNothing);
+      expect(find.text('Pay the driver in cash'), findsOneWidget);
+      // The code still works at the door.
+      expect(find.text('A2GU GPJ7'), findsOneWidget);
+      expect(find.text('Cancel the booking (no penalty)'), findsNothing);
+
+      await tester.ensureVisible(find.text('To cancel, call the store'));
+      await tester.tap(find.text('To cancel, call the store'));
+      await tester.pump();
+      expect(links.opened, [Uri(scheme: 'tel', path: '+218921234567')]);
+    });
+
+    testWidgets('says when the driver has it, and when it was delivered', (
+      tester,
+    ) async {
+      await open(tester);
+
+      bookings.bookings = [
+        booking(
+          status: BookingStatus.outForDelivery,
+          canCancel: false,
+          sentForDeliveryAt: now,
+        ),
+      ];
+      await tester.pump(BookingViewModel.checkEvery);
+      await tester.pumpAndSettle();
+      expect(find.text("The store's driver has your booking."), findsOneWidget);
+
+      bookings.bookings = [
+        booking(
+          status: BookingStatus.pickedUp,
+          canCancel: false,
+          canRate: true,
+          sentForDeliveryAt: now,
+        ),
+      ];
+      await tester.pump(BookingViewModel.checkEvery);
+      await tester.pumpAndSettle();
+      expect(find.text('Delivered. Enjoy!'), findsOneWidget);
+    });
+
+    testWidgets('says the store cancelled a delivery that didn\'t happen', (
+      tester,
+    ) async {
+      bookings.bookings = [
+        booking(
+          status: BookingStatus.cancelled,
+          canCancel: false,
+          cancelReason: CancelReason.notDelivered,
+          sentForDeliveryAt: now,
+        ),
+      ];
+      await open(tester);
+
+      expect(find.text('The store cancelled this delivery'), findsOneWidget);
+      expect(
+        find.text(
+          "The store says the delivery didn't happen. This doesn't count "
+          'against you.',
+        ),
+        findsOneWidget,
+      );
+    });
+  });
 }

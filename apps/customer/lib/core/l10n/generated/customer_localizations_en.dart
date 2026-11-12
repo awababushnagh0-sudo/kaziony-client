@@ -1000,4 +1000,54 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String get placeDeleted => 'Place deleted';
+
+  @override
+  String get statusOutForDelivery => 'On its way';
+
+  @override
+  String get withTheStoresDriver => 'With the store\'s driver';
+
+  @override
+  String get bookingOnItsWayBanner => 'Your booking is on its way';
+
+  @override
+  String get bookingOnItsWayTitle => 'Your booking is on its way';
+
+  @override
+  String get bookingDelivered => 'Delivered. Enjoy!';
+
+  @override
+  String get bookingSentForDelivery => 'The store\'s driver has your booking.';
+
+  @override
+  String get cancelByCallingStore => 'To cancel, call the store';
+
+  @override
+  String get payDriverTitle => 'Pay the driver in cash';
+
+  @override
+  String get callAboutDelivery => 'Call about your delivery';
+
+  @override
+  String get storeDelivers => 'This shop delivers';
+
+  @override
+  String storeDeliversHint(String phone) {
+    return 'Call $phone and read them your code. Delivery and any fee are arranged with the store.';
+  }
+
+  @override
+  String onItsWaySince(String time) {
+    return 'With the store\'s driver since $time';
+  }
+
+  @override
+  String get factDeliveredAt => 'Delivered';
+
+  @override
+  String get cancelledNotDeliveredTitle => 'The store cancelled this delivery';
+
+  @override
+  String get cancelledNotDelivered =>
+      'The store says the delivery didn\'t happen. This doesn\'t count against you.';
 }

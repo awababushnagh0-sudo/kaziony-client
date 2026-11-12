@@ -36,8 +36,7 @@ class BookingsViewModel extends PagedListViewModel<Booking, String?> {
   }
 
   static bool _waiting(PagedItems<Booking>? page) =>
-      page?.items.any((booking) => booking.status == BookingStatus.reserved) ??
-      false;
+      page?.items.any((booking) => booking.underWay) ?? false;
 
   /// Whose bookings: another sign-in starts the list over.
   @override

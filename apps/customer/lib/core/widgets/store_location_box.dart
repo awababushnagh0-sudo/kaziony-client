@@ -81,15 +81,19 @@ List<Widget> storeLocationDetails(
           weight: SFontWeight.bold,
           color: SColor.primary,
         ),
-        onTap: () => _open(
-          context,
-          ref,
-          Uri(scheme: 'tel', path: phone),
-          failed: s.callFailed,
-        ),
+        onTap: () => callPhone(context, ref, phone),
       ),
   ];
 }
+
+/// Calls [phone] in the phone's own app, or says it couldn't.
+Future<void> callPhone(BuildContext context, WidgetRef ref, String phone) =>
+    _open(
+      context,
+      ref,
+      Uri(scheme: 'tel', path: phone),
+      failed: CustomerLocalizations.of(context).callFailed,
+    );
 
 /// What a place is called: its area, else its address.
 String locationName(CustomerLocalizations s, StoreLocation location) =>

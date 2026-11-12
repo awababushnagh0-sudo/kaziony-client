@@ -243,7 +243,12 @@ class _CurrentCard extends AppView {
               ),
             ],
           ),
-          if (booking.limited)
+          if (booking.isOutForDelivery)
+            SCountdown.strip(
+              label: s.statusOutForDelivery,
+              detail: s.withTheStoresDriver,
+            )
+          else if (booking.limited)
             SCountdown.strip(
               label: s.pickupTimeLeftLabel,
               detail: s.pickUpBefore(until),
@@ -367,12 +372,13 @@ class _PastTile extends StatelessWidget {
   }
 
   /// Picked up in green, missed in red, cancelled in gray. A reserved one
-  /// is here only once its time ran out: missed.
+  /// is here only once its time ran out: missed. One on its way never is.
   static SColor _statusColor(BookingStatus status) => switch (status) {
     BookingStatus.pickedUp => SColor.success,
     BookingStatus.expired => SColor.danger,
     BookingStatus.cancelled => SColor.textMuted,
     BookingStatus.reserved => SColor.danger,
+    BookingStatus.outForDelivery => SColor.accentInk,
   };
 }
 

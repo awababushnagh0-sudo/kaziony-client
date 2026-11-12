@@ -1684,6 +1684,96 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'Place deleted'**
   String get placeDeleted;
+
+  /// No description provided for @statusOutForDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'On its way'**
+  String get statusOutForDelivery;
+
+  /// No description provided for @withTheStoresDriver.
+  ///
+  /// In en, this message translates to:
+  /// **'With the store\'s driver'**
+  String get withTheStoresDriver;
+
+  /// No description provided for @bookingOnItsWayBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Your booking is on its way'**
+  String get bookingOnItsWayBanner;
+
+  /// No description provided for @bookingOnItsWayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your booking is on its way'**
+  String get bookingOnItsWayTitle;
+
+  /// No description provided for @bookingDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered. Enjoy!'**
+  String get bookingDelivered;
+
+  /// No description provided for @bookingSentForDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'The store\'s driver has your booking.'**
+  String get bookingSentForDelivery;
+
+  /// No description provided for @cancelByCallingStore.
+  ///
+  /// In en, this message translates to:
+  /// **'To cancel, call the store'**
+  String get cancelByCallingStore;
+
+  /// No description provided for @payDriverTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay the driver in cash'**
+  String get payDriverTitle;
+
+  /// No description provided for @callAboutDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Call about your delivery'**
+  String get callAboutDelivery;
+
+  /// No description provided for @storeDelivers.
+  ///
+  /// In en, this message translates to:
+  /// **'This shop delivers'**
+  String get storeDelivers;
+
+  /// No description provided for @storeDeliversHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Call {phone} and read them your code. Delivery and any fee are arranged with the store.'**
+  String storeDeliversHint(String phone);
+
+  /// No description provided for @onItsWaySince.
+  ///
+  /// In en, this message translates to:
+  /// **'With the store\'s driver since {time}'**
+  String onItsWaySince(String time);
+
+  /// No description provided for @factDeliveredAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get factDeliveredAt;
+
+  /// No description provided for @cancelledNotDeliveredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The store cancelled this delivery'**
+  String get cancelledNotDeliveredTitle;
+
+  /// No description provided for @cancelledNotDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'The store says the delivery didn\'t happen. This doesn\'t count against you.'**
+  String get cancelledNotDelivered;
 }
 
 class _CustomerLocalizationsDelegate

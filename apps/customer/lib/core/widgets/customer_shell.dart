@@ -80,10 +80,12 @@ class _BookingBar extends AppView {
     final s = CustomerLocalizations.of(context);
     final now = ref.watch(secondClockProvider).value ?? DateTime.now();
     return SOngoingBar(
-      title: s.bookingReadyBanner,
+      title: booking.isOutForDelivery
+          ? s.bookingOnItsWayBanner
+          : s.bookingReadyBanner,
       subtitle: '${booking.offerTitle} · ${booking.storeName}',
       imageUrl: booking.storeLogoUrl,
-      trailing: booking.limited
+      trailing: booking.limited && !booking.isOutForDelivery
           ? countdown(booking.expiresAt.difference(now))
           : null,
       onTap: () => context.push(Routes.booking(booking.id)),

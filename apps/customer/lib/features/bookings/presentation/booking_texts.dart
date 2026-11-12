@@ -4,13 +4,14 @@ import 'package:stellar/stellar.dart';
 import '../../../core/l10n/generated/customer_localizations.dart';
 import '../domain/booking.dart';
 
-/// A booking's state in words and color: waiting is orange, as anything
-/// to act on.
+/// A booking's state in words and color: waiting or on its way is orange,
+/// as anything to act on.
 (String, BadgeTone) bookingStatus(
   CustomerLocalizations s,
   Booking booking,
   DateTime now,
 ) => switch (booking.status) {
+  BookingStatus.outForDelivery => (s.statusOutForDelivery, BadgeTone.accent),
   _ when booking.isActiveAt(now) => (s.statusReserved, BadgeTone.accent),
   BookingStatus.pickedUp => (s.statusPickedUp, BadgeTone.success),
   BookingStatus.cancelled => (s.statusCancelled, BadgeTone.neutral),
@@ -32,6 +33,10 @@ import '../domain/booking.dart';
   CancelReason.storeOff => (
     title: s.cancelledByUsTitle,
     message: s.cancelledStoreOff,
+  ),
+  CancelReason.notDelivered => (
+    title: s.cancelledNotDeliveredTitle,
+    message: s.cancelledNotDelivered,
   ),
   CancelReason.customer || CancelReason.other => (
     title: s.cancelledNotByYouTitle,

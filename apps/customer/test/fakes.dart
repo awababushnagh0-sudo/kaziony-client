@@ -198,6 +198,8 @@ Booking booking({
   int? myRating,
   CancelReason? cancelReason,
   Duration ago = const Duration(minutes: 18),
+  String? deliveryPhone,
+  DateTime? sentForDeliveryAt,
 }) => Booking(
   id: id,
   code: 'A2GUGPJ7',
@@ -217,6 +219,8 @@ Booking booking({
   canRate: canRate,
   myRating: myRating,
   cancelReason: cancelReason,
+  deliveryPhone: deliveryPhone,
+  sentForDeliveryAt: sentForDeliveryAt,
 );
 
 class FakeOffersRepository implements OffersRepository {

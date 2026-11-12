@@ -5,6 +5,12 @@ import '../../offers/domain/offer.dart';
 enum BookingStatus {
   /// Waiting to be picked up.
   reserved,
+
+  /// With the store's driver, on its way: no time limit, until the store
+  /// says it was delivered.
+  outForDelivery,
+
+  /// Picked up, or delivered.
   pickedUp,
 
   /// Not picked up in time.
@@ -23,6 +29,10 @@ enum CancelReason {
 
   /// Our team turned the store off.
   storeOff,
+
+  /// The store's delivery didn't happen: the customer called it off, or
+  /// wasn't there. Between them and the store.
+  notDelivered,
 
   /// Not the customer, for a reason added after this version of the app.
   other,
@@ -52,6 +62,8 @@ class Booking {
     this.pickedUpAt,
     this.myRating,
     this.cancelReason,
+    this.deliveryPhone,
+    this.sentForDeliveryAt,
   });
 
   final String id;
@@ -98,6 +110,19 @@ class Booking {
   /// Who cancelled it, once cancelled.
   final CancelReason? cancelReason;
 
+  /// Set when the store brings bookings with its own drivers: the number
+  /// to call for that. Delivery and any fee are between the customer and
+  /// the store.
+  final String? deliveryPhone;
+
+  /// When the store's driver took it.
+  final DateTime? sentForDeliveryAt;
+
+  bool get isOutForDelivery => status == BookingStatus.outForDelivery;
+
+  /// Not over yet, as the server last said: waiting, or being brought.
+  bool get underWay => status == BookingStatus.reserved || isOutForDelivery;
+
   /// Cancelled, but not by the customer: it doesn't count against them,
   /// and the app says why.
   bool get cancelledForCustomer =>
@@ -105,9 +130,11 @@ class Booking {
       cancelReason != null &&
       cancelReason != CancelReason.customer;
 
-  /// Still to be picked up: reserved and not past its time.
+  /// Still to come: reserved and not past its time, or on its way with the
+  /// store's driver, which has no time limit.
   bool isActiveAt(DateTime now) =>
-      status == BookingStatus.reserved && expiresAt.isAfter(now);
+      isOutForDelivery ||
+      (status == BookingStatus.reserved && expiresAt.isAfter(now));
 }
 
 /// Where the customer stands with booking: missed pickups that count, a

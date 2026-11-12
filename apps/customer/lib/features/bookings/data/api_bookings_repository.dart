@@ -79,6 +79,7 @@ class ApiBookingsRepository implements BookingsRepository {
     quantity: claim.quantity.toInt(),
     totalPrice: claim.totalPrice,
     status: switch (claim.status) {
+      api.ClaimStatus.outForDelivery => BookingStatus.outForDelivery,
       api.ClaimStatus.redeemed => BookingStatus.pickedUp,
       api.ClaimStatus.expired => BookingStatus.expired,
       api.ClaimStatus.cancelled => BookingStatus.cancelled,
@@ -101,6 +102,8 @@ class ApiBookingsRepository implements BookingsRepository {
     canRate: claim.canRate,
     myRating: claim.myRating?.toInt(),
     cancelReason: toCancelReason(claim.cancelReason),
+    deliveryPhone: claim.store.deliveryPhone,
+    sentForDeliveryAt: claim.sentForDeliveryAt?.toLocal(),
   );
 }
 
@@ -110,5 +113,6 @@ CancelReason? toCancelReason(api.CancelReason? reason) => switch (reason) {
   api.CancelReason.customer => CancelReason.customer,
   api.CancelReason.offerRemoved => CancelReason.offerRemoved,
   api.CancelReason.storeOff => CancelReason.storeOff,
+  api.CancelReason.notDelivered => CancelReason.notDelivered,
   api.CancelReason.$unknown => CancelReason.other,
 };

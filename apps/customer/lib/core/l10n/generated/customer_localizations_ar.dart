@@ -1010,4 +1010,54 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String get placeDeleted => 'حذفنا المكان';
+
+  @override
+  String get statusOutForDelivery => 'في الطريق إليك';
+
+  @override
+  String get withTheStoresDriver => 'مع سائق المحل';
+
+  @override
+  String get bookingOnItsWayBanner => 'حجزك في الطريق إليك';
+
+  @override
+  String get bookingOnItsWayTitle => 'حجزك في الطريق إليك';
+
+  @override
+  String get bookingDelivered => 'وصل حجزك، بالهناء والعافية!';
+
+  @override
+  String get bookingSentForDelivery => 'حجزك الآن مع سائق المحل.';
+
+  @override
+  String get cancelByCallingStore => 'للإلغاء اتصل بالمحل';
+
+  @override
+  String get payDriverTitle => 'ادفع للسائق نقدًا';
+
+  @override
+  String get callAboutDelivery => 'اتصل بخصوص التوصيل';
+
+  @override
+  String get storeDelivers => 'هذا المحل يوصّل';
+
+  @override
+  String storeDeliversHint(String phone) {
+    return 'اتصل على $phone واقرأ لهم رمزك. التوصيل وأي رسوم له تتفق عليها مع المحل.';
+  }
+
+  @override
+  String onItsWaySince(String time) {
+    return 'مع سائق المحل منذ $time';
+  }
+
+  @override
+  String get factDeliveredAt => 'وقت التوصيل';
+
+  @override
+  String get cancelledNotDeliveredTitle => 'ألغى المحل هذا التوصيل';
+
+  @override
+  String get cancelledNotDelivered =>
+      'يقول المحل إن التوصيل لم يتم، ولا يُحسب هذا عليك.';
 }

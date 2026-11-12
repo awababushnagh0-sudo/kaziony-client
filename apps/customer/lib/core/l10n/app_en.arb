@@ -410,5 +410,22 @@
   "placesSignInTitle": "Sign in to save your places",
   "placeSaved": "Place saved",
   "placeUpdated": "Place updated",
-  "placeDeleted": "Place deleted"
+  "placeDeleted": "Place deleted",
+  "statusOutForDelivery": "On its way",
+  "withTheStoresDriver": "With the store's driver",
+  "bookingOnItsWayBanner": "Your booking is on its way",
+  "bookingOnItsWayTitle": "Your booking is on its way",
+  "bookingDelivered": "Delivered. Enjoy!",
+  "bookingSentForDelivery": "The store's driver has your booking.",
+  "cancelByCallingStore": "To cancel, call the store",
+  "payDriverTitle": "Pay the driver in cash",
+  "callAboutDelivery": "Call about your delivery",
+  "storeDelivers": "This shop delivers",
+  "storeDeliversHint": "Call {phone} and read them your code. Delivery and any fee are arranged with the store.",
+  "@storeDeliversHint": {"placeholders": {"phone": {"type": "String"}}},
+  "onItsWaySince": "With the store's driver since {time}",
+  "@onItsWaySince": {"placeholders": {"time": {"type": "String"}}},
+  "factDeliveredAt": "Delivered",
+  "cancelledNotDeliveredTitle": "The store cancelled this delivery",
+  "cancelledNotDelivered": "The store says the delivery didn't happen. This doesn't count against you."
 }

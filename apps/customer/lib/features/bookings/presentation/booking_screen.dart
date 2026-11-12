@@ -12,8 +12,11 @@ import 'booking_view_model.dart';
 /// counter, on the brand's green: the store and what was booked, the time
 /// left, the QR code and the code to read out (tapped, copied), what to pay
 /// and where (with the store's hours today and phone), and the way to
-/// cancel. Once it's over, what became of it, and once picked up, the
-/// customer's stars for the store, and the way to give them.
+/// cancel. At a store that delivers, its number to call to have it
+/// brought; once the store's driver has it, the pass says it's on its way,
+/// and cancelling is a call to the store. Once it's over, what became of
+/// it, and once picked up, the customer's stars for the store, and the way
+/// to give them.
 class BookingScreen extends AppView {
   const BookingScreen({required this.bookingId, super.key});
 
@@ -24,13 +27,19 @@ class BookingScreen extends AppView {
     final s = CustomerLocalizations.of(context);
     final provider = bookingViewModel(bookingId);
     final booking = ref.watch(provider);
-    // Scanned at the counter while the pass is up: said, as the page turns
-    // to the stars.
+    // Scanned at the counter while the pass is up, or handed over by the
+    // driver: said, as the page turns to the stars. Taken by the driver:
+    // said too.
     ref.listen(provider, (before, after) {
-      if (before?.value?.status == BookingStatus.reserved &&
-          after.value?.status == BookingStatus.pickedUp) {
-        SSnack.success(context, s.bookingPickedUp);
-      }
+      final message = switch ((before?.value?.status, after.value?.status)) {
+        (BookingStatus.reserved, BookingStatus.pickedUp) => s.bookingPickedUp,
+        (BookingStatus.outForDelivery, BookingStatus.pickedUp) =>
+          s.bookingDelivered,
+        (BookingStatus.reserved, BookingStatus.outForDelivery) =>
+          s.bookingSentForDelivery,
+        _ => null,
+      };
+      if (message != null) SSnack.success(context, message);
     });
     // Every second: the countdown moves, and the pass gives way to the
     // plain page the moment the time is up.
@@ -62,13 +71,28 @@ class _Pass extends AppView {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = CustomerLocalizations.of(context);
+    // On its way, it's the store's to cancel: a call away.
+    final storePhone = booking.deliveryPhone ?? booking.location.phone;
+    final (footerLabel, onFooter) = switch (booking) {
+      Booking(canCancel: true) => (
+        s.cancelNoPenalty,
+        () => _cancel(context, ref, booking),
+      ),
+      Booking(isOutForDelivery: true) when storePhone != null => (
+        s.cancelByCallingStore,
+        () => callPhone(context, ref, storePhone),
+      ),
+      _ => (null, null),
+    };
     return SPassPage(
-      title: s.bookingReadyTitle,
+      title: booking.isOutForDelivery
+          ? s.bookingOnItsWayTitle
+          : s.bookingReadyTitle,
       closeTooltip: s.closeAction,
       onClose: context.pop,
       onRefresh: () async => ref.invalidate(bookingViewModel(booking.id)),
-      footerLabel: booking.canCancel ? s.cancelNoPenalty : null,
-      onFooter: booking.canCancel ? () => _cancel(context, ref, booking) : null,
+      footerLabel: footerLabel,
+      onFooter: onFooter,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: Space.md,
@@ -81,8 +105,9 @@ class _Pass extends AppView {
   }
 }
 
-/// Under the ticket, in one box: what to pay, and where: the store's place,
-/// the way there in the phone's maps, its hours today and its phone.
+/// Under the ticket, in one box: what to pay, the number to call when the
+/// store delivers, and where: the store's place, the way there in the
+/// phone's maps, its hours today and its phone.
 class _PayAndPickUp extends AppView {
   const _PayAndPickUp({required this.booking, required this.now});
 
@@ -92,11 +117,12 @@ class _PayAndPickUp extends AppView {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = CustomerLocalizations.of(context);
+    final deliveryPhone = booking.deliveryPhone;
     return SListGroup(
       children: [
         SListTile(
           icon: SIcons.cash,
-          title: s.payCashTitle,
+          title: booking.isOutForDelivery ? s.payDriverTitle : s.payCashTitle,
           subtitle: booking.quantity > 1
               ? s.priceEach(
                   booking.quantity,
@@ -110,6 +136,25 @@ class _PayAndPickUp extends AppView {
             color: SColor.primary,
           ),
         ),
+        if (deliveryPhone != null)
+          SListTile(
+            icon: SIcons.delivery,
+            title: booking.isOutForDelivery
+                ? s.callAboutDelivery
+                : s.storeDelivers,
+            subtitle: booking.isOutForDelivery
+                ? formatLibyanPhone(deliveryPhone)
+                // "091 000 0001" keeps its order in Arabic.
+                : s.storeDeliversHint(
+                    '\u2066${formatLibyanPhone(deliveryPhone)}\u2069',
+                  ),
+            trailing: SText(
+              s.callAction,
+              weight: SFontWeight.bold,
+              color: SColor.primary,
+            ),
+            onTap: () => callPhone(context, ref, deliveryPhone),
+          ),
         storeDirectionsTile(context, ref, booking.location),
         ...storeLocationDetails(context, ref, booking.location, now: now),
       ],
@@ -170,7 +215,15 @@ class _Ticket extends StatelessWidget {
             ],
           ),
           const SDivider.dashed(),
-          if (booking.limited)
+          if (booking.sentForDeliveryAt case final sent?
+              when booking.isOutForDelivery)
+            SText(
+              s.onItsWaySince(formatTime(sent, languageCode: language)),
+              variant: TextVariant.subtitle,
+              weight: SFontWeight.bold,
+              align: TextAlign.center,
+            )
+          else if (booking.limited)
             SCountdown(
               label: s.pickupTimeLeftLabel,
               time: countdown(booking.expiresAt.difference(now)),
@@ -240,7 +293,9 @@ class _Past extends StatelessWidget {
             ),
             if (pickedUpAt != null)
               SFactTile(
-                label: s.factPickedUpAt,
+                label: booking.sentForDeliveryAt != null
+                    ? s.factDeliveredAt
+                    : s.factPickedUpAt,
                 value: formatDateTime(pickedUpAt, languageCode: language),
               ),
           ],

@@ -64,6 +64,26 @@ void main() {
     expect(find.text('pickup code page'), findsOneWidget);
   });
 
+  testWidgets(
+    'one on its way with the driver is a current one, whatever the time',
+    (tester) async {
+      bookings.bookings = [
+        booking(
+          status: BookingStatus.outForDelivery,
+          canCancel: false,
+          left: const Duration(hours: -1),
+          sentForDeliveryAt: now,
+        ),
+      ];
+      await open(tester);
+
+      expect(find.text('Now'), findsOneWidget);
+      expect(find.text('On its way'), findsOneWidget);
+      expect(find.text("With the store's driver"), findsOneWidget);
+      expect(find.text('Time ran out'), findsNothing);
+    },
+  );
+
   testWidgets('picked up meanwhile, it moves to the past ones', (tester) async {
     await open(tester);
     expect(find.text('Now'), findsOneWidget);

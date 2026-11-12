@@ -264,5 +264,20 @@
   "placesSignInTitle": "سجّل دخولك باش تحفظ أماكنك",
   "placeSaved": "حفظنا المكان",
   "placeUpdated": "عدّلنا المكان",
-  "placeDeleted": "حذفنا المكان"
+  "placeDeleted": "حذفنا المكان",
+  "statusOutForDelivery": "في الطريق إليك",
+  "withTheStoresDriver": "مع سائق المحل",
+  "bookingOnItsWayBanner": "حجزك في الطريق إليك",
+  "bookingOnItsWayTitle": "حجزك في الطريق إليك",
+  "bookingDelivered": "وصل حجزك، بالهناء والعافية!",
+  "bookingSentForDelivery": "حجزك الآن مع سائق المحل.",
+  "cancelByCallingStore": "للإلغاء اتصل بالمحل",
+  "payDriverTitle": "ادفع للسائق نقدًا",
+  "callAboutDelivery": "اتصل بخصوص التوصيل",
+  "storeDelivers": "هذا المحل يوصّل",
+  "storeDeliversHint": "اتصل على {phone} واقرأ لهم رمزك. التوصيل وأي رسوم له تتفق عليها مع المحل.",
+  "onItsWaySince": "مع سائق المحل منذ {time}",
+  "factDeliveredAt": "وقت التوصيل",
+  "cancelledNotDeliveredTitle": "ألغى المحل هذا التوصيل",
+  "cancelledNotDelivered": "يقول المحل إن التوصيل لم يتم، ولا يُحسب هذا عليك."
 }

@@ -28,7 +28,7 @@ class BookingViewModel extends AsyncViewModel<Booking> {
       Ok(:final value) => value,
       Err(:final failure) => throw failure,
     };
-    if (booking.status == BookingStatus.reserved) {
+    if (booking.underWay) {
       _checks = Timer.periodic(checkEvery, (_) => _check());
       ref.onDispose(() => _checks?.cancel());
     }
@@ -72,7 +72,7 @@ class BookingViewModel extends AsyncViewModel<Booking> {
   /// no longer waiting. Where the customer stands may have changed with
   /// it (one held less, or a missed pickup).
   void _show(Booking booking) {
-    if (booking.status != BookingStatus.reserved) _checks?.cancel();
+    if (!booking.underWay) _checks?.cancel();
     state = AsyncData(booking);
     ref
       ..invalidate(bookingsViewModel)
