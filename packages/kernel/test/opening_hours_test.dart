@@ -140,66 +140,74 @@ void main() {
     });
 
     // November 7, 2026 is a Saturday; the 6th a Friday; the 9th a Monday.
-    expect(hours.on(DateTime(2026, 11, 7, 10)), const [morning]);
-    expect(hours.on(DateTime(2026, 11, 6, 10)), isEmpty);
-    expect(hours.on(DateTime(2026, 11, 9, 10)), isNull);
+    expect(hours.on(libyaTime(2026, 11, 7, 10)), const [morning]);
+    expect(hours.on(libyaTime(2026, 11, 6, 10)), isEmpty);
+    expect(hours.on(libyaTime(2026, 11, 9, 10)), isNull);
     expect([
-      for (var day = 7; day < 14; day++) Weekday.of(DateTime(2026, 11, day)),
+      for (var day = 7; day < 14; day++) Weekday.of(libyaTime(2026, 11, day)),
     ], Weekday.values);
   });
 
   group('open and closed', () {
     // Saturday 14 November 2026, in the phone's time.
     DateTime sat(int hour, [int minute = 0]) =>
-        DateTime(2026, 11, 14, hour, minute);
-    const split = OpeningHours({
-      Weekday.sat: [
-        OpeningShift(opens: 9 * 60, closes: 13 * 60),
-        OpeningShift(opens: 16 * 60, closes: 22 * 60),
-      ],
-      Weekday.fri: [],
-    });
+        libyaTime(2026, 11, 14, hour, minute);
+    const split = StoreSchedule(
+      weekly: OpeningHours({
+        Weekday.sat: [
+          OpeningShift(opens: 9 * 60, closes: 13 * 60),
+          OpeningShift(opens: 16 * 60, closes: 22 * 60),
+        ],
+        Weekday.fri: [],
+      }),
+    );
 
     test('is open during a shift, up to its close', () {
       expect(split.openAt(sat(9)), isTrue);
       expect(split.openAt(sat(12, 59)), isTrue);
       expect(split.openAt(sat(13)), isFalse);
       expect(split.openAt(sat(23)), isFalse);
-      expect(split.openAt(DateTime(2026, 11, 13, 12)), isFalse);
+      expect(split.openAt(libyaTime(2026, 11, 13, 12)), isFalse);
     });
 
     test("doesn't know on a day it didn't say", () {
-      expect(split.openAt(DateTime(2026, 11, 15, 12)), isNull);
-      expect(OpeningHours.none.openAt(sat(12)), isNull);
+      expect(split.openAt(libyaTime(2026, 11, 15, 12)), isNull);
+      expect(StoreSchedule.none.openAt(sat(12)), isNull);
     });
 
     test('runs a shift past midnight into the next day', () {
-      const late = OpeningHours({
-        Weekday.fri: [OpeningShift(opens: 20 * 60, closes: 2 * 60)],
-      });
+      const late = StoreSchedule(
+        weekly: OpeningHours({
+          Weekday.fri: [OpeningShift(opens: 20 * 60, closes: 2 * 60)],
+        }),
+      );
       expect(late.openAt(sat(1, 59)), isTrue);
-      expect(late.closesAfter(DateTime(2026, 11, 13, 23)), sat(2));
+      expect(late.closesAfter(libyaTime(2026, 11, 13, 23)), sat(2));
       expect(late.lastClosing(sat(1), sat(3)), sat(2));
     });
 
     test('says when it closes, past a shift to midnight and one from it', () {
       expect(split.closesAfter(sat(17)), sat(22));
       expect(split.closesAfter(sat(14)), isNull);
-      const late = OpeningHours({
-        Weekday.sat: [OpeningShift(opens: 18 * 60, closes: 0)],
-        Weekday.sun: [OpeningShift(opens: 0, closes: 2 * 60)],
-      });
-      expect(late.closesAfter(sat(23)), DateTime(2026, 11, 15, 2));
+      const late = StoreSchedule(
+        weekly: OpeningHours({
+          Weekday.sat: [OpeningShift(opens: 18 * 60, closes: 0)],
+          Weekday.sun: [OpeningShift(opens: 0, closes: 2 * 60)],
+        }),
+      );
+      expect(late.closesAfter(sat(23)), libyaTime(2026, 11, 15, 2));
       expect(
-        late.lastClosing(sat(23), DateTime(2026, 11, 15, 3)),
-        DateTime(2026, 11, 15, 2),
+        late.lastClosing(sat(23), libyaTime(2026, 11, 15, 3)),
+        libyaTime(2026, 11, 15, 2),
       );
     });
 
     test('takes the same open and close as the whole day', () {
-      final allDay = OpeningHours.none.withDay(Weekday.sat, const [
-        OpeningShift(opens: 0, closes: 0),
-      ], everyDay: true);
+      final allDay = StoreSchedule(
+        weekly: OpeningHours.none.withDay(Weekday.sat, const [
+          OpeningShift(opens: 0, closes: 0),
+        ], everyDay: true),
+      );
       expect(allDay.openAt(sat(23, 59)), isTrue);
       expect(allDay.closesAfter(sat(12)), isNull);
     });
@@ -208,8 +216,8 @@ void main() {
       expect(split.opensAfter(sat(14)), sat(16));
       expect(split.opensAfter(sat(8)), sat(9));
       // Saturday's next: Friday is closed, the others aren't said.
-      expect(split.opensAfter(sat(23)), DateTime(2026, 11, 21, 9));
-      expect(OpeningHours.none.opensAfter(sat(12)), isNull);
+      expect(split.opensAfter(sat(23)), libyaTime(2026, 11, 21, 9));
+      expect(StoreSchedule.none.opensAfter(sat(12)), isNull);
     });
 
     test('finds the last close in a time', () {
@@ -223,6 +231,101 @@ void main() {
       expect(split.closesAt(sat(22).toUtc()), isTrue);
       expect(split.closesAt(sat(21, 59)), isFalse);
       expect(split.closesAt(sat(12)), isFalse);
+    });
+  });
+
+  group('special hours and a pause', () {
+    // Saturday 14 November 2026, in the phone's time.
+    DateTime sat(int hour, [int minute = 0]) =>
+        libyaTime(2026, 11, 14, hour, minute);
+    const weekly = OpeningHours({
+      Weekday.sat: [OpeningShift(opens: 9 * 60, closes: 22 * 60)],
+    });
+    final ramadan = StoreSchedule(
+      weekly: weekly,
+      special: [
+        SpecialHours(
+          from: libyaTime(2026, 11, 14),
+          to: libyaTime(2026, 11, 20),
+          shifts: const [OpeningShift(opens: 20 * 60, closes: 2 * 60)],
+        ),
+        SpecialHours(
+          from: libyaTime(2026, 11, 21),
+          to: libyaTime(2026, 11, 21),
+          shifts: const [],
+        ),
+      ],
+    );
+
+    test('takes the special hours on their dates', () {
+      expect(ramadan.on(sat(12)), [
+        const OpeningShift(opens: 20 * 60, closes: 2 * 60),
+      ]);
+      expect(ramadan.openAt(sat(10)), isFalse);
+      expect(ramadan.openAt(sat(21)), isTrue);
+      expect(ramadan.opensAfter(sat(10)), sat(20));
+      // Eid: closed, though Saturdays open; then the weekly hours again.
+      expect(ramadan.openAt(libyaTime(2026, 11, 21, 10)), isFalse);
+      expect(ramadan.openAt(libyaTime(2026, 11, 28, 10)), isTrue);
+    });
+
+    test('reads them from the backend, leaving out what it cannot', () {
+      expect(
+        SpecialHours.listFromJson([
+          {
+            'from': '2026-11-14',
+            'to': '2026-11-20',
+            'shifts': [
+              {'open': '20:00', 'close': '02:00'},
+            ],
+          },
+          {'from': '2026-11-21', 'to': '2026-11-21', 'shifts': <Object>[]},
+          {'from': '21/11/2026', 'to': '2026-11-22', 'shifts': <Object>[]},
+          {
+            'from': '2026-11-23',
+            'to': '2026-11-23',
+            'shifts': [
+              {'open': '9am', 'close': '5pm'},
+            ],
+          },
+        ]),
+        ramadan.special,
+      );
+      expect(ramadan.special.first.toJson(), {
+        'from': '2026-11-14',
+        'to': '2026-11-20',
+        'shifts': [
+          {'open': '20:00', 'close': '02:00'},
+        ],
+      });
+    });
+
+    test('is closed while paused, and opens when the pause ends', () {
+      final paused = StoreSchedule(weekly: weekly, pausedUntil: sat(10, 30));
+      expect(paused.pausedAt(sat(10)), isTrue);
+      expect(paused.openAt(sat(10)), isFalse);
+      expect(paused.closesAfter(sat(10)), isNull);
+      expect(paused.opensAfter(sat(10)), sat(10, 30));
+      expect(paused.openAt(sat(10, 30)), isTrue);
+    });
+
+    test('paused past closing, opens with its next shift', () {
+      final paused = StoreSchedule(weekly: weekly, pausedUntil: sat(23));
+      expect(paused.opensAfter(sat(21)), libyaTime(2026, 11, 21, 9));
+    });
+
+    test('counts its days, and tells when two share one', () {
+      final [first, eid] = ramadan.special;
+      expect(first.days, 7);
+      expect(eid.days, 1);
+      expect(first.overlaps(eid), isFalse);
+      final lastWeek = SpecialHours(
+        from: libyaTime(2026, 11, 20),
+        to: libyaTime(2026, 11, 25),
+        shifts: const [],
+      );
+      expect(lastWeek.overlaps(first), isTrue);
+      expect(eid.overlaps(lastWeek), isTrue);
     });
   });
 }

@@ -119,6 +119,7 @@ Dio _createDio(Ref ref, {required bool withAuth}) {
         refresh: () => ref.read(sessionProvider.notifier).refreshTokens(),
       ),
     RetryInterceptor(dio),
+    ServerTimeInterceptor(),
     if (kDevTools) HttpLogInterceptor(ref.watch(devLogProvider)),
   ]);
   return dio;

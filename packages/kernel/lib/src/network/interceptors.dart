@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
 
 import '../auth/token_store.dart';
+import '../time/server_clock.dart';
 
 /// Request options flag: don't attach the access token (login, refresh).
 const skipAuthKey = 'skipAuth';
 const _authRetriedKey = 'authRetried';
 const _retryAttemptKey = 'retryAttempt';
+const _sentAtKey = 'sentAt';
 
 /// Attaches the access token, and on a 401 refreshes the session once and
 /// retries the request.
@@ -102,6 +105,47 @@ class RetryInterceptor extends Interceptor {
       handler.resolve(await dio.fetch<dynamic>(options));
     } on DioException catch (retryError) {
       handler.next(retryError);
+    }
+  }
+}
+
+/// Sets [ServerClock] by the server's time on each reply (its `Date`
+/// header). Browsers hide that header from the dashboard, which keeps the
+/// computer's clock.
+class ServerTimeInterceptor extends Interceptor {
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    options.extra[_sentAtKey] = DateTime.now();
+    handler.next(options);
+  }
+
+  @override
+  void onResponse(
+    Response<dynamic> response,
+    ResponseInterceptorHandler handler,
+  ) {
+    _hear(response);
+    handler.next(response);
+  }
+
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    if (err.response case final response?) _hear(response);
+    handler.next(err);
+  }
+
+  static void _hear(Response<dynamic> response) {
+    final header = response.headers.value('date');
+    final sentAt = response.requestOptions.extra[_sentAtKey];
+    if (header == null || sentAt is! DateTime) return;
+    try {
+      ServerClock.heard(
+        parseHttpDate(header),
+        sentAt: sentAt,
+        receivedAt: DateTime.now(),
+      );
+    } on FormatException {
+      // A header this can't read leaves the clock as it was.
     }
   }
 }

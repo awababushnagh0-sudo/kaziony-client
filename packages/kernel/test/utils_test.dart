@@ -55,7 +55,7 @@ void main() {
 
   test('formatTimeParts splits the time from its AM or PM', () async {
     await initializeDateFormatting('ar');
-    final time = DateTime(2026, 10, 19, 15, 12);
+    final time = libyaTime(2026, 10, 19, 15, 12);
 
     expect(formatTimeParts(time, languageCode: 'en'), (
       clock: '3:12',
@@ -69,7 +69,7 @@ void main() {
 
   test('formatDate writes the day in the given language', () async {
     await initializeDateFormatting('ar');
-    final day = DateTime(2026, 10, 19, 12);
+    final day = libyaTime(2026, 10, 19, 12);
     expect(formatDate(day, languageCode: 'en'), 'Oct 19, 2026');
     expect(formatDate(day, languageCode: 'ar'), '19 أكتوبر 2026');
     expect(
@@ -87,25 +87,25 @@ void main() {
   });
 
   test('isSameDay compares the day, not the time', () {
-    final morning = DateTime(2026, 10, 19, 0, 5);
-    expect(isSameDay(morning, DateTime(2026, 10, 19, 23, 55)), isTrue);
-    expect(isSameDay(morning, DateTime(2026, 10, 18, 23, 55)), isFalse);
+    final morning = libyaTime(2026, 10, 19, 0, 5);
+    expect(isSameDay(morning, libyaTime(2026, 10, 19, 23, 55)), isTrue);
+    expect(isSameDay(morning, libyaTime(2026, 10, 18, 23, 55)), isFalse);
   });
 
   test('formatWhen gives only the time on the same day', () async {
     await initializeDateFormatting('ar');
-    final at = DateTime(2026, 10, 19, 14, 30);
+    final at = libyaTime(2026, 10, 19, 14, 30);
     expect(
-      formatWhen(at, languageCode: 'en', now: DateTime(2026, 10, 19, 9)),
+      formatWhen(at, languageCode: 'en', now: libyaTime(2026, 10, 19, 9)),
       // intl puts a narrow space before AM and PM.
       '2:30\u202fPM',
     );
     expect(
-      formatWhen(at, languageCode: 'ar', now: DateTime(2026, 10, 19, 9)),
+      formatWhen(at, languageCode: 'ar', now: libyaTime(2026, 10, 19, 9)),
       '2:30 م',
     );
     expect(
-      formatWhen(at, languageCode: 'en', now: DateTime(2026, 10, 18, 23)),
+      formatWhen(at, languageCode: 'en', now: libyaTime(2026, 10, 18, 23)),
       'Mon, Oct 19 2:30\u202fPM',
     );
   });
@@ -148,5 +148,33 @@ void main() {
   test('groups a pickup code in fours', () {
     expect(formatPickupCode('R3TW8KQN'), 'R3TW 8KQN');
     expect(formatPickupCode('ABC'), 'ABC');
+  });
+
+  test('shows Libya time, whatever zone the phone is set to', () async {
+    await initializeDateFormatting('en');
+    // 13:12 UTC is 3:12 PM in Libya.
+    expect(
+      formatTime(DateTime.utc(2026, 10, 19, 13, 12), languageCode: 'en'),
+      '3:12\u202fPM',
+    );
+    // 22:30 UTC on the 18th is past midnight in Libya: the 19th.
+    expect(
+      isSameDay(DateTime.utc(2026, 10, 18, 22, 30), libyaTime(2026, 10, 19, 9)),
+      isTrue,
+    );
+  });
+
+  test('takes the server clock from its replies', () {
+    addTearDown(ServerClock.reset);
+    final sent = DateTime(2026, 10, 19, 12);
+    ServerClock.heard(
+      sent.add(const Duration(minutes: 10, seconds: 1)),
+      sentAt: sent,
+      receivedAt: sent.add(const Duration(seconds: 2)),
+    );
+    expect(ServerClock.ahead, const Duration(minutes: 10));
+    // A second or two is the reply's time, not the phone being off.
+    ServerClock.heard(sent, sentAt: sent, receivedAt: sent);
+    expect(ServerClock.ahead, Duration.zero);
   });
 }
