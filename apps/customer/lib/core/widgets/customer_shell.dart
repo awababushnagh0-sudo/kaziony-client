@@ -24,7 +24,7 @@ class CustomerShell extends AppView {
     final s = CustomerLocalizations.of(context);
     // To the minute is enough to know which bookings are still on; the
     // bar counts the seconds itself.
-    final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
+    final now = ref.watch(minuteClockProvider).value ?? ServerClock.now();
     final toPickUp = toPickUpAt(
       ref.watch(bookingsViewModel).value?.items ?? const [],
       now,
@@ -78,7 +78,7 @@ class _BookingBar extends AppView {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = CustomerLocalizations.of(context);
-    final now = ref.watch(secondClockProvider).value ?? DateTime.now();
+    final now = ref.watch(secondClockProvider).value ?? ServerClock.now();
     return SOngoingBar(
       title: booking.isOutForDelivery
           ? s.bookingOnItsWayBanner

@@ -132,7 +132,7 @@ class FakePlacesRepository implements PlacesRepository {
 }
 
 /// The time every page test runs at.
-final now = DateTime(2026, 11, 2, 12);
+final now = libyaTime(2026, 11, 2, 12);
 
 const bakery = Category(
   id: 'cat1',
@@ -147,25 +147,31 @@ const place = StoreLocation(
   area: 'Andalus',
   address: 'Jaraba Street',
   phone: '+218912345678',
-  hours: OpeningHours({
-    Weekday.mon: [OpeningShift(opens: 8 * 60, closes: 23 * 60)],
-  }),
+  hours: StoreSchedule(
+    weekly: OpeningHours({
+      Weekday.mon: [OpeningShift(opens: 8 * 60, closes: 23 * 60)],
+    }),
+  ),
   distanceKm: 1.2,
 );
 
 /// [place], open on Mondays (as [now] is) from 8 AM until [closes] (a
-/// time of day).
+/// time of day); offline until [pausedUntil] when it's set.
 StoreLocation placeOpenUntil(
   Duration closes, {
   Duration opens = const Duration(hours: 8),
+  DateTime? pausedUntil,
 }) => StoreLocation(
   point: place.point,
   area: place.area,
-  hours: OpeningHours({
-    Weekday.mon: [
-      OpeningShift(opens: opens.inMinutes, closes: closes.inMinutes),
-    ],
-  }),
+  hours: StoreSchedule(
+    weekly: OpeningHours({
+      Weekday.mon: [
+        OpeningShift(opens: opens.inMinutes, closes: closes.inMinutes),
+      ],
+    }),
+    pausedUntil: pausedUntil,
+  ),
 );
 
 /// A counted offer with [remaining] of 10 left.
@@ -191,7 +197,8 @@ Offer offer({
   total: limited ? 10 : null,
   maxPerUser: maxPerUser,
   claimWindowMinutes: claimWindowMinutes,
-  lastBookingMinutes: 20,
+  lastBookingMinutes: 35,
+  lastPickupMinutes: 15,
   startsAt: startsAt ?? now.subtract(const Duration(hours: 1)),
   endsAt: endsAt ?? now.add(const Duration(hours: 5)),
   store: OfferStore(
@@ -217,6 +224,8 @@ Booking booking({
   String? deliveryPhone,
   DateTime? sentForDeliveryAt,
   StoreLocation location = place,
+  BookingReport? report,
+  bool canReport = false,
 }) => Booking(
   id: id,
   code: 'A2GUGPJ7',
@@ -238,6 +247,8 @@ Booking booking({
   cancelReason: cancelReason,
   deliveryPhone: deliveryPhone,
   sentForDeliveryAt: sentForDeliveryAt,
+  report: report,
+  canReport: canReport,
 );
 
 class FakeOffersRepository implements OffersRepository {
@@ -294,7 +305,9 @@ class FakeBookingsRepository implements BookingsRepository {
   Result<Booking>? reserveResult;
   Result<Booking>? cancelResult;
   Result<Booking>? rateResult;
+  Result<Booking>? reportResult;
   final reserved = <(String, int)>[];
+  final reports = <(String, ReportReason, String?)>[];
   var cancels = 0;
   final rated = <(String, int)>[];
 
@@ -348,6 +361,30 @@ class FakeBookingsRepository implements BookingsRepository {
             myRating: stars,
           ),
         );
+  }
+
+  /// Reported, the booking as it is: one of [bookings].
+  @override
+  Future<Result<Booking>> report(
+    String bookingId,
+    ReportReason reason, {
+    String? note,
+  }) async {
+    reports.add((bookingId, reason, note));
+    if (reportResult case final result?) return result;
+    final reported = bookings.firstWhere((b) => b.id == bookingId);
+    return Ok(
+      booking(
+        id: bookingId,
+        status: reported.status,
+        canCancel: reported.canCancel,
+        report: BookingReport(
+          resolved: false,
+          strikeRemoved: false,
+          createdAt: now,
+        ),
+      ),
+    );
   }
 }
 

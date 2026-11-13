@@ -45,8 +45,8 @@ void main() {
   ) async {
     final text = await cardPickup(
       tester,
-      startsAt: DateTime(2026, 11, 2, 16),
-      endsAt: DateTime(2026, 11, 2, 21),
+      startsAt: libyaTime(2026, 11, 2, 16),
+      endsAt: libyaTime(2026, 11, 2, 21),
     );
     // The time's own format puts a narrow space before PM.
     expect(text, startsWith('Today 4:00'));
@@ -59,7 +59,7 @@ void main() {
     final text = await cardPickup(
       tester,
       startsAt: now,
-      endsAt: DateTime(2026, 11, 5, 21),
+      endsAt: libyaTime(2026, 11, 5, 21),
     );
     expect(text, startsWith('Thursday until 9:00'));
   });
@@ -70,7 +70,7 @@ void main() {
     final text = await cardPickup(
       tester,
       startsAt: now,
-      endsAt: DateTime(2026, 11, 9, 21),
+      endsAt: libyaTime(2026, 11, 9, 21),
     );
     expect(text, startsWith('Nov 9 until 9:00'));
   });

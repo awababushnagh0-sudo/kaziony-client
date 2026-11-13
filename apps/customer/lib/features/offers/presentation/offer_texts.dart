@@ -67,11 +67,11 @@ extension OfferTexts on CustomerLocalizations {
 /// A weekday names one day only within the week ahead; past it, the date.
 const _daysNamed = 7;
 
-/// Calendar days from [from] to [to], whatever their times of day.
+/// Calendar days in Libya from [from] to [to], whatever their times of day.
 int _daysApart(DateTime from, DateTime to) {
   DateTime day(DateTime date) {
-    final local = date.toLocal();
-    return DateTime.utc(local.year, local.month, local.day);
+    final clock = libyaClock(date);
+    return DateTime.utc(clock.year, clock.month, clock.day);
   }
 
   return day(to).difference(day(from)).inDays;

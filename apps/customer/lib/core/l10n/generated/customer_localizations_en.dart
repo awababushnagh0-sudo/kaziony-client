@@ -186,6 +186,11 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   }
 
   @override
+  String storeClosesInShort(int minutes) {
+    return 'Closes in $minutes min';
+  }
+
+  @override
   String get storeClosedNow => 'Closed now';
 
   @override
@@ -576,8 +581,8 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   String get holdShort => 'Less time';
 
   @override
-  String holdUntilClosing(String time) {
-    return 'The store closes at $time: pick up before then.';
+  String holdUntilClosing(String time, String close) {
+    return 'Last pickup $time, before the store closes at $close.';
   }
 
   @override
@@ -598,18 +603,19 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   }
 
   @override
-  String bookingClosedButton(String when) {
-    return 'Closed now · opens $when';
-  }
+  String get bookingClosedNote => 'The store is closed now';
 
   @override
-  String bookingTooLateButton(String time) {
-    return 'Too late to book · closes $time';
+  String get bookingTooLateNote => 'Too late to book';
+
+  @override
+  String bookingTooLateNoteMessage(String time) {
+    return 'The store closes at $time';
   }
 
   @override
   String reserveShortUntilClosing(String time, String close) {
-    return 'Only $time to pick up: the store closes at $close';
+    return 'Only $time to pick up: last pickup $close';
   }
 
   @override
@@ -685,7 +691,7 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String reserveHoldUntilClosingNote(String time, String close) {
-    return 'You have $time to pick up, until the store closes at $close. You pay cash then.';
+    return 'You have $time to pick up: the last pickup is $close, before the store closes. You pay cash then.';
   }
 
   @override
@@ -1131,4 +1137,67 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
   @override
   String get cancelledNotDelivered =>
       'The store says the delivery didn\'t happen. This doesn\'t count against you.';
+
+  @override
+  String get cancelledStoreClosedTitle => 'The store closed early';
+
+  @override
+  String get cancelledStoreClosed =>
+      'The store had to close, so your booking was cancelled. This doesn\'t count against you.';
+
+  @override
+  String get reportProblem => 'Report a problem';
+
+  @override
+  String get reportTitle => 'What went wrong?';
+
+  @override
+  String get reportSubtitle =>
+      'Your report reaches our team with this booking.';
+
+  @override
+  String get reportReasonStoreClosed => 'The store was closed';
+
+  @override
+  String get reportReasonNotGiven => 'The store didn\'t give me my booking';
+
+  @override
+  String get reportReasonPriceDifferent => 'I was asked to pay more';
+
+  @override
+  String get reportReasonQuality => 'Something was wrong with it';
+
+  @override
+  String get reportReasonOther => 'Something else';
+
+  @override
+  String get reportNoteLabel => 'What happened?';
+
+  @override
+  String get reportNoteHint => 'For example: I came at 8:30 and it was shut';
+
+  @override
+  String get reportSend => 'Send report';
+
+  @override
+  String get reportSent => 'We got your report and will look into it.';
+
+  @override
+  String get reportSentTitle => 'You reported a problem';
+
+  @override
+  String get reportOpen => 'We\'re looking into it.';
+
+  @override
+  String get reportResolved => 'We looked into it.';
+
+  @override
+  String get reportResolvedStrikeRemoved =>
+      'We looked into it: this booking no longer counts against you.';
+
+  @override
+  String get reportAlready => 'You already reported this booking.';
+
+  @override
+  String get reportTooLate => 'This booking ended too long ago to report.';
 }

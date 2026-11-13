@@ -341,6 +341,12 @@ abstract class CustomerLocalizations {
   /// **'Closes in {time}'**
   String storeClosesIn(String time);
 
+  /// No description provided for @storeClosesInShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Closes in {minutes} min'**
+  String storeClosesInShort(int minutes);
+
   /// No description provided for @storeClosedNow.
   ///
   /// In en, this message translates to:
@@ -1034,8 +1040,8 @@ abstract class CustomerLocalizations {
   /// No description provided for @holdUntilClosing.
   ///
   /// In en, this message translates to:
-  /// **'The store closes at {time}: pick up before then.'**
-  String holdUntilClosing(String time);
+  /// **'Last pickup {time}, before the store closes at {close}.'**
+  String holdUntilClosing(String time, String close);
 
   /// No description provided for @holdUntilOfferEnds.
   ///
@@ -1061,22 +1067,28 @@ abstract class CustomerLocalizations {
   /// **'The store closes at {time}, and booking stops {minutes} before.'**
   String bookingTooLateMessage(String time, String minutes);
 
-  /// No description provided for @bookingClosedButton.
+  /// No description provided for @bookingClosedNote.
   ///
   /// In en, this message translates to:
-  /// **'Closed now · opens {when}'**
-  String bookingClosedButton(String when);
+  /// **'The store is closed now'**
+  String get bookingClosedNote;
 
-  /// No description provided for @bookingTooLateButton.
+  /// No description provided for @bookingTooLateNote.
   ///
   /// In en, this message translates to:
-  /// **'Too late to book · closes {time}'**
-  String bookingTooLateButton(String time);
+  /// **'Too late to book'**
+  String get bookingTooLateNote;
+
+  /// No description provided for @bookingTooLateNoteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The store closes at {time}'**
+  String bookingTooLateNoteMessage(String time);
 
   /// No description provided for @reserveShortUntilClosing.
   ///
   /// In en, this message translates to:
-  /// **'Only {time} to pick up: the store closes at {close}'**
+  /// **'Only {time} to pick up: last pickup {close}'**
   String reserveShortUntilClosing(String time, String close);
 
   /// No description provided for @reserveShortUntilEnd.
@@ -1172,7 +1184,7 @@ abstract class CustomerLocalizations {
   /// No description provided for @reserveHoldUntilClosingNote.
   ///
   /// In en, this message translates to:
-  /// **'You have {time} to pick up, until the store closes at {close}. You pay cash then.'**
+  /// **'You have {time} to pick up: the last pickup is {close}, before the store closes. You pay cash then.'**
   String reserveHoldUntilClosingNote(String time, String close);
 
   /// No description provided for @reserveHoldUntilEndNote.
@@ -1882,6 +1894,126 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'The store says the delivery didn\'t happen. This doesn\'t count against you.'**
   String get cancelledNotDelivered;
+
+  /// No description provided for @cancelledStoreClosedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The store closed early'**
+  String get cancelledStoreClosedTitle;
+
+  /// No description provided for @cancelledStoreClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'The store had to close, so your booking was cancelled. This doesn\'t count against you.'**
+  String get cancelledStoreClosed;
+
+  /// No description provided for @reportProblem.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a problem'**
+  String get reportProblem;
+
+  /// No description provided for @reportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What went wrong?'**
+  String get reportTitle;
+
+  /// No description provided for @reportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your report reaches our team with this booking.'**
+  String get reportSubtitle;
+
+  /// No description provided for @reportReasonStoreClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'The store was closed'**
+  String get reportReasonStoreClosed;
+
+  /// No description provided for @reportReasonNotGiven.
+  ///
+  /// In en, this message translates to:
+  /// **'The store didn\'t give me my booking'**
+  String get reportReasonNotGiven;
+
+  /// No description provided for @reportReasonPriceDifferent.
+  ///
+  /// In en, this message translates to:
+  /// **'I was asked to pay more'**
+  String get reportReasonPriceDifferent;
+
+  /// No description provided for @reportReasonQuality.
+  ///
+  /// In en, this message translates to:
+  /// **'Something was wrong with it'**
+  String get reportReasonQuality;
+
+  /// No description provided for @reportReasonOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Something else'**
+  String get reportReasonOther;
+
+  /// No description provided for @reportNoteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'What happened?'**
+  String get reportNoteLabel;
+
+  /// No description provided for @reportNoteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For example: I came at 8:30 and it was shut'**
+  String get reportNoteHint;
+
+  /// No description provided for @reportSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send report'**
+  String get reportSend;
+
+  /// No description provided for @reportSent.
+  ///
+  /// In en, this message translates to:
+  /// **'We got your report and will look into it.'**
+  String get reportSent;
+
+  /// No description provided for @reportSentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You reported a problem'**
+  String get reportSentTitle;
+
+  /// No description provided for @reportOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re looking into it.'**
+  String get reportOpen;
+
+  /// No description provided for @reportResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'We looked into it.'**
+  String get reportResolved;
+
+  /// No description provided for @reportResolvedStrikeRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'We looked into it: this booking no longer counts against you.'**
+  String get reportResolvedStrikeRemoved;
+
+  /// No description provided for @reportAlready.
+  ///
+  /// In en, this message translates to:
+  /// **'You already reported this booking.'**
+  String get reportAlready;
+
+  /// No description provided for @reportTooLate.
+  ///
+  /// In en, this message translates to:
+  /// **'This booking ended too long ago to report.'**
+  String get reportTooLate;
 }
 
 class _CustomerLocalizationsDelegate

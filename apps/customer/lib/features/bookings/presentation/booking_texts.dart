@@ -34,6 +34,10 @@ import '../domain/booking.dart';
     title: s.cancelledByUsTitle,
     message: s.cancelledStoreOff,
   ),
+  CancelReason.storeClosed => (
+    title: s.cancelledStoreClosedTitle,
+    message: s.cancelledStoreClosed,
+  ),
   CancelReason.notDelivered => (
     title: s.cancelledNotDeliveredTitle,
     message: s.cancelledNotDelivered,
@@ -56,7 +60,7 @@ String bookingDay(
   if (isSameDay(day, now.subtract(const Duration(days: 1)))) {
     return s.bookingsYesterday;
   }
-  return day.toLocal().year == now.toLocal().year
+  return libyaClock(day).year == libyaClock(now).year
       ? formatDay(day, languageCode: languageCode)
       : formatDate(day, languageCode: languageCode);
 }

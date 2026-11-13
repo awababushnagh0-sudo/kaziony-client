@@ -36,7 +36,7 @@ class AccountScreen extends AppView {
         ),
       );
     }
-    final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
+    final now = ref.watch(minuteClockProvider).value ?? ServerClock.now();
     final waiting = toPickUpAt(
       ref.watch(bookingsViewModel).value?.items ?? const [],
       now,
@@ -150,11 +150,13 @@ Future<void> _deleteAccount(BuildContext context, WidgetRef ref) async {
   }
 }
 
-/// "Good morning" until noon, then "good evening", as said in Libya.
-String _greetingAt(CustomerLocalizations s, DateTime now) =>
-    now.hour >= _morningFrom && now.hour < _eveningFrom
-    ? s.greetingMorning
-    : s.greetingEvening;
+/// "Good morning" until noon in Libya, then "good evening", as said there.
+String _greetingAt(CustomerLocalizations s, DateTime now) {
+  final hour = libyaClock(now).hour;
+  return hour >= _morningFrom && hour < _eveningFrom
+      ? s.greetingMorning
+      : s.greetingEvening;
+}
 
 const _morningFrom = 4;
 const _eveningFrom = 12;

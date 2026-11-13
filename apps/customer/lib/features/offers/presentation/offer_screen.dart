@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/customer_localizations.dart';
 import '../../../core/routes/routes.dart';
+import '../../../core/widgets/customer_illustrations.dart';
 import '../../../core/widgets/page_section.dart';
 import '../../../core/widgets/sign_in_prompt.dart';
 import '../../../core/widgets/store_location_box.dart';
@@ -143,7 +144,7 @@ class _Body extends AppView {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = CustomerLocalizations.of(context);
     final offer = detail.offer;
-    final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
+    final now = ref.watch(minuteClockProvider).value ?? ServerClock.now();
     final description = offer.description?.trim() ?? '';
     final total = offer.total;
     return Column(
@@ -373,11 +374,11 @@ class _HoldTile extends StatelessWidget {
         title: s.holdTitle(s.holdTime(offer.claimWindowMinutes)),
         subtitle: s.holdMessage,
       ),
-      BookingHeld(:final minutes, :final until, :final end) => SListTile(
+      BookingHeld(:final minutes, :final until, :final closesAt) => SListTile(
         icon: SIcons.hourglass,
         title: s.holdTitle(s.holdTime(minutes)),
-        subtitle: end == HeldEnd.storeCloses
-            ? s.holdUntilClosing(at(until))
+        subtitle: closesAt != null
+            ? s.holdUntilClosing(at(until), at(closesAt))
             : s.holdUntilOfferEnds(at(until)),
         trailing: short,
       ),
@@ -430,7 +431,7 @@ class _Footer extends AppView {
     }
     final signedIn = ref.watch(sessionProvider) is SignedIn;
     final standing = ref.watch(bookingStandingProvider).value;
-    final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
+    final now = ref.watch(minuteClockProvider).value ?? ServerClock.now();
     final language = Localizations.localeOf(context).languageCode;
     if (standing != null && standing.pausedAt(now)) {
       return SDealFooter(
@@ -444,27 +445,24 @@ class _Footer extends AppView {
       );
     }
     final window = offer.bookingAt(now);
+    // Nothing to tap until the store opens: why, instead of the button.
     switch (window) {
       case BookingClosed(:final opensAt):
-        return SDealFooter(
-          action: SButton(
-            label: opensAt == null
-                ? s.storeClosedNow
-                : s.bookingClosedButton(
-                    formatWhen(opensAt, languageCode: language, now: now),
-                  ),
-            expand: true,
-            onPressed: null,
-          ),
+        return SDealFooter.note(
+          illustration: CustomerIllustrations.bagSleep,
+          title: s.bookingClosedNote,
+          message: opensAt == null
+              ? null
+              : s.storeOpensAt(
+                  formatWhen(opensAt, languageCode: language, now: now),
+                ),
         );
       case BookingTooLate(:final closesAt):
-        return SDealFooter(
-          action: SButton(
-            label: s.bookingTooLateButton(
-              formatWhen(closesAt, languageCode: language, now: now),
-            ),
-            expand: true,
-            onPressed: null,
+        return SDealFooter.note(
+          illustration: CustomerIllustrations.bagSleep,
+          title: s.bookingTooLateNote,
+          message: s.bookingTooLateNoteMessage(
+            formatWhen(closesAt, languageCode: language, now: now),
           ),
         );
       case BookingHeld() || null:

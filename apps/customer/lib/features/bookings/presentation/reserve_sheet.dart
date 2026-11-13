@@ -50,7 +50,7 @@ class _Confirm extends AppView {
     // A refusal for a pause says until when, once the standing has caught
     // up with it.
     final pausedUntil = ref.watch(bookingStandingProvider).value?.pausedUntil;
-    final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
+    final now = ref.watch(minuteClockProvider).value ?? ServerClock.now();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: Space.lg,

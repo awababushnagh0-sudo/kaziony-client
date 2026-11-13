@@ -7,6 +7,7 @@ import '../../offers/presentation/offer_texts.dart';
 import '../domain/booking.dart';
 import 'booking_texts.dart';
 import 'booking_view_model.dart';
+import 'report_problem_sheet.dart';
 
 /// A booking. While it can be picked up, a pass to hold up at the
 /// counter, on the brand's green: the store and what was booked, the time
@@ -16,7 +17,7 @@ import 'booking_view_model.dart';
 /// brought; once the store's driver has it, the pass says it's on its way,
 /// and cancelling is a call to the store. Once it's over, what became of
 /// it, and once picked up, the customer's stars for the store, and the way
-/// to give them.
+/// to give them. On both, the way to report a problem, or what came of it.
 class BookingScreen extends AppView {
   const BookingScreen({required this.bookingId, super.key});
 
@@ -43,7 +44,7 @@ class BookingScreen extends AppView {
     });
     // Every second: the countdown moves, and the pass gives way to the
     // plain page the moment the time is up.
-    final now = ref.watch(secondClockProvider).value ?? DateTime.now();
+    final now = ref.watch(secondClockProvider).value ?? ServerClock.now();
     if (booking case AsyncData(:final value) when value.isActiveAt(now)) {
       return _Pass(booking: value, now: now);
     }
@@ -157,6 +158,9 @@ class _PayAndPickUp extends AppView {
           ),
         storeDirectionsTile(context, ref, booking.location),
         ...storeLocationDetails(context, ref, booking.location, now: now),
+        // At the counter is when a problem shows: a store closed, or
+        // asking more.
+        if (ReportRow.shows(booking)) ReportRow(booking: booking),
       ],
     );
   }
@@ -315,6 +319,10 @@ class _Past extends StatelessWidget {
         ),
         if (booking.canRate || booking.myRating != null)
           _Rating(booking: booking),
+        // A strike for a pickup the store made impossible, or a problem
+        // with what was picked up.
+        if (ReportRow.shows(booking))
+          SListGroup(children: [ReportRow(booking: booking)]),
       ],
     );
   }

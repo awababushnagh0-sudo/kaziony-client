@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../../../core/l10n/generated/customer_localizations.dart';
 import '../../../../core/routes/routes.dart';
+import '../../../../core/widgets/open_now_badge.dart';
 import '../../domain/offer.dart';
 import '../offer_texts.dart';
 
@@ -43,7 +44,7 @@ class OfferCard extends AppView {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
+    final now = ref.watch(minuteClockProvider).value ?? ServerClock.now();
     void open() {
       onOpen?.call();
       context.push(Routes.offer(offer.id));
@@ -65,8 +66,9 @@ class OfferCard extends AppView {
 }
 
 /// The photo inset at the top of a card, flat where the words meet it:
-/// how many are left on a tag at its top, the store's logo and the
-/// discount at its foot (no logo [inStore]). Under it the title across, then when to pick up
+/// how many are left on a tag at its top, and across from it whether the
+/// store is closed or about to (not [inStore]: the page says it); the
+/// store's logo and the discount at its foot (no logo [inStore]). Under it the title across, then when to pick up
 /// and the rating and how far, the prices beside those two.
 class _Boxed extends StatelessWidget {
   const _Boxed({required this.offer, required this.now, required this.inStore});
@@ -78,6 +80,15 @@ class _Boxed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final left = offer.remaining ?? 0;
+    final openNow = inStore
+        ? null
+        : openNowBadge(
+            context,
+            offer.location.hours,
+            now,
+            edge: BadgeEdge.end,
+            short: true,
+          );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -94,6 +105,8 @@ class _Boxed extends StatelessWidget {
                   start: 0,
                   child: _LeftTag(offer: offer, left: left),
                 ),
+              if (openNow != null)
+                PositionedDirectional(top: Space.sm, end: 0, child: openNow),
               // The logo stands for the store; its name is for screen
               // readers.
               if (!inStore)
@@ -140,8 +153,10 @@ class _Boxed extends StatelessWidget {
 
 /// A square photo at the start, with the card's tags against its edge:
 /// how many are left at its top, the discount at its foot. Beside it the
-/// title, the store (not [inStore]), then when to pick up and the rating and how far, the
-/// prices beside those two, as on the card.
+/// title, with whether the store is closed or about to after it (the
+/// photo is too small for a third tag), the store (neither [inStore]),
+/// then when to pick up and the rating and how far, the prices beside
+/// those two, as on the card.
 class _Tile extends StatelessWidget {
   const _Tile({required this.offer, required this.now, required this.inStore});
 
@@ -152,6 +167,9 @@ class _Tile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final left = offer.remaining ?? 0;
+    final openNow = inStore
+        ? null
+        : openNowBadge(context, offer.location.hours, now, short: true);
     return Padding(
       padding: const EdgeInsets.all(Space.sm),
       child: Row(
@@ -177,7 +195,13 @@ class _Tile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _Title(offer.title),
+                Row(
+                  spacing: Space.sm,
+                  children: [
+                    Expanded(child: _Title(offer.title)),
+                    ?openNow,
+                  ],
+                ),
                 if (!inStore)
                   SText(
                     offer.store.name,

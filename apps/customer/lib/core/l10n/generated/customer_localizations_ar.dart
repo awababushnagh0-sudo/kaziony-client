@@ -193,6 +193,11 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   }
 
   @override
+  String storeClosesInShort(int minutes) {
+    return 'يغلق بعد $minutes د';
+  }
+
+  @override
   String get storeClosedNow => 'مغلق الآن';
 
   @override
@@ -581,8 +586,8 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   String get holdShort => 'وقت أقل';
 
   @override
-  String holdUntilClosing(String time) {
-    return 'يغلق المحل $time، فاستلم قبلها.';
+  String holdUntilClosing(String time, String close) {
+    return 'آخر استلام $time، قبل أن يغلق المحل $close.';
   }
 
   @override
@@ -602,18 +607,19 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   }
 
   @override
-  String bookingClosedButton(String when) {
-    return 'مغلق الآن · يفتح $when';
-  }
+  String get bookingClosedNote => 'المحل مغلق الآن';
 
   @override
-  String bookingTooLateButton(String time) {
-    return 'فات وقت الحجز · يغلق $time';
+  String get bookingTooLateNote => 'فات وقت الحجز';
+
+  @override
+  String bookingTooLateNoteMessage(String time) {
+    return 'يغلق المحل $time';
   }
 
   @override
   String reserveShortUntilClosing(String time, String close) {
-    return 'عندك $time فقط للاستلام: يغلق المحل $close';
+    return 'عندك $time فقط للاستلام: آخر استلام $close';
   }
 
   @override
@@ -693,7 +699,7 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String reserveHoldUntilClosingNote(String time, String close) {
-    return 'عندك $time للاستلام، حتى يغلق المحل $close. وتدفع نقدًا وقتها.';
+    return 'عندك $time للاستلام، وآخر استلام $close قبل إغلاق المحل. وتدفع نقدًا وقتها.';
   }
 
   @override
@@ -1139,4 +1145,67 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   @override
   String get cancelledNotDelivered =>
       'يقول المحل إن التوصيل لم يتم، ولا يُحسب هذا عليك.';
+
+  @override
+  String get cancelledStoreClosedTitle => 'أغلق المحل قبل موعده';
+
+  @override
+  String get cancelledStoreClosed =>
+      'اضطر المحل إلى الإغلاق فأُلغي حجزك، ولا يُحسب هذا عليك.';
+
+  @override
+  String get reportProblem => 'الإبلاغ عن مشكلة';
+
+  @override
+  String get reportTitle => 'ما المشكلة؟';
+
+  @override
+  String get reportSubtitle => 'يصل بلاغك إلى فريقنا مع هذا الحجز.';
+
+  @override
+  String get reportReasonStoreClosed => 'المحل كان مغلقًا';
+
+  @override
+  String get reportReasonNotGiven => 'لم يسلّمني المحل حجزي';
+
+  @override
+  String get reportReasonPriceDifferent => 'طُلب مني سعر أعلى';
+
+  @override
+  String get reportReasonQuality => 'مشكلة فيما استلمته';
+
+  @override
+  String get reportReasonOther => 'شيء آخر';
+
+  @override
+  String get reportNoteLabel => 'ماذا حدث؟';
+
+  @override
+  String get reportNoteHint => 'مثلًا: وصلت 8:30 والباب مقفول';
+
+  @override
+  String get reportSend => 'إرسال البلاغ';
+
+  @override
+  String get reportSent => 'وصلنا بلاغك، وسنراجعه.';
+
+  @override
+  String get reportSentTitle => 'أبلغت عن مشكلة';
+
+  @override
+  String get reportOpen => 'نراجع بلاغك.';
+
+  @override
+  String get reportResolved => 'راجعنا بلاغك.';
+
+  @override
+  String get reportResolvedStrikeRemoved =>
+      'راجعنا بلاغك، ولم يعد هذا الحجز يُحسب عليك.';
+
+  @override
+  String get reportAlready => 'أبلغت عن هذا الحجز من قبل.';
+
+  @override
+  String get reportTooLate =>
+      'مضى وقت طويل على هذا الحجز، فلا يمكن الإبلاغ عنه الآن.';
 }

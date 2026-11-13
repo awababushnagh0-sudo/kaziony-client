@@ -48,7 +48,7 @@ class _List extends AppView {
     final viewModel = ref.read(bookingsViewModel.notifier);
     // To the minute is enough to know which are still on; the cards count
     // the seconds themselves.
-    final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
+    final now = ref.watch(minuteClockProvider).value ?? ServerClock.now();
     final standing = ref.watch(bookingStandingProvider).value;
     final warning = standing == null
         ? null
@@ -171,7 +171,7 @@ class _CurrentCard extends AppView {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = CustomerLocalizations.of(context);
     final language = Localizations.localeOf(context).languageCode;
-    final now = ref.watch(secondClockProvider).value ?? DateTime.now();
+    final now = ref.watch(secondClockProvider).value ?? ServerClock.now();
     void open() => context.push(Routes.booking(booking.id));
     final left = booking.expiresAt.difference(now);
     final total = booking.expiresAt.difference(booking.createdAt);

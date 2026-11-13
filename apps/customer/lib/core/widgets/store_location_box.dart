@@ -5,6 +5,7 @@ import '../../features/offers/domain/offer.dart';
 import '../../features/offers/presentation/offer_texts.dart';
 import '../l10n/generated/customer_localizations.dart';
 import 'customer_illustrations.dart';
+import 'open_now_badge.dart';
 
 /// Where to pick up, on an offer's and a store's page: a box with a little
 /// map, the area, the address and how far, that opens the way there in the
@@ -18,7 +19,7 @@ class StoreLocationBox extends AppView {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = CustomerLocalizations.of(context);
-    final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
+    final now = ref.watch(minuteClockProvider).value ?? ServerClock.now();
     final details = storeLocationDetails(context, ref, location, now: now);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -118,16 +119,15 @@ String? locationWhere(CustomerLocalizations s, StoreLocation location) {
 
 /// "Open today 8:00 AM – 11:00 PM", or "Closed today", on [day]; null when
 /// the store hasn't said.
-String? hoursOn(BuildContext context, OpeningHours hours, DateTime day) {
+String? hoursOn(BuildContext context, StoreSchedule hours, DateTime day) {
   final s = CustomerLocalizations.of(context);
   final times = hours.on(day);
   if (times == null) return null;
   if (times.isEmpty) return s.closedToday;
   final language = Localizations.localeOf(context).languageCode;
-  final local = day.toLocal();
-  final midnight = DateTime(local.year, local.month, local.day);
+  final date = libyaClock(day);
   String at(int minutes) => formatTime(
-    midnight.add(Duration(minutes: minutes)),
+    libyaTime(date.year, date.month, date.day, 0, minutes),
     languageCode: language,
   );
   return s.openToday(
@@ -137,50 +137,29 @@ String? hoursOn(BuildContext context, OpeningHours hours, DateTime day) {
   );
 }
 
-/// Beside the hours, how the store is at [now]: orange once it closes
-/// within [_closingSoon], red while it's closed (on a day it opens), with
-/// when it opens again. Nothing while it's open for a while yet, or on a
-/// day it didn't say.
+/// Beside the hours, how the store is at [now] ([openNowBadge]), with
+/// when it opens again while it's closed. No badge on a day it's closed:
+/// "Closed today" says it already.
 ({Widget? badge, String? opens}) _openNow(
   BuildContext context,
-  OpeningHours hours,
+  StoreSchedule hours,
   DateTime now,
 ) {
   final s = CustomerLocalizations.of(context);
-  switch (hours.openAt(now)) {
-    case true:
-      final left = hours.closesAfter(now)?.difference(now);
-      if (left == null || left > _closingSoon) break;
-      final minutes = (left.inSeconds / Duration.secondsPerMinute).ceil();
-      return (
-        badge: SBadge(
-          s.storeClosesIn(s.holdTime(minutes)),
-          tone: BadgeTone.warning,
-        ),
-        opens: null,
-      );
-    case false:
-      final opens = hours.opensAfter(now);
-      final language = Localizations.localeOf(context).languageCode;
-      return (
-        // "Closed today" says it already.
-        badge: hours.on(now)?.isEmpty ?? true
-            ? null
-            : SBadge(s.storeClosedNow, tone: BadgeTone.danger),
-        opens: opens == null
-            ? null
-            : s.storeOpensAt(
-                formatWhen(opens, languageCode: language, now: now),
-              ),
-      );
-    case null:
-      break;
+  if (hours.openAt(now) != false) {
+    return (badge: openNowBadge(context, hours, now), opens: null);
   }
-  return (badge: null, opens: null);
+  final opens = hours.opensAfter(now);
+  final language = Localizations.localeOf(context).languageCode;
+  return (
+    badge: hours.on(now)?.isEmpty ?? true
+        ? null
+        : openNowBadge(context, hours, now),
+    opens: opens == null
+        ? null
+        : s.storeOpensAt(formatWhen(opens, languageCode: language, now: now)),
+  );
 }
-
-/// As people look out for a store about to close.
-const _closingSoon = Duration(hours: 1);
 
 /// Opens the way to [location] in the phone's maps, or says it couldn't.
 Future<void> openDirections(

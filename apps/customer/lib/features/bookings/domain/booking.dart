@@ -30,12 +30,50 @@ enum CancelReason {
   /// Our team turned the store off.
   storeOff,
 
+  /// The store had to close suddenly, and called its bookings off.
+  storeClosed,
+
   /// The store's delivery didn't happen: the customer called it off, or
   /// wasn't there. Between them and the store.
   notDelivered,
 
   /// Not the customer, for a reason added after this version of the app.
   other,
+}
+
+/// What a customer says went wrong with a booking.
+enum ReportReason {
+  /// The store was closed when they came.
+  storeClosed,
+
+  /// The store didn't give them what they booked.
+  notGiven,
+
+  /// They were asked to pay more than the offer's price.
+  priceDifferent,
+
+  /// Something was wrong with what they got.
+  quality,
+
+  /// Something else: their note says what.
+  other,
+}
+
+/// The customer's report of a problem with a booking, and what our team
+/// made of it.
+class BookingReport {
+  const BookingReport({
+    required this.resolved,
+    required this.strikeRemoved,
+    required this.createdAt,
+  });
+
+  /// Our team looked into it.
+  final bool resolved;
+
+  /// Our team took back the strike the booking gave.
+  final bool strikeRemoved;
+  final DateTime createdAt;
 }
 
 /// A reservation of an offer: the code to show at the counter.
@@ -64,6 +102,8 @@ class Booking {
     this.cancelReason,
     this.deliveryPhone,
     this.sentForDeliveryAt,
+    this.report,
+    this.canReport = false,
   });
 
   final String id;
@@ -117,6 +157,14 @@ class Booking {
 
   /// When the store's driver took it.
   final DateTime? sentForDeliveryAt;
+
+  /// The customer's report of a problem with it; null before they send
+  /// one.
+  final BookingReport? report;
+
+  /// A problem with it can be reported: none yet, and it's under way or
+  /// ended a few days ago at most (the server says how many).
+  final bool canReport;
 
   bool get isOutForDelivery => status == BookingStatus.outForDelivery;
 
@@ -200,6 +248,14 @@ abstract interface class BookingsRepository {
   /// Rates the store [stars] from 1 to 5, once the booking is picked up:
   /// one rating per store, which a later pickup's replaces.
   Future<Result<Booking>> rate(String bookingId, int stars);
+
+  /// Reports a problem with the booking for our team to look into, once:
+  /// [note] says what happened, needed for [ReportReason.other].
+  Future<Result<Booking>> report(
+    String bookingId,
+    ReportReason reason, {
+    String? note,
+  });
 
   /// Where the signed-in customer stands with booking.
   Future<Result<BookingStanding>> standing();

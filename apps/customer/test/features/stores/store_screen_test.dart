@@ -66,7 +66,7 @@ void main() {
     stores.location = const StoreLocation(
       point: souqAlJuma,
       area: 'Andalus',
-      hours: OpeningHours({Weekday.mon: []}),
+      hours: StoreSchedule(weekly: OpeningHours({Weekday.mon: []})),
     );
     await open(tester);
 

@@ -54,6 +54,27 @@ class ApiBookingsRepository implements BookingsRepository {
   );
 
   @override
+  Future<Result<Booking>> report(
+    String bookingId,
+    ReportReason reason, {
+    String? note,
+  }) => _one(
+    () => _claims.report(
+      claimId: bookingId,
+      body: api.ReportClaimDto(
+        reason: switch (reason) {
+          ReportReason.storeClosed => api.ReportReason.storeClosed,
+          ReportReason.notGiven => api.ReportReason.notGiven,
+          ReportReason.priceDifferent => api.ReportReason.priceDifferent,
+          ReportReason.quality => api.ReportReason.quality,
+          ReportReason.other => api.ReportReason.other,
+        },
+        note: note,
+      ),
+    ),
+  );
+
+  @override
   Future<Result<BookingStanding>> standing() async {
     final result = await _api.guard(() => _claims.bookingStatus());
     return result.map(
@@ -104,6 +125,15 @@ class ApiBookingsRepository implements BookingsRepository {
     cancelReason: toCancelReason(claim.cancelReason),
     deliveryPhone: claim.store.deliveryPhone,
     sentForDeliveryAt: claim.sentForDeliveryAt?.toLocal(),
+    report: switch (claim.report) {
+      null => null,
+      final report => BookingReport(
+        resolved: report.status == api.ReportStatus.resolved,
+        strikeRemoved: report.strikeRemoved,
+        createdAt: report.createdAt.toLocal(),
+      ),
+    },
+    canReport: claim.canReport,
   );
 }
 
@@ -113,6 +143,7 @@ CancelReason? toCancelReason(api.CancelReason? reason) => switch (reason) {
   api.CancelReason.customer => CancelReason.customer,
   api.CancelReason.offerRemoved => CancelReason.offerRemoved,
   api.CancelReason.storeOff => CancelReason.storeOff,
+  api.CancelReason.storeClosed => CancelReason.storeClosed,
   api.CancelReason.notDelivered => CancelReason.notDelivered,
   api.CancelReason.$unknown => CancelReason.other,
 };

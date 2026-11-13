@@ -96,6 +96,7 @@ Offer toOffer(api.PublicOfferDto offer) => Offer(
   maxPerUser: offer.maxPerUser?.toInt(),
   claimWindowMinutes: offer.claimWindowMinutes.toInt(),
   lastBookingMinutes: offer.lastBookingMinutes.toInt(),
+  lastPickupMinutes: offer.lastPickupMinutes.toInt(),
   startsAt: offer.startsAt.toLocal(),
   endsAt: offer.endsAt.toLocal(),
   store: OfferStore(
@@ -133,6 +134,10 @@ StoreLocation toLocation(api.PublicLocationDto location) => StoreLocation(
   area: storeWords(location.area),
   address: storeWords(location.address),
   phone: storeWords(location.phone),
-  hours: OpeningHours.fromJson(location.openingHours),
+  hours: StoreSchedule.fromJson(
+    openingHours: location.openingHours,
+    specialHours: location.specialHours,
+    pausedUntil: location.pausedUntil,
+  ),
   distanceKm: location.distanceKm?.toDouble(),
 );

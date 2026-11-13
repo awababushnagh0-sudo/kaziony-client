@@ -60,7 +60,7 @@ class StoreLocation {
     this.area,
     this.address,
     this.phone,
-    this.hours = OpeningHours.none,
+    this.hours = StoreSchedule.none,
     this.distanceKm,
   });
 
@@ -70,7 +70,9 @@ class StoreLocation {
   final String? area;
   final String? address;
   final String? phone;
-  final OpeningHours hours;
+
+  /// When it's open: its week, the dates that differ, and a pause.
+  final StoreSchedule hours;
 
   /// From the place offers are shown around.
   final double? distanceKm;
@@ -87,6 +89,7 @@ class Offer {
     required this.limited,
     required this.claimWindowMinutes,
     required this.lastBookingMinutes,
+    required this.lastPickupMinutes,
     required this.startsAt,
     required this.endsAt,
     required this.store,
@@ -125,6 +128,10 @@ class Offer {
   /// closes, nor while it's closed.
   final int lastBookingMinutes;
 
+  /// A booking is held until this many minutes before the store closes, at
+  /// the latest: its last pickup.
+  final int lastPickupMinutes;
+
   /// When it can be picked up: from [startsAt] until [endsAt].
   final DateTime startsAt;
   final DateTime endsAt;
@@ -157,6 +164,7 @@ class Offer {
           holdMinutes: claimWindowMinutes,
           endsAt: endsAt,
           lastBookingMinutes: lastBookingMinutes,
+          lastPickupMinutes: lastPickupMinutes,
         )
       : null;
 

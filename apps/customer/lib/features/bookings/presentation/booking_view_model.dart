@@ -5,8 +5,8 @@ import 'package:kernel/kernel.dart';
 import '../domain/booking.dart';
 import 'bookings_view_model.dart';
 
-/// One booking, for its pickup code page: cancelling it, and rating the
-/// store once it's picked up. While it waits at the counter, asked for
+/// One booking, for its pickup code page: cancelling it, rating the store
+/// once it's picked up, and reporting a problem with it. While it waits at the counter, asked for
 /// again every few seconds, so the page turns to the stars the moment the
 /// store scans the code.
 class BookingViewModel extends AsyncViewModel<Booking> {
@@ -52,6 +52,10 @@ class BookingViewModel extends AsyncViewModel<Booking> {
   /// What went wrong, or null when the store is rated [stars].
   Future<AppFailure?> rate(int stars) =>
       _change((bookings) => bookings.rate(bookingId, stars));
+
+  /// What went wrong, or null once the problem is reported.
+  Future<AppFailure?> report(ReportReason reason, {String? note}) =>
+      _change((bookings) => bookings.report(bookingId, reason, note: note));
 
   /// Shows the booking as it is after [change], here and in the list.
   Future<AppFailure?> _change(

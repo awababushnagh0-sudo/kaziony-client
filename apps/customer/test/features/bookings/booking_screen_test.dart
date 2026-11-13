@@ -370,7 +370,7 @@ void main() {
           // Its time would be up: on its way, it has none.
           left: const Duration(minutes: -30),
           deliveryPhone: '+218921234567',
-          sentForDeliveryAt: DateTime(2026, 11, 12, 14, 20),
+          sentForDeliveryAt: libyaTime(2026, 11, 12, 14, 20),
         ),
       ];
       await open(tester);
@@ -443,6 +443,112 @@ void main() {
         ),
         findsOneWidget,
       );
+    });
+  });
+
+  group('reporting a problem', () {
+    /// Taps [text], scrolled to first: the sheet is taller than the test's
+    /// screen.
+    Future<void> tapOn(WidgetTester tester, String text) async {
+      await tester.ensureVisible(find.text(text));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(text));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('sends why, with what happened, from the pass', (tester) async {
+      bookings.bookings = [booking(canReport: true)];
+      await open(tester);
+
+      await tapOn(tester, 'Report a problem');
+      expect(find.text('What went wrong?'), findsOneWidget);
+      // Nothing to send before a reason.
+      await tapOn(tester, 'Send report');
+      expect(bookings.reports, isEmpty);
+
+      await tapOn(tester, 'The store was closed');
+      await tester.enterText(
+        find.byType(EditableText),
+        ' I came at 8:30 and it was shut ',
+      );
+      await tapOn(tester, 'Send report');
+
+      expect(bookings.reports, [
+        ('k1', ReportReason.storeClosed, 'I came at 8:30 and it was shut'),
+      ]);
+      expect(
+        find.text('We got your report and will look into it.'),
+        findsOneWidget,
+      );
+      await tester.ensureVisible(find.text('You reported a problem'));
+      expect(find.text("We're looking into it."), findsOneWidget);
+      expect(find.text('Report a problem'), findsNothing);
+    });
+
+    testWidgets('needs a note for something else', (tester) async {
+      bookings.bookings = [booking(canReport: true)];
+      await open(tester);
+      await tapOn(tester, 'Report a problem');
+
+      await tapOn(tester, 'Something else');
+      await tapOn(tester, 'Send report');
+      expect(bookings.reports, isEmpty);
+    });
+
+    testWidgets('says why it was refused, in the app\'s words', (tester) async {
+      bookings
+        ..bookings = [booking(canReport: true)]
+        ..reportResult = const Err(
+          ConflictFailure('Too late', 'ReportTooLate'),
+        );
+      await open(tester);
+      await tapOn(tester, 'Report a problem');
+      await tapOn(tester, 'Something was wrong with it');
+      await tapOn(tester, 'Send report');
+
+      expect(
+        find.text('This booking ended too long ago to report.'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('says what came of a report on a past booking', (tester) async {
+      bookings.bookings = [
+        booking(
+          status: BookingStatus.expired,
+          left: const Duration(minutes: -30),
+          canCancel: false,
+          report: BookingReport(
+            resolved: true,
+            strikeRemoved: true,
+            createdAt: now,
+          ),
+        ),
+      ];
+      await open(tester);
+
+      expect(find.text('You reported a problem'), findsOneWidget);
+      expect(
+        find.text(
+          'We looked into it: this booking no longer counts against you.',
+        ),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('offers nothing once it can no longer be reported', (
+      tester,
+    ) async {
+      bookings.bookings = [
+        booking(
+          status: BookingStatus.pickedUp,
+          left: const Duration(days: -8),
+          canCancel: false,
+        ),
+      ];
+      await open(tester);
+
+      expect(find.text('Report a problem'), findsNothing);
     });
   });
 }
