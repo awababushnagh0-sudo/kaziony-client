@@ -6,7 +6,10 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../models/pause_store_dto.dart';
 import '../models/store_detail_dto.dart';
+import '../models/store_pause_dto.dart';
+import '../models/store_paused_dto.dart';
 import '../models/store_stats_dto.dart';
 import '../models/update_store_profile_dto.dart';
 
@@ -34,6 +37,27 @@ abstract class PartnerStoreClient {
   /// Claims, redemptions and top offers
   @GET('/api/v1/partner/stores/{storeId}/stats')
   Future<StoreStatsDto> getStats({
+    @Path('storeId') required String storeId,
+  });
+
+  /// Whether the store is offline, and what going offline touches
+  @GET('/api/v1/partner/stores/{storeId}/pause')
+  Future<StorePauseDto> getPause({
+    @Path('storeId') required String storeId,
+  });
+
+  /// Go offline for a break or the rest of the day (owner or staff).
+  ///
+  /// Customers see the store closed and can't book; bookings already made stand. With `cancelBookings`, for a sudden closing, they are cancelled too and each customer is told, with no strike. Pausing again replaces the pause.
+  @PUT('/api/v1/partner/stores/{storeId}/pause')
+  Future<StorePausedDto> pause({
+    @Path('storeId') required String storeId,
+    @Body() required PauseStoreDto body,
+  });
+
+  /// Back online: customers can book again
+  @DELETE('/api/v1/partner/stores/{storeId}/pause')
+  Future<StorePauseDto> resume({
     @Path('storeId') required String storeId,
   });
 

@@ -20,6 +20,8 @@ enum AuditArea {
   offer('offer'),
   @JsonValue('job')
   job('job'),
+  @JsonValue('report')
+  report('report'),
   /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
   $unknown(null);
 

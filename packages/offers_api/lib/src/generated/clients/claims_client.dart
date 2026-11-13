@@ -10,6 +10,7 @@ import '../models/create_claim_dto.dart';
 import '../models/customer_claim_dto.dart';
 import '../models/customer_claim_list_dto.dart';
 import '../models/rate_claim_dto.dart';
+import '../models/report_claim_dto.dart';
 
 part 'claims_client.g.dart';
 
@@ -67,5 +68,14 @@ abstract class ClaimsClient {
   Future<CustomerClaimDto> rate({
     @Path('claimId') required String claimId,
     @Body() required RateClaimDto body,
+  });
+
+  /// Report a problem with my booking, for our team to look into.
+  ///
+  /// Once a booking, up to 7 days after it ended: 409 with error "AlreadyReported" or "ReportTooLate". Our team may take back a strike it gave; `report` on the booking says what came of it.
+  @POST('/api/v1/me/claims/{claimId}/report')
+  Future<CustomerClaimDto> report({
+    @Path('claimId') required String claimId,
+    @Body() required ReportClaimDto body,
   });
 }

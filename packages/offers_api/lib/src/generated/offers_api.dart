@@ -26,6 +26,7 @@ import 'clients/admin_audit_log_client.dart';
 import 'clients/partner_products_client.dart';
 import 'clients/claims_client.dart';
 import 'clients/partner_claims_client.dart';
+import 'clients/admin_reports_client.dart';
 import 'clients/notifications_client.dart';
 import 'clients/admin_stats_client.dart';
 
@@ -66,6 +67,7 @@ class OffersApi {
   PartnerProductsClient? _partnerProducts;
   ClaimsClient? _claims;
   PartnerClaimsClient? _partnerClaims;
+  AdminReportsClient? _adminReports;
   NotificationsClient? _notifications;
   AdminStatsClient? _adminStats;
 
@@ -112,6 +114,8 @@ class OffersApi {
   ClaimsClient get claims => _claims ??= ClaimsClient(_dio, baseUrl: _baseUrl);
 
   PartnerClaimsClient get partnerClaims => _partnerClaims ??= PartnerClaimsClient(_dio, baseUrl: _baseUrl);
+
+  AdminReportsClient get adminReports => _adminReports ??= AdminReportsClient(_dio, baseUrl: _baseUrl);
 
   NotificationsClient get notifications => _notifications ??= NotificationsClient(_dio, baseUrl: _baseUrl);
 

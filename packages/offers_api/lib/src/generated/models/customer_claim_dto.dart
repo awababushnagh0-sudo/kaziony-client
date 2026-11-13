@@ -7,6 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'cancel_reason.dart';
 import 'claim_status.dart';
 import 'customer_claim_offer_dto.dart';
+import 'customer_claim_report_dto.dart';
 import 'customer_claim_store_dto.dart';
 import 'public_location_dto.dart';
 
@@ -33,6 +34,8 @@ class CustomerClaimDto {
     required this.cancelEndsBooking,
     required this.myRating,
     required this.canRate,
+    required this.report,
+    required this.canReport,
   });
   
   factory CustomerClaimDto.fromJson(Map<String, Object?> json) => _$CustomerClaimDtoFromJson(json);
@@ -80,6 +83,13 @@ class CustomerClaimDto {
   /// Picked up, and the store not rated since: rating replaces my earlier.
   /// stars for it.
   final bool canRate;
+
+  /// My report of a problem with it; null when I haven't reported one.
+  final CustomerClaimReportDto? report;
+
+  /// I can report a problem with it: not reported yet, and under way or.
+  /// ended less than REPORT_DAYS (7) ago.
+  final bool canReport;
 
   Map<String, Object?> toJson() => _$CustomerClaimDtoToJson(this);
 }

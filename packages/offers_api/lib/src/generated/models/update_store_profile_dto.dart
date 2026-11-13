@@ -15,6 +15,7 @@ class UpdateStoreProfileDto {
     this.email,
     this.facebookUrl,
     this.instagramUrl,
+    this.specialHours,
     this.delivers,
     this.deliveryPhone,
   });
@@ -36,6 +37,13 @@ class UpdateStoreProfileDto {
   final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
+
+  /// Dates that differ from the weekly hours (Ramadan, Eid, a holiday), in.
+  /// place of their weekdays: up to 20 ranges of up to 40 days that don't.
+  /// overlap, each with its shifts as one day of openingHours takes them.
+  /// (none: closed). The whole list each time; ranges that have ended are.
+  /// dropped.
+  final List<dynamic>? specialHours;
 
   /// Has its own drivers: customers with a booking can call to have it.
   /// brought. Delivery is between them and the store, not us.

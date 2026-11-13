@@ -10,6 +10,7 @@ StoreDetailDto _$StoreDetailDtoFromJson(Map<String, dynamic> json) =>
     StoreDetailDto(
       city: City.fromJson(json['city'] as String),
       openingHours: json['openingHours'],
+      specialHours: json['specialHours'] as List<dynamic>,
       missingToGoLive: (json['missingToGoLive'] as List<dynamic>)
           .map((e) => GoLiveItem.fromJson(e as String))
           .toList(),
@@ -19,6 +20,9 @@ StoreDetailDto _$StoreDetailDtoFromJson(Map<String, dynamic> json) =>
       address: json['address'] as String?,
       latitude: json['latitude'] as num,
       longitude: json['longitude'] as num,
+      pausedUntil: json['pausedUntil'] == null
+          ? null
+          : DateTime.parse(json['pausedUntil'] as String),
       logoUrl: json['logoUrl'] as String?,
       coverUrl: json['coverUrl'] as String?,
       phone: json['phone'] as String,
@@ -43,6 +47,7 @@ Map<String, dynamic> _$StoreDetailDtoToJson(StoreDetailDto instance) =>
     <String, dynamic>{
       'city': instance.city,
       'openingHours': ?instance.openingHours,
+      'specialHours': instance.specialHours,
       'missingToGoLive': instance.missingToGoLive,
       'id': instance.id,
       'name': instance.name,
@@ -50,6 +55,7 @@ Map<String, dynamic> _$StoreDetailDtoToJson(StoreDetailDto instance) =>
       'address': ?instance.address,
       'latitude': instance.latitude,
       'longitude': instance.longitude,
+      'pausedUntil': ?instance.pausedUntil?.toIso8601String(),
       'logoUrl': ?instance.logoUrl,
       'coverUrl': ?instance.coverUrl,
       'phone': instance.phone,

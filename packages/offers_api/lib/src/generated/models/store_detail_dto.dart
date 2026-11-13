@@ -16,6 +16,7 @@ class StoreDetailDto {
   const StoreDetailDto({
     required this.city,
     required this.openingHours,
+    required this.specialHours,
     required this.missingToGoLive,
     required this.id,
     required this.name,
@@ -23,6 +24,7 @@ class StoreDetailDto {
     required this.address,
     required this.latitude,
     required this.longitude,
+    required this.pausedUntil,
     required this.logoUrl,
     required this.coverUrl,
     required this.phone,
@@ -46,6 +48,10 @@ class StoreDetailDto {
   final City city;
   final dynamic openingHours;
 
+  /// Dates that differ from openingHours (Ramadan, Eid, a holiday), those.
+  /// that haven't ended: `[{ from, to, shifts }]`, no shifts for closed.
+  final List<dynamic> specialHours;
+
   /// What the store still needs before it can be turned on, in this order.
   /// (none when it's ready). A live store can't lose them either.
   final List<GoLiveItem> missingToGoLive;
@@ -57,6 +63,9 @@ class StoreDetailDto {
   final String? address;
   final num latitude;
   final num longitude;
+
+  /// Offline (taking no bookings) until then; null when it isn't.
+  final DateTime? pausedUntil;
   final String? logoUrl;
   final String? coverUrl;
   final String phone;

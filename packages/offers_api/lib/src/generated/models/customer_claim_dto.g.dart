@@ -37,6 +37,10 @@ CustomerClaimDto _$CustomerClaimDtoFromJson(
   cancelEndsBooking: json['cancelEndsBooking'] as bool,
   myRating: json['myRating'] as num?,
   canRate: json['canRate'] as bool,
+  report: json['report'] == null
+      ? null
+      : CustomerClaimReportDto.fromJson(json['report'] as Map<String, dynamic>),
+  canReport: json['canReport'] as bool,
 );
 
 Map<String, dynamic> _$CustomerClaimDtoToJson(CustomerClaimDto instance) =>
@@ -59,4 +63,6 @@ Map<String, dynamic> _$CustomerClaimDtoToJson(CustomerClaimDto instance) =>
       'cancelEndsBooking': instance.cancelEndsBooking,
       'myRating': ?instance.myRating,
       'canRate': instance.canRate,
+      'report': ?instance.report,
+      'canReport': instance.canReport,
     };

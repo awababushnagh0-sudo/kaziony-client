@@ -24,6 +24,7 @@ class UpdateStoreDto {
     this.email,
     this.facebookUrl,
     this.instagramUrl,
+    this.specialHours,
     this.isActive,
     this.delivers,
     this.deliveryPhone,
@@ -57,6 +58,13 @@ class UpdateStoreDto {
   final String? email;
   final String? facebookUrl;
   final String? instagramUrl;
+
+  /// Dates that differ from the weekly hours (Ramadan, Eid, a holiday), in.
+  /// place of their weekdays: up to 20 ranges of up to 40 days that don't.
+  /// overlap, each with its shifts as one day of openingHours takes them.
+  /// (none: closed). The whole list each time; ranges that have ended are.
+  /// dropped.
+  final List<dynamic>? specialHours;
 
   /// Disabled stores are hidden from customers and can't post offers.
   final bool? isActive;
