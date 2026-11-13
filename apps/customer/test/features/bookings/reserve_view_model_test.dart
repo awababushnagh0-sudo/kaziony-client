@@ -43,6 +43,11 @@ void main() {
     expect(offer(remaining: 1, maxPerUser: 4).maxReservable, 1);
   });
 
+  test('never offers more than one booking takes', () {
+    expect(offer(remaining: 500, maxPerUser: null).maxReservable, 100);
+    expect(offer(remaining: 500, maxPerUser: 150).maxReservable, 100);
+  });
+
   test('reserves the chosen quantity', () async {
     final deal = offer();
     final viewModel = viewModelFor(deal)..setQuantity(2);

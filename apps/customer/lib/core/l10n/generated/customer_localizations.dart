@@ -650,7 +650,7 @@ abstract class CustomerLocalizations {
   /// No description provided for @deleteAccountMessage.
   ///
   /// In en, this message translates to:
-  /// **'Your name, email, bookings, favorites and ratings are erased for good, and bookings you hold go back on sale. This can\'t be undone.'**
+  /// **'Your name, email, phone number, places and favorites are erased for good, and bookings you hold go back on sale. Your past bookings and ratings stay, with nothing that says they were yours, so stores\' numbers don\'t change. This can\'t be undone.'**
   String get deleteAccountMessage;
 
   /// No description provided for @deleteAccountConfirm.
@@ -1252,6 +1252,12 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'This offer has ended.'**
   String get reserveEnded;
+
+  /// No description provided for @reserveOfferPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'The store paused this offer for now. Try again later.'**
+  String get reserveOfferPaused;
 
   /// No description provided for @reserveStoreClosed.
   ///
@@ -1907,6 +1913,18 @@ abstract class CustomerLocalizations {
   /// **'The store had to close, so your booking was cancelled. This doesn\'t count against you.'**
   String get cancelledStoreClosed;
 
+  /// No description provided for @cancelledHoursChangedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The store changed its hours'**
+  String get cancelledHoursChangedTitle;
+
+  /// No description provided for @cancelledHoursChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'The store now closes before your pickup time, so your booking was cancelled. This doesn\'t count against you.'**
+  String get cancelledHoursChanged;
+
   /// No description provided for @reportProblem.
   ///
   /// In en, this message translates to:
@@ -2014,6 +2032,18 @@ abstract class CustomerLocalizations {
   /// In en, this message translates to:
   /// **'This booking ended too long ago to report.'**
   String get reportTooLate;
+
+  /// No description provided for @errorNotCancellable.
+  ///
+  /// In en, this message translates to:
+  /// **'This booking can\'t be cancelled anymore: it was picked up, cancelled or its time ran out.'**
+  String get errorNotCancellable;
+
+  /// No description provided for @errorTooManyPlaces.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve saved as many places as you can. Remove one to add another.'**
+  String get errorTooManyPlaces;
 }
 
 class _CustomerLocalizationsDelegate

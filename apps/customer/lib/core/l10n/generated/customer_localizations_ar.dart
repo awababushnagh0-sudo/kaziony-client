@@ -370,7 +370,7 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String get deleteAccountMessage =>
-      'يُمسح اسمك وبريدك وحجوزاتك ومحلاتك المفضلة وتقييماتك نهائيًا، وتعود القطع المحجوزة للبيع. لا يمكن التراجع عن هذا.';
+      'يُمسح اسمك وبريدك ورقم هاتفك وأماكنك ومحلاتك المفضلة نهائيًا، وتعود القطع المحجوزة للبيع. تبقى حجوزاتك وتقييماتك السابقة دون ما يدل عليك، حتى لا تتغير أرقام المحلات. لا يمكن التراجع عن هذا.';
 
   @override
   String get deleteAccountConfirm => 'احذف';
@@ -751,6 +751,9 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
 
   @override
   String get reserveEnded => 'انتهى هذا العرض.';
+
+  @override
+  String get reserveOfferPaused => 'أوقف المحل هذا العرض مؤقتًا. جرّب لاحقًا.';
 
   @override
   String get reserveStoreClosed => 'المحل مغلق الآن. احجز عندما يفتح.';
@@ -1154,6 +1157,13 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
       'اضطر المحل إلى الإغلاق فأُلغي حجزك، ولا يُحسب هذا عليك.';
 
   @override
+  String get cancelledHoursChangedTitle => 'غيّر المحل مواعيده';
+
+  @override
+  String get cancelledHoursChanged =>
+      'صار المحل يُغلق قبل موعد استلامك فأُلغي حجزك، ولا يُحسب هذا عليك.';
+
+  @override
   String get reportProblem => 'الإبلاغ عن مشكلة';
 
   @override
@@ -1208,4 +1218,12 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
   @override
   String get reportTooLate =>
       'مضى وقت طويل على هذا الحجز، فلا يمكن الإبلاغ عنه الآن.';
+
+  @override
+  String get errorNotCancellable =>
+      'لم يعد بالإمكان إلغاء هذا الحجز: استُلم أو أُلغي أو انتهى وقته.';
+
+  @override
+  String get errorTooManyPlaces =>
+      'حفظت أقصى عدد من الأماكن. احذف مكانًا لتضيف غيره.';
 }

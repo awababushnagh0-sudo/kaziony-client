@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../l10n/generated/customer_localizations.dart';
 import '../routes/router.dart';
+import 'failure_wording.dart';
 
 class CustomerApp extends AppView {
   const CustomerApp({super.key});
@@ -13,6 +14,7 @@ class CustomerApp extends AppView {
     locale: ref.watch(localeProvider),
     theme: ref.watch(themeChoiceProvider),
     onGenerateTitle: (context) => CustomerLocalizations.of(context).appTitle,
+    failureWording: customerFailureWording,
     localizationsDelegates: const [CustomerLocalizations.delegate],
   );
 }

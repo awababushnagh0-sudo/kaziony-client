@@ -158,7 +158,7 @@
   "logoutMessage": "Your bookings and favorite stores stay saved. Sign in again to see them.",
   "deleteAccount": "Delete my account",
   "deleteAccountTitle": "Delete your account?",
-  "deleteAccountMessage": "Your name, email, bookings, favorites and ratings are erased for good, and bookings you hold go back on sale. This can't be undone.",
+  "deleteAccountMessage": "Your name, email, phone number, places and favorites are erased for good, and bookings you hold go back on sale. Your past bookings and ratings stay, with nothing that says they were yours, so stores' numbers don't change. This can't be undone.",
   "deleteAccountConfirm": "Delete",
   "accountDeleted": "Your account is deleted.",
   "back": "Back",
@@ -324,6 +324,7 @@
   "reserveNotEnough": "There aren't that many left. Try fewer.",
   "reserveNotStarted": "This offer hasn't started yet.",
   "reserveEnded": "This offer has ended.",
+  "reserveOfferPaused": "The store paused this offer for now. Try again later.",
   "reserveStoreClosed": "The store is closed now. Book once it opens.",
   "reserveStoreClosingSoon": "The store closes too soon to get there in time.",
   "reservePaused": "Booking is paused for a few days after missed pickups.",
@@ -462,6 +463,8 @@
   "cancelledNotDelivered": "The store says the delivery didn't happen. This doesn't count against you.",
   "cancelledStoreClosedTitle": "The store closed early",
   "cancelledStoreClosed": "The store had to close, so your booking was cancelled. This doesn't count against you.",
+  "cancelledHoursChangedTitle": "The store changed its hours",
+  "cancelledHoursChanged": "The store now closes before your pickup time, so your booking was cancelled. This doesn't count against you.",
   "reportProblem": "Report a problem",
   "reportTitle": "What went wrong?",
   "reportSubtitle": "Your report reaches our team with this booking.",
@@ -479,5 +482,7 @@
   "reportResolved": "We looked into it.",
   "reportResolvedStrikeRemoved": "We looked into it: this booking no longer counts against you.",
   "reportAlready": "You already reported this booking.",
-  "reportTooLate": "This booking ended too long ago to report."
+  "reportTooLate": "This booking ended too long ago to report.",
+  "errorNotCancellable": "This booking can't be cancelled anymore: it was picked up, cancelled or its time ran out.",
+  "errorTooManyPlaces": "You've saved as many places as you can. Remove one to add another."
 }

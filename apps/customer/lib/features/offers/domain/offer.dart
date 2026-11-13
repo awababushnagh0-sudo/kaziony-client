@@ -141,16 +141,20 @@ class Offer {
   final StoreLocation location;
 
   /// The most that can be reserved at once: what's left, within the
-  /// per-customer limit.
+  /// per-customer limit, and never more than one booking takes.
   int get maxReservable {
     final left = limited ? (remaining ?? 0) : null;
-    return switch ((left, maxPerUser)) {
+    final most = switch ((left, maxPerUser)) {
       (null, null) => _unlimitedMax,
       (final l?, null) => l,
       (null, final m?) => m,
       (final l?, final m?) => l < m ? l : m,
     };
+    return most < maxPerBooking ? most : maxPerBooking;
   }
+
+  /// The most pieces one booking takes: the server refuses more.
+  static const maxPerBooking = 100;
 
   /// No offer needs more at once; keeps the picker short.
   static const _unlimitedMax = 10;

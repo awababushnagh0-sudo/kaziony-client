@@ -362,7 +362,7 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String get deleteAccountMessage =>
-      'Your name, email, bookings, favorites and ratings are erased for good, and bookings you hold go back on sale. This can\'t be undone.';
+      'Your name, email, phone number, places and favorites are erased for good, and bookings you hold go back on sale. Your past bookings and ratings stay, with nothing that says they were yours, so stores\' numbers don\'t change. This can\'t be undone.';
 
   @override
   String get deleteAccountConfirm => 'Delete';
@@ -742,6 +742,10 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String get reserveEnded => 'This offer has ended.';
+
+  @override
+  String get reserveOfferPaused =>
+      'The store paused this offer for now. Try again later.';
 
   @override
   String get reserveStoreClosed =>
@@ -1146,6 +1150,13 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
       'The store had to close, so your booking was cancelled. This doesn\'t count against you.';
 
   @override
+  String get cancelledHoursChangedTitle => 'The store changed its hours';
+
+  @override
+  String get cancelledHoursChanged =>
+      'The store now closes before your pickup time, so your booking was cancelled. This doesn\'t count against you.';
+
+  @override
   String get reportProblem => 'Report a problem';
 
   @override
@@ -1200,4 +1211,12 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
 
   @override
   String get reportTooLate => 'This booking ended too long ago to report.';
+
+  @override
+  String get errorNotCancellable =>
+      'This booking can\'t be cancelled anymore: it was picked up, cancelled or its time ran out.';
+
+  @override
+  String get errorTooManyPlaces =>
+      'You\'ve saved as many places as you can. Remove one to add another.';
 }

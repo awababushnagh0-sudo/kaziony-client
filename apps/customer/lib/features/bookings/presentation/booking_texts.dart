@@ -38,6 +38,10 @@ import '../domain/booking.dart';
     title: s.cancelledStoreClosedTitle,
     message: s.cancelledStoreClosed,
   ),
+  CancelReason.hoursChanged => (
+    title: s.cancelledHoursChangedTitle,
+    message: s.cancelledHoursChanged,
+  ),
   CancelReason.notDelivered => (
     title: s.cancelledNotDeliveredTitle,
     message: s.cancelledNotDelivered,
@@ -149,6 +153,7 @@ String reserveFailureMessage(
     ConflictFailure(code: 'SoldOut') => s.soldOut,
     ConflictFailure(code: 'OfferNotStarted') => s.reserveNotStarted,
     ConflictFailure(code: 'OfferEnded') => s.reserveEnded,
+    ConflictFailure(code: 'OfferPaused') => s.reserveOfferPaused,
     ConflictFailure(code: 'StoreClosed') => s.reserveStoreClosed,
     ConflictFailure(code: 'StoreClosingSoon') => s.reserveStoreClosingSoon,
     ForbiddenFailure(code: 'ClaimBanned') =>
