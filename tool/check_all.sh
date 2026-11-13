@@ -13,6 +13,9 @@ step() { # name, command...
     echo "✓"
   else
     echo "✗"
+    # The failing tests by name first: their errors can be far above the end
+    # ([E] here, ❌ on GitHub).
+    grep -E '\[E\]$|❌' <<<"$output" | sed -E 's/^::group:://' || true
     echo "$output" | tail -30
     failed+=("$name")
   fi
