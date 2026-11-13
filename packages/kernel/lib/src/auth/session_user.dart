@@ -8,6 +8,10 @@ enum AccountRole {
   /// On our team like an admin, but can't delete or take things down, and
   /// can't manage the team.
   editor,
+
+  /// Us, who build Kaziony: everything an admin does, plus the System page.
+  /// Only code makes one.
+  developer,
   unknown,
 }
 
@@ -71,6 +75,7 @@ class SessionUser {
       api.UserRole.merchant => AccountRole.merchant,
       api.UserRole.admin => AccountRole.admin,
       api.UserRole.editor => AccountRole.editor,
+      api.UserRole.developer => AccountRole.developer,
       api.UserRole.$unknown => AccountRole.unknown,
     },
     name: me.name,
@@ -107,9 +112,11 @@ class SessionUser {
   final String id;
   final AccountRole role;
 
-  /// Our team, who use the admin dashboard: admins and editors.
+  /// Our team, who use the admin dashboard: developers, admins and editors.
   bool get onDashboardTeam =>
-      role == AccountRole.admin || role == AccountRole.editor;
+      role == AccountRole.developer ||
+      role == AccountRole.admin ||
+      role == AccountRole.editor;
   final String? name;
   final String? phone;
   final String? email;

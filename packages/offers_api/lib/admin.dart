@@ -4,6 +4,7 @@ library;
 
 export 'src/generated/clients/admin_audit_log_client.dart';
 export 'src/generated/clients/admin_categories_client.dart';
+export 'src/generated/clients/admin_customers_client.dart';
 export 'src/generated/clients/admin_locations_client.dart';
 export 'src/generated/clients/admin_offers_client.dart';
 export 'src/generated/clients/admin_reports_client.dart';

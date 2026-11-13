@@ -27,6 +27,7 @@ import 'clients/partner_products_client.dart';
 import 'clients/claims_client.dart';
 import 'clients/partner_claims_client.dart';
 import 'clients/admin_reports_client.dart';
+import 'clients/admin_customers_client.dart';
 import 'clients/notifications_client.dart';
 import 'clients/admin_stats_client.dart';
 
@@ -68,6 +69,7 @@ class OffersApi {
   ClaimsClient? _claims;
   PartnerClaimsClient? _partnerClaims;
   AdminReportsClient? _adminReports;
+  AdminCustomersClient? _adminCustomers;
   NotificationsClient? _notifications;
   AdminStatsClient? _adminStats;
 
@@ -116,6 +118,8 @@ class OffersApi {
   PartnerClaimsClient get partnerClaims => _partnerClaims ??= PartnerClaimsClient(_dio, baseUrl: _baseUrl);
 
   AdminReportsClient get adminReports => _adminReports ??= AdminReportsClient(_dio, baseUrl: _baseUrl);
+
+  AdminCustomersClient get adminCustomers => _adminCustomers ??= AdminCustomersClient(_dio, baseUrl: _baseUrl);
 
   NotificationsClient get notifications => _notifications ??= NotificationsClient(_dio, baseUrl: _baseUrl);
 

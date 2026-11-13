@@ -35,13 +35,13 @@ abstract class AdminUsersClient {
 
   /// Add an admin or editor to the dashboard.
   ///
-  /// Their temporary password is shown only once; they must change it on their first login.
+  /// Their temporary password is shown only once; they must change it on their first login. Developers are made only from code.
   @POST('/api/v1/admin/users')
   Future<CreatedDashboardUserDto> create({
     @Body() required CreateDashboardUserDto body,
   });
 
-  /// List and search our team: admins and editors.
+  /// List and search our team: developers, admins and editors.
   ///
   /// [search] - Search by name, email or phone.
   ///
@@ -61,9 +61,9 @@ abstract class AdminUsersClient {
     @Path('id') required String id,
   });
 
-  /// Rename an admin or editor, or change their role.
+  /// Rename someone on our team, or change their role.
   ///
-  /// Admins cannot change their own role.
+  /// Admins cannot change their own role. Only a developer renames a developer, and a developer's role changes only in code: 403 DeveloperAccount.
   @PATCH('/api/v1/admin/users/{id}')
   Future<AdminUserDto> update({
     @Path('id') required String id,
@@ -72,16 +72,16 @@ abstract class AdminUsersClient {
 
   /// Disable or enable an account.
   ///
-  /// Disabling logs them out everywhere, and cancels the bookings they have waiting (ACCOUNT_DISABLED: pieces back, no strike).
+  /// Disabling logs them out everywhere, and cancels the bookings they have waiting (ACCOUNT_DISABLED: pieces back, no strike). Only a developer disables a developer: 403 DeveloperAccount.
   @PATCH('/api/v1/admin/users/{id}/status')
   Future<AdminUserDto> setStatus({
     @Path('id') required String id,
     @Body() required SetUserStatusDto body,
   });
 
-  /// Give a merchant/admin a new temporary password.
+  /// Give a merchant or someone on our team a new temporary password.
   ///
-  /// Logs them out everywhere. The password is shown only once.
+  /// Logs them out everywhere. The password is shown only once. Only a developer resets a developer's: 403 DeveloperAccount.
   @POST('/api/v1/admin/users/{id}/reset-password')
   Future<ResetPasswordResponseDto> resetPassword({
     @Path('id') required String id,
