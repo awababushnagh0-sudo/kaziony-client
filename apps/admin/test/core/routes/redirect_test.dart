@@ -97,5 +97,8 @@ void main() {
     expect(go(session, Routes.system), Routes.home);
     expect(go(session, Routes.activity), Routes.home);
     expect(go(session, Routes.stores), isNull);
+    // Customers are everyday work: editors end pauses and take back strikes.
+    expect(go(session, Routes.customers), isNull);
+    expect(go(session, Routes.customer('customer-1')), isNull);
   });
 }

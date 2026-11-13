@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/admin_localizations.dart';
 import '../../../core/routes/routes.dart';
+import '../../bookings/presentation/booking_texts.dart';
 import '../domain/customer_report.dart';
 import 'report_dialog_view_model.dart';
 import 'report_texts.dart';
@@ -32,10 +33,10 @@ class ReportDialog extends AppView {
       }
     }
 
-    void openStore() {
+    void open(String location) {
       final router = GoRouter.of(context);
       Navigator.pop(context);
-      router.go(Routes.store(report.store.id));
+      router.go(location);
     }
 
     return SDialog(
@@ -57,13 +58,21 @@ class ReportDialog extends AppView {
           if (!report.open) _Decision(report: report),
           _Booking(report: report),
           _Customer(customer: report.customer),
-          Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: SButton.text(
-              label: s.reportOpenStore,
-              icon: SIcons.store,
-              onPressed: openStore,
-            ),
+          Wrap(
+            spacing: Space.sm,
+            runSpacing: Space.sm,
+            children: [
+              SButton.text(
+                label: s.reportOpenCustomer,
+                icon: SIcons.user,
+                onPressed: () => open(Routes.customer(report.customer.id)),
+              ),
+              SButton.text(
+                label: s.reportOpenStore,
+                icon: SIcons.store,
+                onPressed: () => open(Routes.store(report.store.id)),
+              ),
+            ],
           ),
           if (report.open) _Resolve(state: state, viewModel: viewModel),
         ],

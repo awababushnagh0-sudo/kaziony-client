@@ -107,6 +107,9 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get navStores => 'Stores';
 
   @override
+  String get navCustomers => 'Customers';
+
+  @override
   String get navUsers => 'Team';
 
   @override
@@ -603,10 +606,10 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get roleEditor => 'Editor';
 
   @override
-  String get columnEmail => 'Email';
+  String get roleDeveloper => 'Developer';
 
   @override
-  String get roleDeveloper => 'Developer';
+  String get columnEmail => 'Email';
 
   @override
   String get columnRole => 'Role';
@@ -642,15 +645,15 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get userRole => 'Role';
 
   @override
-  String get userRoleHelp =>
-      'Editors can add and edit, but can\'t delete or manage users.';
-
-  @override
   String get developerAccount => 'Developer account';
 
   @override
   String get developerAccountNote =>
       'Only a developer can change it, and its role can\'t be changed here.';
+
+  @override
+  String get userRoleHelp =>
+      'Editors can add and edit, but can\'t delete or manage users.';
 
   @override
   String get emailTaken => 'This email already has an account.';
@@ -1407,6 +1410,12 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get activityUserResetPassword => 'Reset a password';
 
   @override
+  String get activityUserEndPause => 'Ended a customer\'s pause';
+
+  @override
+  String get activityUserTakeBackStrike => 'Took back a customer\'s strike';
+
+  @override
   String get activityCategoryCreate => 'Added a category';
 
   @override
@@ -1682,6 +1691,27 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get bookingCancelled => 'Cancelled';
 
   @override
+  String get cancelledByCustomer => 'Cancelled by the customer';
+
+  @override
+  String get cancelledStoreClosed => 'The store closed';
+
+  @override
+  String get cancelledHoursChanged => 'The store changed its hours';
+
+  @override
+  String get cancelledNotDelivered => 'Not delivered';
+
+  @override
+  String get cancelledOfferRemoved => 'We took the offer down';
+
+  @override
+  String get cancelledStoreOff => 'We turned the store off';
+
+  @override
+  String get cancelledAccountDisabled => 'We disabled their account';
+
+  @override
   String get reportCustomer => 'The customer';
 
   @override
@@ -1774,6 +1804,225 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get reportPauseOver => 'The customer\'s pause has already ended.';
+
+  @override
+  String get reportOpenCustomer => 'Open the customer';
+
+  @override
+  String get customersTitle => 'Customers';
+
+  @override
+  String get customersSearch => 'Search by name, email or phone';
+
+  @override
+  String customersTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count customers',
+      one: '1 customer',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get customersEmpty => 'No customers yet';
+
+  @override
+  String get customersEmptyMessage =>
+      'Customers show here once they sign in to the app.';
+
+  @override
+  String get customersFilterActive => 'Active';
+
+  @override
+  String get customersFilterPaused => 'Booking paused';
+
+  @override
+  String get customersFilterDisabled => 'Disabled';
+
+  @override
+  String get customersFilterDeleted => 'Deleted';
+
+  @override
+  String get columnContact => 'Email or phone';
+
+  @override
+  String get columnBookings => 'Bookings';
+
+  @override
+  String get columnPickedUp => 'Picked up';
+
+  @override
+  String get columnStrikes => 'Strikes';
+
+  @override
+  String get columnLastBooked => 'Last booking';
+
+  @override
+  String get columnJoined => 'Joined';
+
+  @override
+  String get columnCode => 'Code';
+
+  @override
+  String get columnOffer => 'Offer';
+
+  @override
+  String get columnTotal => 'Total';
+
+  @override
+  String get customerActive => 'Active';
+
+  @override
+  String get customerPaused => 'Booking paused';
+
+  @override
+  String get customerDisabled => 'Disabled';
+
+  @override
+  String get customerDeleted => 'Deleted';
+
+  @override
+  String get customerDeletedAccount => 'Deleted account';
+
+  @override
+  String get tabOverview => 'Overview';
+
+  @override
+  String get tabBookings => 'Bookings';
+
+  @override
+  String customerPausedTitle(String date) {
+    return 'Booking paused until $date';
+  }
+
+  @override
+  String get customerPausedMessage =>
+      'They missed too many pickups. If one wasn\'t their fault, take its strike back, or end the pause from Actions.';
+
+  @override
+  String get customerDisabledTitle => 'We disabled this account';
+
+  @override
+  String get customerDisabledMessage =>
+      'They can\'t sign in or book until an admin enables it again.';
+
+  @override
+  String customerDeletedTitle(String date) {
+    return 'They deleted their account on $date';
+  }
+
+  @override
+  String customerStrikesNote(int count, int max) {
+    return '$count of $max count toward a pause now: those from the last 30 days, after their last pause.';
+  }
+
+  @override
+  String get customerNoStrikes => 'No missed pickups.';
+
+  @override
+  String get customerNoBookings => 'No bookings yet.';
+
+  @override
+  String get strikeCounts => 'Counts';
+
+  @override
+  String get strikeNoLongerCounts => 'No longer counts';
+
+  @override
+  String get strikeOldBooking => 'An older booking';
+
+  @override
+  String get takeBackStrike => 'Take back';
+
+  @override
+  String get takeBackStrikeTitle => 'Take back this strike?';
+
+  @override
+  String get takeBackStrikeMessage =>
+      'It won\'t count toward a pause anymore. If their booking is paused, the pause stays until you end it.';
+
+  @override
+  String get strikeTakenBackDone => 'Strike taken back';
+
+  @override
+  String get endPause => 'End the pause';
+
+  @override
+  String get endPauseHint => 'Let them book again now';
+
+  @override
+  String endPauseTitle(String name) {
+    return 'End $name\'s pause?';
+  }
+
+  @override
+  String get endPauseMessage =>
+      'They can book again right away, and the strikes so far stop counting.';
+
+  @override
+  String get pauseEndedDone => 'Pause ended: they can book again';
+
+  @override
+  String get disableCustomer => 'Disable account';
+
+  @override
+  String get disableCustomerHint =>
+      'Log them out and cancel their waiting bookings';
+
+  @override
+  String get disableCustomerMessage =>
+      'They\'re logged out and can\'t sign in or book until you enable the account again. Their bookings waiting for pickup are cancelled.';
+
+  @override
+  String get enableCustomer => 'Enable account';
+
+  @override
+  String get customerDisabledDone => 'Account disabled';
+
+  @override
+  String get customerEnabledDone => 'Account enabled';
+
+  @override
+  String get customerSignsInWith => 'Signs in with';
+
+  @override
+  String get customerNeverBooked => 'Never';
+
+  @override
+  String get customerFollowing => 'Follows';
+
+  @override
+  String get customerRatings => 'Rated';
+
+  @override
+  String get customerOpenReports => 'Open reports';
+
+  @override
+  String get customerLastPause => 'Last pause ended';
+
+  @override
+  String bookingsTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bookings',
+      one: '1 booking',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String strikesTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count strikes',
+      one: '1 strike',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get activityReportResolve => 'Resolved a customer report';

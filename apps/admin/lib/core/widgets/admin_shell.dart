@@ -36,6 +36,7 @@ class AdminShell extends AppView {
       items: [
         item(Routes.home, s.navHome, SIcons.home),
         item(Routes.stores, s.navStores, SIcons.store),
+        item(Routes.customers, s.navCustomers, SIcons.users),
         item(Routes.offers, s.navOffers, SIcons.offers),
         item(Routes.categories, s.navCategories, SIcons.category),
         item(Routes.platform, s.navPlatform, SIcons.location),

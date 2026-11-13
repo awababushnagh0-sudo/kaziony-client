@@ -40,6 +40,7 @@
   "logout": "Log out",
   "navHome": "Home",
   "navStores": "Stores",
+  "navCustomers": "Customers",
   "navUsers": "Team",
   "navOffers": "Offers",
   "navCategories": "Categories",
@@ -303,8 +304,8 @@
   "filterEditors": "Editors",
   "roleAdmin": "Admin",
   "roleEditor": "Editor",
-  "columnEmail": "Email",
   "roleDeveloper": "Developer",
+  "columnEmail": "Email",
   "columnRole": "Role",
   "columnLastLogin": "Last login",
   "neverLoggedIn": "Never",
@@ -316,9 +317,9 @@
   "userEmail": "Email",
   "userEmailHelp": "They log in with it.",
   "userRole": "Role",
-  "userRoleHelp": "Editors can add and edit, but can't delete or manage users.",
   "developerAccount": "Developer account",
   "developerAccountNote": "Only a developer can change it, and its role can't be changed here.",
+  "userRoleHelp": "Editors can add and edit, but can't delete or manage users.",
   "emailTaken": "This email already has an account.",
   "userCreatedTitle": "User added",
   "userCreatedMessage": "Give these details to {name}. They will choose their own password when they first log in.",
@@ -909,6 +910,8 @@
   "activityUserDisable": "Disabled an account",
   "activityUserEnable": "Enabled an account",
   "activityUserResetPassword": "Reset a password",
+  "activityUserEndPause": "Ended a customer's pause",
+  "activityUserTakeBackStrike": "Took back a customer's strike",
   "activityCategoryCreate": "Added a category",
   "activityCategoryUpdate": "Edited a category",
   "activityServiceAreaCreate": "Added a service area",
@@ -1029,6 +1032,13 @@
   "bookingPickedUp": "Picked up",
   "bookingMissed": "Missed",
   "bookingCancelled": "Cancelled",
+  "cancelledByCustomer": "Cancelled by the customer",
+  "cancelledStoreClosed": "The store closed",
+  "cancelledHoursChanged": "The store changed its hours",
+  "cancelledNotDelivered": "Not delivered",
+  "cancelledOfferRemoved": "We took the offer down",
+  "cancelledStoreOff": "We turned the store off",
+  "cancelledAccountDisabled": "We disabled their account",
   "reportCustomer": "The customer",
   "reportDeletedAccount": "Deleted their account",
   "reportPhone": "Phone",
@@ -1065,6 +1075,118 @@
   "reportAlreadyResolved": "Someone on the team resolved this report first.",
   "reportStrikeGone": "This booking's strike was already taken back.",
   "reportPauseOver": "The customer's pause has already ended.",
+  "reportOpenCustomer": "Open the customer",
+  "customersTitle": "Customers",
+  "customersSearch": "Search by name, email or phone",
+  "customersTotal": "{count, plural, =1{1 customer} other{{count} customers}}",
+  "@customersTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customersEmpty": "No customers yet",
+  "customersEmptyMessage": "Customers show here once they sign in to the app.",
+  "customersFilterActive": "Active",
+  "customersFilterPaused": "Booking paused",
+  "customersFilterDisabled": "Disabled",
+  "customersFilterDeleted": "Deleted",
+  "columnContact": "Email or phone",
+  "columnBookings": "Bookings",
+  "columnPickedUp": "Picked up",
+  "columnStrikes": "Strikes",
+  "columnLastBooked": "Last booking",
+  "columnJoined": "Joined",
+  "columnCode": "Code",
+  "columnOffer": "Offer",
+  "columnTotal": "Total",
+  "customerActive": "Active",
+  "customerPaused": "Booking paused",
+  "customerDisabled": "Disabled",
+  "customerDeleted": "Deleted",
+  "customerDeletedAccount": "Deleted account",
+  "tabOverview": "Overview",
+  "tabBookings": "Bookings",
+  "customerPausedTitle": "Booking paused until {date}",
+  "@customerPausedTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "customerPausedMessage": "They missed too many pickups. If one wasn't their fault, take its strike back, or end the pause from Actions.",
+  "customerDisabledTitle": "We disabled this account",
+  "customerDisabledMessage": "They can't sign in or book until an admin enables it again.",
+  "customerDeletedTitle": "They deleted their account on {date}",
+  "@customerDeletedTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "customerStrikesNote": "{count} of {max} count toward a pause now: those from the last 30 days, after their last pause.",
+  "@customerStrikesNote": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "customerNoStrikes": "No missed pickups.",
+  "customerNoBookings": "No bookings yet.",
+  "strikeCounts": "Counts",
+  "strikeNoLongerCounts": "No longer counts",
+  "strikeOldBooking": "An older booking",
+  "takeBackStrike": "Take back",
+  "takeBackStrikeTitle": "Take back this strike?",
+  "takeBackStrikeMessage": "It won't count toward a pause anymore. If their booking is paused, the pause stays until you end it.",
+  "strikeTakenBackDone": "Strike taken back",
+  "endPause": "End the pause",
+  "endPauseHint": "Let them book again now",
+  "endPauseTitle": "End {name}'s pause?",
+  "@endPauseTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "endPauseMessage": "They can book again right away, and the strikes so far stop counting.",
+  "pauseEndedDone": "Pause ended: they can book again",
+  "disableCustomer": "Disable account",
+  "disableCustomerHint": "Log them out and cancel their waiting bookings",
+  "disableCustomerMessage": "They're logged out and can't sign in or book until you enable the account again. Their bookings waiting for pickup are cancelled.",
+  "enableCustomer": "Enable account",
+  "customerDisabledDone": "Account disabled",
+  "customerEnabledDone": "Account enabled",
+  "customerSignsInWith": "Signs in with",
+  "customerNeverBooked": "Never",
+  "customerFollowing": "Follows",
+  "customerRatings": "Rated",
+  "customerOpenReports": "Open reports",
+  "customerLastPause": "Last pause ended",
+  "bookingsTotal": "{count, plural, =1{1 booking} other{{count} bookings}}",
+  "@bookingsTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "strikesTotal": "{count, plural, =1{1 strike} other{{count} strikes}}",
+  "@strikesTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "activityReportResolve": "Resolved a customer report",
   "errorAccountDeleted": "This account was deleted by its owner.",
   "errorEmailTaken": "This email already has an account.",

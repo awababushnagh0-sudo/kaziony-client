@@ -7,6 +7,10 @@ abstract final class Routes {
   static const home = '/home';
   static const stores = '/stores';
   static String store(String id) => '$stores/$id';
+
+  /// Everyone who books in the app.
+  static const customers = '/customers';
+  static String customer(String id) => '$customers/$id';
   static const users = '/users';
   static String user(String id) => '$users/$id';
   static const offers = '/offers';

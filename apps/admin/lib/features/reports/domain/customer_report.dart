@@ -1,24 +1,13 @@
 import 'package:kernel/kernel.dart';
 
 import '../../../core/list/list_query.dart';
+import '../../bookings/domain/booking_status.dart';
 
 /// What a customer said went wrong with a booking.
 enum ReportReason { storeClosed, notGiven, priceDifferent, quality, other }
 
 /// Whether our team has answered a report yet.
 enum ReportState { open, resolved }
-
-/// Where the booking a report is about stands.
-enum ReportedBookingStatus {
-  /// Waiting to be picked up.
-  waiting,
-  outForDelivery,
-  pickedUp,
-
-  /// Not picked up in time: it gave the customer a strike.
-  missed,
-  cancelled,
-}
 
 /// A customer's report of a problem with one of their bookings, with the
 /// booking and the customer as they are now, and what our team made of it.
@@ -82,7 +71,7 @@ class ReportedBooking {
   final String code;
 
   /// Null for a status this version doesn't know.
-  final ReportedBookingStatus? status;
+  final BookingStatus? status;
   final int quantity;
 
   /// "13.500"

@@ -19,6 +19,8 @@ String activityActionText(AdminLocalizations s, ActivityEntry entry) =>
       'user.setStatus' =>
         _enabled(entry) ? s.activityUserEnable : s.activityUserDisable,
       'user.resetPassword' => s.activityUserResetPassword,
+      'user.endPause' => s.activityUserEndPause,
+      'user.takeBackStrike' => s.activityUserTakeBackStrike,
       'category.create' => s.activityCategoryCreate,
       'category.update' => s.activityCategoryUpdate,
       'serviceArea.create' => s.activityServiceAreaCreate,

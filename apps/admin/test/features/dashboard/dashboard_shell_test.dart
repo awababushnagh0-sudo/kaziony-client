@@ -71,6 +71,7 @@ void main() {
     for (final label in [
       'Home',
       'Stores',
+      'Customers',
       'Team',
       'Offers',
       'Categories',
@@ -134,6 +135,7 @@ void main() {
     expect(find.text('Team'), findsNothing);
     expect(find.text('System'), findsNothing);
     expect(find.text('Activity'), findsNothing);
+    expect(find.text('Customers'), findsWidgets);
     expect(find.text('Offers'), findsWidgets);
     expect(find.text('Reports'), findsWidgets);
   });

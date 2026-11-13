@@ -24,6 +24,14 @@ void main() {
       activityActionText(ar, sampleActivity(action: 'store.addLocation')),
       'إضافة فرع',
     );
+    expect(
+      activityActionText(s, sampleActivity(action: 'user.takeBackStrike')),
+      "Took back a customer's strike",
+    );
+    expect(
+      activityActionText(ar, sampleActivity(action: 'user.endPause')),
+      'إنهاء إيقاف زبون',
+    );
   });
 
   test('tells disabling an account from enabling it', () {

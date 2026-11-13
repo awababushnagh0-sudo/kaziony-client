@@ -254,6 +254,12 @@ abstract class AdminLocalizations {
   /// **'Stores'**
   String get navStores;
 
+  /// No description provided for @navCustomers.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers'**
+  String get navCustomers;
+
   /// No description provided for @navUsers.
   ///
   /// In en, this message translates to:
@@ -1064,17 +1070,17 @@ abstract class AdminLocalizations {
   /// **'Editor'**
   String get roleEditor;
 
-  /// No description provided for @columnEmail.
-  ///
-  /// In en, this message translates to:
-  /// **'Email'**
-  String get columnEmail;
-
   /// No description provided for @roleDeveloper.
   ///
   /// In en, this message translates to:
   /// **'Developer'**
   String get roleDeveloper;
+
+  /// No description provided for @columnEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get columnEmail;
 
   /// No description provided for @columnRole.
   ///
@@ -1142,12 +1148,6 @@ abstract class AdminLocalizations {
   /// **'Role'**
   String get userRole;
 
-  /// No description provided for @userRoleHelp.
-  ///
-  /// In en, this message translates to:
-  /// **'Editors can add and edit, but can\'t delete or manage users.'**
-  String get userRoleHelp;
-
   /// No description provided for @developerAccount.
   ///
   /// In en, this message translates to:
@@ -1159,6 +1159,12 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'Only a developer can change it, and its role can\'t be changed here.'**
   String get developerAccountNote;
+
+  /// No description provided for @userRoleHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Editors can add and edit, but can\'t delete or manage users.'**
+  String get userRoleHelp;
 
   /// No description provided for @emailTaken.
   ///
@@ -2384,6 +2390,18 @@ abstract class AdminLocalizations {
   /// **'Reset a password'**
   String get activityUserResetPassword;
 
+  /// No description provided for @activityUserEndPause.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended a customer\'s pause'**
+  String get activityUserEndPause;
+
+  /// No description provided for @activityUserTakeBackStrike.
+  ///
+  /// In en, this message translates to:
+  /// **'Took back a customer\'s strike'**
+  String get activityUserTakeBackStrike;
+
   /// No description provided for @activityCategoryCreate.
   ///
   /// In en, this message translates to:
@@ -2846,6 +2864,48 @@ abstract class AdminLocalizations {
   /// **'Cancelled'**
   String get bookingCancelled;
 
+  /// No description provided for @cancelledByCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled by the customer'**
+  String get cancelledByCustomer;
+
+  /// No description provided for @cancelledStoreClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'The store closed'**
+  String get cancelledStoreClosed;
+
+  /// No description provided for @cancelledHoursChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'The store changed its hours'**
+  String get cancelledHoursChanged;
+
+  /// No description provided for @cancelledNotDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Not delivered'**
+  String get cancelledNotDelivered;
+
+  /// No description provided for @cancelledOfferRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'We took the offer down'**
+  String get cancelledOfferRemoved;
+
+  /// No description provided for @cancelledStoreOff.
+  ///
+  /// In en, this message translates to:
+  /// **'We turned the store off'**
+  String get cancelledStoreOff;
+
+  /// No description provided for @cancelledAccountDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'We disabled their account'**
+  String get cancelledAccountDisabled;
+
   /// No description provided for @reportCustomer.
   ///
   /// In en, this message translates to:
@@ -3019,6 +3079,366 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'The customer\'s pause has already ended.'**
   String get reportPauseOver;
+
+  /// No description provided for @reportOpenCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the customer'**
+  String get reportOpenCustomer;
+
+  /// No description provided for @customersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers'**
+  String get customersTitle;
+
+  /// No description provided for @customersSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name, email or phone'**
+  String get customersSearch;
+
+  /// No description provided for @customersTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 customer} other{{count} customers}}'**
+  String customersTotal(int count);
+
+  /// No description provided for @customersEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No customers yet'**
+  String get customersEmpty;
+
+  /// No description provided for @customersEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers show here once they sign in to the app.'**
+  String get customersEmptyMessage;
+
+  /// No description provided for @customersFilterActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get customersFilterActive;
+
+  /// No description provided for @customersFilterPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking paused'**
+  String get customersFilterPaused;
+
+  /// No description provided for @customersFilterDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get customersFilterDisabled;
+
+  /// No description provided for @customersFilterDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted'**
+  String get customersFilterDeleted;
+
+  /// No description provided for @columnContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Email or phone'**
+  String get columnContact;
+
+  /// No description provided for @columnBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookings'**
+  String get columnBookings;
+
+  /// No description provided for @columnPickedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up'**
+  String get columnPickedUp;
+
+  /// No description provided for @columnStrikes.
+  ///
+  /// In en, this message translates to:
+  /// **'Strikes'**
+  String get columnStrikes;
+
+  /// No description provided for @columnLastBooked.
+  ///
+  /// In en, this message translates to:
+  /// **'Last booking'**
+  String get columnLastBooked;
+
+  /// No description provided for @columnJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined'**
+  String get columnJoined;
+
+  /// No description provided for @columnCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get columnCode;
+
+  /// No description provided for @columnOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer'**
+  String get columnOffer;
+
+  /// No description provided for @columnTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get columnTotal;
+
+  /// No description provided for @customerActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get customerActive;
+
+  /// No description provided for @customerPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking paused'**
+  String get customerPaused;
+
+  /// No description provided for @customerDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get customerDisabled;
+
+  /// No description provided for @customerDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted'**
+  String get customerDeleted;
+
+  /// No description provided for @customerDeletedAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted account'**
+  String get customerDeletedAccount;
+
+  /// No description provided for @tabOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get tabOverview;
+
+  /// No description provided for @tabBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookings'**
+  String get tabBookings;
+
+  /// No description provided for @customerPausedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking paused until {date}'**
+  String customerPausedTitle(String date);
+
+  /// No description provided for @customerPausedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'They missed too many pickups. If one wasn\'t their fault, take its strike back, or end the pause from Actions.'**
+  String get customerPausedMessage;
+
+  /// No description provided for @customerDisabledTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We disabled this account'**
+  String get customerDisabledTitle;
+
+  /// No description provided for @customerDisabledMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'They can\'t sign in or book until an admin enables it again.'**
+  String get customerDisabledMessage;
+
+  /// No description provided for @customerDeletedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'They deleted their account on {date}'**
+  String customerDeletedTitle(String date);
+
+  /// No description provided for @customerStrikesNote.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {max} count toward a pause now: those from the last 30 days, after their last pause.'**
+  String customerStrikesNote(int count, int max);
+
+  /// No description provided for @customerNoStrikes.
+  ///
+  /// In en, this message translates to:
+  /// **'No missed pickups.'**
+  String get customerNoStrikes;
+
+  /// No description provided for @customerNoBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'No bookings yet.'**
+  String get customerNoBookings;
+
+  /// No description provided for @strikeCounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Counts'**
+  String get strikeCounts;
+
+  /// No description provided for @strikeNoLongerCounts.
+  ///
+  /// In en, this message translates to:
+  /// **'No longer counts'**
+  String get strikeNoLongerCounts;
+
+  /// No description provided for @strikeOldBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'An older booking'**
+  String get strikeOldBooking;
+
+  /// No description provided for @takeBackStrike.
+  ///
+  /// In en, this message translates to:
+  /// **'Take back'**
+  String get takeBackStrike;
+
+  /// No description provided for @takeBackStrikeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Take back this strike?'**
+  String get takeBackStrikeTitle;
+
+  /// No description provided for @takeBackStrikeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'It won\'t count toward a pause anymore. If their booking is paused, the pause stays until you end it.'**
+  String get takeBackStrikeMessage;
+
+  /// No description provided for @strikeTakenBackDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Strike taken back'**
+  String get strikeTakenBackDone;
+
+  /// No description provided for @endPause.
+  ///
+  /// In en, this message translates to:
+  /// **'End the pause'**
+  String get endPause;
+
+  /// No description provided for @endPauseHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Let them book again now'**
+  String get endPauseHint;
+
+  /// No description provided for @endPauseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'End {name}\'s pause?'**
+  String endPauseTitle(String name);
+
+  /// No description provided for @endPauseMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'They can book again right away, and the strikes so far stop counting.'**
+  String get endPauseMessage;
+
+  /// No description provided for @pauseEndedDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause ended: they can book again'**
+  String get pauseEndedDone;
+
+  /// No description provided for @disableCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable account'**
+  String get disableCustomer;
+
+  /// No description provided for @disableCustomerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Log them out and cancel their waiting bookings'**
+  String get disableCustomerHint;
+
+  /// No description provided for @disableCustomerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'They\'re logged out and can\'t sign in or book until you enable the account again. Their bookings waiting for pickup are cancelled.'**
+  String get disableCustomerMessage;
+
+  /// No description provided for @enableCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable account'**
+  String get enableCustomer;
+
+  /// No description provided for @customerDisabledDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Account disabled'**
+  String get customerDisabledDone;
+
+  /// No description provided for @customerEnabledDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Account enabled'**
+  String get customerEnabledDone;
+
+  /// No description provided for @customerSignsInWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Signs in with'**
+  String get customerSignsInWith;
+
+  /// No description provided for @customerNeverBooked.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get customerNeverBooked;
+
+  /// No description provided for @customerFollowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Follows'**
+  String get customerFollowing;
+
+  /// No description provided for @customerRatings.
+  ///
+  /// In en, this message translates to:
+  /// **'Rated'**
+  String get customerRatings;
+
+  /// No description provided for @customerOpenReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Open reports'**
+  String get customerOpenReports;
+
+  /// No description provided for @customerLastPause.
+  ///
+  /// In en, this message translates to:
+  /// **'Last pause ended'**
+  String get customerLastPause;
+
+  /// No description provided for @bookingsTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 booking} other{{count} bookings}}'**
+  String bookingsTotal(int count);
+
+  /// No description provided for @strikesTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 strike} other{{count} strikes}}'**
+  String strikesTotal(int count);
 
   /// No description provided for @activityReportResolve.
   ///

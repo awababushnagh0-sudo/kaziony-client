@@ -1,6 +1,7 @@
 import 'package:kernel/kernel.dart';
 import 'package:offers_api/admin.dart' as api;
 
+import '../../bookings/data/booking_mapping.dart';
 import '../domain/customer_report.dart';
 
 class ApiReportRepository implements ReportRepository {
@@ -69,14 +70,7 @@ CustomerReport _toReport(api.AdminClaimReportDto dto) => CustomerReport(
   booking: ReportedBooking(
     id: dto.claim.id,
     code: dto.claim.code,
-    status: switch (dto.claim.status) {
-      api.ClaimStatus.reserved => ReportedBookingStatus.waiting,
-      api.ClaimStatus.outForDelivery => ReportedBookingStatus.outForDelivery,
-      api.ClaimStatus.redeemed => ReportedBookingStatus.pickedUp,
-      api.ClaimStatus.expired => ReportedBookingStatus.missed,
-      api.ClaimStatus.cancelled => ReportedBookingStatus.cancelled,
-      api.ClaimStatus.$unknown => null,
-    },
+    status: bookingStatusOf(dto.claim.status),
     quantity: dto.claim.quantity.toInt(),
     totalPrice: dto.claim.totalPrice,
     offerTitle: dto.claim.offerTitle,

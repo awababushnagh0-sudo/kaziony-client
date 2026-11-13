@@ -4,6 +4,8 @@ import 'package:stellar/stellar.dart';
 import '../../features/activity/presentation/activity_screen.dart';
 import '../../features/auth/presentation/change_password/change_password_screen.dart';
 import '../../features/auth/presentation/login/login_screen.dart';
+import '../../features/customers/presentation/customer_details_screen.dart';
+import '../../features/customers/presentation/customers_screen.dart';
 import '../../features/dashboard/presentation/dashboard_screen.dart';
 import '../../features/platform/presentation/platform_settings_screen.dart';
 import '../../features/reports/presentation/reports_screen.dart';
@@ -73,6 +75,19 @@ final routerProvider = Provider<GoRouter>((ref) {
                 ':id',
                 (_, state) =>
                     StoreDetailsScreen(storeId: state.pathParameters['id']!),
+              ),
+            ],
+          ),
+          // Like a store, a customer opens on top of the list.
+          page(
+            Routes.customers,
+            (_, _) => const CustomersScreen(),
+            routes: [
+              page(
+                ':id',
+                (_, state) => CustomerDetailsScreen(
+                  customerId: state.pathParameters['id']!,
+                ),
               ),
             ],
           ),

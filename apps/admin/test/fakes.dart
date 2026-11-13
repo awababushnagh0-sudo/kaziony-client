@@ -1,5 +1,7 @@
 import 'package:admin/features/activity/domain/activity_entry.dart';
 import 'package:admin/features/auth/domain/auth_repository.dart';
+import 'package:admin/features/bookings/domain/booking_status.dart';
+import 'package:admin/features/customers/domain/customer.dart';
 import 'package:admin/features/dashboard/domain/dashboard_stats.dart';
 import 'package:admin/features/platform/domain/platform_settings.dart';
 import 'package:admin/features/platform/domain/service_area.dart';
@@ -646,7 +648,7 @@ CustomerReport sampleReport({
   booking: ReportedBooking(
     id: 'c-$id',
     code: 'K7Q2',
-    status: ReportedBookingStatus.missed,
+    status: BookingStatus.missed,
     quantity: 2,
     totalPrice: '9.000',
     offerTitle: 'Kunafa box',
@@ -902,3 +904,239 @@ StoreDetails _withImages(
   logoUrl: logoUrl,
   coverUrl: coverUrl,
 );
+
+/// A customer as the list shows them; [n] picks their name and id.
+Customer sampleCustomer(
+  int n, {
+  CustomerStanding standing = CustomerStanding.active,
+  int strikes = 0,
+  String? name = 'default',
+  String? email = 'default',
+  String? contactPhone,
+}) => Customer(
+  id: 'customer-$n',
+  name: name == 'default' ? 'Customer $n' : name,
+  email: email == 'default' ? 'customer$n@example.com' : email,
+  contactPhone: contactPhone,
+  standing: standing,
+  pausedUntil: standing == CustomerStanding.paused
+      ? DateTime.utc(2026, 11, 16, 10)
+      : null,
+  strikes: strikes,
+  missedPickups: strikes,
+  bookings: 7,
+  pickedUp: 4,
+  lastBookedAt: DateTime.utc(2026, 11, 10, 9),
+  lastLoginAt: DateTime.utc(2026, 11, 12, 9),
+  createdAt: DateTime.utc(2026, 9, 1, 9),
+);
+
+/// Their page: paused, with two strikes that count and an older one.
+CustomerDetails sampleCustomerDetails(
+  String id, {
+  CustomerStanding standing = CustomerStanding.paused,
+  List<CustomerStrike>? strikes,
+}) {
+  final history =
+      strikes ??
+      [
+        CustomerStrike(
+          id: 'strike-1',
+          createdAt: DateTime.utc(2026, 11, 9, 18),
+          counts: true,
+          booking: const StrikeBooking(
+            code: 'K7P2',
+            offerTitle: 'Dinner box',
+            storeName: 'Bab Bakery',
+            storeArea: 'Hay Andalus',
+          ),
+        ),
+        CustomerStrike(
+          id: 'strike-2',
+          createdAt: DateTime.utc(2026, 11, 6, 18),
+          counts: true,
+          booking: const StrikeBooking(
+            code: 'M3Q8',
+            offerTitle: 'Pastry bag',
+            storeName: 'Bab Bakery',
+            storeArea: 'Gergarish',
+          ),
+        ),
+        CustomerStrike(
+          id: 'strike-3',
+          createdAt: DateTime.utc(2026, 8, 2),
+          counts: false,
+        ),
+      ];
+  final counting = history.where((strike) => strike.counts).length;
+  return CustomerDetails(
+    customer: Customer(
+      id: id,
+      name: 'Huda',
+      email: 'huda@example.com',
+      contactPhone: '+218910000001',
+      standing: standing,
+      pausedUntil: standing == CustomerStanding.paused
+          ? DateTime.utc(2026, 11, 16, 10)
+          : null,
+      strikes: counting,
+      missedPickups: history.length,
+      bookings: 9,
+      pickedUp: 5,
+      lastBookedAt: DateTime.utc(2026, 11, 9, 12),
+      lastLoginAt: DateTime.utc(2026, 11, 12, 9),
+      createdAt: DateTime.utc(2026, 9, 1, 9),
+    ),
+    signsInWith: const [SignInMethod.google],
+    strikesBeforePause: 3,
+    strikeHistory: history,
+    bookingCounts: BookingCounts(
+      waiting: 1,
+      outForDelivery: 0,
+      pickedUp: 5,
+      missed: history.length,
+      cancelled: 0,
+    ),
+    openReports: 1,
+    following: 4,
+    ratings: 2,
+  );
+}
+
+CustomerBooking sampleCustomerBooking(
+  String id, {
+  BookingStatus status = BookingStatus.pickedUp,
+  CancelReason? cancelReason,
+  bool hasStrike = false,
+}) => CustomerBooking(
+  id: id,
+  code: 'C-$id',
+  status: status,
+  quantity: 1,
+  totalPrice: '8.000',
+  offerTitle: 'Offer $id',
+  storeId: 'store-$id',
+  storeName: 'Bab Bakery',
+  storeArea: 'Hay Andalus',
+  createdAt: DateTime.utc(2026, 11, 9, 12),
+  expiresAt: DateTime.utc(2026, 11, 9, 20),
+  hasStrike: hasStrike,
+  cancelReason: cancelReason,
+);
+
+class FakeCustomerRepository implements CustomerRepository {
+  List<Customer> customers = [
+    sampleCustomer(1),
+    sampleCustomer(2, standing: CustomerStanding.paused, strikes: 3),
+    sampleCustomer(
+      3,
+      standing: CustomerStanding.deleted,
+      name: null,
+      email: null,
+    ),
+  ];
+  final details = <String, CustomerDetails>{};
+  List<CustomerBooking> bookingRows = [
+    sampleCustomerBooking('b1'),
+    sampleCustomerBooking('b2', status: BookingStatus.missed, hasStrike: true),
+    sampleCustomerBooking(
+      'b3',
+      status: BookingStatus.cancelled,
+      cancelReason: CancelReason.storeClosed,
+    ),
+  ];
+  final queries = <CustomerQuery>[];
+  final bookingQueries = <(String, CustomerBookingQuery)>[];
+  final opened = <String>[];
+  final pausesEnded = <String>[];
+  final strikesTakenBack = <(String, String)>[];
+  final activeChanges = <(String, bool)>[];
+
+  /// What ending a pause or taking back a strike answers instead.
+  AppFailure? actionFailure;
+
+  CustomerDetails _find(String id) => details[id] ??= sampleCustomerDetails(id);
+
+  @override
+  Future<Result<CustomerPage>> list(CustomerQuery query) async {
+    queries.add(query);
+    final shown = [
+      for (final customer in customers)
+        if (query.filter == null || customer.standing == query.filter) customer,
+    ];
+    return Ok(CustomerPage(items: shown, total: shown.length));
+  }
+
+  @override
+  Future<Result<CustomerDetails>> get(String id) async {
+    opened.add(id);
+    return Ok(_find(id));
+  }
+
+  @override
+  Future<Result<CustomerBookingPage>> bookings(
+    String id,
+    CustomerBookingQuery query,
+  ) async {
+    bookingQueries.add((id, query));
+    final shown = [
+      for (final booking in bookingRows)
+        if (query.filter == null || booking.status == query.filter) booking,
+    ];
+    return Ok(CustomerBookingPage(items: shown, total: shown.length));
+  }
+
+  @override
+  Future<Result<CustomerDetails>> endPause(String id) async {
+    pausesEnded.add(id);
+    if (actionFailure case final failure?) return Err(failure);
+    final saved = _find(id);
+    return Ok(
+      details[id] = sampleCustomerDetails(
+        id,
+        standing: CustomerStanding.active,
+        strikes: [
+          for (final strike in saved.strikeHistory)
+            CustomerStrike(
+              id: strike.id,
+              createdAt: strike.createdAt,
+              counts: false,
+              booking: strike.booking,
+            ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Future<Result<CustomerDetails>> takeBackStrike(
+    String id,
+    String strikeId,
+  ) async {
+    strikesTakenBack.add((id, strikeId));
+    if (actionFailure case final failure?) return Err(failure);
+    final saved = _find(id);
+    return Ok(
+      details[id] = sampleCustomerDetails(
+        id,
+        standing: saved.customer.standing,
+        strikes: [
+          for (final strike in saved.strikeHistory)
+            if (strike.id != strikeId) strike,
+        ],
+      ),
+    );
+  }
+
+  @override
+  Future<Result<void>> setActive(String id, {required bool active}) async {
+    activeChanges.add((id, active));
+    final saved = _find(id);
+    details[id] = sampleCustomerDetails(
+      id,
+      standing: active ? CustomerStanding.active : CustomerStanding.disabled,
+      strikes: saved.strikeHistory,
+    );
+    return const Ok(null);
+  }
+}

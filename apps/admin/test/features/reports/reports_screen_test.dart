@@ -24,6 +24,11 @@ Widget harness(FakeReportRepository reports) => AppScope(
           path: '${Routes.stores}/:id',
           builder: (_, state) => SText('Store ${state.pathParameters['id']}'),
         ),
+        GoRoute(
+          path: '${Routes.customers}/:id',
+          builder: (_, state) =>
+              SText('Customer ${state.pathParameters['id']}'),
+        ),
       ],
     ),
     locale: const Locale('en'),
@@ -170,6 +175,16 @@ void main() {
       await tapOn(tester, find.text('Open the store'));
 
       expect(find.text('Store s1'), findsOneWidget);
+    });
+
+    testWidgets('opens the customer, to see their other bookings', (
+      tester,
+    ) async {
+      await open(tester);
+
+      await tapOn(tester, find.text('Open the customer'));
+
+      expect(find.text('Customer u-r1'), findsOneWidget);
     });
   });
 

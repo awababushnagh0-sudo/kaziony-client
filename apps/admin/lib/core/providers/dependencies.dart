@@ -4,6 +4,8 @@ import '../../features/activity/data/api_activity_repository.dart';
 import '../../features/activity/domain/activity_entry.dart';
 import '../../features/auth/data/session_auth_repository.dart';
 import '../../features/auth/domain/auth_repository.dart';
+import '../../features/customers/data/api_customer_repository.dart';
+import '../../features/customers/domain/customer.dart';
 import '../../features/dashboard/data/api_dashboard_repository.dart';
 import '../../features/dashboard/domain/dashboard_stats.dart';
 import '../../features/platform/data/api_platform_settings_repository.dart';
@@ -49,6 +51,9 @@ final List<Override> dependencies = [
   ),
   activityRepositoryProvider.overrideWith(
     (ref) => ApiActivityRepository(ref.watch(apiProvider)),
+  ),
+  customerRepositoryProvider.overrideWith(
+    (ref) => ApiCustomerRepository(ref.watch(apiProvider)),
   ),
   reportRepositoryProvider.overrideWith(
     (ref) => ApiReportRepository(ref.watch(apiProvider)),

@@ -10,19 +10,6 @@ String reportReasonText(AdminLocalizations s, ReportReason reason) =>
       ReportReason.other => s.reportReasonOther,
     };
 
-/// Null for a status this version doesn't know.
-String? bookingStatusText(
-  AdminLocalizations s,
-  ReportedBookingStatus? status,
-) => switch (status) {
-  null => null,
-  ReportedBookingStatus.waiting => s.bookingWaiting,
-  ReportedBookingStatus.outForDelivery => s.bookingOutForDelivery,
-  ReportedBookingStatus.pickedUp => s.bookingPickedUp,
-  ReportedBookingStatus.missed => s.bookingMissed,
-  ReportedBookingStatus.cancelled => s.bookingCancelled,
-};
-
 /// Their name, or their email without one.
 String customerText(AdminLocalizations s, ReportCustomer customer) =>
     customer.name ?? customer.email ?? s.reportDeletedAccount;

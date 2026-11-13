@@ -109,6 +109,9 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get navStores => 'المتاجر';
 
   @override
+  String get navCustomers => 'الزبائن';
+
+  @override
   String get navUsers => 'الفريق';
 
   @override
@@ -615,10 +618,10 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get roleEditor => 'محرر';
 
   @override
-  String get columnEmail => 'البريد الإلكتروني';
+  String get roleDeveloper => 'مطوّر';
 
   @override
-  String get roleDeveloper => 'مطوّر';
+  String get columnEmail => 'البريد الإلكتروني';
 
   @override
   String get columnRole => 'الدور';
@@ -654,15 +657,15 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get userRole => 'الدور';
 
   @override
-  String get userRoleHelp =>
-      'يستطيع المحرر الإضافة والتعديل، لكن لا يستطيع الحذف أو إدارة المستخدمين.';
-
-  @override
   String get developerAccount => 'حساب مطوّر';
 
   @override
   String get developerAccountNote =>
       'لا يغيّره إلا مطوّر، ولا يتغيّر دوره من هنا.';
+
+  @override
+  String get userRoleHelp =>
+      'يستطيع المحرر الإضافة والتعديل، لكن لا يستطيع الحذف أو إدارة المستخدمين.';
 
   @override
   String get emailTaken => 'هذا البريد مسجّل لحساب آخر.';
@@ -1433,6 +1436,12 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get activityUserResetPassword => 'إعادة تعيين كلمة المرور';
 
   @override
+  String get activityUserEndPause => 'إنهاء إيقاف زبون';
+
+  @override
+  String get activityUserTakeBackStrike => 'رفع تخلّف عن زبون';
+
+  @override
   String get activityCategoryCreate => 'إضافة تصنيف';
 
   @override
@@ -1714,6 +1723,27 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get bookingCancelled => 'أُلغي';
 
   @override
+  String get cancelledByCustomer => 'ألغاه الزبون';
+
+  @override
+  String get cancelledStoreClosed => 'أغلق المتجر';
+
+  @override
+  String get cancelledHoursChanged => 'غيّر المتجر مواعيده';
+
+  @override
+  String get cancelledNotDelivered => 'لم يصل التوصيل';
+
+  @override
+  String get cancelledOfferRemoved => 'أنزلنا العرض';
+
+  @override
+  String get cancelledStoreOff => 'أوقفنا المتجر';
+
+  @override
+  String get cancelledAccountDisabled => 'أوقفنا حسابه';
+
+  @override
   String get reportCustomer => 'الزبون';
 
   @override
@@ -1802,6 +1832,233 @@ class AdminLocalizationsAr extends AdminLocalizations {
 
   @override
   String get reportPauseOver => 'انتهى إيقاف الزبون من قبل.';
+
+  @override
+  String get reportOpenCustomer => 'افتح صفحة الزبون';
+
+  @override
+  String get customersTitle => 'الزبائن';
+
+  @override
+  String get customersSearch => 'ابحث بالاسم أو البريد أو الهاتف';
+
+  @override
+  String customersTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count زبونًا',
+      few: '$count زبائن',
+      two: 'زبونان',
+      one: 'زبون واحد',
+      zero: 'لا زبائن',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get customersEmpty => 'لا زبائن بعد';
+
+  @override
+  String get customersEmptyMessage =>
+      'يظهر الزبائن هنا بعد أن يدخلوا إلى التطبيق.';
+
+  @override
+  String get customersFilterActive => 'نشطون';
+
+  @override
+  String get customersFilterPaused => 'حجزهم موقوف';
+
+  @override
+  String get customersFilterDisabled => 'موقوفون';
+
+  @override
+  String get customersFilterDeleted => 'حذفوا حساباتهم';
+
+  @override
+  String get columnContact => 'البريد أو الهاتف';
+
+  @override
+  String get columnBookings => 'الحجوزات';
+
+  @override
+  String get columnPickedUp => 'استُلم';
+
+  @override
+  String get columnStrikes => 'التخلّفات';
+
+  @override
+  String get columnLastBooked => 'آخر حجز';
+
+  @override
+  String get columnJoined => 'انضمّ في';
+
+  @override
+  String get columnCode => 'الرمز';
+
+  @override
+  String get columnOffer => 'العرض';
+
+  @override
+  String get columnTotal => 'المبلغ';
+
+  @override
+  String get customerActive => 'نشط';
+
+  @override
+  String get customerPaused => 'حجزه موقوف';
+
+  @override
+  String get customerDisabled => 'موقوف';
+
+  @override
+  String get customerDeleted => 'محذوف';
+
+  @override
+  String get customerDeletedAccount => 'حساب محذوف';
+
+  @override
+  String get tabOverview => 'نظرة عامة';
+
+  @override
+  String get tabBookings => 'الحجوزات';
+
+  @override
+  String customerPausedTitle(String date) {
+    return 'حجزه موقوف حتى $date';
+  }
+
+  @override
+  String get customerPausedMessage =>
+      'تخلّف عن الاستلام أكثر من مرة. إن لم يكن تخلّفٌ منها بسببه فارفعه، أو أنهِ الإيقاف من الإجراءات.';
+
+  @override
+  String get customerDisabledTitle => 'أوقفنا هذا الحساب';
+
+  @override
+  String get customerDisabledMessage =>
+      'لا يستطيع الدخول ولا الحجز حتى يفعّله مدير مجدداً.';
+
+  @override
+  String customerDeletedTitle(String date) {
+    return 'حذف حسابه في $date';
+  }
+
+  @override
+  String customerStrikesNote(int count, int max) {
+    return '$count من $max تُحسب الآن للإيقاف: ما كان في آخر 30 يوماً وبعد آخر إيقاف.';
+  }
+
+  @override
+  String get customerNoStrikes => 'لم يتخلّف عن أي استلام.';
+
+  @override
+  String get customerNoBookings => 'لا حجوزات بعد.';
+
+  @override
+  String get strikeCounts => 'يُحسب';
+
+  @override
+  String get strikeNoLongerCounts => 'لم يعد يُحسب';
+
+  @override
+  String get strikeOldBooking => 'حجز قديم';
+
+  @override
+  String get takeBackStrike => 'ارفعه';
+
+  @override
+  String get takeBackStrikeTitle => 'رفع هذا التخلّف؟';
+
+  @override
+  String get takeBackStrikeMessage =>
+      'لن يُحسب للإيقاف بعد الآن. وإن كان حجزه موقوفاً فيبقى الإيقاف حتى تنهيه.';
+
+  @override
+  String get strikeTakenBackDone => 'رُفع التخلّف';
+
+  @override
+  String get endPause => 'إنهاء الإيقاف';
+
+  @override
+  String get endPauseHint => 'ليستطيع الحجز من جديد الآن';
+
+  @override
+  String endPauseTitle(String name) {
+    return 'إنهاء إيقاف $name؟';
+  }
+
+  @override
+  String get endPauseMessage =>
+      'يستطيع الحجز فوراً، ولا تُحسب تخلّفاته السابقة بعد الآن.';
+
+  @override
+  String get pauseEndedDone => 'انتهى الإيقاف: يستطيع الحجز من جديد';
+
+  @override
+  String get disableCustomer => 'إيقاف الحساب';
+
+  @override
+  String get disableCustomerHint => 'تسجيل خروجه وإلغاء حجوزاته المنتظرة';
+
+  @override
+  String get disableCustomerMessage =>
+      'سيُسجَّل خروجه ولن يستطيع الدخول ولا الحجز حتى تفعّل الحساب مجدداً، وتُلغى حجوزاته التي تنتظر الاستلام.';
+
+  @override
+  String get enableCustomer => 'تفعيل الحساب';
+
+  @override
+  String get customerDisabledDone => 'أُوقف الحساب';
+
+  @override
+  String get customerEnabledDone => 'فُعّل الحساب';
+
+  @override
+  String get customerSignsInWith => 'يدخل عبر';
+
+  @override
+  String get customerNeverBooked => 'لم يحجز بعد';
+
+  @override
+  String get customerFollowing => 'يتابع';
+
+  @override
+  String get customerRatings => 'قيّم';
+
+  @override
+  String get customerOpenReports => 'بلاغات مفتوحة';
+
+  @override
+  String get customerLastPause => 'انتهى آخر إيقاف';
+
+  @override
+  String bookingsTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count حجزاً',
+      few: '$count حجوزات',
+      two: 'حجزان',
+      one: 'حجز واحد',
+      zero: 'لا حجوزات',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String strikesTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count تخلّفاً',
+      few: '$count تخلّفات',
+      two: 'تخلّفان',
+      one: 'تخلّف واحد',
+      zero: 'لا تخلّفات',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get activityReportResolve => 'حل بلاغ زبون';
