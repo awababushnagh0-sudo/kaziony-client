@@ -414,6 +414,7 @@
   "cancelledByUsTitle": "Kaziony cancelled this booking",
   "cancelledOfferRemoved": "We took this offer down. This doesn't count against you.",
   "cancelledStoreOff": "This shop can't take bookings right now. This doesn't count against you.",
+  "cancelledAccountDisabled": "Your account was paused by our team, so your bookings were cancelled. This doesn't count against you.",
   "cancelledNotByYouTitle": "This booking was cancelled",
   "cancelledNotByYou": "It wasn't your doing, so it doesn't count against you.",
   "refresh": "Refresh",

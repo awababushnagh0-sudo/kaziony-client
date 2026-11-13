@@ -1011,6 +1011,10 @@ class CustomerLocalizationsAr extends CustomerLocalizations {
       'هذا المحل لا يستقبل الحجوزات حاليًا، ولا يُحسب هذا عليك.';
 
   @override
+  String get cancelledAccountDisabled =>
+      'أوقف فريقنا حسابك فأُلغيت حجوزاتك، ولا يُحسب هذا عليك.';
+
+  @override
   String get cancelledNotByYouTitle => 'أُلغي هذا الحجز';
 
   @override

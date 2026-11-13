@@ -1003,6 +1003,10 @@ class CustomerLocalizationsEn extends CustomerLocalizations {
       'This shop can\'t take bookings right now. This doesn\'t count against you.';
 
   @override
+  String get cancelledAccountDisabled =>
+      'Your account was paused by our team, so your bookings were cancelled. This doesn\'t count against you.';
+
+  @override
   String get cancelledNotByYouTitle => 'This booking was cancelled';
 
   @override

@@ -42,6 +42,10 @@ import '../domain/booking.dart';
     title: s.cancelledHoursChangedTitle,
     message: s.cancelledHoursChanged,
   ),
+  CancelReason.accountDisabled => (
+    title: s.cancelledByUsTitle,
+    message: s.cancelledAccountDisabled,
+  ),
   CancelReason.notDelivered => (
     title: s.cancelledNotDeliveredTitle,
     message: s.cancelledNotDelivered,

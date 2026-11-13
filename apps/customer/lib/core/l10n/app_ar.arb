@@ -258,6 +258,7 @@
   "cancelledByUsTitle": "ألغى كزيوني هذا الحجز",
   "cancelledOfferRemoved": "أوقفنا هذا العرض، ولا يُحسب هذا عليك.",
   "cancelledStoreOff": "هذا المحل لا يستقبل الحجوزات حاليًا، ولا يُحسب هذا عليك.",
+  "cancelledAccountDisabled": "أوقف فريقنا حسابك فأُلغيت حجوزاتك، ولا يُحسب هذا عليك.",
   "cancelledNotByYouTitle": "أُلغي هذا الحجز",
   "cancelledNotByYou": "لم يكن ذلك منك، فلا يُحسب عليك.",
   "refresh": "تحديث",

@@ -36,6 +36,9 @@ enum CancelReason {
   /// The store's new hours close it before the booking's time.
   hoursChanged,
 
+  /// Our team disabled the customer's account.
+  accountDisabled,
+
   /// The store's delivery didn't happen: the customer called it off, or
   /// wasn't there. Between them and the store.
   notDelivered,

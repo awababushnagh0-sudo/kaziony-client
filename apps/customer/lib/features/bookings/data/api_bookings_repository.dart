@@ -145,6 +145,7 @@ CancelReason? toCancelReason(api.CancelReason? reason) => switch (reason) {
   api.CancelReason.storeOff => CancelReason.storeOff,
   api.CancelReason.storeClosed => CancelReason.storeClosed,
   api.CancelReason.hoursChanged => CancelReason.hoursChanged,
+  api.CancelReason.accountDisabled => CancelReason.accountDisabled,
   api.CancelReason.notDelivered => CancelReason.notDelivered,
   api.CancelReason.$unknown => CancelReason.other,
 };

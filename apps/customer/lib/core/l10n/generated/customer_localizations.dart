@@ -1643,6 +1643,12 @@ abstract class CustomerLocalizations {
   /// **'This shop can\'t take bookings right now. This doesn\'t count against you.'**
   String get cancelledStoreOff;
 
+  /// No description provided for @cancelledAccountDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account was paused by our team, so your bookings were cancelled. This doesn\'t count against you.'**
+  String get cancelledAccountDisabled;
+
   /// No description provided for @cancelledNotByYouTitle.
   ///
   /// In en, this message translates to:
