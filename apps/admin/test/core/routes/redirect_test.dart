@@ -75,6 +75,20 @@ void main() {
     );
   });
 
+  test('keeps the System page for developers', () {
+    expect(go(SignedIn(user()), Routes.system), Routes.home);
+    final developer = SignedIn(user(role: AccountRole.developer));
+    for (final page in [
+      Routes.system,
+      Routes.users,
+      '${Routes.users}/user-1',
+      Routes.searches,
+      Routes.activity,
+    ]) {
+      expect(go(developer, page), isNull, reason: page);
+    }
+  });
+
   test('sends editors from admin-only pages home', () {
     final session = SignedIn(user(role: AccountRole.editor));
     expect(go(session, Routes.users), Routes.home);

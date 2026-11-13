@@ -2,6 +2,7 @@ import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/admin_localizations.dart';
+import '../../../core/providers/access.dart';
 import '../../../core/record/record_screen.dart';
 import '../../../core/routes/routes.dart';
 import '../domain/dashboard_user.dart';
@@ -12,7 +13,8 @@ import 'user_login_dialog.dart';
 
 /// One user, ERPNext-style: "Users / name" with their status and an
 /// actions menu (reset password, disable), their fields edited in place,
-/// and a side panel with their role and last login.
+/// and a side panel with their role and last login. A developer's account
+/// is only a developer's to change; anyone else sees it as it is.
 class UserDetailsScreen extends AppStatefulView {
   const UserDetailsScreen({required this.userId, super.key});
 
@@ -94,6 +96,7 @@ class _UserDetailsScreenState extends AppViewState<UserDetailsScreen> {
       SignedIn(:final user) => user.id == widget.userId,
       _ => false,
     };
+    final developer = ref.watch(isDeveloperProvider);
     return RecordScreen(
       record: userDetailsViewModel(widget.userId),
       form: userFormViewModel(widget.userId),
@@ -106,37 +109,40 @@ class _UserDetailsScreenState extends AppViewState<UserDetailsScreen> {
           ? SBadge(s.userActive, tone: BadgeTone.success)
           : SBadge(s.userDisabled),
       actions: (user) => [
-        SMenuButton(
-          width: 260,
-          entries: [
-            MenuEntry(
-              label: s.resetPassword,
-              description: s.resetPasswordHint,
-              icon: SIcons.key,
-              onTap: () => _resetPassword(user),
-            ),
-            // Admins can't lock themselves out.
-            if (!yourself) ...[
-              null,
-              if (user.isActive)
-                MenuEntry(
-                  label: s.disableUser,
-                  description: s.disableUserHint,
-                  icon: SIcons.disable,
-                  destructive: true,
-                  onTap: () => _setActive(user, active: false),
-                )
-              else
-                MenuEntry(
-                  label: s.enableUser,
-                  icon: SIcons.enable,
-                  onTap: () => _setActive(user, active: true),
-                ),
+        if (developer || user.role != DashboardRole.developer)
+          SMenuButton(
+            width: 260,
+            entries: [
+              MenuEntry(
+                label: s.resetPassword,
+                description: s.resetPasswordHint,
+                icon: SIcons.key,
+                onTap: () => _resetPassword(user),
+              ),
+              // Admins can't lock themselves out.
+              if (!yourself) ...[
+                null,
+                if (user.isActive)
+                  MenuEntry(
+                    label: s.disableUser,
+                    description: s.disableUserHint,
+                    icon: SIcons.disable,
+                    destructive: true,
+                    onTap: () => _setActive(user, active: false),
+                  )
+                else
+                  MenuEntry(
+                    label: s.enableUser,
+                    icon: SIcons.enable,
+                    onTap: () => _setActive(user, active: true),
+                  ),
+              ],
             ],
-          ],
-          builder: (context, toggle) =>
-              SButton.menu(label: s.actions, onPressed: _busy ? null : toggle),
-        ),
+            builder: (context, toggle) => SButton.menu(
+              label: s.actions,
+              onPressed: _busy ? null : toggle,
+            ),
+          ),
       ],
       builder: (context, user) => _UserRecord(user: user),
     );
@@ -179,7 +185,10 @@ class _UserRecord extends StatelessWidget {
                   label: s.userRole,
                   required: true,
                   options: [
-                    for (final role in DashboardRole.values)
+                    for (final role
+                        in user.role == DashboardRole.developer
+                            ? const [DashboardRole.developer]
+                            : DashboardRole.assignable)
                       SelectOption(role, roleLabel(s, role)),
                   ],
                 ),
@@ -194,6 +203,8 @@ class _UserRecord extends StatelessWidget {
           subtitle: roleLabel(s, user.role),
         ),
         SRecordFacts([
+          if (user.role == DashboardRole.developer)
+            RecordFact(s.developerAccount, s.developerAccountNote),
           RecordFact(
             s.columnLastLogin,
             lastLogin == null

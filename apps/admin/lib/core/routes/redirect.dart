@@ -31,9 +31,15 @@ String? redirectFor({
     (_, SignedIn(:final user)) when user.mustChangePassword => keepingFrom(
       Routes.changePassword,
     ),
-    // An editor following an admin's link.
+    // Someone following a link to a page that isn't theirs.
     (_, SignedIn(:final user))
-        when user.role != AccountRole.admin && _adminOnly(location) =>
+        when user.role != AccountRole.developer &&
+            _within(Routes.developerOnly, location) =>
+      Routes.home,
+    (_, SignedIn(:final user))
+        when user.role != AccountRole.admin &&
+            user.role != AccountRole.developer &&
+            _within(Routes.adminOnly, location) =>
       Routes.home,
     // Signed in: stay on dashboard pages, leave the entry pages.
     (_, SignedIn()) =>
@@ -42,9 +48,8 @@ String? redirectFor({
   return target == uri.toString() ? null : target;
 }
 
-bool _adminOnly(String location) => Routes.adminOnly.any(
-  (page) => location == page || location.startsWith('$page/'),
-);
+bool _within(Set<String> pages, String location) =>
+    pages.any((page) => location == page || location.startsWith('$page/'));
 
 /// Only our own dashboard pages, never an entry page or another site.
 String? _safeFrom(String? from) {

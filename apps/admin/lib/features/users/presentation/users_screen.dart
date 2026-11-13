@@ -87,9 +87,14 @@ class UsersScreen extends AppView {
         label: s.columnRole,
         cell: (user) => Align(
           alignment: AlignmentDirectional.centerStart,
-          child: user.role == DashboardRole.admin
-              ? SBadge(roleLabel(s, user.role), tone: BadgeTone.warning)
-              : SBadge(roleLabel(s, user.role)),
+          child: SBadge(
+            roleLabel(s, user.role),
+            tone: switch (user.role) {
+              DashboardRole.developer => BadgeTone.accent,
+              DashboardRole.admin => BadgeTone.warning,
+              DashboardRole.editor => BadgeTone.neutral,
+            },
+          ),
         ),
       ),
       TableColumn(

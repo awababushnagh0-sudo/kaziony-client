@@ -46,7 +46,10 @@ class ApiDashboardUserRepository implements DashboardUserRepository {
         id: id,
         body: UpdateDashboardUserDto(
           name: user.name,
-          role: _teamRole(user.role),
+          role: switch (user.role) {
+            null => null,
+            final role => _teamRole(role),
+          },
         ),
       ),
     );
@@ -96,6 +99,11 @@ class ApiDashboardUserRepository implements DashboardUserRepository {
 TeamRole _teamRole(DashboardRole role) => switch (role) {
   DashboardRole.admin => TeamRole.admin,
   DashboardRole.editor => TeamRole.editor,
+  DashboardRole.developer => throw ArgumentError.value(
+    role,
+    'role',
+    'Only code makes developers',
+  ),
 };
 
 DashboardUser _toUser(AdminUserDto dto) => DashboardUser(
@@ -103,8 +111,12 @@ DashboardUser _toUser(AdminUserDto dto) => DashboardUser(
   name: dto.name,
   // Team accounts always log in with an email.
   email: dto.email ?? '',
-  // The team list only has admins and editors.
-  role: dto.role == UserRole.admin ? DashboardRole.admin : DashboardRole.editor,
+  // The team list only has developers, admins and editors.
+  role: switch (dto.role) {
+    UserRole.developer => DashboardRole.developer,
+    UserRole.admin => DashboardRole.admin,
+    _ => DashboardRole.editor,
+  },
   isActive: dto.isActive,
   createdAt: dto.createdAt,
   lastLoginAt: dto.lastLoginAt,

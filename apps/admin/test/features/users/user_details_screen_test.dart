@@ -17,11 +17,14 @@ Widget harness(
   FakeDashboardUserRepository users, {
   String at = '/users/user-2',
   String signedInAs = 'u1',
+  AccountRole role = AccountRole.admin,
 }) => AppScope(
   overrides: [
     ...testOverrides(kind: AppKind.admin),
     dashboardUserRepositoryProvider.overrideWithValue(users),
-    sessionProvider.overrideWith(() => FakeSession(user(id: signedInAs))),
+    sessionProvider.overrideWith(
+      () => FakeSession(user(id: signedInAs, role: role)),
+    ),
     localeProvider.overrideWith(EnglishLocale.new),
   ],
   child: SApp(
@@ -80,14 +83,14 @@ void main() {
     expect(find.byType(UserDetailsScreen), findsOneWidget);
   });
 
-  testWidgets('shows the user under "Users", with their status and role', (
+  testWidgets('shows the user under "Team", with their status and role', (
     tester,
   ) async {
     setWindow(tester);
     await tester.pumpWidget(harness(FakeDashboardUserRepository()));
     await tester.pumpAndSettle();
 
-    expect(find.text('Users'), findsOneWidget);
+    expect(find.text('Team'), findsOneWidget);
     expect(find.text('Disabled'), findsOneWidget);
     expect(find.text('user2@offers.ly'), findsOneWidget);
     expect(find.text('Editor'), findsWidgets);
@@ -175,4 +178,54 @@ void main() {
       expect(find.text('Editor'), findsNothing, reason: 'no menu opened');
     },
   );
+
+  group("a developer's account", () {
+    FakeDashboardUserRepository withDeveloper() =>
+        FakeDashboardUserRepository()
+          ..users.add(sampleUser(3, role: DashboardRole.developer));
+
+    bool enabled(WidgetTester tester, String label) => tester
+        .widget<TextField>(
+          find.ancestor(of: field(label), matching: find.byType(TextField)),
+        )
+        .enabled!;
+
+    testWidgets('is shown as it is to an admin, who can change nothing', (
+      tester,
+    ) async {
+      setWindow(tester);
+      await tester.pumpWidget(harness(withDeveloper(), at: '/users/user-3'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Developer'), findsWidgets);
+      expect(find.text('Developer account'), findsOneWidget);
+      expect(find.text('Actions'), findsNothing);
+      expect(enabled(tester, 'Name'), isFalse);
+      await tester.tap(find.bySubtype<SSelectInput<DashboardRole>>());
+      await tester.pumpAndSettle();
+      expect(find.text('Admin'), findsNothing, reason: 'no menu opened');
+    });
+
+    testWidgets("is a developer's to rename, never to change the role", (
+      tester,
+    ) async {
+      setWindow(tester);
+      final users = withDeveloper();
+      await tester.pumpWidget(
+        harness(users, at: '/users/user-3', role: AccountRole.developer),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Actions'), findsOneWidget);
+      await tester.enterText(field('Name'), 'Awab');
+      await tester.pump();
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+
+      final (id, edited) = users.updates.single;
+      expect(id, 'user-3');
+      expect(edited.name, 'Awab');
+      expect(edited.role, isNull, reason: 'only code changes it');
+    });
+  });
 }

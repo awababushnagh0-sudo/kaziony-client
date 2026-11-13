@@ -4,7 +4,15 @@ import '../../../core/list/list_query.dart';
 
 /// What someone on our team may do on the dashboard. Editors can add and
 /// edit, but can't delete or take things down, and can't manage users.
-enum DashboardRole { admin, editor }
+/// Developers do everything admins do, plus the System page.
+enum DashboardRole {
+  admin,
+  editor,
+  developer;
+
+  /// The roles the dashboard gives: only code makes a developer.
+  static const assignable = [admin, editor];
+}
 
 /// Someone on our team, a row in the users list.
 class DashboardUser {
@@ -49,10 +57,13 @@ class NewDashboardUser {
 /// A user's own fields as an admin edited them. Their email is their login
 /// and stays as it is.
 class EditedDashboardUser {
-  const EditedDashboardUser({required this.name, required this.role});
+  const EditedDashboardUser({required this.name, this.role});
 
   final String name;
-  final DashboardRole role;
+
+  /// Null leaves it as it is: an admin's own, or a developer's, which only
+  /// code changes.
+  final DashboardRole? role;
 }
 
 /// What to hand to the new user.
@@ -72,7 +83,9 @@ abstract interface class DashboardUserRepository {
   Future<Result<DashboardUserPage>> list(DashboardUserQuery query);
   Future<Result<DashboardUser>> get(String id);
 
-  /// Fails with a [ValidationFailure] when admins change their own role.
+  /// Fails with a [ValidationFailure] when admins change their own role, and
+  /// a [ForbiddenFailure] (`DeveloperAccount`) when someone who isn't a
+  /// developer changes a developer.
   Future<Result<DashboardUser>> update(String id, EditedDashboardUser user);
 
   /// Disabling logs them out everywhere.

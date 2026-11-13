@@ -257,7 +257,7 @@ abstract class AdminLocalizations {
   /// No description provided for @navUsers.
   ///
   /// In en, this message translates to:
-  /// **'Users'**
+  /// **'Team'**
   String get navUsers;
 
   /// No description provided for @navOffers.
@@ -1013,13 +1013,13 @@ abstract class AdminLocalizations {
   /// No description provided for @usersTitle.
   ///
   /// In en, this message translates to:
-  /// **'Users'**
+  /// **'Team'**
   String get usersTitle;
 
   /// No description provided for @usersTotal.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 user} other{{count} users}}'**
+  /// **'{count, plural, =1{1 member} other{{count} members}}'**
   String usersTotal(int count);
 
   /// No description provided for @usersSearch.
@@ -1031,7 +1031,7 @@ abstract class AdminLocalizations {
   /// No description provided for @usersEmpty.
   ///
   /// In en, this message translates to:
-  /// **'No users yet'**
+  /// **'No team members yet'**
   String get usersEmpty;
 
   /// No description provided for @usersEmptyMessage.
@@ -1069,6 +1069,12 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'Email'**
   String get columnEmail;
+
+  /// No description provided for @roleDeveloper.
+  ///
+  /// In en, this message translates to:
+  /// **'Developer'**
+  String get roleDeveloper;
 
   /// No description provided for @columnRole.
   ///
@@ -1141,6 +1147,18 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'Editors can add and edit, but can\'t delete or manage users.'**
   String get userRoleHelp;
+
+  /// No description provided for @developerAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Developer account'**
+  String get developerAccount;
+
+  /// No description provided for @developerAccountNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Only a developer can change it, and its role can\'t be changed here.'**
+  String get developerAccountNote;
 
   /// No description provided for @emailTaken.
   ///
@@ -3037,6 +3055,12 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'Turn the store off before cancelling its bookings.'**
   String get errorStoreIsLive;
+
+  /// No description provided for @errorDeveloperAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Only a developer can change a developer\'s account.'**
+  String get errorDeveloperAccount;
 }
 
 class _AdminLocalizationsDelegate

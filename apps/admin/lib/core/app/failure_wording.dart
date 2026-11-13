@@ -2,7 +2,7 @@ import 'package:kernel/kernel.dart';
 
 import '../l10n/generated/admin_localizations.dart';
 
-/// The dashboard's words for the conflicts it can meet on more than one screen,
+/// The dashboard's words for the refusals it can meet on more than one screen,
 /// which every `failureMessage` uses (SApp's `failureWording`). Screens
 /// still word the ones only they meet; null leaves the rest to them.
 String? adminFailureWording(BuildContext context, AppFailure failure) {
@@ -13,6 +13,7 @@ String? adminFailureWording(BuildContext context, AppFailure failure) {
     ConflictFailure(code: 'PhoneTaken') => s.errorPhoneTaken,
     ConflictFailure(code: 'AlreadyMember') => s.errorAlreadyMember,
     ConflictFailure(code: 'StoreIsLive') => s.errorStoreIsLive,
+    ForbiddenFailure(code: 'DeveloperAccount') => s.errorDeveloperAccount,
     _ => null,
   };
 }

@@ -40,7 +40,7 @@
   "logout": "Log out",
   "navHome": "Home",
   "navStores": "Stores",
-  "navUsers": "Users",
+  "navUsers": "Team",
   "navOffers": "Offers",
   "navCategories": "Categories",
   "comingSoonTitle": "Coming soon",
@@ -287,8 +287,8 @@
     }
   },
   "done": "Done",
-  "usersTitle": "Users",
-  "usersTotal": "{count, plural, =1{1 user} other{{count} users}}",
+  "usersTitle": "Team",
+  "usersTotal": "{count, plural, =1{1 member} other{{count} members}}",
   "@usersTotal": {
     "placeholders": {
       "count": {
@@ -297,13 +297,14 @@
     }
   },
   "usersSearch": "Search by name or email",
-  "usersEmpty": "No users yet",
+  "usersEmpty": "No team members yet",
   "usersEmptyMessage": "Add the people on your team who use this dashboard.",
   "filterAdmins": "Admins",
   "filterEditors": "Editors",
   "roleAdmin": "Admin",
   "roleEditor": "Editor",
   "columnEmail": "Email",
+  "roleDeveloper": "Developer",
   "columnRole": "Role",
   "columnLastLogin": "Last login",
   "neverLoggedIn": "Never",
@@ -316,6 +317,8 @@
   "userEmailHelp": "They log in with it.",
   "userRole": "Role",
   "userRoleHelp": "Editors can add and edit, but can't delete or manage users.",
+  "developerAccount": "Developer account",
+  "developerAccountNote": "Only a developer can change it, and its role can't be changed here.",
   "emailTaken": "This email already has an account.",
   "userCreatedTitle": "User added",
   "userCreatedMessage": "Give these details to {name}. They will choose their own password when they first log in.",
@@ -1067,5 +1070,6 @@
   "errorEmailTaken": "This email already has an account.",
   "errorPhoneTaken": "This phone number belongs to a customer, not a store account.",
   "errorAlreadyMember": "They're already on this store's team.",
-  "errorStoreIsLive": "Turn the store off before cancelling its bookings."
+  "errorStoreIsLive": "Turn the store off before cancelling its bookings.",
+  "errorDeveloperAccount": "Only a developer can change a developer's account."
 }

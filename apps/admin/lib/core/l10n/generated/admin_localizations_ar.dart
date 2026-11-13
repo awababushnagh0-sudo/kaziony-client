@@ -109,7 +109,7 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get navStores => 'المتاجر';
 
   @override
-  String get navUsers => 'المستخدمون';
+  String get navUsers => 'الفريق';
 
   @override
   String get navOffers => 'العروض';
@@ -577,18 +577,18 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get done => 'تم';
 
   @override
-  String get usersTitle => 'المستخدمون';
+  String get usersTitle => 'الفريق';
 
   @override
   String usersTotal(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count مستخدم',
-      few: '$count مستخدمين',
-      two: 'مستخدمان',
-      one: 'مستخدم واحد',
-      zero: 'لا مستخدمين',
+      other: '$count عضواً',
+      few: '$count أعضاء',
+      two: 'عضوان',
+      one: 'عضو واحد',
+      zero: 'لا أعضاء',
     );
     return '$_temp0';
   }
@@ -597,7 +597,7 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get usersSearch => 'ابحث بالاسم أو البريد';
 
   @override
-  String get usersEmpty => 'لا يوجد مستخدمون بعد';
+  String get usersEmpty => 'لا أعضاء في الفريق بعد';
 
   @override
   String get usersEmptyMessage => 'أضف أفراد فريقك الذين يستخدمون لوحة التحكم.';
@@ -616,6 +616,9 @@ class AdminLocalizationsAr extends AdminLocalizations {
 
   @override
   String get columnEmail => 'البريد الإلكتروني';
+
+  @override
+  String get roleDeveloper => 'مطوّر';
 
   @override
   String get columnRole => 'الدور';
@@ -653,6 +656,13 @@ class AdminLocalizationsAr extends AdminLocalizations {
   @override
   String get userRoleHelp =>
       'يستطيع المحرر الإضافة والتعديل، لكن لا يستطيع الحذف أو إدارة المستخدمين.';
+
+  @override
+  String get developerAccount => 'حساب مطوّر';
+
+  @override
+  String get developerAccountNote =>
+      'لا يغيّره إلا مطوّر، ولا يتغيّر دوره من هنا.';
 
   @override
   String get emailTaken => 'هذا البريد مسجّل لحساب آخر.';
@@ -1810,4 +1820,7 @@ class AdminLocalizationsAr extends AdminLocalizations {
 
   @override
   String get errorStoreIsLive => 'أوقف المتجر قبل إلغاء حجوزاته.';
+
+  @override
+  String get errorDeveloperAccount => 'حساب المطوّر لا يغيّره إلا مطوّر.';
 }

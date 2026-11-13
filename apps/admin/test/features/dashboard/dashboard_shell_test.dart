@@ -12,10 +12,15 @@ import 'package:stellar/stellar.dart';
 
 import '../../fakes.dart';
 
-Widget harness(FakeDashboardRepository stats, {bool admin = true}) => AppScope(
+Widget harness(
+  FakeDashboardRepository stats, {
+  bool admin = true,
+  bool developer = false,
+}) => AppScope(
   overrides: [
     ...testOverrides(kind: AppKind.admin),
-    isAdminProvider.overrideWithValue(admin),
+    isAdminProvider.overrideWithValue(admin || developer),
+    isDeveloperProvider.overrideWithValue(developer),
     authRepositoryProvider.overrideWithValue(FakeAuthRepository()),
     dashboardRepositoryProvider.overrideWithValue(stats),
   ],
@@ -66,15 +71,16 @@ void main() {
     for (final label in [
       'Home',
       'Stores',
-      'Users',
+      'Team',
       'Offers',
       'Categories',
       'Reports',
-      'System',
       'Activity',
     ]) {
       expect(find.text(label), findsWidgets, reason: label);
     }
+    // The system's insides are ours, the developers'.
+    expect(find.text('System'), findsNothing);
     expect(find.text('12'), findsOneWidget);
     expect(find.text('10 active'), findsOneWidget);
     expect(find.text('34'), findsOneWidget);
@@ -100,7 +106,7 @@ void main() {
 
     expect(find.text('Coming soon'), findsOneWidget);
     // Picking a page closes the menu.
-    expect(find.text('Users'), findsNothing);
+    expect(find.text('Team'), findsNothing);
   });
 
   testWidgets('shows an error with a retry when the stats fail', (
@@ -125,10 +131,22 @@ void main() {
     await tester.pumpWidget(harness(FakeDashboardRepository(), admin: false));
     await tester.pumpAndSettle();
 
-    expect(find.text('Users'), findsNothing);
+    expect(find.text('Team'), findsNothing);
     expect(find.text('System'), findsNothing);
     expect(find.text('Activity'), findsNothing);
     expect(find.text('Offers'), findsWidgets);
     expect(find.text('Reports'), findsWidgets);
+  });
+
+  testWidgets('developers see everything, the System page too', (tester) async {
+    setWindow(tester, 1280);
+    await tester.pumpWidget(
+      harness(FakeDashboardRepository(), admin: false, developer: true),
+    );
+    await tester.pumpAndSettle();
+
+    for (final label in ['Team', 'Searches', 'System', 'Activity']) {
+      expect(find.text(label), findsWidgets, reason: label);
+    }
   });
 }

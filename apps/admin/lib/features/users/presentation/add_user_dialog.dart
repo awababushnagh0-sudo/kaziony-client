@@ -54,7 +54,7 @@ class AddUserDialog extends AppView {
               label: s.userRole,
               required: true,
               options: [
-                for (final role in DashboardRole.values)
+                for (final role in DashboardRole.assignable)
                   SelectOption(role, roleLabel(s, role)),
               ],
             ),

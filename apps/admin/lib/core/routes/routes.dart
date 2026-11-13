@@ -25,8 +25,11 @@ abstract final class Routes {
   /// Who changed what in the dashboard.
   static const activity = '/activity';
 
-  /// Pages only admins open, not editors.
-  static const adminOnly = {users, searches, system, activity};
+  /// Pages only admins (and developers) open, not editors.
+  static const adminOnly = {users, searches, activity};
+
+  /// Pages only developers open: the system's insides.
+  static const developerOnly = {system};
 
   /// Pages for signed-out users (and the update gate).
   static const entry = {splash, update, login, changePassword};

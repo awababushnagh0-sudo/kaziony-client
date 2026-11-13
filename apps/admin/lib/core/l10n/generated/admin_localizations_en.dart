@@ -107,7 +107,7 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get navStores => 'Stores';
 
   @override
-  String get navUsers => 'Users';
+  String get navUsers => 'Team';
 
   @override
   String get navOffers => 'Offers';
@@ -567,15 +567,15 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get done => 'Done';
 
   @override
-  String get usersTitle => 'Users';
+  String get usersTitle => 'Team';
 
   @override
   String usersTotal(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count users',
-      one: '1 user',
+      other: '$count members',
+      one: '1 member',
     );
     return '$_temp0';
   }
@@ -584,7 +584,7 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get usersSearch => 'Search by name or email';
 
   @override
-  String get usersEmpty => 'No users yet';
+  String get usersEmpty => 'No team members yet';
 
   @override
   String get usersEmptyMessage =>
@@ -604,6 +604,9 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get columnEmail => 'Email';
+
+  @override
+  String get roleDeveloper => 'Developer';
 
   @override
   String get columnRole => 'Role';
@@ -641,6 +644,13 @@ class AdminLocalizationsEn extends AdminLocalizations {
   @override
   String get userRoleHelp =>
       'Editors can add and edit, but can\'t delete or manage users.';
+
+  @override
+  String get developerAccount => 'Developer account';
+
+  @override
+  String get developerAccountNote =>
+      'Only a developer can change it, and its role can\'t be changed here.';
 
   @override
   String get emailTaken => 'This email already has an account.';
@@ -1784,4 +1794,8 @@ class AdminLocalizationsEn extends AdminLocalizations {
   @override
   String get errorStoreIsLive =>
       'Turn the store off before cancelling its bookings.';
+
+  @override
+  String get errorDeveloperAccount =>
+      'Only a developer can change a developer\'s account.';
 }

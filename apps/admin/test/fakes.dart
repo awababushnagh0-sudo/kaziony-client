@@ -401,7 +401,7 @@ class FakeDashboardUserRepository implements DashboardUserRepository {
         id: id,
         name: user.name,
         email: saved.email,
-        role: user.role,
+        role: user.role ?? saved.role,
         isActive: saved.isActive,
         createdAt: saved.createdAt,
         lastLoginAt: saved.lastLoginAt,

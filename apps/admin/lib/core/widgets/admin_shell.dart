@@ -36,15 +36,16 @@ class AdminShell extends AppView {
       items: [
         item(Routes.home, s.navHome, SIcons.home),
         item(Routes.stores, s.navStores, SIcons.store),
-        if (ref.watch(isAdminProvider))
-          item(Routes.users, s.navUsers, SIcons.users),
         item(Routes.offers, s.navOffers, SIcons.offers),
         item(Routes.categories, s.navCategories, SIcons.category),
         item(Routes.platform, s.navPlatform, SIcons.location),
         item(Routes.reports, s.navReports, SIcons.chat),
+        // Then the admins' own: their team, and how the app is used.
+        if (ref.watch(isAdminProvider))
+          item(Routes.users, s.navUsers, SIcons.key),
         if (ref.watch(isAdminProvider))
           item(Routes.searches, s.navSearches, SIcons.search),
-        if (ref.watch(isAdminProvider))
+        if (ref.watch(isDeveloperProvider))
           item(Routes.system, s.navSystem, SIcons.chart),
         if (ref.watch(isAdminProvider))
           item(Routes.activity, s.navActivity, SIcons.clock),

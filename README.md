@@ -104,9 +104,11 @@ cd apps/admin
 flutter run -d chrome --web-port=8080 --dart-define-from-file=config/dev.json
 ```
 
-Dev login (from the backend seed): `admin@offers.local` / `Admin12345!`.
-Real admins are created on the server with `npm run admin:create` in kaziony-backend; they
-get a temporary password and must change it on first sign-in.
+Dev logins (from the backend seed): `admin@offers.local` / `Admin12345!`, and
+`developer@offers.local` / `Developer12345!` for a developer, who also sees the System page.
+Real admins and developers are created on the server with `npm run admin:create`
+(`--developer`) in kaziony-backend; they get a temporary password and must change it on first
+sign-in. Only code makes developers, never the dashboard.
 
 The dashboard uses clean URLs (`/stores`, not `/#/stores`), so the web server that hosts
 `build/web` must answer every unknown path with `index.html`.

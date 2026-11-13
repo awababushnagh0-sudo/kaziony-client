@@ -57,7 +57,7 @@ void main() {
     expect(find.text('Disabled'), findsOneWidget);
     expect(find.text('Oct 20, 2026'), findsOneWidget);
     expect(find.text('Never'), findsOneWidget);
-    expect(find.text('2 users'), findsOneWidget);
+    expect(find.text('2 members'), findsOneWidget);
   });
 
   testWidgets('filters by role', (tester) async {
@@ -113,6 +113,8 @@ void main() {
     await tester.enterText(field('Email'), 'omar@offers.ly');
     await tester.tap(find.bySubtype<SSelectInput<DashboardRole>>());
     await tester.pumpAndSettle();
+    // Only code makes developers.
+    expect(find.text('Developer'), findsNothing);
     await tester.tap(find.text('Admin').last);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Add user').last);
