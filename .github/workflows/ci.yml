@@ -2,7 +2,11 @@
 # (tool/check_all.sh: import rules, analyzer and tests in every package and
 # app), formatting, and every app builds for where it ships: the dashboard
 # for the web (kept for the Deploy dashboard workflow), the store and
-# customer apps for Android and iOS.
+# customer apps for Android and iOS. On main, the Android builds are signed
+# with our upload key and kept, ready for Google Play.
+#
+# A build's number is the count of commits up to it: it only goes up on
+# main, as the stores require, and says which commit a build came from.
 name: CI
 
 on:
@@ -43,6 +47,10 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - id: build
+        run: echo "number=$(git rev-list --count HEAD)" >> "$GITHUB_OUTPUT"
       - id: flutter
         run: echo "version=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
@@ -53,7 +61,11 @@ jobs:
       - run: flutter pub get
       - name: Dashboard
         working-directory: apps/admin
-        run: flutter build web --release --dart-define-from-file=config/prod.json
+        env:
+          BUILD_NUMBER: ${{ steps.build.outputs.number }}
+        run: >-
+          flutter build web --release --build-number="$BUILD_NUMBER"
+          --dart-define-from-file=config/prod.json
       - uses: actions/upload-artifact@v7
         with:
           name: admin-web
@@ -68,8 +80,15 @@ jobs:
         app: [partner, customer]
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      APP: ${{ matrix.app }}
+      RELEASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - id: build
+        run: echo "number=$(git rev-list --count HEAD)" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-java@v6
         with:
           distribution: temurin
@@ -83,10 +102,42 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get
-      # Signed with a throwaway key: this checks it builds, it isn't for a store.
+      # From the repo's secrets (README, Releases). Pull requests don't get
+      # them, so they're signed with a throwaway key, only to check they build.
+      - name: Upload key
+        if: env.RELEASE == 'true'
+        env:
+          KEYSTORE: ${{ secrets.ANDROID_UPLOAD_KEYSTORE }}
+          PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE" ] || [ -z "$PASSWORD" ]; then
+            echo "::error::The ANDROID_UPLOAD_KEYSTORE and ANDROID_UPLOAD_KEY_PASSWORD secrets are missing (README, Releases)."
+            exit 1
+          fi
+          base64 --decode <<<"$KEYSTORE" >"$RUNNER_TEMP/upload.jks"
+          printf '%s\n' "storeFile=$RUNNER_TEMP/upload.jks" "storePassword=$PASSWORD" \
+            keyAlias=upload "keyPassword=$PASSWORD" >"apps/$APP/android/key.properties"
       - name: Android
         working-directory: apps/${{ matrix.app }}
-        run: flutter build apk --release --dart-define-from-file=config/prod.json
+        env:
+          BUILD_NUMBER: ${{ steps.build.outputs.number }}
+        run: |
+          flutter build apk --release --build-number="$BUILD_NUMBER" \
+            --dart-define-from-file=config/prod.json
+          if [ "$RELEASE" = true ]; then
+            flutter build appbundle --release --build-number="$BUILD_NUMBER" \
+              --dart-define-from-file=config/prod.json
+          fi
+      # The bundle for Google Play, the APK to install by hand.
+      - uses: actions/upload-artifact@v7
+        if: env.RELEASE == 'true'
+        with:
+          name: ${{ matrix.app }}-android
+          path: |
+            apps/${{ matrix.app }}/build/app/outputs/bundle/release/app-release.aab
+            apps/${{ matrix.app }}/build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30
+          if-no-files-found: error
 
   ios:
     strategy:
@@ -97,6 +148,10 @@ jobs:
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - id: build
+        run: echo "number=$(git rev-list --count HEAD)" >> "$GITHUB_OUTPUT"
       - id: flutter
         run: echo "version=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
@@ -108,4 +163,8 @@ jobs:
       # Unsigned: signing needs the Apple account's certificates.
       - name: iOS
         working-directory: apps/${{ matrix.app }}
-        run: flutter build ios --release --no-codesign --dart-define-from-file=config/prod.json
+        env:
+          BUILD_NUMBER: ${{ steps.build.outputs.number }}
+        run: >-
+          flutter build ios --release --no-codesign --build-number="$BUILD_NUMBER"
+          --dart-define-from-file=config/prod.json
