@@ -385,6 +385,16 @@ class AdminLocalizationsAr extends AdminLocalizations {
   String get cancelBookingsConfirm => 'ألغِ الحجوزات';
 
   @override
+  String get hoursCancelBookingsTitle => 'إلغاء الحجوزات بعد الإغلاق الجديد؟';
+
+  @override
+  String get hoursCancelBookingsMessage =>
+      'بعض حجوزات هذا المتجر موعدها بعد وقت إغلاقه الجديد. الحفظ يلغيها ونخبر الزبائن، ولا يُحسب ذلك عليهم.';
+
+  @override
+  String get hoursCancelBookingsConfirm => 'احفظ وألغِها';
+
+  @override
   String get keepBookings => 'أبقِها';
 
   @override
@@ -1785,4 +1795,19 @@ class AdminLocalizationsAr extends AdminLocalizations {
 
   @override
   String get activityReportResolve => 'حل بلاغ زبون';
+
+  @override
+  String get errorAccountDeleted => 'حذف صاحب هذا الحساب حسابه.';
+
+  @override
+  String get errorEmailTaken => 'لهذا البريد حساب بالفعل.';
+
+  @override
+  String get errorPhoneTaken => 'رقم الهاتف هذا لحساب زبون، لا لحساب متجر.';
+
+  @override
+  String get errorAlreadyMember => 'هو في فريق هذا المتجر بالفعل.';
+
+  @override
+  String get errorStoreIsLive => 'أوقف المتجر قبل إلغاء حجوزاته.';
 }

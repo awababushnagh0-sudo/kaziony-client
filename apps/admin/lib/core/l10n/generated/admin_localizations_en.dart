@@ -376,6 +376,17 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get cancelBookingsConfirm => 'Cancel the bookings';
 
   @override
+  String get hoursCancelBookingsTitle =>
+      'Cancel the bookings these hours miss?';
+
+  @override
+  String get hoursCancelBookingsMessage =>
+      'Some bookings at this store are due after its new closing time. Saving cancels them, and their customers are told. It doesn\'t count against them.';
+
+  @override
+  String get hoursCancelBookingsConfirm => 'Save and cancel them';
+
+  @override
   String get keepBookings => 'Keep them';
 
   @override
@@ -1756,4 +1767,21 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get activityReportResolve => 'Resolved a customer report';
+
+  @override
+  String get errorAccountDeleted => 'This account was deleted by its owner.';
+
+  @override
+  String get errorEmailTaken => 'This email already has an account.';
+
+  @override
+  String get errorPhoneTaken =>
+      'This phone number belongs to a customer, not a store account.';
+
+  @override
+  String get errorAlreadyMember => 'They\'re already on this store\'s team.';
+
+  @override
+  String get errorStoreIsLive =>
+      'Turn the store off before cancelling its bookings.';
 }

@@ -42,9 +42,16 @@ class ApiStoreRepository implements StoreRepository {
   }
 
   @override
-  Future<Result<StoreDetails>> update(String id, EditedStore store) async {
+  Future<Result<StoreDetails>> update(
+    String id,
+    EditedStore store, {
+    bool cancelBookings = false,
+  }) async {
     final result = await _api.guard(
-      () => _stores.update(id: id, body: updateStoreBody(store)),
+      () => _stores.update(
+        id: id,
+        body: updateStoreBody(store, cancelBookings: cancelBookings),
+      ),
     );
     return result.map(storeDetailsFromDto);
   }
@@ -234,7 +241,10 @@ CreateStoreDto createStoreBody(NewStore store) {
 /// Every own field is sent, and the place when it's given; an empty
 /// string clears an optional one.
 @visibleForTesting
-UpdateStoreDto updateStoreBody(EditedStore store) {
+UpdateStoreDto updateStoreBody(
+  EditedStore store, {
+  bool cancelBookings = false,
+}) {
   final place = store.place;
   return UpdateStoreDto(
     name: store.name,
@@ -252,6 +262,7 @@ UpdateStoreDto updateStoreBody(EditedStore store) {
     latitude: place?.latitude,
     longitude: place?.longitude,
     openingHours: place?.openingHours.toJson(),
+    cancelBookings: cancelBookings ? true : null,
   );
 }
 

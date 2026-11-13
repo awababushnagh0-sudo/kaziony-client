@@ -189,6 +189,9 @@
   },
   "cancelStoreBookingsMessage": "Each customer is told why in the app, and it doesn't count against them; the pieces go back to the offers. Or keep them: they stay valid for pickup.",
   "cancelBookingsConfirm": "Cancel the bookings",
+  "hoursCancelBookingsTitle": "Cancel the bookings these hours miss?",
+  "hoursCancelBookingsMessage": "Some bookings at this store are due after its new closing time. Saving cancels them, and their customers are told. It doesn't count against them.",
+  "hoursCancelBookingsConfirm": "Save and cancel them",
   "keepBookings": "Keep them",
   "bookingsCancelledDone": "{count, plural, =1{Booking cancelled: its customer was told} other{{count} bookings cancelled: their customers were told}}",
   "@bookingsCancelledDone": {
@@ -1059,5 +1062,10 @@
   "reportAlreadyResolved": "Someone on the team resolved this report first.",
   "reportStrikeGone": "This booking's strike was already taken back.",
   "reportPauseOver": "The customer's pause has already ended.",
-  "activityReportResolve": "Resolved a customer report"
+  "activityReportResolve": "Resolved a customer report",
+  "errorAccountDeleted": "This account was deleted by its owner.",
+  "errorEmailTaken": "This email already has an account.",
+  "errorPhoneTaken": "This phone number belongs to a customer, not a store account.",
+  "errorAlreadyMember": "They're already on this store's team.",
+  "errorStoreIsLive": "Turn the store off before cancelling its bookings."
 }

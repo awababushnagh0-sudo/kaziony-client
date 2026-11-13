@@ -22,6 +22,7 @@ class RecordScreen<T> extends AppView {
     this.status,
     this.actions,
     this.explain,
+    this.confirmAndSave,
     super.key,
   });
 
@@ -46,6 +47,12 @@ class RecordScreen<T> extends AppView {
   /// code); null leaves it to the usual message.
   final String? Function(BuildContext context, AppFailure failure)? explain;
 
+  /// For a failed save that only needs a yes (a backend code, such as one
+  /// saying it would cancel bookings): asks, and saves again when it's yes
+  /// (null when it's no). Returns null for a failure that isn't one.
+  final Future<Result<T>?>? Function(BuildContext context, AppFailure failure)?
+  confirmAndSave;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = AdminLocalizations.of(context);
@@ -54,9 +61,7 @@ class RecordScreen<T> extends AppView {
     final edit = ref.watch(form);
     final editor = ref.read(form.notifier);
 
-    Future<void> save() async {
-      final result = await editor.save();
-      if (!context.mounted) return;
+    void report(Result<T>? result) {
       switch (result) {
         case null:
           return;
@@ -68,6 +73,19 @@ class RecordScreen<T> extends AppView {
             explain?.call(context, failure) ?? failureMessage(context, failure),
           );
       }
+    }
+
+    Future<void> save() async {
+      final result = await editor.save();
+      if (!context.mounted) return;
+      if (result case Err(:final failure)) {
+        if (confirmAndSave?.call(context, failure) case final again?) {
+          final saved = await again;
+          if (context.mounted) report(saved);
+          return;
+        }
+      }
+      report(result);
     }
 
     return LeaveGuard(

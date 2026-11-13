@@ -20,8 +20,12 @@ class StoreDetailsViewModel extends AsyncViewModel<StoreDetails> {
     };
   }
 
-  Future<Result<StoreDetails>> save(EditedStore edited) =>
-      _apply(_stores.update(storeId, edited));
+  /// With [cancelBookings], hours that close the store before bookings
+  /// waiting are due cancel them.
+  Future<Result<StoreDetails>> save(
+    EditedStore edited, {
+    bool cancelBookings = false,
+  }) => _apply(_stores.update(storeId, edited, cancelBookings: cancelBookings));
 
   /// Hides the store from customers (and stops new offers), or shows it
   /// again.

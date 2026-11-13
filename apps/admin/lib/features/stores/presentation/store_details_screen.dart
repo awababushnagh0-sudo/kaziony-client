@@ -93,6 +93,25 @@ class _StoreDetailsScreenState extends AppViewState<StoreDetailsScreen> {
     }
   }
 
+  /// Asks before saving hours that cancel the bookings they miss, and
+  /// saves so when it's yes.
+  Future<Result<StoreDetails>?> _saveCancellingBookings(
+    BuildContext context,
+  ) async {
+    final s = AdminLocalizations.of(context);
+    final confirmed = await SDialog.confirm(
+      context,
+      title: s.hoursCancelBookingsTitle,
+      message: s.hoursCancelBookingsMessage,
+      confirmLabel: s.hoursCancelBookingsConfirm,
+      destructive: true,
+    );
+    if (!confirmed || !mounted) return null;
+    return ref
+        .read(storeFormViewModel(widget.storeId).notifier)
+        .save(cancelBookings: true);
+  }
+
   /// Asks before cancelling the bookings waiting at a store that's off;
   /// [waiting] is how many, read again when not given.
   Future<void> _cancelBookings(StoreDetails store, {int? waiting}) async {
@@ -189,6 +208,11 @@ class _StoreDetailsScreenState extends AppViewState<StoreDetailsScreen> {
       title: (store) => store.label,
       status: (store) => _StatusBadge(store: store),
       explain: _notReady,
+      confirmAndSave: (context, failure) => switch (failure) {
+        ConflictFailure(code: StoreCodes.hoursCancelBookings) =>
+          _saveCancellingBookings(context),
+        _ => null,
+      },
       actions: (store) => [
         _ActionsMenu(
           store: store,

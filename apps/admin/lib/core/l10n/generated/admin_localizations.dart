@@ -692,6 +692,24 @@ abstract class AdminLocalizations {
   /// **'Cancel the bookings'**
   String get cancelBookingsConfirm;
 
+  /// No description provided for @hoursCancelBookingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel the bookings these hours miss?'**
+  String get hoursCancelBookingsTitle;
+
+  /// No description provided for @hoursCancelBookingsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Some bookings at this store are due after its new closing time. Saving cancels them, and their customers are told. It doesn\'t count against them.'**
+  String get hoursCancelBookingsMessage;
+
+  /// No description provided for @hoursCancelBookingsConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Save and cancel them'**
+  String get hoursCancelBookingsConfirm;
+
   /// No description provided for @keepBookings.
   ///
   /// In en, this message translates to:
@@ -2989,6 +3007,36 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'Resolved a customer report'**
   String get activityReportResolve;
+
+  /// No description provided for @errorAccountDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'This account was deleted by its owner.'**
+  String get errorAccountDeleted;
+
+  /// No description provided for @errorEmailTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'This email already has an account.'**
+  String get errorEmailTaken;
+
+  /// No description provided for @errorPhoneTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone number belongs to a customer, not a store account.'**
+  String get errorPhoneTaken;
+
+  /// No description provided for @errorAlreadyMember.
+  ///
+  /// In en, this message translates to:
+  /// **'They\'re already on this store\'s team.'**
+  String get errorAlreadyMember;
+
+  /// No description provided for @errorStoreIsLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn the store off before cancelling its bookings.'**
+  String get errorStoreIsLive;
 }
 
 class _AdminLocalizationsDelegate

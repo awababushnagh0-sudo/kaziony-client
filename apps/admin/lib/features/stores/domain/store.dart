@@ -60,6 +60,10 @@ abstract final class StoreCodes {
 
   /// Cancelling the bookings of a store that's on: it serves them.
   static const isLive = 'StoreIsLive';
+
+  /// New hours close the store before bookings waiting are due: saving
+  /// them cancels those, only when asked to.
+  static const hoursCancelBookings = 'HoursCancelBookings';
 }
 
 /// A store's photos: the logo by its name, the cover across its page.
@@ -278,8 +282,16 @@ abstract interface class StoreRepository {
   Future<Result<StorePage>> list(StoreQuery query);
   Future<Result<StoreDetails>> get(String id);
 
-  /// Fails like [create] when the place moves outside Libya.
-  Future<Result<StoreDetails>> update(String id, EditedStore store);
+  /// Fails like [create] when the place moves outside Libya. Hours that
+  /// close the store before bookings waiting are due fail with
+  /// [StoreCodes.hoursCancelBookings], unless [cancelBookings] says to
+  /// cancel them (their customers are told, and it doesn't count against
+  /// them).
+  Future<Result<StoreDetails>> update(
+    String id,
+    EditedStore store, {
+    bool cancelBookings = false,
+  });
 
   /// Disabled stores are hidden from customers and can't post offers.
   Future<Result<StoreDetails>> setActive(String id, {required bool active});

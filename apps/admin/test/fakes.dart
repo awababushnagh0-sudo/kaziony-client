@@ -144,6 +144,13 @@ class FakeStoreRepository implements StoreRepository {
   Result<StoreDetails>? detailsResult;
   final updates = <(String, EditedStore)>[];
   Result<StoreDetails>? updateResult;
+
+  /// Bookings waiting end after the hours saved close the store: saving
+  /// fails until it says to cancel them.
+  bool hoursCutBookings = false;
+
+  /// The stores saved with their bookings cancelled.
+  final cancelledByHours = <String>[];
   final activeChanges = <(String, bool)>[];
   Result<StoreDetails>? setActiveResult;
   Result<StoreOngoing> ongoingResult = const Ok(
@@ -182,8 +189,21 @@ class FakeStoreRepository implements StoreRepository {
   }
 
   @override
-  Future<Result<StoreDetails>> update(String id, EditedStore store) async {
+  Future<Result<StoreDetails>> update(
+    String id,
+    EditedStore store, {
+    bool cancelBookings = false,
+  }) async {
     updates.add((id, store));
+    if (hoursCutBookings && !cancelBookings) {
+      return const Err(
+        ConflictFailure(
+          'Some bookings end after these hours close the store.',
+          StoreCodes.hoursCancelBookings,
+        ),
+      );
+    }
+    if (cancelBookings) cancelledByHours.add(id);
     final saved = sampleDetails(id);
     final place = store.place;
     return updateResult ??

@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../l10n/generated/admin_localizations.dart';
 import '../routes/router.dart';
+import 'failure_wording.dart';
 
 class AdminApp extends AppView {
   const AdminApp({super.key});
@@ -14,6 +15,7 @@ class AdminApp extends AppView {
     theme: ref.watch(themeChoiceProvider),
     style: StellarStyle.dashboard,
     onGenerateTitle: (context) => AdminLocalizations.of(context).appTitle,
+    failureWording: adminFailureWording,
     localizationsDelegates: const [AdminLocalizations.delegate],
   );
 }

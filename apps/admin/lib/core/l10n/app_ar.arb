@@ -99,6 +99,9 @@
   "cancelStoreBookingsTitle": "{count, plural, =1{إلغاء الحجز المنتظر في {store}؟} =2{إلغاء الحجزين المنتظرين في {store}؟} few{إلغاء {count} حجوزات منتظرة في {store}؟} other{إلغاء {count} حجزًا منتظرًا في {store}؟}}",
   "cancelStoreBookingsMessage": "يُبلَّغ كل زبون بالسبب في التطبيق، ولا يُحسب عليه، وتعود القطع إلى العروض. أو أبقِها: تظل صالحة للاستلام.",
   "cancelBookingsConfirm": "ألغِ الحجوزات",
+  "hoursCancelBookingsTitle": "إلغاء الحجوزات بعد الإغلاق الجديد؟",
+  "hoursCancelBookingsMessage": "بعض حجوزات هذا المتجر موعدها بعد وقت إغلاقه الجديد. الحفظ يلغيها ونخبر الزبائن، ولا يُحسب ذلك عليهم.",
+  "hoursCancelBookingsConfirm": "احفظ وألغِها",
   "keepBookings": "أبقِها",
   "bookingsCancelledDone": "{count, plural, =1{أُلغي الحجز وأُبلغ صاحبه} =2{أُلغي الحجزان وأُبلغ صاحباهما} few{أُلغيت {count} حجوزات وأُبلغ أصحابها} other{أُلغي {count} حجزًا وأُبلغ أصحابها}}",
   "noBookingsWaiting": "لا حجوزات منتظرة في هذا المتجر",
@@ -481,5 +484,10 @@
   "reportAlreadyResolved": "حلّ أحد أعضاء الفريق هذا البلاغ قبلك.",
   "reportStrikeGone": "رُفع تخلّف هذا الحجز من قبل.",
   "reportPauseOver": "انتهى إيقاف الزبون من قبل.",
-  "activityReportResolve": "حل بلاغ زبون"
+  "activityReportResolve": "حل بلاغ زبون",
+  "errorAccountDeleted": "حذف صاحب هذا الحساب حسابه.",
+  "errorEmailTaken": "لهذا البريد حساب بالفعل.",
+  "errorPhoneTaken": "رقم الهاتف هذا لحساب زبون، لا لحساب متجر.",
+  "errorAlreadyMember": "هو في فريق هذا المتجر بالفعل.",
+  "errorStoreIsLive": "أوقف المتجر قبل إلغاء حجوزاته."
 }

@@ -68,11 +68,17 @@ class StoreFormViewModel extends RecordForm<StoreDetails> {
     };
   }
 
-  /// Waits for a new location to be read first.
+  /// For [submit]: the save this one is, cancels the bookings its hours miss.
+  bool _cancelBookings = false;
+
+  /// Waits for a new location to be read first. With [cancelBookings],
+  /// hours that close the store before bookings waiting are due cancel
+  /// them.
   @override
-  Future<Result<StoreDetails>?> save() async {
+  Future<Result<StoreDetails>?> save({bool cancelBookings = false}) async {
     await settleLocation(form.control('location'));
     if (!ref.mounted) return null;
+    _cancelBookings = cancelBookings;
     return super.save();
   }
 
@@ -96,6 +102,7 @@ class StoreFormViewModel extends RecordForm<StoreDetails> {
             },
             place: differs(placeFields) ? readPlace(form) : null,
           ),
+          cancelBookings: _cancelBookings,
         );
     if (result
         case Err(failure: ValidationFailure(code: LocationCodes.outsideLibya))

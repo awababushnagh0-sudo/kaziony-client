@@ -677,6 +677,33 @@ void main() {
     expect(find.text('32.9, 13.2'), findsOneWidget);
   });
 
+  testWidgets('asks before hours that would cancel bookings', (tester) async {
+    setWindow(tester);
+    final stores = FakeStoreRepository()..hoursCutBookings = true;
+    await tester.pumpWidget(harness(stores));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Place'));
+    await tester.pumpAndSettle();
+    await tester.enterText(field('Saturday'), '9-12');
+    await tester.pump();
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+    expect(find.text('Cancel the bookings these hours miss?'), findsOneWidget);
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    expect(stores.cancelledByHours, isEmpty);
+    expect(find.text('Not saved'), findsOneWidget);
+
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Save and cancel them'));
+    await tester.pumpAndSettle();
+    expect(stores.cancelledByHours, ['store-1']);
+    expect(stores.updates, hasLength(3));
+    expect(find.text('Saved'), findsOneWidget);
+  });
+
   testWidgets('waits for a new location to be read before saving', (
     tester,
   ) async {
