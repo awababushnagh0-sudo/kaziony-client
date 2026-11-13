@@ -92,7 +92,7 @@ void main() {
 
     expect(find.text('Today'), findsOneWidget);
     expect(find.text('9'), findsOneWidget);
-    expect(find.text('of 14 reserved today'), findsOneWidget);
+    expect(find.text('14 reserved today'), findsOneWidget);
     expect(find.text('Not picked up'), findsOneWidget);
     expect(find.text('Live offers'), findsOneWidget);
     expect(find.text('Sara'), findsOneWidget);

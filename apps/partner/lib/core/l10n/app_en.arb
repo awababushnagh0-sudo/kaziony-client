@@ -363,8 +363,8 @@
       }
     }
   },
-  "ofClaimsToday": "{count, plural, =1{of 1 reserved today} other{of {count} reserved today}}",
-  "@ofClaimsToday": {
+  "reservedToday": "{count, plural, =1{1 reserved today} other{{count} reserved today}}",
+  "@reservedToday": {
     "placeholders": {
       "count": {
         "type": "int"

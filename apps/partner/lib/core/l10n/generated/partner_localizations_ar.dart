@@ -847,15 +847,15 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   }
 
   @override
-  String ofClaimsToday(int count) {
+  String reservedToday(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'من $count حجز اليوم',
-      many: 'من $count حجزًا اليوم',
-      few: 'من $count حجوزات اليوم',
-      two: 'من حجزين اليوم',
-      one: 'من حجز واحد اليوم',
+      other: '$count حجز اليوم',
+      many: '$count حجزًا اليوم',
+      few: '$count حجوزات اليوم',
+      two: 'حجزان اليوم',
+      one: 'حجز واحد اليوم',
     );
     return '$_temp0';
   }

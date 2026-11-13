@@ -254,7 +254,7 @@
   "statNotPickedUp": "لم يُستلم",
   "statLiveOffers": "عروض متاحة",
   "soonestIn": "أقربهم بعد {time}",
-  "ofClaimsToday": "{count, plural, =1{من حجز واحد اليوم} =2{من حجزين اليوم} few{من {count} حجوزات اليوم} many{من {count} حجزًا اليوم} other{من {count} حجز اليوم}}",
+  "reservedToday": "{count, plural, =1{حجز واحد اليوم} =2{حجزان اليوم} few{{count} حجوزات اليوم} many{{count} حجزًا اليوم} other{{count} حجز اليوم}}",
   "almostGone": "{count, plural, =1{واحد يكاد ينفد} =2{اثنان يكادان ينفدان} other{{count} تكاد تنفد}}",
   "minutesShort": "{minutes} د",
   "hoursShort": "{hours} س",

@@ -111,7 +111,8 @@ Claim _toClaim(api.PartnerClaimDto dto) => Claim(
   cancelledBy: switch (dto.cancelReason) {
     api.CancelReason.customer => CancelledBy.customer,
     api.CancelReason.offerRemoved ||
-    api.CancelReason.storeOff => CancelledBy.team,
+    api.CancelReason.storeOff ||
+    api.CancelReason.accountDisabled => CancelledBy.team,
     api.CancelReason.storeClosed ||
     api.CancelReason.hoursChanged ||
     api.CancelReason.notDelivered => CancelledBy.store,

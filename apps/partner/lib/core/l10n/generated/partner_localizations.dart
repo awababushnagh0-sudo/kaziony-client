@@ -1625,11 +1625,11 @@ abstract class PartnerLocalizations {
   /// **'Soonest due in {time}'**
   String soonestIn(String time);
 
-  /// No description provided for @ofClaimsToday.
+  /// No description provided for @reservedToday.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{of 1 reserved today} other{of {count} reserved today}}'**
-  String ofClaimsToday(int count);
+  /// **'{count, plural, =1{1 reserved today} other{{count} reserved today}}'**
+  String reservedToday(int count);
 
   /// No description provided for @almostGone.
   ///

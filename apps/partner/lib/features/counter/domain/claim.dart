@@ -23,7 +23,8 @@ enum ClaimProblem { alreadyRedeemed, cancelled, expired, other }
 enum CancelledBy {
   customer,
 
-  /// Our team: it took the offer down or turned the store off.
+  /// Our team: it took the offer down, turned the store off or disabled
+  /// the customer's account.
   team,
 
   /// This store: it closed suddenly, changed its hours or a delivery

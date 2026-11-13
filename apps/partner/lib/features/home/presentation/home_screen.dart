@@ -465,7 +465,7 @@ class _TodayBand extends StatelessWidget {
         Figure(
           value: '${today.redeemed}',
           label: s.statPickedUp,
-          hint: today.claims == 0 ? null : s.ofClaimsToday(today.claims),
+          hint: today.claims == 0 ? null : s.reservedToday(today.claims),
           quiet: today.redeemed == 0,
         ),
         if (isOwner) ...[

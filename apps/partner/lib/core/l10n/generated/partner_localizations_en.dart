@@ -855,12 +855,12 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   }
 
   @override
-  String ofClaimsToday(int count) {
+  String reservedToday(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'of $count reserved today',
-      one: 'of 1 reserved today',
+      other: '$count reserved today',
+      one: '1 reserved today',
     );
     return '$_temp0';
   }

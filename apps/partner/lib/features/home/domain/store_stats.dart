@@ -1,6 +1,7 @@
 import 'package:kernel/kernel.dart';
 
-/// Reservations made in a stretch of time, and how they ended.
+/// What happened in a stretch of time, each counted when it happened: a
+/// pickup today of yesterday's reservation is today's.
 class PeriodStats {
   const PeriodStats({
     required this.claims,
@@ -9,9 +10,10 @@ class PeriodStats {
     required this.redemptionRate,
   });
 
+  /// Reservations made.
   final int claims;
 
-  /// Picked up at the counter.
+  /// Picked up at the counter (or delivered).
   final int redeemed;
 
   /// Not picked up in time.
