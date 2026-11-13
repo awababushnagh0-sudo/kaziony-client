@@ -66,7 +66,8 @@ void main() {
     expect(posted.totalQuantity, 12);
     // No limit per customer unless one is set.
     expect(posted.maxPerUser, isNull);
-    expect(posted.endsAt.hour, 23);
+    // 11 pm in Libya, whatever zone this machine is in.
+    expect(libyaClock(posted.endsAt).hour, 23);
     expect(posted.endsAt.isAfter(DateTime.now()), isTrue);
     expect(find.text('offer page'), findsOneWidget);
   });
