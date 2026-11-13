@@ -136,6 +136,14 @@ cd apps/partner && flutter test integration_test -d <device> \
   --dart-define-from-file=config/dev.json    # real backend with seed data
 ```
 
+CI (`.github/workflows/ci.yml`) runs `tool/check_all.sh` and checks formatting on every
+push, and builds every app with `config/prod.json`: the dashboard for the web (kept 30
+days), the store and customer apps for Android and iOS (unsigned: the stores need their
+accounts' keys). **Deploy dashboard** (`.github/workflows/deploy-dashboard.yml`, started
+by hand) ships the web build of a commit to the server; it needs `API_BASE_URL` in
+`apps/admin/config/prod.json` to be the real API, and the `production` environment set
+up as in the backend repo's `deploy/README.md` ("Releasing from GitHub").
+
 ## When the backend API changes
 
 ```bash

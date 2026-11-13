@@ -323,7 +323,10 @@ The screen staff use all day, so it must be fast and work on a weak connection.
 - Sentry or Crashlytics account for the `ErrorReporter`
 - Shorebird for code fixes without app store review (optional)
 - App icons, splash screens, store listings
-- CI: analyze, test, import rules, builds
+- [x] CI: analyze, test, import rules, formatting, builds (web, Android, iOS); the
+      dashboard ships from GitHub (Deploy dashboard)
+- Put the real API address in each app's `config/prod.json` (and `staging.json`) once
+  the domain is bought
 - Share an offer (once the domain is set up, backend Phase 9): a share button on the offer
   page while it can still be booked. It sends a link (`https://<domain>/o/<id>`) that opens
   the offer in the app when installed (universal links / app links, routed to

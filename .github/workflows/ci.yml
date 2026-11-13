@@ -1,0 +1,111 @@
+# Every push and pull request: the checks run before a commit
+# (tool/check_all.sh: import rules, analyzer and tests in every package and
+# app), formatting, and every app builds for where it ships: the dashboard
+# for the web (kept for the Deploy dashboard workflow), the store and
+# customer apps for Android and iOS.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      # The version pinned for everyone (.fvmrc).
+      - id: flutter
+        run: echo "version=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          flutter-version: ${{ steps.flutter.outputs.version }}
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - name: Formatting (not the generated code)
+        run: |
+          git ls-files -z '*.dart' | grep -zv '/generated/' |
+            xargs -0 dart format --output=none --set-exit-if-changed
+      - run: tool/check_all.sh
+
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - id: flutter
+        run: echo "version=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          flutter-version: ${{ steps.flutter.outputs.version }}
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - name: Dashboard
+        working-directory: apps/admin
+        run: flutter build web --release --dart-define-from-file=config/prod.json
+      - uses: actions/upload-artifact@v7
+        with:
+          name: admin-web
+          path: apps/admin/build/web
+          retention-days: 30
+          if-no-files-found: error
+
+  android:
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [partner, customer]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - id: flutter
+        run: echo "version=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          flutter-version: ${{ steps.flutter.outputs.version }}
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      # Signed with a throwaway key: this checks it builds, it isn't for a store.
+      - name: Android
+        working-directory: apps/${{ matrix.app }}
+        run: flutter build apk --release --dart-define-from-file=config/prod.json
+
+  ios:
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [partner, customer]
+    runs-on: macos-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v7
+      - id: flutter
+        run: echo "version=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          flutter-version: ${{ steps.flutter.outputs.version }}
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      # Unsigned: signing needs the Apple account's certificates.
+      - name: iOS
+        working-directory: apps/${{ matrix.app }}
+        run: flutter build ios --release --no-codesign --dart-define-from-file=config/prod.json

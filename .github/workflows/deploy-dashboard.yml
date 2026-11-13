@@ -1,0 +1,152 @@
+# Ships the dashboard: the web build CI made for a commit on main, copied to
+# the server's deploy/admin-web, which Caddy serves (backend repo,
+# deploy/README.md, "Releasing from GitHub"). Started by hand (Actions →
+# Deploy dashboard → Run workflow); to roll back, run it with an earlier
+# commit. Release the backend first when the dashboard needs something new
+# from it.
+#
+# Settings live in the "production" environment, as in the backend repo; until
+# they're set it stops at the first step.
+name: Deploy dashboard
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Commit on main to ship (empty for the newest that passed CI)
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: deploy-dashboard
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: production
+      url: https://${{ vars.ADMIN_DOMAIN }}
+    env:
+      DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+      DEPLOY_PORT: ${{ vars.DEPLOY_PORT || '22' }}
+      DEPLOY_USER: ${{ vars.DEPLOY_USER || 'deploy' }}
+      DEPLOY_PATH: ${{ vars.DEPLOY_PATH || '/opt/kaziony/backend' }}
+      DEPLOY_KNOWN_HOSTS: ${{ vars.DEPLOY_KNOWN_HOSTS }}
+      API_DOMAIN: ${{ vars.API_DOMAIN }}
+      ADMIN_DOMAIN: ${{ vars.ADMIN_DOMAIN }}
+    steps:
+      - name: Check the settings
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          missing=()
+          for name in DEPLOY_HOST DEPLOY_KNOWN_HOSTS API_DOMAIN ADMIN_DOMAIN DEPLOY_SSH_KEY; do
+            [ -n "${!name}" ] || missing+=("$name")
+          done
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::Set ${missing[*]} in Settings → Environments → production (backend repo, deploy/README.md, \"Releasing from GitHub\")."
+            exit 1
+          fi
+
+      # The CI run that passed for it, which kept its web build.
+      - name: Pick the version
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WANTED: ${{ inputs.version }}
+        run: |
+          if [ -n "$WANTED" ]; then
+            [[ "$WANTED" =~ ^[0-9a-fA-F]{7,40}$ ]] || { echo "::error::\"$WANTED\" isn't a commit id."; exit 1; }
+            sha="$(gh api "repos/$GITHUB_REPOSITORY/commits/$WANTED" --jq .sha)" \
+              || { echo "::error::There's no commit $WANTED."; exit 1; }
+            commit=(--commit "$sha")
+          else
+            commit=()
+          fi
+          run="$(gh run list -R "$GITHUB_REPOSITORY" --workflow ci.yml --branch main --event push \
+            --status success "${commit[@]}" --limit 1 --json databaseId,headSha \
+            --jq '.[0] | select(.) | "\(.databaseId) \(.headSha)"')"
+          [ -n "$run" ] || { echo "::error::No CI run on main passed for ${WANTED:-any commit}."; exit 1; }
+          read -r id sha <<<"$run"
+          {
+            echo "run=$id"
+            echo "sha=$sha"
+            echo "short=${sha::12}"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ steps.version.outputs.sha }}
+          sparse-checkout: apps/admin/config
+
+      # The address is compiled in: a build for another API would sign no one in.
+      - name: Check it talks to our API
+        run: |
+          url="$(jq -r .API_BASE_URL apps/admin/config/prod.json)"
+          if [ "$url" != "https://$API_DOMAIN" ]; then
+            echo "::error::This build talks to $url, not https://$API_DOMAIN: set API_BASE_URL in apps/admin/config/prod.json, push, and ship that commit."
+            exit 1
+          fi
+
+      - name: Get the web build
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN: ${{ steps.version.outputs.run }}
+        run: |
+          gh run download "$RUN" -R "$GITHUB_REPOSITORY" -n admin-web -D web || {
+            echo "::error::CI run $RUN no longer has its web build (kept 30 days): run CI again for that commit (Re-run jobs), then this."
+            exit 1
+          }
+          test -f web/index.html
+
+      - name: Connect to the server
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy
+          chmod 600 ~/.ssh/deploy
+          # Pinned: the server's key must be the one in the settings.
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          cat > ~/.ssh/config <<EOF
+          Host server
+            HostName $DEPLOY_HOST
+            Port $DEPLOY_PORT
+            User $DEPLOY_USER
+            IdentityFile ~/.ssh/deploy
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+            ServerAliveInterval 30
+          EOF
+          ssh server true
+
+      # New files are put in place together at the end, and old ones removed
+      # after, so a page loading meanwhile gets one build or the other.
+      - name: Ship
+        run: |
+          rsync --recursive --compress --checksum --delete-delay --delay-updates \
+            --chmod=D755,F644 web/ "server:$DEPLOY_PATH/deploy/admin-web/"
+
+      - name: Check the dashboard answers
+        run: |
+          for _ in 1 2 3 4 5 6; do
+            if curl -fsS --max-time 10 "https://$ADMIN_DOMAIN/" >/dev/null; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::https://$ADMIN_DOMAIN/ doesn't answer."
+          exit 1
+
+      - name: Summary
+        env:
+          SHA: ${{ steps.version.outputs.sha }}
+          VERSION: ${{ steps.version.outputs.short }}
+        run: |
+          echo "Shipped the dashboard at [\`$VERSION\`]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$SHA) to https://$ADMIN_DOMAIN" >> "$GITHUB_STEP_SUMMARY"
