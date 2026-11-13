@@ -25,6 +25,7 @@ class UpdateStoreDto {
     this.facebookUrl,
     this.instagramUrl,
     this.specialHours,
+    this.cancelBookings,
     this.isActive,
     this.delivers,
     this.deliveryPhone,
@@ -65,6 +66,12 @@ class UpdateStoreDto {
   /// (none: closed). The whole list each time; ranges that have ended are.
   /// dropped.
   final List<dynamic>? specialHours;
+
+  /// Hours that close the store before bookings waiting are due cancel.
+  /// them: each customer is told, and it doesn't count against them. Without.
+  /// this, such a save is refused (409 HoursCancelBookings), so the app can.
+  /// ask first.
+  final bool? cancelBookings;
 
   /// Disabled stores are hidden from customers and can't post offers.
   final bool? isActive;

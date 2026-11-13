@@ -9,6 +9,9 @@ part of 'partner_claim_dto.dart';
 PartnerClaimDto _$PartnerClaimDtoFromJson(Map<String, dynamic> json) =>
     PartnerClaimDto(
       status: ClaimStatus.fromJson(json['status'] as String),
+      cancelReason: json['cancelReason'] == null
+          ? null
+          : CancelReason.fromJson(json['cancelReason'] as String),
       id: json['id'] as String,
       code: json['code'] as String,
       quantity: json['quantity'] as num,
@@ -32,6 +35,7 @@ PartnerClaimDto _$PartnerClaimDtoFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$PartnerClaimDtoToJson(PartnerClaimDto instance) =>
     <String, dynamic>{
       'status': instance.status,
+      'cancelReason': ?instance.cancelReason,
       'id': instance.id,
       'code': instance.code,
       'quantity': instance.quantity,

@@ -53,7 +53,7 @@ abstract class AdminStoresClient {
 
   /// Edit, disable or enable a store.
   ///
-  /// Send only the fields to change. An empty string clears an optional field (email, links).
+  /// Send only the fields to change. An empty string clears an optional field (email, links). Hours that close the store before bookings waiting are due: 409 HoursCancelBookings, unless `cancelBookings` says to cancel them.
   @PATCH('/api/v1/admin/stores/{id}')
   Future<StoreDetailDto> update({
     @Path('id') required String id,

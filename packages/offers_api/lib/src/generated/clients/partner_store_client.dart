@@ -27,7 +27,7 @@ abstract class PartnerStoreClient {
 
   /// Edit pickup instructions, contact details and opening hours (owner).
   ///
-  /// The name, kind, place, staff and opening another place are our team's: the app sends the owner to us (`GET /app-config` → `support`).
+  /// The name, kind, place, staff and opening another place are our team's: the app sends the owner to us (`GET /app-config` → `support`). Hours that close the store before bookings waiting are due: 409 HoursCancelBookings, unless `cancelBookings` says to cancel them.
   @PATCH('/api/v1/partner/stores/{storeId}')
   Future<StoreDetailDto> updateProfile({
     @Path('storeId') required String storeId,

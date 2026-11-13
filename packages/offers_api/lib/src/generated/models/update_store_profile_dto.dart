@@ -16,6 +16,7 @@ class UpdateStoreProfileDto {
     this.facebookUrl,
     this.instagramUrl,
     this.specialHours,
+    this.cancelBookings,
     this.delivers,
     this.deliveryPhone,
   });
@@ -44,6 +45,12 @@ class UpdateStoreProfileDto {
   /// (none: closed). The whole list each time; ranges that have ended are.
   /// dropped.
   final List<dynamic>? specialHours;
+
+  /// Hours that close the store before bookings waiting are due cancel.
+  /// them: each customer is told, and it doesn't count against them. Without.
+  /// this, such a save is refused (409 HoursCancelBookings), so the app can.
+  /// ask first.
+  final bool? cancelBookings;
 
   /// Has its own drivers: customers with a booking can call to have it.
   /// brought. Delivery is between them and the store, not us.

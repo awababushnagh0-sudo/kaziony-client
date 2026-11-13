@@ -4,6 +4,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
+import 'cancel_reason.dart';
 import 'claim_offer_dto.dart';
 import 'claim_status.dart';
 
@@ -13,6 +14,7 @@ part 'partner_claim_dto.g.dart';
 class PartnerClaimDto {
   const PartnerClaimDto({
     required this.status,
+    required this.cancelReason,
     required this.id,
     required this.code,
     required this.quantity,
@@ -32,6 +34,9 @@ class PartnerClaimDto {
   factory PartnerClaimDto.fromJson(Map<String, Object?> json) => _$PartnerClaimDtoFromJson(json);
   
   final ClaimStatus status;
+
+  /// Who cancelled it, when it's CANCELLED: the customer, our team or the store.
+  final CancelReason? cancelReason;
   final String id;
   final String code;
 
