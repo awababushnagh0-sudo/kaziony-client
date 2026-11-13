@@ -241,11 +241,12 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get openingHoursTitle => 'أوقات العمل';
 
   @override
-  String get openingHoursHint => 'اضغط على يوم لتغيير أوقاته.';
+  String get openingHoursHint =>
+      'اضغط على يوم لتغيير أوقاته. حدد أوقات كل الأيام، حتى أيام الإغلاق.';
 
   @override
   String get liveStoreNeedsOpeningHours =>
-      'متجرك ظاهر للزبائن، فيجب أن تحدد أوقات العمل ليوم واحد على الأقل.';
+      'متجرك ظاهر للزبائن، فيجب أن تحدد أوقات كل الأيام، ويومًا مفتوحًا على الأقل.';
 
   @override
   String get locationTeamHint =>
@@ -636,6 +637,27 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get endsTooLate => 'مدة العرض 30 يومًا كحد أقصى.';
+
+  @override
+  String get offerClosedThroughTitle => 'المتجر مغلق طوال وقت العرض';
+
+  @override
+  String offerClosedThroughMessage(String opens) {
+    return 'يفتح $opens، بعد نهاية العرض، فلن يستلمه أحد. اجعله ينتهي لاحقًا، أو راجع أوقات العمل.';
+  }
+
+  @override
+  String get offerOutsideHoursTitle => 'جزء من وقت العرض خارج أوقات العمل';
+
+  @override
+  String offerOpensLater(String opens) {
+    return 'المتجر مغلق الآن، ويستلم الزبائن عندما يفتح $opens.';
+  }
+
+  @override
+  String offerClosesBeforeEnd(String closes) {
+    return 'يغلق المتجر $closes قبل نهاية العرض، ولا استلام بعد ذلك.';
+  }
 
   @override
   String get offerPosted => 'تم نشر العرض.';
@@ -1208,4 +1230,140 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get deliveryPhoneHelper => 'اتركه فارغًا ليتصل الزبائن برقم المحل.';
+
+  @override
+  String get takeBreak => 'أخذ استراحة';
+
+  @override
+  String get takeBreakHint =>
+      'أوقف الحجوزات الجديدة لفترة، أو أغلق لبقية اليوم';
+
+  @override
+  String get takeBreakTitle => 'إيقاف الحجز مؤقتًا';
+
+  @override
+  String get takeBreakSubtitle =>
+      'يظهر متجرك مغلقًا للزبائن فلا يمكنهم الحجز. الحجوزات الموجودة تبقى، فسلّمها كالمعتاد.';
+
+  @override
+  String breakMinutes(int minutes) {
+    return '$minutes دقيقة';
+  }
+
+  @override
+  String get breakHour => 'ساعة';
+
+  @override
+  String get breakUntilOpen => 'حتى موعد فتحنا القادم';
+
+  @override
+  String get stopBookings => 'إيقاف الحجز';
+
+  @override
+  String get closeAndCancel => 'إغلاق الآن وإلغاء الحجوزات';
+
+  @override
+  String closeAndCancelTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'إلغاء $count حجزًا؟',
+      few: 'إلغاء $count حجوزات؟',
+      two: 'إلغاء حجزين؟',
+      one: 'إلغاء حجز واحد؟',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get closeAndCancelMessage =>
+      'فقط إن اضطررت إلى الإغلاق ولا تستطيع تسليمها. نخبر الزبائن، ولا يُحسب ذلك عليهم.';
+
+  @override
+  String get closeAndCancelConfirm => 'إغلاق وإلغاء';
+
+  @override
+  String get keepBookings => 'إبقاؤها';
+
+  @override
+  String get noOpeningAhead => 'أوقات عملك لا تحدد متى تفتح، فاختر المدة.';
+
+  @override
+  String offlineDone(String time) {
+    return 'توقف الحجز حتى $time.';
+  }
+
+  @override
+  String storeClosedDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'أُغلق المتجر: أُلغي $count حجزًا وأُبلغ أصحابها.',
+      few: 'أُغلق المتجر: أُلغيت $count حجوزات وأُبلغ أصحابها.',
+      two: 'أُغلق المتجر: أُلغي حجزان وأُبلغ صاحباهما.',
+      one: 'أُغلق المتجر: أُلغي حجز واحد وأُبلغ صاحبه.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String offlineUntil(String time) {
+    return 'الحجز متوقف حتى $time';
+  }
+
+  @override
+  String get offlineMessage =>
+      'لا يمكن للزبائن الحجز الآن. الحجوزات الموجودة تبقى.';
+
+  @override
+  String get backOnline => 'استئناف الحجز';
+
+  @override
+  String get backOnlineDone => 'يمكن للزبائن الحجز من جديد.';
+
+  @override
+  String get storeMissingTitle => 'أكمل بيانات متجرك';
+
+  @override
+  String get storeMissingMessage => 'متجرك ظاهر للزبائن، لكن ينقصه ما يلي.';
+
+  @override
+  String get openingHoursEveryDay => 'أوقات العمل لكل الأيام';
+
+  @override
+  String get specialDaysTitle => 'أيام خاصة';
+
+  @override
+  String get addSpecialDays => 'إضافة أيام خاصة';
+
+  @override
+  String get specialDaysHint =>
+      'لرمضان أو العيد أو العطل: تحل هذه الأيام محل أوقاتك الأسبوعية.';
+
+  @override
+  String get specialDaysPickTitle => 'أي الأيام؟';
+
+  @override
+  String get specialDaysLabel => 'الأيام';
+
+  @override
+  String get specialDaysOverlap => 'هذه الأيام تتداخل مع أيام خاصة أخرى.';
+
+  @override
+  String specialDaysTooLong(int days) {
+    return '$days يومًا على الأكثر في المرة الواحدة.';
+  }
+
+  @override
+  String get removeSpecialDays => 'حذف هذه الأيام';
+
+  @override
+  String dayRange(String from, String to) {
+    return '$from – $to';
+  }
+
+  @override
+  String holdOrClosing(String hold) {
+    return '$hold، أو حتى الإغلاق';
+  }
 }

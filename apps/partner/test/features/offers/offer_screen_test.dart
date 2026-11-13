@@ -63,7 +63,7 @@ void main() {
     expect(find.text('42'), findsOneWidget);
     // Our team's hold time, as the offer came with it.
     expect(find.text('Held for'), findsOneWidget);
-    expect(find.text('2 hours'), findsOneWidget);
+    expect(find.text('2 hours, or until you close'), findsOneWidget);
   });
 
   testWidgets('an offer without a limit shows who saw it instead', (

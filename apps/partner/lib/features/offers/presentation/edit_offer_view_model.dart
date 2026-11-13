@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:kernel/kernel.dart';
 import 'package:stellar/stellar.dart';
 
@@ -7,8 +9,14 @@ import 'offer_form_checks.dart';
 import 'offer_view_model.dart';
 
 class EditOfferState {
-  const EditOfferState({this.saving = false, this.failure});
+  const EditOfferState({
+    required this.endsAt,
+    this.saving = false,
+    this.failure,
+  });
 
+  /// What the end field holds now.
+  final DateTime? endsAt;
   final bool saving;
   final AppFailure? failure;
 }
@@ -39,8 +47,18 @@ class EditOfferViewModel extends ViewModel<EditOfferState> {
         validators: [Validators.required, OfferChecks.endsAt],
       ),
     });
-    ref.onDispose(form.dispose);
-    return const EditOfferState();
+    final changes = form
+        .control('endsAt')
+        .valueChanges
+        .listen(
+          (_) =>
+              state = _snapshot(saving: state.saving, failure: state.failure),
+        );
+    ref.onDispose(() {
+      unawaited(changes.cancel());
+      form.dispose();
+    });
+    return _snapshot();
   }
 
   /// Returns true when it was saved.
@@ -52,7 +70,7 @@ class EditOfferViewModel extends ViewModel<EditOfferState> {
     }
     final storeId = ref.read(currentStoreProvider)?.storeId;
     if (storeId == null) return false;
-    state = const EditOfferState(saving: true);
+    state = _snapshot(saving: true);
 
     final description = (form.control('description').value as String?)?.trim();
     final result = await ref
@@ -72,12 +90,20 @@ class EditOfferViewModel extends ViewModel<EditOfferState> {
     switch (result) {
       case Ok(:final value):
         ref.read(offerViewModel(offerId).notifier).replace(value);
-        state = const EditOfferState();
+        state = _snapshot();
       case Err(:final failure):
-        state = EditOfferState(failure: failure);
+        state = _snapshot(failure: failure);
     }
     return result.isOk;
   }
+
+  /// The form as it is now.
+  EditOfferState _snapshot({bool saving = false, AppFailure? failure}) =>
+      EditOfferState(
+        endsAt: form.control('endsAt').value as DateTime?,
+        saving: saving,
+        failure: failure,
+      );
 }
 
 final editOfferViewModel = NotifierProvider.autoDispose

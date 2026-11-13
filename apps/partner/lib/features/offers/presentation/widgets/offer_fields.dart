@@ -5,6 +5,7 @@ import '../../../../core/l10n/generated/partner_localizations.dart';
 import '../../domain/offer.dart';
 import '../offer_draft_view_model.dart';
 import '../offer_form_checks.dart';
+import 'offer_end_input.dart';
 
 /// The offer's part of a posting form: its price, large; its pieces; when
 /// it ends; and how many one customer can take, folded away, since it
@@ -24,8 +25,6 @@ class OfferFields extends StatelessWidget {
         ? null
         : formatPrice(regularPrice, languageCode: language);
     final discount = state.discount;
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: Space.xl,
@@ -71,14 +70,7 @@ class OfferFields extends StatelessWidget {
               SText.caption(s.unlimitedHint),
           ],
         ),
-        SDateTimeInput(
-          controlName: 'endsAt',
-          label: s.endsLabel,
-          firstDate: today,
-          lastDate: today.add(OfferChecks.maxDuration),
-          presets: endPresets(s),
-          validationMessages: endMessages(s),
-        ),
+        OfferEndInput(endsAt: state.endsAt),
         _Reservations(viewModel: viewModel, state: state),
       ],
     );
@@ -135,21 +127,3 @@ class _Reservations extends StatelessWidget {
     );
   }
 }
-
-/// One-tap end times: tonight (while it's still to come), tomorrow night,
-/// in 3 days, in a week, all at 23:00.
-List<DateTimePreset> endPresets(PartnerLocalizations s) {
-  final now = DateTime.now();
-  DateTime night(int days) => DateTime(now.year, now.month, now.day + days, 23);
-  return [
-    if (night(0).isAfter(now)) DateTimePreset(s.endsTonight, night(0)),
-    DateTimePreset(s.endsTomorrow, night(1)),
-    DateTimePreset(s.endsIn3Days, night(3)),
-    DateTimePreset(s.endsInAWeek, night(7)),
-  ];
-}
-
-Map<String, String Function(Object)> endMessages(PartnerLocalizations s) => {
-  OfferChecks.endsInPastKey: (_) => s.endsInPast,
-  OfferChecks.endsTooLateKey: (_) => s.endsTooLate,
-};

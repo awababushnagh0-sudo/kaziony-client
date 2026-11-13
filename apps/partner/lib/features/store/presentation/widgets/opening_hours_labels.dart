@@ -5,14 +5,14 @@ import '../../../../core/l10n/generated/partner_localizations.dart';
 /// [day]'s name in the app's language: "Saturday" or "السبت".
 String weekdayName(BuildContext context, Weekday day) => formatWeekday(
   // January 3, 2026 was a Saturday: the days from it run as [Weekday] does.
-  DateTime(2026, 1, 3 + day.index),
+  libyaTime(2026, 1, 3 + day.index),
   languageCode: Localizations.localeOf(context).languageCode,
 );
 
 /// [minutes] after midnight as a time in the app's language: "8:30 AM" or
 /// "8:30 ص".
 String clockLabel(BuildContext context, int minutes) => formatTime(
-  DateTime(2026, 1, 1, minutes ~/ 60, minutes % 60),
+  libyaTime(2026, 1, 1, minutes ~/ 60, minutes % 60),
   languageCode: Localizations.localeOf(context).languageCode,
 );
 
@@ -31,4 +31,14 @@ String dayHoursLabel(BuildContext context, List<OpeningShift>? shifts) {
         ),
     ].join(s.listSeparator),
   };
+}
+
+/// Which days [range] runs: "Feb 8 – Mar 9", or "Mar 10" for one.
+String daysLabel(BuildContext context, SpecialHours range) {
+  final language = Localizations.localeOf(context).languageCode;
+  final from = formatDayMonth(range.from, languageCode: language);
+  return range.days == 1
+      ? from
+      : PartnerLocalizations.of(context)
+            .dayRange(from, formatDayMonth(range.to, languageCode: language));
 }

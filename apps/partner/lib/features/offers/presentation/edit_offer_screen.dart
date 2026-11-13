@@ -3,9 +3,8 @@ import 'package:stellar/stellar.dart';
 
 import '../../../core/l10n/generated/partner_localizations.dart';
 import 'edit_offer_view_model.dart';
-import 'offer_form_checks.dart';
 import 'offer_view_model.dart';
-import 'widgets/offer_fields.dart';
+import 'widgets/offer_end_input.dart';
 
 /// Changes an offer's title, description or end time.
 class EditOfferScreen extends AppView {
@@ -48,8 +47,6 @@ class _EditOfferForm extends AppView {
       }
     }
 
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
     return SScaffold(
       title: s.editOfferTitle,
       scrollable: true,
@@ -72,14 +69,7 @@ class _EditOfferForm extends AppView {
               kind: TextInputKind.multiline,
               maxLength: 1000,
             ),
-            SDateTimeInput(
-              controlName: 'endsAt',
-              label: s.endsLabel,
-              firstDate: today,
-              lastDate: today.add(OfferChecks.maxDuration),
-              presets: endPresets(s),
-              validationMessages: endMessages(s),
-            ),
+            OfferEndInput(endsAt: state.endsAt),
             if (state.failure case final failure?)
               SText(failureMessage(context, failure), color: SColor.danger),
           ],

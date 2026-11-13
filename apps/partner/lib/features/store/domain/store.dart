@@ -66,6 +66,7 @@ class Store {
     required this.address,
     required this.location,
     required this.openingHours,
+    required this.specialHours,
     required this.profile,
     required this.logoUrl,
     required this.coverUrl,
@@ -93,6 +94,10 @@ class Store {
 
   /// The owner sets them.
   final OpeningHours openingHours;
+
+  /// Dates that differ from [openingHours] (Ramadan, Eid), ones that
+  /// haven't ended. The owner sets them too.
+  final List<SpecialHours> specialHours;
   final StoreProfile profile;
 
   /// Round, by the store's name wherever customers see it.
@@ -132,8 +137,35 @@ String storeLabel(String name, String? area) =>
 /// The store's two pictures.
 enum StoreImage { logo, cover }
 
+/// Whether customers can book now: a store goes offline for a break, or
+/// closes suddenly, and is back when the time is up (or sooner).
+class StorePause {
+  const StorePause({
+    required this.pausedUntil,
+    required this.nextOpening,
+    required this.waitingBookings,
+  });
+
+  /// Offline until then; null when it takes bookings.
+  final DateTime? pausedUntil;
+
+  /// When the store's hours next open, after the stretch it's in: how long
+  /// "until we open again" lasts. Null when they don't say.
+  final DateTime? nextOpening;
+
+  /// Bookings made and not picked up yet: they stand through a break, or
+  /// are cancelled when the store closes suddenly.
+  final int waitingBookings;
+
+  /// Whether it's offline at [now].
+  bool pausedAt(DateTime now) => pausedUntil?.isAfter(now) ?? false;
+}
+
 /// What a store needs before customers can see it. The owner adds each.
 enum GoLiveItem { logo, pickupInstructions, openingHours }
+
+/// What going offline did.
+typedef StorePaused = ({StorePause pause, int cancelled});
 
 abstract interface class StoreRepository {
   Future<Result<Store>> getStore(String storeId);
@@ -141,8 +173,30 @@ abstract interface class StoreRepository {
   /// Owners only.
   Future<Result<Store>> updateProfile(String storeId, StoreProfile profile);
 
-  /// Owners only. Leaves the profile as it is.
-  Future<Result<Store>> setOpeningHours(String storeId, OpeningHours hours);
+  /// Owners only: the week's hours and the [special] dates, all of them.
+  /// Leaves the profile as it is.
+  Future<Result<Store>> setHours(
+    String storeId,
+    OpeningHours weekly,
+    List<SpecialHours> special,
+  );
+
+  /// Owners and staff.
+  Future<Result<StorePause>> getPause(String storeId);
+
+  /// Owners and staff: stops new bookings for [duration], or until the
+  /// hours open next when null. With [cancelBookings], for a sudden
+  /// closing, the bookings waiting are cancelled too (their customers are
+  /// told, and it doesn't count against them); [StorePaused.cancelled] says
+  /// how many.
+  Future<Result<StorePaused>> pause(
+    String storeId, {
+    Duration? duration,
+    bool cancelBookings = false,
+  });
+
+  /// Owners and staff: customers can book again.
+  Future<Result<StorePause>> resume(String storeId);
 
   /// Owners only. Replaces [image] with [photo].
   Future<Result<Store>> setImage(

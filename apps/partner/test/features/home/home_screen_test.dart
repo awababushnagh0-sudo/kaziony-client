@@ -34,9 +34,11 @@ void main() {
     List<Offer>? offers,
     FakeStatsRepository? stats,
     Store? details,
+    StorePause? pause,
   }) {
     storeRepository = FakeStoreRepository();
     if (details != null) storeRepository.getResult = Ok(details);
+    if (pause != null) storeRepository.pauseState = pause;
     links = FakeLinkOpener();
     // The whole page, so every section is on screen.
     tester.view
@@ -353,7 +355,7 @@ void main() {
     );
     expect(find.text('Logo'), findsOneWidget);
     expect(find.text('Pickup instructions'), findsOneWidget);
-    expect(find.text('Opening hours'), findsOneWidget);
+    expect(find.text('Opening hours for every day'), findsOneWidget);
     // In that order.
     expect(
       tester.getTopLeft(find.text('Logo')).dy,
@@ -361,7 +363,7 @@ void main() {
     );
     expect(
       tester.getTopLeft(find.text('Pickup instructions')).dy,
-      lessThan(tester.getTopLeft(find.text('Opening hours')).dy),
+      lessThan(tester.getTopLeft(find.text('Opening hours for every day')).dy),
     );
     expect(find.text('Your store is ready'), findsNothing);
   });
@@ -369,7 +371,7 @@ void main() {
   for (final (item, label, page) in [
     (GoLiveItem.logo, 'Logo', 'store info page'),
     (GoLiveItem.pickupInstructions, 'Pickup instructions', 'store info page'),
-    (GoLiveItem.openingHours, 'Opening hours', 'location page'),
+    (GoLiveItem.openingHours, 'Opening hours for every day', 'location page'),
   ]) {
     testWidgets('"$label" opens where the owner adds it', (tester) async {
       await open(
@@ -498,5 +500,158 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Your store is ready'), findsNothing);
+  });
+
+  group('taking a break', () {
+    StorePause taking({DateTime? nextOpening, int waiting = 0}) => StorePause(
+      pausedUntil: null,
+      nextOpening: nextOpening,
+      waitingBookings: waiting,
+    );
+
+    Future<void> tap(WidgetTester tester, Finder finder) async {
+      await tester.ensureVisible(finder);
+      await tester.tap(finder);
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('stops new bookings for a while, the made ones standing', (
+      tester,
+    ) async {
+      await open(tester, pause: taking());
+
+      await tap(tester, find.text('Take a break'));
+      expect(find.text('Stop bookings for a while'), findsOneWidget);
+      expect(find.text('30 minutes'), findsOneWidget);
+      expect(find.text('1 hour'), findsOneWidget);
+      // The hours don't say when the store opens next.
+      expect(find.text('Until we open again'), findsNothing);
+      // Nothing waiting to cancel.
+      expect(find.text('Close now and cancel bookings'), findsNothing);
+      await tap(tester, find.text('15 minutes'));
+      await tap(tester, find.text('Stop bookings'));
+
+      expect(storeRepository.pauses, [
+        (duration: const Duration(minutes: 15), cancelBookings: false),
+      ]);
+      expect(find.textContaining('Bookings stopped until'), findsOneWidget);
+      expect(find.textContaining('Offline until'), findsOneWidget);
+      expect(
+        find.text("Customers can't book now. Bookings already made stand."),
+        findsOneWidget,
+      );
+      expect(find.text('Take a break'), findsNothing);
+    });
+
+    testWidgets('until the store opens again, when its hours say', (
+      tester,
+    ) async {
+      final opens = DateTime.now().add(const Duration(hours: 3));
+      await open(tester, pause: taking(nextOpening: opens));
+
+      await tap(tester, find.text('Take a break'));
+      expect(find.text(formatWhen(opens, languageCode: 'en')), findsOneWidget);
+      await tap(tester, find.text('Until we open again'));
+      await tap(tester, find.text('Stop bookings'));
+
+      expect(storeRepository.pauses.single.duration, isNull);
+    });
+
+    testWidgets('closing suddenly cancels the waiting bookings, after asking', (
+      tester,
+    ) async {
+      await open(tester, pause: taking(waiting: 3));
+
+      await tap(tester, find.text('Take a break'));
+      await tap(tester, find.text('Close now and cancel bookings'));
+      expect(find.text('Cancel 3 bookings?'), findsOneWidget);
+      await tap(tester, find.text('Keep them'));
+      expect(storeRepository.pauses, isEmpty);
+
+      await tap(tester, find.text('Close now and cancel bookings'));
+      await tap(tester, find.text('Close and cancel'));
+
+      expect(storeRepository.pauses, [
+        (duration: const Duration(minutes: 30), cancelBookings: true),
+      ]);
+      expect(
+        find.text('Closed: 3 bookings cancelled, and their customers told.'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('says why it was refused, and stays open', (tester) async {
+      await open(tester, pause: taking());
+      storeRepository.failNextPause = const ConflictFailure(
+        "Your opening hours don't say when you open next",
+        'NoOpeningAhead',
+      );
+
+      await tap(tester, find.text('Take a break'));
+      await tap(tester, find.text('Stop bookings'));
+
+      expect(
+        find.text("Your hours don't say when you open next: pick how long."),
+        findsOneWidget,
+      );
+      expect(find.text('Stop bookings for a while'), findsOneWidget);
+    });
+
+    testWidgets('staff take a break too', (tester) async {
+      await open(tester, member: store('a', isOwner: false), pause: taking());
+
+      expect(find.text('Take a break'), findsOneWidget);
+    });
+
+    testWidgets('offline, it takes bookings again', (tester) async {
+      await open(
+        tester,
+        pause: StorePause(
+          pausedUntil: DateTime.now().add(const Duration(minutes: 20)),
+          nextOpening: null,
+          waitingBookings: 0,
+        ),
+      );
+      expect(find.textContaining('Offline until'), findsOneWidget);
+
+      await tap(tester, find.text('Take bookings again'));
+
+      expect(storeRepository.resumes, 1);
+      expect(find.text('Customers can book again.'), findsOneWidget);
+      expect(find.text('Take a break'), findsOneWidget);
+    });
+
+    testWidgets("not while customers can't see the store", (tester) async {
+      await open(tester, details: storeDetails(isActive: false));
+
+      expect(find.text('Take a break'), findsNothing);
+    });
+  });
+
+  testWidgets('asks the owner of a live store for what it still lacks', (
+    tester,
+  ) async {
+    await open(
+      tester,
+      details: storeDetails(missingToGoLive: [GoLiveItem.openingHours]),
+    );
+
+    expect(find.text("Finish your store's details"), findsOneWidget);
+    await tester.ensureVisible(find.text('Opening hours for every day'));
+    await tester.tap(find.text('Opening hours for every day'));
+    await tester.pumpAndSettle();
+    expect(find.text('location page'), findsOneWidget);
+  });
+
+  testWidgets("staff aren't asked: only owners change the store", (
+    tester,
+  ) async {
+    await open(
+      tester,
+      member: store('a', isOwner: false),
+      details: storeDetails(missingToGoLive: [GoLiveItem.openingHours]),
+    );
+
+    expect(find.text("Finish your store's details"), findsNothing);
   });
 }

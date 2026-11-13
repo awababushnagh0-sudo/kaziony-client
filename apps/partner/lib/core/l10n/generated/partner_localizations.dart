@@ -506,13 +506,13 @@ abstract class PartnerLocalizations {
   /// No description provided for @openingHoursHint.
   ///
   /// In en, this message translates to:
-  /// **'Tap a day to change its hours.'**
+  /// **'Tap a day to change its hours. Every day needs its hours, even the ones you\'re closed.'**
   String get openingHoursHint;
 
   /// No description provided for @liveStoreNeedsOpeningHours.
   ///
   /// In en, this message translates to:
-  /// **'Customers see your store, so it needs opening hours on at least one day.'**
+  /// **'Customers see your store, so every day needs its hours, with one day open at least.'**
   String get liveStoreNeedsOpeningHours;
 
   /// No description provided for @locationTeamHint.
@@ -1240,6 +1240,36 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Offers can last at most 30 days.'**
   String get endsTooLate;
+
+  /// No description provided for @offerClosedThroughTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your store is closed for all of this offer'**
+  String get offerClosedThroughTitle;
+
+  /// No description provided for @offerClosedThroughMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'It opens {opens}, after the offer ends, so nobody could pick it up. End it later, or check your hours.'**
+  String offerClosedThroughMessage(String opens);
+
+  /// No description provided for @offerOutsideHoursTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Part of this offer is outside your hours'**
+  String get offerOutsideHoursTitle;
+
+  /// No description provided for @offerOpensLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Your store is closed now: customers pick up once it opens {opens}.'**
+  String offerOpensLater(String opens);
+
+  /// No description provided for @offerClosesBeforeEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Your store closes {closes}, before the offer ends: nothing is picked up after that.'**
+  String offerClosesBeforeEnd(String closes);
 
   /// No description provided for @offerPosted.
   ///
@@ -2140,6 +2170,204 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Leave it empty and customers call your store\'s number.'**
   String get deliveryPhoneHelper;
+
+  /// No description provided for @takeBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a break'**
+  String get takeBreak;
+
+  /// No description provided for @takeBreakHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop new bookings for a while, or close for the day'**
+  String get takeBreakHint;
+
+  /// No description provided for @takeBreakTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop bookings for a while'**
+  String get takeBreakTitle;
+
+  /// No description provided for @takeBreakSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers see your store closed and can\'t book. Bookings already made stand: hand them over as usual.'**
+  String get takeBreakSubtitle;
+
+  /// No description provided for @breakMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} minutes'**
+  String breakMinutes(int minutes);
+
+  /// No description provided for @breakHour.
+  ///
+  /// In en, this message translates to:
+  /// **'1 hour'**
+  String get breakHour;
+
+  /// No description provided for @breakUntilOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Until we open again'**
+  String get breakUntilOpen;
+
+  /// No description provided for @stopBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop bookings'**
+  String get stopBookings;
+
+  /// No description provided for @closeAndCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Close now and cancel bookings'**
+  String get closeAndCancel;
+
+  /// No description provided for @closeAndCancelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Cancel 1 booking?} other{Cancel {count} bookings?}}'**
+  String closeAndCancelTitle(int count);
+
+  /// No description provided for @closeAndCancelMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Only for when you must close and can\'t hand them over. Customers are told, and it doesn\'t count against them.'**
+  String get closeAndCancelMessage;
+
+  /// No description provided for @closeAndCancelConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Close and cancel'**
+  String get closeAndCancelConfirm;
+
+  /// No description provided for @keepBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep them'**
+  String get keepBookings;
+
+  /// No description provided for @noOpeningAhead.
+  ///
+  /// In en, this message translates to:
+  /// **'Your hours don\'t say when you open next: pick how long.'**
+  String get noOpeningAhead;
+
+  /// No description provided for @offlineDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookings stopped until {time}.'**
+  String offlineDone(String time);
+
+  /// No description provided for @storeClosedDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Closed: 1 booking cancelled, and its customer told.} other{Closed: {count} bookings cancelled, and their customers told.}}'**
+  String storeClosedDone(int count);
+
+  /// No description provided for @offlineUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline until {time}'**
+  String offlineUntil(String time);
+
+  /// No description provided for @offlineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers can\'t book now. Bookings already made stand.'**
+  String get offlineMessage;
+
+  /// No description provided for @backOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Take bookings again'**
+  String get backOnline;
+
+  /// No description provided for @backOnlineDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers can book again.'**
+  String get backOnlineDone;
+
+  /// No description provided for @storeMissingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish your store\'s details'**
+  String get storeMissingTitle;
+
+  /// No description provided for @storeMissingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers see your store, but it\'s missing these.'**
+  String get storeMissingMessage;
+
+  /// No description provided for @openingHoursEveryDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening hours for every day'**
+  String get openingHoursEveryDay;
+
+  /// No description provided for @specialDaysTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Special days'**
+  String get specialDaysTitle;
+
+  /// No description provided for @addSpecialDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Add special days'**
+  String get addSpecialDays;
+
+  /// No description provided for @specialDaysHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For Ramadan, Eid or a holiday: these days take the place of your weekly hours.'**
+  String get specialDaysHint;
+
+  /// No description provided for @specialDaysPickTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Which days?'**
+  String get specialDaysPickTitle;
+
+  /// No description provided for @specialDaysLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get specialDaysLabel;
+
+  /// No description provided for @specialDaysOverlap.
+  ///
+  /// In en, this message translates to:
+  /// **'These days overlap other special days.'**
+  String get specialDaysOverlap;
+
+  /// No description provided for @specialDaysTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'At most {days} days at a time.'**
+  String specialDaysTooLong(int days);
+
+  /// No description provided for @removeSpecialDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove these days'**
+  String get removeSpecialDays;
+
+  /// The first and last of special days: "Feb 8 – Mar 9"
+  ///
+  /// In en, this message translates to:
+  /// **'{from} – {to}'**
+  String dayRange(String from, String to);
+
+  /// How long a booking is held: "2 hours, or until you close"
+  ///
+  /// In en, this message translates to:
+  /// **'{hold}, or until you close'**
+  String holdOrClosing(String hold);
 }
 
 class _PartnerLocalizationsDelegate

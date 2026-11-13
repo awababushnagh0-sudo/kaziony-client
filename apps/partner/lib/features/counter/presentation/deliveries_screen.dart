@@ -16,7 +16,7 @@ class DeliveriesScreen extends AppView {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = PartnerLocalizations.of(context);
     final viewModel = ref.read(deliveriesViewModel.notifier);
-    final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
+    final now = ref.watch(minuteClockProvider).value ?? ServerClock.now();
     return SScaffold(
       title: s.deliveriesTitle,
       padded: false,

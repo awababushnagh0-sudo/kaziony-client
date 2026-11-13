@@ -223,10 +223,13 @@ class _Body extends StatelessWidget {
               // Without a limit, how many saw it is in the box above.
               if (total != null) ...[
                 SFactTile(label: s.seenLabel, value: '${offer.viewCount}'),
-                // Our team's setting, the same for every offer.
+                // Our team's setting, the same for every offer; a booking
+                // made near closing time ends when the store closes.
                 SFactTile(
                   label: s.holdTitle,
-                  value: holdLabel(s, offer.claimWindowMinutes),
+                  value: s.holdOrClosing(
+                    holdLabel(s, offer.claimWindowMinutes),
+                  ),
                 ),
               ],
               SFactTile(
@@ -246,7 +249,7 @@ class _Body extends StatelessWidget {
     final s = PartnerLocalizations.of(context);
     final language = Localizations.localeOf(context).languageCode;
     String at(DateTime time) => s.dayAndTime(
-      isSameDay(time, DateTime.now())
+      isSameDay(time, ServerClock.now())
           ? s.dayToday
           : formatDayMonth(time, languageCode: language),
       formatTime(time, languageCode: language),

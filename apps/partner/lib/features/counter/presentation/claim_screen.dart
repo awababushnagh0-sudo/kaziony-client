@@ -220,7 +220,7 @@ class _Details extends AppView {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = PartnerLocalizations.of(context);
     final language = Localizations.localeOf(context).languageCode;
-    final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
+    final now = ref.watch(minuteClockProvider).value ?? ServerClock.now();
     final offer = claim.offer;
     final problem = claimProblemMessage(context, claim);
     final redeemedAt = claim.redeemedAt;

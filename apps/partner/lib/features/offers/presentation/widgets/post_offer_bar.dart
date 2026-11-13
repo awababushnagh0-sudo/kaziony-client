@@ -52,7 +52,7 @@ class PostOfferBar extends StatelessWidget {
     if (endsAt == null) return null;
     if (state.type == OfferType.limited && pieces == null) return null;
     final count = pieces == null ? s.noLimit : s.piecesCount(pieces);
-    final now = DateTime.now();
+    final now = ServerClock.now();
     final today =
         endsAt.year == now.year &&
         endsAt.month == now.month &&

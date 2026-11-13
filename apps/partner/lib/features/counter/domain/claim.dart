@@ -121,7 +121,7 @@ class Claim {
       ClaimStatus.cancelled => ClaimProblem.cancelled,
       ClaimStatus.expired => ClaimProblem.expired,
       // Still reserved: its time ran out a moment ago.
-      ClaimStatus.reserved when !expiresAt.isAfter(DateTime.now()) =>
+      ClaimStatus.reserved when !expiresAt.isAfter(ServerClock.now()) =>
         ClaimProblem.expired,
       ClaimStatus.reserved ||
       ClaimStatus.outForDelivery ||

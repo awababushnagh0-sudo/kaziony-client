@@ -7,13 +7,15 @@ import '../domain/current_store.dart';
 import '../domain/store.dart';
 import 'edit_opening_hours_view_model.dart';
 import 'opening_day_sheet.dart';
+import 'special_days_sheet.dart';
 import 'store_view_model.dart';
 import 'widgets/opening_hours_labels.dart';
 
 /// Where the store is, the way there in the phone's maps, and when it's
-/// open. Each of a brand's places is a store of its own, with this page.
-/// Owners change the opening hours right here: a day's row opens its
-/// times, "Save changes" shows once one changed, and leaving with changes
+/// open, with the special days (Ramadan, Eid) that differ. Each of a
+/// brand's places is a store of its own, with this page. Owners change the
+/// opening hours right here: a day's row opens its times, as do special
+/// days', "Save changes" shows once one changed, and leaving with changes
 /// asks first. The place, and new places, are our team's: owners ask for
 /// them from here, over WhatsApp. Staff only read it.
 class LocationScreen extends AppView {
@@ -60,7 +62,7 @@ class LocationScreen extends AppView {
                 _Place(store),
                 const Gap(Space.xl),
                 if (edit == null)
-                  _Hours(store.openingHours)
+                  _Hours(store)
                 else ...[
                   _EditableHours(edit),
                   const Gap(Space.xl),
@@ -128,23 +130,44 @@ class _Place extends AppView {
   }
 }
 
-/// Staff's hours: each day and its times, nothing to change.
+/// Staff's hours: each day and its times, and the special days, nothing
+/// to change.
 class _Hours extends StatelessWidget {
-  const _Hours(this.hours);
+  const _Hours(this.store);
 
-  final OpeningHours hours;
+  final Store store;
 
   @override
-  Widget build(BuildContext context) => SListGroup(
-    title: PartnerLocalizations.of(context).openingHoursTitle,
-    children: [
-      for (final day in Weekday.values)
-        SFactTile(
-          label: weekdayName(context, day),
-          value: dayHoursLabel(context, hours.days[day]),
+  Widget build(BuildContext context) {
+    final s = PartnerLocalizations.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: Space.xl,
+      children: [
+        SListGroup(
+          title: s.openingHoursTitle,
+          children: [
+            for (final day in Weekday.values)
+              SFactTile(
+                label: weekdayName(context, day),
+                value: dayHoursLabel(context, store.openingHours.days[day]),
+              ),
+          ],
         ),
-    ],
-  );
+        if (store.specialHours.isNotEmpty)
+          SListGroup(
+            title: s.specialDaysTitle,
+            children: [
+              for (final range in store.specialHours)
+                SFactTile(
+                  label: daysLabel(context, range),
+                  value: dayHoursLabel(context, range.shifts),
+                ),
+            ],
+          ),
+      ],
+    );
+  }
 }
 
 /// The owner's hours: each day a row that opens its times.
@@ -173,6 +196,25 @@ class _EditableHours extends AppView {
           ],
         ),
         SText.caption(s.openingHoursHint),
+        const Gap(Space.md),
+        SListGroup(
+          title: s.specialDaysTitle,
+          children: [
+            for (final (index, range) in edit.special.indexed)
+              SListTile(
+                title: daysLabel(context, range),
+                subtitle: dayHoursLabel(context, range.shifts),
+                onTap: () => editSpecialDays(context, ref, index),
+              ),
+            if (edit.canAddSpecial)
+              SListTile(
+                icon: SIcons.add,
+                title: s.addSpecialDays,
+                onTap: () => addSpecialDays(context, ref),
+              ),
+          ],
+        ),
+        SText.caption(s.specialDaysHint),
         if (failure != null)
           SText(switch (failure) {
             ConflictFailure(code: 'StoreNotReady') =>

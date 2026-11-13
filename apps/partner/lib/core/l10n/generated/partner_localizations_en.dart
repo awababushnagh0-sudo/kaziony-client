@@ -238,11 +238,12 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get openingHoursTitle => 'Opening hours';
 
   @override
-  String get openingHoursHint => 'Tap a day to change its hours.';
+  String get openingHoursHint =>
+      'Tap a day to change its hours. Every day needs its hours, even the ones you\'re closed.';
 
   @override
   String get liveStoreNeedsOpeningHours =>
-      'Customers see your store, so it needs opening hours on at least one day.';
+      'Customers see your store, so every day needs its hours, with one day open at least.';
 
   @override
   String get locationTeamHint =>
@@ -637,6 +638,29 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get endsTooLate => 'Offers can last at most 30 days.';
+
+  @override
+  String get offerClosedThroughTitle =>
+      'Your store is closed for all of this offer';
+
+  @override
+  String offerClosedThroughMessage(String opens) {
+    return 'It opens $opens, after the offer ends, so nobody could pick it up. End it later, or check your hours.';
+  }
+
+  @override
+  String get offerOutsideHoursTitle =>
+      'Part of this offer is outside your hours';
+
+  @override
+  String offerOpensLater(String opens) {
+    return 'Your store is closed now: customers pick up once it opens $opens.';
+  }
+
+  @override
+  String offerClosesBeforeEnd(String closes) {
+    return 'Your store closes $closes, before the offer ends: nothing is picked up after that.';
+  }
 
   @override
   String get offerPosted => 'Offer posted.';
@@ -1203,4 +1227,138 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   @override
   String get deliveryPhoneHelper =>
       'Leave it empty and customers call your store\'s number.';
+
+  @override
+  String get takeBreak => 'Take a break';
+
+  @override
+  String get takeBreakHint =>
+      'Stop new bookings for a while, or close for the day';
+
+  @override
+  String get takeBreakTitle => 'Stop bookings for a while';
+
+  @override
+  String get takeBreakSubtitle =>
+      'Customers see your store closed and can\'t book. Bookings already made stand: hand them over as usual.';
+
+  @override
+  String breakMinutes(int minutes) {
+    return '$minutes minutes';
+  }
+
+  @override
+  String get breakHour => '1 hour';
+
+  @override
+  String get breakUntilOpen => 'Until we open again';
+
+  @override
+  String get stopBookings => 'Stop bookings';
+
+  @override
+  String get closeAndCancel => 'Close now and cancel bookings';
+
+  @override
+  String closeAndCancelTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Cancel $count bookings?',
+      one: 'Cancel 1 booking?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get closeAndCancelMessage =>
+      'Only for when you must close and can\'t hand them over. Customers are told, and it doesn\'t count against them.';
+
+  @override
+  String get closeAndCancelConfirm => 'Close and cancel';
+
+  @override
+  String get keepBookings => 'Keep them';
+
+  @override
+  String get noOpeningAhead =>
+      'Your hours don\'t say when you open next: pick how long.';
+
+  @override
+  String offlineDone(String time) {
+    return 'Bookings stopped until $time.';
+  }
+
+  @override
+  String storeClosedDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Closed: $count bookings cancelled, and their customers told.',
+      one: 'Closed: 1 booking cancelled, and its customer told.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String offlineUntil(String time) {
+    return 'Offline until $time';
+  }
+
+  @override
+  String get offlineMessage =>
+      'Customers can\'t book now. Bookings already made stand.';
+
+  @override
+  String get backOnline => 'Take bookings again';
+
+  @override
+  String get backOnlineDone => 'Customers can book again.';
+
+  @override
+  String get storeMissingTitle => 'Finish your store\'s details';
+
+  @override
+  String get storeMissingMessage =>
+      'Customers see your store, but it\'s missing these.';
+
+  @override
+  String get openingHoursEveryDay => 'Opening hours for every day';
+
+  @override
+  String get specialDaysTitle => 'Special days';
+
+  @override
+  String get addSpecialDays => 'Add special days';
+
+  @override
+  String get specialDaysHint =>
+      'For Ramadan, Eid or a holiday: these days take the place of your weekly hours.';
+
+  @override
+  String get specialDaysPickTitle => 'Which days?';
+
+  @override
+  String get specialDaysLabel => 'Days';
+
+  @override
+  String get specialDaysOverlap => 'These days overlap other special days.';
+
+  @override
+  String specialDaysTooLong(int days) {
+    return 'At most $days days at a time.';
+  }
+
+  @override
+  String get removeSpecialDays => 'Remove these days';
+
+  @override
+  String dayRange(String from, String to) {
+    return '$from – $to';
+  }
+
+  @override
+  String holdOrClosing(String hold) {
+    return '$hold, or until you close';
+  }
 }

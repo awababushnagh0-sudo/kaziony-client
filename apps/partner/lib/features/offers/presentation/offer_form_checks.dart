@@ -22,12 +22,15 @@ abstract final class OfferChecks {
   /// An end time still to come, at most [maxDuration] away.
   static const Validator<dynamic> endsAt = _EndsAt();
 
-  /// Tonight at 23:00 when it's still to come, else tomorrow's: when most
-  /// end-of-day offers end.
+  /// Tonight at 23:00 in Libya when it's still to come, else tomorrow's:
+  /// when most end-of-day offers end.
   static DateTime defaultEnd([DateTime? now]) {
-    final at = now ?? DateTime.now();
-    final tonight = DateTime(at.year, at.month, at.day, 23);
-    return tonight.isAfter(at) ? tonight : tonight.add(const Duration(days: 1));
+    final at = now ?? ServerClock.now();
+    final today = libyaClock(at);
+    final tonight = libyaTime(today.year, today.month, today.day, 23);
+    return tonight.isAfter(at)
+        ? tonight
+        : libyaTime(today.year, today.month, today.day + 1, 23);
   }
 }
 
@@ -57,7 +60,7 @@ class _EndsAt extends Validator<dynamic> {
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     final value = control.value;
     if (value is! DateTime) return null;
-    final now = DateTime.now();
+    final now = ServerClock.now();
     if (!value.isAfter(now)) return {OfferChecks.endsInPastKey: true};
     if (value.isAfter(now.add(OfferChecks.maxDuration))) {
       return {OfferChecks.endsTooLateKey: true};

@@ -28,10 +28,13 @@ void main() {
     WidgetTester tester, {
     bool isOwner = true,
     OpeningHours hours = OpeningHours.none,
+    List<SpecialHours> special = const [],
     bool linksOpen = true,
   }) async {
     stores = FakeStoreRepository()
-      ..getResult = Ok(storeDetails(openingHours: hours));
+      ..getResult = Ok(
+        storeDetails(openingHours: hours, specialHours: special),
+      );
     links = FakeLinkOpener(opens: linksOpen);
     // A tall phone, so the whole week is on screen.
     tester.view
@@ -72,7 +75,7 @@ void main() {
 
   /// [hour]:[minute] as the page writes it in English.
   String time(int hour, [int minute = 0]) =>
-      formatTime(DateTime(2026, 1, 1, hour, minute), languageCode: 'en');
+      formatTime(libyaTime(2026, 1, 1, hour, minute), languageCode: 'en');
 
   String hours(int opens, int closes) => '${time(opens)} – ${time(closes)}';
 
@@ -231,8 +234,8 @@ void main() {
 
     expect(
       find.text(
-        'Customers see your store, so it needs opening hours on at least '
-        'one day.',
+        'Customers see your store, so every day needs its hours, with one '
+        'day open at least.',
       ),
       findsOneWidget,
     );
@@ -268,5 +271,68 @@ void main() {
     await tap(tester, find.text('Request a change'));
 
     expect(find.text("Couldn't open it on this phone."), findsOneWidget);
+  });
+
+  group('special days', () {
+    final ramadan = SpecialHours(
+      from: libyaTime(2027, 2, 8),
+      to: libyaTime(2027, 3, 9),
+      shifts: const [OpeningShift(opens: 20 * 60, closes: 2 * 60)],
+    );
+    final eid = SpecialHours(
+      from: libyaTime(2027, 3, 10),
+      to: libyaTime(2027, 3, 10),
+      shifts: const [],
+    );
+
+    testWidgets('staff read them under the week', (tester) async {
+      await open(tester, isOwner: false, special: [ramadan, eid]);
+
+      expect(find.text('Special days'), findsOneWidget);
+      expect(find.text('Feb 8 – Mar 9'), findsOneWidget);
+      expect(find.text(hours(20, 2)), findsOneWidget);
+      expect(find.text('Mar 10'), findsOneWidget);
+      expect(find.text('Add special days'), findsNothing);
+    });
+
+    testWidgets('the owner closes them all day and saves', (tester) async {
+      const week = OpeningHours({Weekday.fri: []});
+      await open(tester, hours: week, special: [ramadan]);
+
+      await tap(tester, find.text('Feb 8 – Mar 9'));
+      expect(find.text('Days'), findsOneWidget);
+      await tap(tester, find.text('Closed').last);
+      await tap(tester, find.text('Done'));
+      await tap(tester, find.text('Save changes'));
+
+      expect(stores.special.single, [
+        SpecialHours(from: ramadan.from, to: ramadan.to, shifts: const []),
+      ]);
+      // The week as it was.
+      expect(stores.hours.single, week);
+      expect(find.text('Saved.'), findsOneWidget);
+    });
+
+    testWidgets('the owner takes them away', (tester) async {
+      await open(tester, special: [ramadan, eid]);
+
+      await tap(tester, find.text('Mar 10'));
+      await tap(tester, find.text('Remove these days'));
+      expect(find.text('Mar 10'), findsNothing);
+      await tap(tester, find.text('Save changes'));
+
+      expect(stores.special.single, [ramadan]);
+    });
+
+    testWidgets('new ones start in the calendar', (tester) async {
+      await open(tester);
+      // Wide enough for the calendar's heading in the tests' square font.
+      tester.view.physicalSize = const Size(1500, 4000);
+      await tester.pumpAndSettle();
+
+      await tap(tester, find.text('Add special days'));
+
+      expect(find.text('Which days?'), findsOneWidget);
+    });
   });
 }

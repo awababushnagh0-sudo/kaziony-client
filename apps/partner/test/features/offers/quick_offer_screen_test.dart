@@ -8,6 +8,7 @@ import 'package:partner/features/offers/domain/offer.dart';
 import 'package:partner/features/offers/presentation/quick_offer_screen.dart';
 import 'package:partner/features/products/domain/product.dart';
 import 'package:partner/features/store/domain/current_store.dart';
+import 'package:partner/features/store/domain/store.dart';
 
 import '../../fakes.dart';
 import '../../support/finders.dart';
@@ -18,10 +19,13 @@ void main() {
   late FakeProductRepository products;
   late FakePhotoPicker photos;
 
-  Future<void> open(WidgetTester tester) async {
+  /// With the store's weekly [hours], none said by default.
+  Future<void> open(WidgetTester tester, {OpeningHours? hours}) async {
     offers = FakeOfferRepository([]);
     products = FakeProductRepository([]);
     photos = FakePhotoPicker();
+    final stores = FakeStoreRepository();
+    if (hours != null) stores.getResult = Ok(storeDetails(openingHours: hours));
     // A tall phone, so the whole form is on screen.
     tester.view
       ..physicalSize = const Size(1200, 7000)
@@ -34,6 +38,7 @@ void main() {
         offerRepositoryProvider.overrideWithValue(offers),
         productRepositoryProvider.overrideWithValue(products),
         photoPickerProvider.overrideWithValue(photos),
+        storeRepositoryProvider.overrideWithValue(stores),
         currentStoreProvider.overrideWithValue(store('a')),
       ],
       routes: [
@@ -72,6 +77,35 @@ void main() {
     expect(posted.offerPrice, '5.000');
     expect(posted.totalQuantity, 3);
     expect(find.text('offer page'), findsOneWidget);
+  });
+
+  testWidgets('warns when the store closes before the offer ends', (
+    tester,
+  ) async {
+    await open(
+      tester,
+      hours: OpeningHours({
+        for (final day in Weekday.values)
+          day: const [OpeningShift(opens: 9 * 60, closes: 22 * 60)],
+      }),
+    );
+    // At 23:00, an hour after closing.
+    await tester.tap(find.text('In a week'));
+    await tester.pump();
+
+    expect(
+      find.text('Part of this offer is outside your hours'),
+      findsOneWidget,
+    );
+    expect(find.textContaining('before the offer ends'), findsOneWidget);
+  });
+
+  testWidgets("says nothing of hours the store hasn't said", (tester) async {
+    await open(tester);
+    await tester.tap(find.text('In a week'));
+    await tester.pump();
+
+    expect(find.text('Part of this offer is outside your hours'), findsNothing);
   });
 
   testWidgets('checks the offer price against the typed regular one', (

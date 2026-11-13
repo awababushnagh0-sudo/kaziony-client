@@ -41,18 +41,61 @@ class ApiStoreRepository implements StoreRepository {
   }
 
   @override
-  Future<Result<Store>> setOpeningHours(
+  Future<Result<Store>> setHours(
     String storeId,
-    OpeningHours hours,
+    OpeningHours weekly,
+    List<SpecialHours> special,
   ) async {
     final result = await _api.guard(
       () => _stores.updateProfile(
         storeId: storeId,
         // The fields left out stay as they are.
-        body: UpdateStoreProfileDto(openingHours: hours.toJson()),
+        body: UpdateStoreProfileDto(
+          openingHours: weekly.toJson(),
+          specialHours: [for (final range in special) range.toJson()],
+        ),
       ),
     );
     return result.map(_toStore);
+  }
+
+  @override
+  Future<Result<StorePause>> getPause(String storeId) async {
+    final result = await _api.guard(() => _stores.getPause(storeId: storeId));
+    return result.map(_toPause);
+  }
+
+  @override
+  Future<Result<StorePaused>> pause(
+    String storeId, {
+    Duration? duration,
+    bool cancelBookings = false,
+  }) async {
+    final result = await _api.guard(
+      () => _stores.pause(
+        storeId: storeId,
+        body: PauseStoreDto(
+          minutes: duration?.inMinutes,
+          cancelBookings: cancelBookings,
+        ),
+      ),
+    );
+    return result.map(
+      (dto) => (
+        pause: StorePause(
+          pausedUntil: dto.pausedUntil?.toLocal(),
+          nextOpening: dto.nextOpening?.toLocal(),
+          waitingBookings: dto.waitingBookings.toInt(),
+        ),
+        cancelled: dto.cancelled.toInt(),
+      ),
+    );
+  }
+
+  @override
+  Future<Result<StorePause>> resume(String storeId) async {
+    final result = await _api.guard(() => _stores.resume(storeId: storeId));
+    return result.map(_toPause);
   }
 
   @override
@@ -78,6 +121,12 @@ class ApiStoreRepository implements StoreRepository {
   }
 }
 
+StorePause _toPause(StorePauseDto dto) => StorePause(
+  pausedUntil: dto.pausedUntil?.toLocal(),
+  nextOpening: dto.nextOpening?.toLocal(),
+  waitingBookings: dto.waitingBookings.toInt(),
+);
+
 Store _toStore(StoreDetailDto dto) => Store(
   id: dto.id,
   name: dto.name,
@@ -93,6 +142,7 @@ Store _toStore(StoreDetailDto dto) => Store(
   address: dto.address,
   location: GeoPoint(dto.latitude.toDouble(), dto.longitude.toDouble()),
   openingHours: OpeningHours.fromJson(dto.openingHours),
+  specialHours: SpecialHours.listFromJson(dto.specialHours),
   profile: StoreProfile(
     pickupInstructions: dto.pickupInstructions,
     phone: dto.phone,

@@ -117,7 +117,7 @@ class OfferCard extends StatelessWidget {
   /// When it starts, until when it runs, or when it ended: the time when
   /// that's today, otherwise the day, short enough to fit beside the price.
   String _when(PartnerLocalizations s, String language) {
-    String at(DateTime time) => isSameDay(time, DateTime.now())
+    String at(DateTime time) => isSameDay(time, ServerClock.now())
         ? formatTime(time, languageCode: language)
         : formatDayMonth(time, languageCode: language);
     return switch (offer.state) {

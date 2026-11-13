@@ -81,8 +81,8 @@
   "addressLabel": "Address",
   "openInMaps": "Open in Maps",
   "openingHoursTitle": "Opening hours",
-  "openingHoursHint": "Tap a day to change its hours.",
-  "liveStoreNeedsOpeningHours": "Customers see your store, so it needs opening hours on at least one day.",
+  "openingHoursHint": "Tap a day to change its hours. Every day needs its hours, even the ones you're closed.",
+  "liveStoreNeedsOpeningHours": "Customers see your store, so every day needs its hours, with one day open at least.",
   "locationTeamHint": "Our team changes the store's name and location, and adds new branches.",
   "requestChange": "Request a change",
   "requestPlaceMessage": "Hello, I'd like to add a new branch or change the details of the store: {store}",
@@ -275,6 +275,14 @@
   "endsInAWeek": "In a week",
   "endsInPast": "Choose a time that's still to come.",
   "endsTooLate": "Offers can last at most 30 days.",
+  "offerClosedThroughTitle": "Your store is closed for all of this offer",
+  "offerClosedThroughMessage": "It opens {opens}, after the offer ends, so nobody could pick it up. End it later, or check your hours.",
+  "@offerClosedThroughMessage": {"placeholders": {"opens": {"type": "String"}}},
+  "offerOutsideHoursTitle": "Part of this offer is outside your hours",
+  "offerOpensLater": "Your store is closed now: customers pick up once it opens {opens}.",
+  "@offerOpensLater": {"placeholders": {"opens": {"type": "String"}}},
+  "offerClosesBeforeEnd": "Your store closes {closes}, before the offer ends: nothing is picked up after that.",
+  "@offerClosesBeforeEnd": {"placeholders": {"closes": {"type": "String"}}},
   "offerPosted": "Offer posted.",
   "holdValue": "{minutes} min",
   "@holdValue": {
@@ -672,5 +680,99 @@
   "weDeliver": "We deliver too",
   "weDeliverHint": "Customers with a booking see a number to call to have it brought. Delivery and any fee are between you and them. When your driver takes one, look its code up and tap Send for delivery.",
   "deliveryPhoneLabel": "Number for delivery",
-  "deliveryPhoneHelper": "Leave it empty and customers call your store's number."
+  "deliveryPhoneHelper": "Leave it empty and customers call your store's number.",
+  "takeBreak": "Take a break",
+  "takeBreakHint": "Stop new bookings for a while, or close for the day",
+  "takeBreakTitle": "Stop bookings for a while",
+  "takeBreakSubtitle": "Customers see your store closed and can't book. Bookings already made stand: hand them over as usual.",
+  "breakMinutes": "{minutes} minutes",
+  "@breakMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "breakHour": "1 hour",
+  "breakUntilOpen": "Until we open again",
+  "stopBookings": "Stop bookings",
+  "closeAndCancel": "Close now and cancel bookings",
+  "closeAndCancelTitle": "{count, plural, =1{Cancel 1 booking?} other{Cancel {count} bookings?}}",
+  "@closeAndCancelTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "closeAndCancelMessage": "Only for when you must close and can't hand them over. Customers are told, and it doesn't count against them.",
+  "closeAndCancelConfirm": "Close and cancel",
+  "keepBookings": "Keep them",
+  "noOpeningAhead": "Your hours don't say when you open next: pick how long.",
+  "offlineDone": "Bookings stopped until {time}.",
+  "@offlineDone": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "storeClosedDone": "{count, plural, =1{Closed: 1 booking cancelled, and its customer told.} other{Closed: {count} bookings cancelled, and their customers told.}}",
+  "@storeClosedDone": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "offlineUntil": "Offline until {time}",
+  "@offlineUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineMessage": "Customers can't book now. Bookings already made stand.",
+  "backOnline": "Take bookings again",
+  "backOnlineDone": "Customers can book again.",
+  "storeMissingTitle": "Finish your store's details",
+  "storeMissingMessage": "Customers see your store, but it's missing these.",
+  "openingHoursEveryDay": "Opening hours for every day",
+  "specialDaysTitle": "Special days",
+  "addSpecialDays": "Add special days",
+  "specialDaysHint": "For Ramadan, Eid or a holiday: these days take the place of your weekly hours.",
+  "specialDaysPickTitle": "Which days?",
+  "specialDaysLabel": "Days",
+  "specialDaysOverlap": "These days overlap other special days.",
+  "specialDaysTooLong": "At most {days} days at a time.",
+  "@specialDaysTooLong": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "removeSpecialDays": "Remove these days",
+  "dayRange": "{from} – {to}",
+  "@dayRange": {
+    "description": "The first and last of special days: \"Feb 8 – Mar 9\"",
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "holdOrClosing": "{hold}, or until you close",
+  "@holdOrClosing": {
+    "description": "How long a booking is held: \"2 hours, or until you close\"",
+    "placeholders": {
+      "hold": {
+        "type": "String"
+      }
+    }
+  }
 }

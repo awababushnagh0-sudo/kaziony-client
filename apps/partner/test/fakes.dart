@@ -65,6 +65,7 @@ Store storeDetails({
   StoreProfile? profile,
   String? area = 'Hay Al Andalus',
   OpeningHours openingHours = OpeningHours.none,
+  List<SpecialHours> specialHours = const [],
   String? logoUrl,
   double? ratingAverage = 4.5,
   int ratingCount = 37,
@@ -80,6 +81,7 @@ Store storeDetails({
   address: 'Jaraba Street',
   location: const GeoPoint(32.871, 13.115),
   openingHours: openingHours,
+  specialHours: specialHours,
   profile:
       profile ??
       const StoreProfile(
@@ -140,21 +142,70 @@ class FakeStoreRepository implements StoreRepository {
   }
 
   final hours = <OpeningHours>[];
+  final special = <List<SpecialHours>>[];
 
   /// The next opening hours fail with this, once.
   AppFailure? failNextHours;
 
   @override
-  Future<Result<Store>> setOpeningHours(
+  Future<Result<Store>> setHours(
     String storeId,
-    OpeningHours hours,
+    OpeningHours weekly,
+    List<SpecialHours> special,
   ) async {
     if (failNextHours case final failure?) {
       failNextHours = null;
       return Err(failure);
     }
-    this.hours.add(hours);
-    return Ok(storeDetails(openingHours: hours));
+    hours.add(weekly);
+    this.special.add(special);
+    return Ok(storeDetails(openingHours: weekly, specialHours: special));
+  }
+
+  /// What the pause calls return, until one changes it.
+  StorePause pauseState = const StorePause(
+    pausedUntil: null,
+    nextOpening: null,
+    waitingBookings: 0,
+  );
+  final pauses = <({Duration? duration, bool cancelBookings})>[];
+  var resumes = 0;
+
+  /// The next pause fails with this, once.
+  AppFailure? failNextPause;
+
+  @override
+  Future<Result<StorePause>> getPause(String storeId) async => Ok(pauseState);
+
+  @override
+  Future<Result<StorePaused>> pause(
+    String storeId, {
+    Duration? duration,
+    bool cancelBookings = false,
+  }) async {
+    if (failNextPause case final failure?) {
+      failNextPause = null;
+      return Err(failure);
+    }
+    pauses.add((duration: duration, cancelBookings: cancelBookings));
+    final cancelled = cancelBookings ? pauseState.waitingBookings : 0;
+    pauseState = StorePause(
+      pausedUntil: DateTime.now().add(duration ?? const Duration(hours: 10)),
+      nextOpening: pauseState.nextOpening,
+      waitingBookings: pauseState.waitingBookings - cancelled,
+    );
+    return Ok((pause: pauseState, cancelled: cancelled));
+  }
+
+  @override
+  Future<Result<StorePause>> resume(String storeId) async {
+    resumes++;
+    pauseState = StorePause(
+      pausedUntil: null,
+      nextOpening: pauseState.nextOpening,
+      waitingBookings: pauseState.waitingBookings,
+    );
+    return Ok(pauseState);
   }
 
   final images = <StoreImage>[];

@@ -12,14 +12,19 @@ import '../../offers/domain/offer.dart';
 import '../../offers/presentation/widgets/start_offer.dart';
 import '../../store/domain/current_store.dart';
 import '../../store/domain/store.dart';
+import '../../store/presentation/store_pause_view_model.dart';
 import '../../store/presentation/store_view_model.dart';
+import '../../store/presentation/take_break_sheet.dart';
+import '../../store/presentation/take_break_view_model.dart';
 import 'home_view_model.dart';
 
 /// The day at a glance: today's numbers, the next customers to come and how
 /// the live offers sell. Staff see the same day, without the numbers only
 /// owners act on (no-shows, offers), and the deliveries out to close.
-/// Members of several stores (a brand's places) see which one it is. While customers can't see the store, it
-/// says what's left before they can.
+/// Members of several stores (a brand's places) see which one it is. While
+/// customers can't see the store, it says what's left before they can;
+/// once they can, owners and staff take it offline for a break from here,
+/// or close it suddenly, and bring it back.
 class HomeScreen extends AppView {
   const HomeScreen({super.key});
 
@@ -27,12 +32,14 @@ class HomeScreen extends AppView {
   Widget build(BuildContext context, WidgetRef ref) {
     final home = ref.watch(homeViewModel);
     Future<void> refresh() async {
-      final (homeFailure, storeFailure) = await (
+      final (homeFailure, storeFailure, pauseFailure) = await (
         ref.read(homeViewModel.notifier).refresh(),
         // Our team may have turned the store on since.
         ref.read(storeViewModel.notifier).refresh(),
+        // Someone else at the store may have taken a break.
+        ref.read(storePauseViewModel.notifier).refresh(),
       ).wait;
-      if ((homeFailure ?? storeFailure) case final failure?
+      if ((homeFailure ?? storeFailure ?? pauseFailure) case final failure?
           when context.mounted) {
         SSnack.error(context, failureMessage(context, failure));
       }
@@ -107,9 +114,10 @@ class _HomeBody extends AppView {
     // Kept loaded here, so what the owner adds on the store's pages shows
     // when they come back.
     final details = ref.watch(storeViewModel).value;
+    final pause = ref.watch(storePauseViewModel).value;
     final isOwner = store?.isOwner ?? false;
     final several = ref.watch(myStoresProvider).length > 1;
-    final now = ref.watch(minuteClockProvider).value ?? DateTime.now();
+    final now = ref.watch(minuteClockProvider).value ?? ServerClock.now();
     final onTheWay = home.onTheWayAt(now);
     final offers = home.liveOffers.take(Home.offersShown).toList();
     return Column(
@@ -131,6 +139,22 @@ class _HomeBody extends AppView {
             child: _NotLive(details, isOwner: isOwner),
           ),
           const Gap(Space.lg),
+        ] else if (details != null) ...[
+          if (pause != null) ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+              child: _Bookings(pause, now: now),
+            ),
+            const Gap(Space.lg),
+          ],
+          // Only owners change the store.
+          if (isOwner && details.missingToGoLive.isNotEmpty) ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+              child: _StillMissing(details.missingToGoLive),
+            ),
+            const Gap(Space.lg),
+          ],
         ],
         if (home.stats.outForDelivery > 0) ...[
           Padding(
@@ -221,6 +245,58 @@ class _NotLive extends StatelessWidget {
         ],
       );
     }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: Space.md,
+      children: [
+        SAlert.warning(
+          title: s.storeNotLiveTitle,
+          message: isOwner
+              ? s.storeNotLiveOwnerMessage
+              : s.storeNotLiveStaffMessage,
+        ),
+        _MissingRows(missing, canAdd: isOwner),
+      ],
+    );
+  }
+}
+
+/// What a live store lacks that customers need (set before the rule
+/// changed, like hours for every day): each opens the page the owner adds
+/// it on. Customers still see the store meanwhile.
+class _StillMissing extends StatelessWidget {
+  const _StillMissing(this.missing);
+
+  final List<GoLiveItem> missing;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = PartnerLocalizations.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: Space.md,
+      children: [
+        SAlert.warning(
+          title: s.storeMissingTitle,
+          message: s.storeMissingMessage,
+        ),
+        _MissingRows(missing, canAdd: true),
+      ],
+    );
+  }
+}
+
+/// A row for each thing a store lacks, opening the page it's added on
+/// when [canAdd].
+class _MissingRows extends StatelessWidget {
+  const _MissingRows(this.missing, {required this.canAdd});
+
+  final List<GoLiveItem> missing;
+  final bool canAdd;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = PartnerLocalizations.of(context);
     SListTile row(GoLiveItem item) {
       // The logo is changed with the pictures, at the top of the store's
       // info.
@@ -233,15 +309,56 @@ class _NotLive extends StatelessWidget {
         ),
         GoLiveItem.openingHours => (
           SIcons.clock,
-          s.openingHoursTitle,
+          s.openingHoursEveryDay,
           Routes.location,
         ),
       };
       return SListTile(
         icon: icon,
         title: title,
-        onTap: isOwner ? () => context.push(route) : null,
+        onTap: canAdd ? () => context.push(route) : null,
       );
+    }
+
+    return SListGroup(children: [for (final item in missing) row(item)]);
+  }
+}
+
+/// Whether customers can book now. Taking them: a row that takes a break
+/// (or closes suddenly). Offline: until when, that bookings made stand,
+/// and the way back.
+class _Bookings extends AppView {
+  const _Bookings(this.pause, {required this.now});
+
+  final StorePause pause;
+  final DateTime now;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final s = PartnerLocalizations.of(context);
+    final until = pause.pausedUntil;
+    if (until == null || !pause.pausedAt(now)) {
+      return SListGroup(
+        children: [
+          SListTile(
+            icon: SIcons.pause,
+            title: s.takeBreak,
+            subtitle: s.takeBreakHint,
+            onTap: () => takeBreak(context, ref, pause),
+          ),
+        ],
+      );
+    }
+    final resuming =
+        ref.watch(takeBreakViewModel).sending == BreakAction.resume;
+    Future<void> resume() async {
+      final failure = await ref.read(takeBreakViewModel.notifier).resume();
+      if (!context.mounted) return;
+      if (failure == null) {
+        SSnack.success(context, s.backOnlineDone);
+      } else {
+        SSnack.error(context, failureMessage(context, failure));
+      }
     }
 
     return Column(
@@ -249,12 +366,22 @@ class _NotLive extends StatelessWidget {
       spacing: Space.md,
       children: [
         SAlert.warning(
-          title: s.storeNotLiveTitle,
-          message: isOwner
-              ? s.storeNotLiveOwnerMessage
-              : s.storeNotLiveStaffMessage,
+          title: s.offlineUntil(
+            formatWhen(
+              until,
+              languageCode: Localizations.localeOf(context).languageCode,
+              now: now,
+            ),
+          ),
+          message: s.offlineMessage,
         ),
-        SListGroup(children: [for (final item in missing) row(item)]),
+        SButton(
+          label: s.backOnline,
+          icon: SIcons.resume,
+          expand: true,
+          loading: resuming,
+          onPressed: resume,
+        ),
       ],
     );
   }
