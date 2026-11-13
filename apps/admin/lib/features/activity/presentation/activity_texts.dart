@@ -26,6 +26,7 @@ String activityActionText(AdminLocalizations s, ActivityEntry entry) =>
       'serviceArea.delete' => s.activityServiceAreaDelete,
       'settings.update' => s.activitySettingsUpdate,
       'offer.remove' => s.activityOfferRemove,
+      'report.resolve' => s.activityReportResolve,
       'job.run' => s.activityJobRun,
       final other => other,
     };

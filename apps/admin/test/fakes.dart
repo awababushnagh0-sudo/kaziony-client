@@ -3,6 +3,7 @@ import 'package:admin/features/auth/domain/auth_repository.dart';
 import 'package:admin/features/dashboard/domain/dashboard_stats.dart';
 import 'package:admin/features/platform/domain/platform_settings.dart';
 import 'package:admin/features/platform/domain/service_area.dart';
+import 'package:admin/features/reports/domain/customer_report.dart';
 import 'package:admin/features/search/domain/search_term.dart';
 import 'package:admin/features/stores/domain/location.dart';
 import 'package:admin/features/stores/domain/store.dart';
@@ -602,6 +603,103 @@ class FakeActivityRepository implements ActivityRepository {
           entry,
     ];
     return Ok(ActivityPage(total: shown.length, items: shown));
+  }
+}
+
+/// A missed pickup of 2 reported because the store was closed; its
+/// customer was paused when [paused].
+CustomerReport sampleReport({
+  String id = 'r1',
+  ReportReason reason = ReportReason.storeClosed,
+  String? note = 'The door was locked at 8:30',
+  ReportState state = ReportState.open,
+  bool hasStrike = true,
+  bool paused = false,
+  bool strikeRemoved = false,
+  String? resolution,
+}) => CustomerReport(
+  id: id,
+  reason: reason,
+  note: note,
+  state: state,
+  createdAt: DateTime.utc(2026, 11, 9, 19),
+  booking: ReportedBooking(
+    id: 'c-$id',
+    code: 'K7Q2',
+    status: ReportedBookingStatus.missed,
+    quantity: 2,
+    totalPrice: '9.000',
+    offerTitle: 'Kunafa box',
+    createdAt: DateTime.utc(2026, 11, 9, 18),
+    expiresAt: DateTime.utc(2026, 11, 9, 18, 30),
+  ),
+  store: const ReportedStore(id: 's1', name: 'Sweet Corner', area: 'Andalus'),
+  customer: ReportCustomer(
+    id: 'u-$id',
+    name: 'Huda',
+    email: 'huda@example.com',
+    contactPhone: '+218910000001',
+    missedPickups: hasStrike ? 3 : 2,
+    pausedUntil: paused ? DateTime.utc(2026, 11, 12, 18, 30) : null,
+  ),
+  hasStrike: hasStrike,
+  strikeRemoved: strikeRemoved,
+  pauseEnded: false,
+  resolution: resolution,
+  resolvedAt: state == ReportState.resolved
+      ? DateTime.utc(2026, 11, 10, 9)
+      : null,
+  resolverName: state == ReportState.resolved ? 'Sara' : null,
+);
+
+class FakeReportRepository implements ReportRepository {
+  List<CustomerReport> reports = [
+    sampleReport(paused: true),
+    sampleReport(
+      id: 'r2',
+      reason: ReportReason.quality,
+      note: null,
+      state: ReportState.resolved,
+      strikeRemoved: true,
+      resolution: 'The store owned up',
+    ),
+  ];
+  final queries = <ReportQuery>[];
+  final resolved = <(String, ReportResolution)>[];
+
+  /// What resolving answers; by default, the report as resolved.
+  Result<CustomerReport>? resolveResult;
+
+  @override
+  Future<Result<ReportPage>> list(ReportQuery query) async {
+    queries.add(query);
+    final shown = [
+      for (final report in reports)
+        if (query.filter == null || report.state == query.filter) report,
+    ];
+    return Ok(ReportPage(total: shown.length, items: shown));
+  }
+
+  @override
+  Future<Result<CustomerReport>> resolve(
+    String id,
+    ReportResolution resolution,
+  ) async {
+    resolved.add((id, resolution));
+    final result = resolveResult;
+    if (result != null) return result;
+    final report = sampleReport(
+      id: id,
+      state: ReportState.resolved,
+      hasStrike: !resolution.removeStrike,
+      strikeRemoved: resolution.removeStrike,
+      resolution: resolution.note,
+    );
+    reports = [
+      for (final r in reports)
+        if (r.id == id) report else r,
+    ];
+    return Ok(report);
   }
 }
 

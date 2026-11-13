@@ -10,6 +10,8 @@ import '../../features/platform/data/api_platform_settings_repository.dart';
 import '../../features/platform/data/api_service_area_repository.dart';
 import '../../features/platform/domain/platform_settings.dart';
 import '../../features/platform/domain/service_area.dart';
+import '../../features/reports/data/api_report_repository.dart';
+import '../../features/reports/domain/customer_report.dart';
 import '../../features/search/data/api_search_term_repository.dart';
 import '../../features/search/domain/search_term.dart';
 import '../../features/stores/data/api_store_repository.dart';
@@ -47,5 +49,8 @@ final List<Override> dependencies = [
   ),
   activityRepositoryProvider.overrideWith(
     (ref) => ApiActivityRepository(ref.watch(apiProvider)),
+  ),
+  reportRepositoryProvider.overrideWith(
+    (ref) => ApiReportRepository(ref.watch(apiProvider)),
   ),
 ];

@@ -10,6 +10,7 @@ enum ActivityArea {
   serviceAreas,
   settings,
   offers,
+  reports,
   jobs,
 }
 

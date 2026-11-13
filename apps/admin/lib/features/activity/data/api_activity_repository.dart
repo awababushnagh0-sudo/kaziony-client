@@ -24,6 +24,7 @@ class ApiActivityRepository implements ActivityRepository {
           ActivityArea.serviceAreas => AuditArea.serviceArea,
           ActivityArea.settings => AuditArea.settings,
           ActivityArea.offers => AuditArea.offer,
+          ActivityArea.reports => AuditArea.report,
           ActivityArea.jobs => AuditArea.job,
         },
       ),

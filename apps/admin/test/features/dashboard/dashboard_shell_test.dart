@@ -69,6 +69,7 @@ void main() {
       'Users',
       'Offers',
       'Categories',
+      'Reports',
       'System',
       'Activity',
     ]) {
@@ -128,5 +129,6 @@ void main() {
     expect(find.text('System'), findsNothing);
     expect(find.text('Activity'), findsNothing);
     expect(find.text('Offers'), findsWidgets);
+    expect(find.text('Reports'), findsWidgets);
   });
 }

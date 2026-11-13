@@ -917,7 +917,8 @@
   "goLiveLogo": "Logo",
   "goLiveLogoWhere": "On the Photos tab, or added by the owner in the store app.",
   "goLivePickupWhere": "On the Details tab, or written by the owner.",
-  "goLiveHoursWhere": "On the Place tab, or set by the owner.",
+  "goLiveHoursWhere": "Every day, open or closed: on the Place tab, or set by the owner.",
+  "goLiveHours": "Hours for every day",
   "goLiveDone": "Done",
   "goLiveMissing": "Missing",
   "tabPhotos": "Photos",
@@ -974,5 +975,89 @@
   "deliveryPickupOnly": "Pickup only",
   "deliveryToo": "Delivers too",
   "storeDeliveryPhone": "Number for delivery",
-  "storeDeliveryPhoneHelp": "Empty: customers call the store's phone."
+  "storeDeliveryPhoneHelp": "Empty: customers call the store's phone.",
+  "navReports": "Reports",
+  "reportsTitle": "Customer reports",
+  "reportsSearch": "Search by booking code, store or customer",
+  "reportsTotal": "{count, plural, =1{1 report} other{{count} reports}}",
+  "@reportsTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reportsEmpty": "No reports",
+  "reportsEmptyMessage": "When a customer reports a problem with a booking, it shows here for the team to look into.",
+  "filterOpen": "Open",
+  "filterResolved": "Resolved",
+  "columnCustomer": "Customer",
+  "columnStore": "Store",
+  "columnReason": "Reason",
+  "reportReasonStoreClosed": "The store was closed",
+  "reportReasonNotGiven": "The store didn't give the booking",
+  "reportReasonPriceDifferent": "Asked to pay more",
+  "reportReasonQuality": "Something was wrong with it",
+  "reportReasonOther": "Something else",
+  "reportCustomerSaid": "What the customer said",
+  "reportBooking": "The booking",
+  "reportCode": "Code",
+  "reportOffer": "Offer",
+  "reportPieces": "{count, plural, =1{1 piece · {price}} other{{count} pieces · {price}}}",
+  "@reportPieces": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "reportPiecesLabel": "Pieces",
+  "reportBookingStatus": "Status",
+  "reportBooked": "Booked",
+  "reportPickUpBy": "To pick up by",
+  "bookingWaiting": "Waiting to be picked up",
+  "bookingOutForDelivery": "Out for delivery",
+  "bookingPickedUp": "Picked up",
+  "bookingMissed": "Missed",
+  "bookingCancelled": "Cancelled",
+  "reportCustomer": "The customer",
+  "reportDeletedAccount": "Deleted their account",
+  "reportPhone": "Phone",
+  "reportMissedPickups": "Missed pickups",
+  "reportPausedUntil": "Booking paused until",
+  "reportOpenStore": "Open the store",
+  "reportTakeBack": "What to take back",
+  "reportRemoveStrike": "This booking's strike",
+  "reportRemoveStrikeOn": "Taken back: their missed pickups go down by one",
+  "reportRemoveStrikeOff": "Stays",
+  "reportEndPause": "Their pause in booking",
+  "reportEndPauseOn": "Ended now: they can book again",
+  "reportEndPauseOff": "Stays until {date}",
+  "@reportEndPauseOff": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "reportNoStrike": "This booking gave no strike.",
+  "reportNothingToTakeBack": "This booking gave no strike and the customer isn't paused: resolving closes the report.",
+  "reportResolution": "What you found",
+  "reportResolutionHint": "For the team: what the store or the customer said",
+  "reportResolve": "Resolve",
+  "reportResolvedDone": "Report resolved",
+  "reportDecision": "What the team decided",
+  "reportResolvedBy": "Resolved by",
+  "reportTakenBack": "Taken back",
+  "reportTakenBoth": "The strike and the pause",
+  "reportTakenStrike": "The strike",
+  "reportTakenPause": "The pause",
+  "reportTakenNothing": "Nothing",
+  "reportAlreadyResolved": "Someone on the team resolved this report first.",
+  "reportStrikeGone": "This booking's strike was already taken back.",
+  "reportPauseOver": "The customer's pause has already ended.",
+  "activityReportResolve": "Resolved a customer report"
 }

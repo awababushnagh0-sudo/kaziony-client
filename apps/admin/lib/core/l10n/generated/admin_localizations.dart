@@ -2435,8 +2435,14 @@ abstract class AdminLocalizations {
   /// No description provided for @goLiveHoursWhere.
   ///
   /// In en, this message translates to:
-  /// **'On the Place tab, or set by the owner.'**
+  /// **'Every day, open or closed: on the Place tab, or set by the owner.'**
   String get goLiveHoursWhere;
+
+  /// No description provided for @goLiveHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours for every day'**
+  String get goLiveHours;
 
   /// No description provided for @goLiveDone.
   ///
@@ -2623,6 +2629,366 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'Empty: customers call the store\'s phone.'**
   String get storeDeliveryPhoneHelp;
+
+  /// No description provided for @navReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get navReports;
+
+  /// No description provided for @reportsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer reports'**
+  String get reportsTitle;
+
+  /// No description provided for @reportsSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by booking code, store or customer'**
+  String get reportsSearch;
+
+  /// No description provided for @reportsTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 report} other{{count} reports}}'**
+  String reportsTotal(int count);
+
+  /// No description provided for @reportsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No reports'**
+  String get reportsEmpty;
+
+  /// No description provided for @reportsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'When a customer reports a problem with a booking, it shows here for the team to look into.'**
+  String get reportsEmptyMessage;
+
+  /// No description provided for @filterOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get filterOpen;
+
+  /// No description provided for @filterResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get filterResolved;
+
+  /// No description provided for @columnCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get columnCustomer;
+
+  /// No description provided for @columnStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Store'**
+  String get columnStore;
+
+  /// No description provided for @columnReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get columnReason;
+
+  /// No description provided for @reportReasonStoreClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'The store was closed'**
+  String get reportReasonStoreClosed;
+
+  /// No description provided for @reportReasonNotGiven.
+  ///
+  /// In en, this message translates to:
+  /// **'The store didn\'t give the booking'**
+  String get reportReasonNotGiven;
+
+  /// No description provided for @reportReasonPriceDifferent.
+  ///
+  /// In en, this message translates to:
+  /// **'Asked to pay more'**
+  String get reportReasonPriceDifferent;
+
+  /// No description provided for @reportReasonQuality.
+  ///
+  /// In en, this message translates to:
+  /// **'Something was wrong with it'**
+  String get reportReasonQuality;
+
+  /// No description provided for @reportReasonOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Something else'**
+  String get reportReasonOther;
+
+  /// No description provided for @reportCustomerSaid.
+  ///
+  /// In en, this message translates to:
+  /// **'What the customer said'**
+  String get reportCustomerSaid;
+
+  /// No description provided for @reportBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'The booking'**
+  String get reportBooking;
+
+  /// No description provided for @reportCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get reportCode;
+
+  /// No description provided for @reportOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer'**
+  String get reportOffer;
+
+  /// No description provided for @reportPieces.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 piece · {price}} other{{count} pieces · {price}}}'**
+  String reportPieces(int count, String price);
+
+  /// No description provided for @reportPiecesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pieces'**
+  String get reportPiecesLabel;
+
+  /// No description provided for @reportBookingStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get reportBookingStatus;
+
+  /// No description provided for @reportBooked.
+  ///
+  /// In en, this message translates to:
+  /// **'Booked'**
+  String get reportBooked;
+
+  /// No description provided for @reportPickUpBy.
+  ///
+  /// In en, this message translates to:
+  /// **'To pick up by'**
+  String get reportPickUpBy;
+
+  /// No description provided for @bookingWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting to be picked up'**
+  String get bookingWaiting;
+
+  /// No description provided for @bookingOutForDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Out for delivery'**
+  String get bookingOutForDelivery;
+
+  /// No description provided for @bookingPickedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up'**
+  String get bookingPickedUp;
+
+  /// No description provided for @bookingMissed.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed'**
+  String get bookingMissed;
+
+  /// No description provided for @bookingCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get bookingCancelled;
+
+  /// No description provided for @reportCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'The customer'**
+  String get reportCustomer;
+
+  /// No description provided for @reportDeletedAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted their account'**
+  String get reportDeletedAccount;
+
+  /// No description provided for @reportPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get reportPhone;
+
+  /// No description provided for @reportMissedPickups.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed pickups'**
+  String get reportMissedPickups;
+
+  /// No description provided for @reportPausedUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking paused until'**
+  String get reportPausedUntil;
+
+  /// No description provided for @reportOpenStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the store'**
+  String get reportOpenStore;
+
+  /// No description provided for @reportTakeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'What to take back'**
+  String get reportTakeBack;
+
+  /// No description provided for @reportRemoveStrike.
+  ///
+  /// In en, this message translates to:
+  /// **'This booking\'s strike'**
+  String get reportRemoveStrike;
+
+  /// No description provided for @reportRemoveStrikeOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Taken back: their missed pickups go down by one'**
+  String get reportRemoveStrikeOn;
+
+  /// No description provided for @reportRemoveStrikeOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Stays'**
+  String get reportRemoveStrikeOff;
+
+  /// No description provided for @reportEndPause.
+  ///
+  /// In en, this message translates to:
+  /// **'Their pause in booking'**
+  String get reportEndPause;
+
+  /// No description provided for @reportEndPauseOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended now: they can book again'**
+  String get reportEndPauseOn;
+
+  /// No description provided for @reportEndPauseOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Stays until {date}'**
+  String reportEndPauseOff(String date);
+
+  /// No description provided for @reportNoStrike.
+  ///
+  /// In en, this message translates to:
+  /// **'This booking gave no strike.'**
+  String get reportNoStrike;
+
+  /// No description provided for @reportNothingToTakeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'This booking gave no strike and the customer isn\'t paused: resolving closes the report.'**
+  String get reportNothingToTakeBack;
+
+  /// No description provided for @reportResolution.
+  ///
+  /// In en, this message translates to:
+  /// **'What you found'**
+  String get reportResolution;
+
+  /// No description provided for @reportResolutionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For the team: what the store or the customer said'**
+  String get reportResolutionHint;
+
+  /// No description provided for @reportResolve.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolve'**
+  String get reportResolve;
+
+  /// No description provided for @reportResolvedDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Report resolved'**
+  String get reportResolvedDone;
+
+  /// No description provided for @reportDecision.
+  ///
+  /// In en, this message translates to:
+  /// **'What the team decided'**
+  String get reportDecision;
+
+  /// No description provided for @reportResolvedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved by'**
+  String get reportResolvedBy;
+
+  /// No description provided for @reportTakenBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Taken back'**
+  String get reportTakenBack;
+
+  /// No description provided for @reportTakenBoth.
+  ///
+  /// In en, this message translates to:
+  /// **'The strike and the pause'**
+  String get reportTakenBoth;
+
+  /// No description provided for @reportTakenStrike.
+  ///
+  /// In en, this message translates to:
+  /// **'The strike'**
+  String get reportTakenStrike;
+
+  /// No description provided for @reportTakenPause.
+  ///
+  /// In en, this message translates to:
+  /// **'The pause'**
+  String get reportTakenPause;
+
+  /// No description provided for @reportTakenNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing'**
+  String get reportTakenNothing;
+
+  /// No description provided for @reportAlreadyResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone on the team resolved this report first.'**
+  String get reportAlreadyResolved;
+
+  /// No description provided for @reportStrikeGone.
+  ///
+  /// In en, this message translates to:
+  /// **'This booking\'s strike was already taken back.'**
+  String get reportStrikeGone;
+
+  /// No description provided for @reportPauseOver.
+  ///
+  /// In en, this message translates to:
+  /// **'The customer\'s pause has already ended.'**
+  String get reportPauseOver;
+
+  /// No description provided for @activityReportResolve.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved a customer report'**
+  String get activityReportResolve;
 }
 
 class _AdminLocalizationsDelegate

@@ -119,7 +119,7 @@ void main() {
 
     await tester.tap(find.text('Actions'));
     await tester.pumpAndSettle();
-    expect(find.text('Needs: Logo · Opening hours'), findsOneWidget);
+    expect(find.text('Needs: Logo · Hours for every day'), findsOneWidget);
     await tester.tap(find.text('Enable store'));
     await tester.pumpAndSettle();
 

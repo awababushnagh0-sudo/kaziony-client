@@ -1431,7 +1431,11 @@ class AdminLocalizationsEn extends AdminLocalizations {
       'On the Details tab, or written by the owner.';
 
   @override
-  String get goLiveHoursWhere => 'On the Place tab, or set by the owner.';
+  String get goLiveHoursWhere =>
+      'Every day, open or closed: on the Place tab, or set by the owner.';
+
+  @override
+  String get goLiveHours => 'Hours for every day';
 
   @override
   String get goLiveDone => 'Done';
@@ -1548,4 +1552,208 @@ class AdminLocalizationsEn extends AdminLocalizations {
   @override
   String get storeDeliveryPhoneHelp =>
       'Empty: customers call the store\'s phone.';
+
+  @override
+  String get navReports => 'Reports';
+
+  @override
+  String get reportsTitle => 'Customer reports';
+
+  @override
+  String get reportsSearch => 'Search by booking code, store or customer';
+
+  @override
+  String reportsTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count reports',
+      one: '1 report',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reportsEmpty => 'No reports';
+
+  @override
+  String get reportsEmptyMessage =>
+      'When a customer reports a problem with a booking, it shows here for the team to look into.';
+
+  @override
+  String get filterOpen => 'Open';
+
+  @override
+  String get filterResolved => 'Resolved';
+
+  @override
+  String get columnCustomer => 'Customer';
+
+  @override
+  String get columnStore => 'Store';
+
+  @override
+  String get columnReason => 'Reason';
+
+  @override
+  String get reportReasonStoreClosed => 'The store was closed';
+
+  @override
+  String get reportReasonNotGiven => 'The store didn\'t give the booking';
+
+  @override
+  String get reportReasonPriceDifferent => 'Asked to pay more';
+
+  @override
+  String get reportReasonQuality => 'Something was wrong with it';
+
+  @override
+  String get reportReasonOther => 'Something else';
+
+  @override
+  String get reportCustomerSaid => 'What the customer said';
+
+  @override
+  String get reportBooking => 'The booking';
+
+  @override
+  String get reportCode => 'Code';
+
+  @override
+  String get reportOffer => 'Offer';
+
+  @override
+  String reportPieces(int count, String price) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pieces · $price',
+      one: '1 piece · $price',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reportPiecesLabel => 'Pieces';
+
+  @override
+  String get reportBookingStatus => 'Status';
+
+  @override
+  String get reportBooked => 'Booked';
+
+  @override
+  String get reportPickUpBy => 'To pick up by';
+
+  @override
+  String get bookingWaiting => 'Waiting to be picked up';
+
+  @override
+  String get bookingOutForDelivery => 'Out for delivery';
+
+  @override
+  String get bookingPickedUp => 'Picked up';
+
+  @override
+  String get bookingMissed => 'Missed';
+
+  @override
+  String get bookingCancelled => 'Cancelled';
+
+  @override
+  String get reportCustomer => 'The customer';
+
+  @override
+  String get reportDeletedAccount => 'Deleted their account';
+
+  @override
+  String get reportPhone => 'Phone';
+
+  @override
+  String get reportMissedPickups => 'Missed pickups';
+
+  @override
+  String get reportPausedUntil => 'Booking paused until';
+
+  @override
+  String get reportOpenStore => 'Open the store';
+
+  @override
+  String get reportTakeBack => 'What to take back';
+
+  @override
+  String get reportRemoveStrike => 'This booking\'s strike';
+
+  @override
+  String get reportRemoveStrikeOn =>
+      'Taken back: their missed pickups go down by one';
+
+  @override
+  String get reportRemoveStrikeOff => 'Stays';
+
+  @override
+  String get reportEndPause => 'Their pause in booking';
+
+  @override
+  String get reportEndPauseOn => 'Ended now: they can book again';
+
+  @override
+  String reportEndPauseOff(String date) {
+    return 'Stays until $date';
+  }
+
+  @override
+  String get reportNoStrike => 'This booking gave no strike.';
+
+  @override
+  String get reportNothingToTakeBack =>
+      'This booking gave no strike and the customer isn\'t paused: resolving closes the report.';
+
+  @override
+  String get reportResolution => 'What you found';
+
+  @override
+  String get reportResolutionHint =>
+      'For the team: what the store or the customer said';
+
+  @override
+  String get reportResolve => 'Resolve';
+
+  @override
+  String get reportResolvedDone => 'Report resolved';
+
+  @override
+  String get reportDecision => 'What the team decided';
+
+  @override
+  String get reportResolvedBy => 'Resolved by';
+
+  @override
+  String get reportTakenBack => 'Taken back';
+
+  @override
+  String get reportTakenBoth => 'The strike and the pause';
+
+  @override
+  String get reportTakenStrike => 'The strike';
+
+  @override
+  String get reportTakenPause => 'The pause';
+
+  @override
+  String get reportTakenNothing => 'Nothing';
+
+  @override
+  String get reportAlreadyResolved =>
+      'Someone on the team resolved this report first.';
+
+  @override
+  String get reportStrikeGone =>
+      'This booking\'s strike was already taken back.';
+
+  @override
+  String get reportPauseOver => 'The customer\'s pause has already ended.';
+
+  @override
+  String get activityReportResolve => 'Resolved a customer report';
 }

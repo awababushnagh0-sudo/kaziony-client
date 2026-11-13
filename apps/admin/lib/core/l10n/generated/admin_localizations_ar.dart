@@ -1458,7 +1458,11 @@ class AdminLocalizationsAr extends AdminLocalizations {
       'في تبويب البيانات الأساسية، أو يكتبها صاحب المتجر.';
 
   @override
-  String get goLiveHoursWhere => 'في تبويب المكان، أو يضيفها صاحب المتجر.';
+  String get goLiveHoursWhere =>
+      'كل الأيام، مفتوحة أو مغلقة: في تبويب المكان، أو يضيفها صاحب المتجر.';
+
+  @override
+  String get goLiveHours => 'أوقات كل الأيام';
 
   @override
   String get goLiveDone => 'تم';
@@ -1576,4 +1580,209 @@ class AdminLocalizationsAr extends AdminLocalizations {
   @override
   String get storeDeliveryPhoneHelp =>
       'إن تُرك فارغًا يتصل الزبائن برقم المحل.';
+
+  @override
+  String get navReports => 'البلاغات';
+
+  @override
+  String get reportsTitle => 'بلاغات الزبائن';
+
+  @override
+  String get reportsSearch => 'ابحث برمز الحجز أو المتجر أو الزبون';
+
+  @override
+  String reportsTotal(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count بلاغًا',
+      few: '$count بلاغات',
+      two: 'بلاغان',
+      one: 'بلاغ واحد',
+      zero: 'لا بلاغات',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reportsEmpty => 'لا بلاغات';
+
+  @override
+  String get reportsEmptyMessage =>
+      'حين يبلّغ زبون عن مشكلة في حجز، يظهر بلاغه هنا ليراجعه الفريق.';
+
+  @override
+  String get filterOpen => 'مفتوحة';
+
+  @override
+  String get filterResolved => 'محلولة';
+
+  @override
+  String get columnCustomer => 'الزبون';
+
+  @override
+  String get columnStore => 'المتجر';
+
+  @override
+  String get columnReason => 'السبب';
+
+  @override
+  String get reportReasonStoreClosed => 'المتجر كان مغلقًا';
+
+  @override
+  String get reportReasonNotGiven => 'المتجر لم يسلّم الحجز';
+
+  @override
+  String get reportReasonPriceDifferent => 'طُلب منه سعر أعلى';
+
+  @override
+  String get reportReasonQuality => 'مشكلة فيما استلمه';
+
+  @override
+  String get reportReasonOther => 'شيء آخر';
+
+  @override
+  String get reportCustomerSaid => 'ما قاله الزبون';
+
+  @override
+  String get reportBooking => 'الحجز';
+
+  @override
+  String get reportCode => 'الرمز';
+
+  @override
+  String get reportOffer => 'العرض';
+
+  @override
+  String reportPieces(int count, String price) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count قطعة · $price',
+      few: '$count قطع · $price',
+      two: 'قطعتان · $price',
+      one: 'قطعة واحدة · $price',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reportPiecesLabel => 'القطع';
+
+  @override
+  String get reportBookingStatus => 'الحالة';
+
+  @override
+  String get reportBooked => 'وقت الحجز';
+
+  @override
+  String get reportPickUpBy => 'يُستلم قبل';
+
+  @override
+  String get bookingWaiting => 'بانتظار الاستلام';
+
+  @override
+  String get bookingOutForDelivery => 'خرج للتوصيل';
+
+  @override
+  String get bookingPickedUp => 'استُلم';
+
+  @override
+  String get bookingMissed => 'لم يُستلم';
+
+  @override
+  String get bookingCancelled => 'أُلغي';
+
+  @override
+  String get reportCustomer => 'الزبون';
+
+  @override
+  String get reportDeletedAccount => 'حذف حسابه';
+
+  @override
+  String get reportPhone => 'الهاتف';
+
+  @override
+  String get reportMissedPickups => 'مرات التخلّف';
+
+  @override
+  String get reportPausedUntil => 'الحجز موقوف حتى';
+
+  @override
+  String get reportOpenStore => 'افتح المتجر';
+
+  @override
+  String get reportTakeBack => 'ما يُرفع عنه';
+
+  @override
+  String get reportRemoveStrike => 'تخلّف هذا الحجز';
+
+  @override
+  String get reportRemoveStrikeOn => 'يُرفع: تنقص مرات تخلّفه واحدة';
+
+  @override
+  String get reportRemoveStrikeOff => 'يبقى';
+
+  @override
+  String get reportEndPause => 'إيقاف حجزه';
+
+  @override
+  String get reportEndPauseOn => 'ينتهي الآن: يستطيع الحجز مجددًا';
+
+  @override
+  String reportEndPauseOff(String date) {
+    return 'يبقى حتى $date';
+  }
+
+  @override
+  String get reportNoStrike => 'هذا الحجز لم يُحسب تخلّفًا.';
+
+  @override
+  String get reportNothingToTakeBack =>
+      'هذا الحجز لم يُحسب تخلّفًا والزبون غير موقوف: الحل يُغلق البلاغ فقط.';
+
+  @override
+  String get reportResolution => 'ما وجدته';
+
+  @override
+  String get reportResolutionHint => 'للفريق: ما قاله المتجر أو الزبون';
+
+  @override
+  String get reportResolve => 'حلّ البلاغ';
+
+  @override
+  String get reportResolvedDone => 'تم حل البلاغ';
+
+  @override
+  String get reportDecision => 'قرار الفريق';
+
+  @override
+  String get reportResolvedBy => 'حلّه';
+
+  @override
+  String get reportTakenBack => 'ما رُفع';
+
+  @override
+  String get reportTakenBoth => 'التخلّف والإيقاف';
+
+  @override
+  String get reportTakenStrike => 'التخلّف';
+
+  @override
+  String get reportTakenPause => 'الإيقاف';
+
+  @override
+  String get reportTakenNothing => 'لا شيء';
+
+  @override
+  String get reportAlreadyResolved => 'حلّ أحد أعضاء الفريق هذا البلاغ قبلك.';
+
+  @override
+  String get reportStrikeGone => 'رُفع تخلّف هذا الحجز من قبل.';
+
+  @override
+  String get reportPauseOver => 'انتهى إيقاف الزبون من قبل.';
+
+  @override
+  String get activityReportResolve => 'حل بلاغ زبون';
 }

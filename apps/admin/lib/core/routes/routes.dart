@@ -13,6 +13,9 @@ abstract final class Routes {
   static const categories = '/categories';
   static const platform = '/platform';
 
+  /// Customers' reports of problems with their bookings.
+  static const reports = '/reports';
+
   /// What customers search for in the app.
   static const searches = '/searches';
 

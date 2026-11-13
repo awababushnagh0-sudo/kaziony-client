@@ -32,6 +32,7 @@ class ActivityScreen extends AppView {
           (ActivityArea.serviceAreas, s.activityAreaServiceAreas),
           (ActivityArea.settings, s.activityAreaSettings),
           (ActivityArea.offers, s.navOffers),
+          (ActivityArea.reports, s.navReports),
           (ActivityArea.jobs, s.activityAreaJobs),
         ],
         totalLabel: s.activityTotal,

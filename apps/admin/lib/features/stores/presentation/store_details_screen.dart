@@ -492,7 +492,7 @@ class _GoLiveFacts extends StatelessWidget {
 String goLiveItemName(AdminLocalizations s, GoLiveItem item) => switch (item) {
   GoLiveItem.logo => s.goLiveLogo,
   GoLiveItem.pickupInstructions => s.storePickupInstructions,
-  GoLiveItem.openingHours => s.sectionHours,
+  GoLiveItem.openingHours => s.goLiveHours,
 };
 
 /// Live, off but ready, or off with something missing.

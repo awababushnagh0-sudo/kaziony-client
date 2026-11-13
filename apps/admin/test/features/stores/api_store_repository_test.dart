@@ -26,6 +26,8 @@ Map<String, Object?> _details({
   'latitude': 32.871,
   'longitude': 13.115,
   'openingHours': openingHours,
+  'specialHours': <Object?>[],
+  'pausedUntil': null,
   'logoUrl': null,
   'coverUrl': null,
   'phone': '+218912345678',

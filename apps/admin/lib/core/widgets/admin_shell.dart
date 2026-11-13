@@ -41,6 +41,7 @@ class AdminShell extends AppView {
         item(Routes.offers, s.navOffers, SIcons.offers),
         item(Routes.categories, s.navCategories, SIcons.category),
         item(Routes.platform, s.navPlatform, SIcons.location),
+        item(Routes.reports, s.navReports, SIcons.chat),
         if (ref.watch(isAdminProvider))
           item(Routes.searches, s.navSearches, SIcons.search),
         if (ref.watch(isAdminProvider))
