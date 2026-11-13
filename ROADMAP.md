@@ -235,8 +235,17 @@ The screen staff use all day, so it must be fast and work on a weak connection.
 
 - [x] App name كزيوني للمتاجر, icon (the bag in reverse: cream on green) and splash screen
 - [ ] Test on a real Android phone on a slow connection: timeouts, retry, "no connection"
-- [ ] Crash reporting (`ErrorReporter` → Sentry or Crashlytics)
-- [ ] Builds: Android APK/AAB and iOS TestFlight for the first stores
+- [x] Crash reporting: `ErrorReporter` → Sentry (or GlitchTip), in every app, off until
+      `SENTRY_DSN` is set (README, Releases): errors with the user's id only, the pages
+      opened, a failed request's endpoint and the backend's request id; native crashes and
+      crash-free sessions on the phones
+- [ ] Create the Sentry projects (one per app) and put their DSNs in `config/prod.json`;
+      then CI uploads the dashboard's source maps (`sentry_dart_plugin`), so web errors
+      read with their real names
+- [x] Android builds for the first stores: CI signs them with our upload key on `main`
+      (the `.aab` for Google Play, the `.apk` to install by hand), numbered by commit count
+- [ ] iOS: signing and TestFlight (needs the Apple Developer account)
+- [ ] Google Play: the app listings, then uploads from CI to the internal testing track
 
 ## Step 4: Customer app
 
@@ -258,8 +267,9 @@ The screen staff use all day, so it must be fast and work on a weak connection.
       iOS bundle ID), the paid Maps APIs capped at 0, and drop the engine we don't use
 - [ ] Sign in with Apple — the button is there and says "coming soon"; needs the Apple
       Developer account (and is required on iOS alongside Google)
-- [ ] Before release: an Android OAuth client for the release key and for Play's
-      app-signing key (their SHA-1s), and the Google consent screen published
+- [ ] Before release: an Android OAuth client for the release key (its SHA-1 is in the
+      README, Releases) and for Play's app-signing key, and the Google consent screen
+      published
 - [x] Home: where offers are shown from, search, categories with the app's pictures, a
       carousel of banners, then rows (ending soon, near you, biggest discount) with "See
       all" and rows of stores between them, then one "All offers" card to every offer
@@ -320,7 +330,6 @@ The screen staff use all day, so it must be fast and work on a weak connection.
 ## Later
 
 - Push notifications (needs Firebase)
-- Sentry or Crashlytics account for the `ErrorReporter`
 - Shorebird for code fixes without app store review (optional)
 - App icons, splash screens, store listings
 - [x] CI: analyze, test, import rules, formatting, builds (web, Android, iOS); the

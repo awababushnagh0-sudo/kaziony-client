@@ -138,11 +138,68 @@ cd apps/partner && flutter test integration_test -d <device> \
 
 CI (`.github/workflows/ci.yml`) runs `tool/check_all.sh` and checks formatting on every
 push, and builds every app with `config/prod.json`: the dashboard for the web (kept 30
-days), the store and customer apps for Android and iOS (unsigned: the stores need their
-accounts' keys). **Deploy dashboard** (`.github/workflows/deploy-dashboard.yml`, started
-by hand) ships the web build of a commit to the server; it needs `API_BASE_URL` in
-`apps/admin/config/prod.json` to be the real API, and the `production` environment set
-up as in the backend repo's `deploy/README.md` ("Releasing from GitHub").
+days), the store and customer apps for Android and iOS. **Deploy dashboard**
+(`.github/workflows/deploy-dashboard.yml`, started by hand) ships the web build of a
+commit to the server; it needs `API_BASE_URL` in `apps/admin/config/prod.json` to be the
+real API, and the `production` environment set up as in the backend repo's
+`deploy/README.md` ("Releasing from GitHub").
+
+## Releases
+
+**Build numbers.** CI numbers each build with the count of commits up to it
+(`git rev-list --count HEAD`), so on `main` they only go up, as the stores require. The
+version name stays the one in each app's `pubspec.yaml`: raise it for a release users
+should notice, and raise `*_APP_MIN_VERSION` on the backend when older apps must update.
+
+**Android.** On `main`, CI signs both phone apps with our upload key and keeps them 30
+days in the run's artifacts (`partner-android`, `customer-android`): the `.aab` for Google
+Play and the `.apk` to install by hand. Pull requests get a throwaway key, only to check
+they build.
+
+- **The key.** It lives outside the repos, with its password in `key.properties` next to
+  it: one key for both apps, alias `upload`. Keep a copy of both files in your password
+  manager. CI has them as the repo secrets `ANDROID_UPLOAD_KEYSTORE` (the `.jks` in
+  base64) and `ANDROID_UPLOAD_KEY_PASSWORD`.
+- **Building locally.** To sign a release build on your machine, copy that
+  `key.properties` to `apps/<app>/android/key.properties`. It's ignored by git; without it,
+  release builds get the debug key, which Google Play refuses.
+- **If it's lost or leaked.** Google Play can reset the upload key, because Play holds
+  the key it signs the apps with (Play App Signing).
+- **Its fingerprints.** Google sign-in and a Google Maps key restricted to the app need
+  them:
+
+  ```
+  SHA-1   29:DB:D3:5E:4C:C4:0E:FB:60:56:7B:98:24:46:D3:7B:22:4E:5D:CD
+  SHA-256 C2:BB:64:29:D2:39:06:ED:46:11:58:DB:A9:87:00:E5:1F:32:78:63:35:44:11:B9:BE:17:A7:01:D1:68:43:08
+  ```
+
+  Once the apps are on Google Play, add Play's app-signing key from the Play Console too.
+
+**iOS.** CI builds both phone apps unsigned for now. Signing and TestFlight need the
+Apple Developer account.
+
+**Crash reporting.** The apps send crashes and unexpected errors to Sentry, or to a
+self-hosted GlitchTip (same protocol), when their `config/<env>.json` has a
+`SENTRY_DSN`; it's empty for now, so reporting is off. To switch it on:
+
+1. Create a Flutter project per app in the same Sentry organization as the backend.
+2. Put each project's DSN in its app's `config/prod.json` (and `staging.json`). A DSN
+   only allows sending, and it ships inside every app anyway.
+3. In each project's settings, turn on "Prevent Storing of IP Addresses".
+
+What a report holds:
+
+- the error with its stack, and the app version (`ly.kaziony.partner@1.0.0+206`);
+- the user's id, never a name, phone or email;
+- the pages opened before the error, as route patterns (`/offers/:id`);
+- for a failed request, its endpoint, its status and the backend's request id, which
+  leads to that request's log lines on the server.
+
+Screenshots, printed lines and query strings (they carry locations and searches) are
+never sent. On the phones, native crashes and crash-free sessions per version come with
+it. On the web, the SDK loads Sentry's script from its CDN, pinned with an integrity
+hash, and error names and stacks read minified until the dashboard's source maps are
+uploaded to Sentry (`sentry_dart_plugin`, once the projects exist).
 
 ## When the backend API changes
 
