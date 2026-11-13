@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../badge/s_badge.dart';
 import '../icon/s_icon.dart';
+import '../illustration/s_illustration.dart';
 import 's_deal_material.dart';
 
 /// What customers see of an offer right now, on its photo: "● Live".
@@ -83,4 +84,13 @@ abstract interface class SDealFooter implements Widget {
     Widget? quantity,
     Key? key,
   }) = SDealFooterMaterial;
+
+  /// In place of the action, when the offer can't be taken now (its store
+  /// is closed): [illustration] beside [title] and, under it, [message].
+  const factory SDealFooter.note({
+    required Illustration illustration,
+    required String title,
+    String? message,
+    Key? key,
+  }) = SDealFooterNoteMaterial;
 }

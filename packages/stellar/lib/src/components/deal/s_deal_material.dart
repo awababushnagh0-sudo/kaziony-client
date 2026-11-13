@@ -7,6 +7,8 @@ import '../badge/s_badge_material.dart';
 import '../button/s_button_material.dart';
 import '../icon/s_icon.dart';
 import '../icon/s_icon_material.dart';
+import '../illustration/s_illustration.dart';
+import '../illustration/s_illustration_material.dart';
 import '../image/s_image_material.dart';
 import 's_deal_tile.dart';
 
@@ -275,6 +277,62 @@ class SDealFooterMaterial extends StatelessWidget implements SDealFooter {
       Expanded(child: action),
     ],
   );
+}
+
+/// [SDealFooter.note]: the picture small at the start, the words beside
+/// it, about as tall as the row of the button it stands in for.
+class SDealFooterNoteMaterial extends StatelessWidget implements SDealFooter {
+  const SDealFooterNoteMaterial({
+    required this.illustration,
+    required this.title,
+    this.message,
+    super.key,
+  });
+
+  /// The picture's side, so the note is a little taller than a button.
+  static const _pictureSize = 64.0;
+
+  final Illustration illustration;
+  final String title;
+  final String? message;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final text = context.style.text;
+    final message = this.message;
+    return Row(
+      spacing: Space.md,
+      children: [
+        SizedBox.square(
+          dimension: _pictureSize,
+          child: SIllustrationMaterial(illustration),
+        ),
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: Space.xxs,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: text.subtitle,
+                  fontWeight: SFontWeight.bold.value,
+                  color: c.text,
+                ),
+              ),
+              if (message != null)
+                Text(
+                  message,
+                  style: TextStyle(fontSize: text.small, color: c.textMuted),
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 /// The price in the brand's green, and the regular one crossed out when

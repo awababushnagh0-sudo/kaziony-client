@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kernel/kernel.dart' show formatDateTime;
+import 'package:kernel/kernel.dart' show formatDateTime, libyaClock, libyaTime;
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../foundation/s_scope.dart';
@@ -387,9 +387,11 @@ class _DateTimeField extends StatelessWidget {
     );
   }
 
-  /// The phone's calendar, then its clock.
+  /// The phone's calendar, then its clock, read as Libya's day and time
+  /// (as the field shows it), whatever zone the phone is set to.
   Future<DateTime?> _pick(BuildContext context, DateTime? current) async {
-    final initial = current ?? input.firstDate;
+    final clock = libyaClock(current ?? input.firstDate);
+    final initial = DateTime(clock.year, clock.month, clock.day);
     final day = await showDatePicker(
       context: context,
       initialDate: initial.isBefore(input.firstDate)
@@ -401,10 +403,10 @@ class _DateTimeField extends StatelessWidget {
     if (day == null || !context.mounted) return null;
     final time = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.fromDateTime(initial),
+      initialTime: TimeOfDay(hour: clock.hour, minute: clock.minute),
     );
     if (time == null) return null;
-    return DateTime(day.year, day.month, day.day, time.hour, time.minute);
+    return libyaTime(day.year, day.month, day.day, time.hour, time.minute);
   }
 }
 

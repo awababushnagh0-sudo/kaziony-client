@@ -15,6 +15,7 @@ export 'src/components/badge/s_badge.dart';
 export 'src/components/band/s_band.dart';
 export 'src/components/browse/s_browse.dart';
 export 'src/components/button/s_button.dart';
+export 'src/components/calendar/s_calendar.dart';
 export 'src/components/card/s_card.dart';
 export 'src/components/carousel/s_carousel.dart';
 export 'src/components/chart/s_bar_chart.dart';
