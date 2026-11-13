@@ -20,6 +20,8 @@ enum CancelReason {
   storeClosed('STORE_CLOSED'),
   @JsonValue('HOURS_CHANGED')
   hoursChanged('HOURS_CHANGED'),
+  @JsonValue('ACCOUNT_DISABLED')
+  accountDisabled('ACCOUNT_DISABLED'),
   /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
   $unknown(null);
 

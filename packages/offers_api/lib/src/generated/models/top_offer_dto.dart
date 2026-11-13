@@ -20,8 +20,14 @@ class TopOfferDto {
   
   final String offerId;
   final String title;
+
+  /// Views of all time.
   final num views;
+
+  /// Booked in the last 30 days.
   final num claims;
+
+  /// Picked up in the last 30 days.
   final num redeemed;
 
   Map<String, Object?> toJson() => _$TopOfferDtoToJson(this);

@@ -70,7 +70,9 @@ abstract class AdminUsersClient {
     @Body() required UpdateDashboardUserDto body,
   });
 
-  /// Disable or enable an account
+  /// Disable or enable an account.
+  ///
+  /// Disabling logs them out everywhere, and cancels the bookings they have waiting (ACCOUNT_DISABLED: pieces back, no strike).
   @PATCH('/api/v1/admin/users/{id}/status')
   Future<AdminUserDto> setStatus({
     @Path('id') required String id,

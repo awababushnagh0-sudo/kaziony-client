@@ -17,8 +17,13 @@ class PeriodStatsDto {
   
   factory PeriodStatsDto.fromJson(Map<String, Object?> json) => _$PeriodStatsDtoFromJson(json);
   
+  /// Bookings made.
   final num claims;
+
+  /// Picked up or delivered, whenever they were booked.
   final num redeemed;
+
+  /// Ran out without being picked up.
   final num expired;
 
   /// Redeemed / (redeemed + expired), 0 to 1. Null before any claim finishes.

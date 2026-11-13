@@ -25,9 +25,9 @@ class CustomerClaimStoreDto {
   final String area;
   final String? logoUrl;
 
-  /// Set when the store delivers with its own drivers: the number to call.
-  /// to have the booking brought. Delivery and any fee are between the.
-  /// customer and the store.
+  /// Set when the store delivers with its own drivers, or this booking is.
+  /// already on its way with one: the number to call to have it brought, or.
+  /// about it. Delivery and any fee are between the customer and the store.
   final String? deliveryPhone;
 
   Map<String, Object?> toJson() => _$CustomerClaimStoreDtoToJson(this);

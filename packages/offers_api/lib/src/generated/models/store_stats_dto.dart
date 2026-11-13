@@ -36,7 +36,7 @@ class StoreStatsDto {
   final PeriodStatsDto today;
   final PeriodStatsDto last30Days;
 
-  /// Most redeemed offers in the last 30 days.
+  /// Offers with the most pickups in the last 30 days.
   final List<TopOfferDto> topOffers;
 
   Map<String, Object?> toJson() => _$StoreStatsDtoToJson(this);
