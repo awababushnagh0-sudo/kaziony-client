@@ -27,9 +27,29 @@ class LocationScreen extends AppView {
     final isOwner = ref.watch(currentStoreProvider)?.isOwner ?? false;
     final edit = isOwner ? ref.watch(editOpeningHoursViewModel) : null;
 
-    Future<void> save() async {
-      final saved = await ref.read(editOpeningHoursViewModel.notifier).save();
-      if (saved && context.mounted) SSnack.success(context, s.saved);
+    Future<void> save({bool cancelBookings = false}) async {
+      final saved = await ref
+          .read(editOpeningHoursViewModel.notifier)
+          .save(cancelBookings: cancelBookings);
+      if (!context.mounted) return;
+      if (saved) {
+        SSnack.success(context, s.saved);
+        return;
+      }
+      // New hours close before bookings waiting are due: those would be
+      // cancelled, so it asks first.
+      if (ref.read(editOpeningHoursViewModel).failure case ConflictFailure(
+        code: 'HoursCancelBookings',
+      )) {
+        final confirmed = await SDialog.confirm(
+          context,
+          title: s.hoursCancelBookingsTitle,
+          message: s.hoursCancelBookingsMessage,
+          confirmLabel: s.hoursCancelBookingsConfirm,
+          destructive: true,
+        );
+        if (confirmed) await save(cancelBookings: true);
+      }
     }
 
     return LeaveGuard(
@@ -219,6 +239,8 @@ class _EditableHours extends AppView {
           SText(switch (failure) {
             ConflictFailure(code: 'StoreNotReady') =>
               s.liveStoreNeedsOpeningHours,
+            ConflictFailure(code: 'HoursCancelBookings') =>
+              s.hoursCancelBookingsMessage,
             _ => failureMessage(context, failure),
           }, color: SColor.danger),
       ],

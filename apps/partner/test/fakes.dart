@@ -147,16 +147,30 @@ class FakeStoreRepository implements StoreRepository {
   /// The next opening hours fail with this, once.
   AppFailure? failNextHours;
 
+  /// Bookings waiting end after the hours saved close the store: saving
+  /// asks to cancel them.
+  bool hoursCutBookings = false;
+
   @override
   Future<Result<Store>> setHours(
     String storeId,
     OpeningHours weekly,
-    List<SpecialHours> special,
-  ) async {
+    List<SpecialHours> special, {
+    bool cancelBookings = false,
+  }) async {
     if (failNextHours case final failure?) {
       failNextHours = null;
       return Err(failure);
     }
+    if (hoursCutBookings && !cancelBookings) {
+      return const Err(
+        ConflictFailure(
+          'Some bookings end after these hours close the store.',
+          'HoursCancelBookings',
+        ),
+      );
+    }
+    if (cancelBookings) hoursCutBookings = false;
     hours.add(weekly);
     this.special.add(special);
     return Ok(storeDetails(openingHours: weekly, specialHours: special));
@@ -476,6 +490,7 @@ Claim claim(
   Duration heldFor = const Duration(minutes: 40),
   DateTime? sentForDeliveryAt,
   bool canSendForDelivery = false,
+  CancelledBy? cancelledBy,
 }) => Claim(
   id: 'c-$code',
   code: code,
@@ -495,6 +510,7 @@ Claim claim(
   sentForDeliveryAt: sentForDeliveryAt,
   canRedeem: canRedeem,
   canSendForDelivery: canSendForDelivery,
+  cancelledBy: cancelledBy,
 );
 
 /// A booking out with the store's driver for [out].

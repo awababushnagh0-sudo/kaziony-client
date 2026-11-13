@@ -136,6 +136,30 @@ void main() {
     expect(find.text('Confirm pickup'), findsNothing);
   });
 
+  testWidgets('says who cancelled a reservation', (tester) async {
+    Future<void> showCancelled(CancelledBy? by) => open(
+      tester,
+      shown: claim(
+        'ABCD2345',
+        status: ClaimStatus.cancelled,
+        canRedeem: false,
+        cancelledBy: by,
+      ),
+    );
+
+    await showCancelled(CancelledBy.customer);
+    expect(
+      find.text('The customer cancelled this reservation.'),
+      findsOneWidget,
+    );
+    await showCancelled(CancelledBy.team);
+    expect(find.text('Our team cancelled this reservation.'), findsOneWidget);
+    await showCancelled(CancelledBy.store);
+    expect(find.text('Your store cancelled this reservation.'), findsOneWidget);
+    await showCancelled(null);
+    expect(find.text('This reservation was cancelled.'), findsOneWidget);
+  });
+
   testWidgets('says when no reservation has the code', (tester) async {
     // Another place of the brand's codes too: each is a store of its own.
     await open(tester, code: 'WXYZ6789');

@@ -242,6 +242,31 @@ void main() {
     expect(find.text('A live store needs opening hours'), findsNothing);
   });
 
+  testWidgets('asks before hours that would cancel bookings', (tester) async {
+    await open(tester);
+    stores.hoursCutBookings = true;
+    await tap(tester, find.text('Saturday'));
+    await tap(tester, find.text('Done'));
+
+    await tap(tester, find.text('Save changes'));
+    expect(find.text('Cancel the bookings these hours miss?'), findsOneWidget);
+    await tap(tester, find.text('Cancel'));
+    expect(stores.hours, isEmpty);
+    // Said under the hours too, in the app's words.
+    expect(
+      find.text(
+        'Some bookings are due after your new closing time. Saving cancels '
+        "them, and their customers are told. It doesn't count against them.",
+      ),
+      findsOneWidget,
+    );
+
+    await tap(tester, find.text('Save changes'));
+    await tap(tester, find.text('Save and cancel them'));
+    expect(stores.hours, hasLength(1));
+    expect(find.text('Saved.'), findsOneWidget);
+  });
+
   testWidgets('the owner asks our team on WhatsApp for a change or a new '
       'place', (tester) async {
     await open(tester);

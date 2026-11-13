@@ -17,7 +17,12 @@ String? claimProblemMessage(BuildContext context, Claim claim) {
       ),
     ),
     ClaimProblem.alreadyRedeemed => s.problemRedeemed,
-    ClaimProblem.cancelled => s.problemCancelled,
+    ClaimProblem.cancelled => switch (claim.cancelledBy) {
+      CancelledBy.customer => s.problemCancelled,
+      CancelledBy.team => s.problemCancelledByTeam,
+      CancelledBy.store => s.problemCancelledByStore,
+      null => s.problemCancelledOther,
+    },
     ClaimProblem.expired => s.problemExpired,
     ClaimProblem.other => s.problemOther,
   };

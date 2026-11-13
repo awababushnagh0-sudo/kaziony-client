@@ -266,7 +266,7 @@ class EditOpeningHoursViewModel extends ViewModel<EditOpeningHoursState> {
       _show(state.hours, [...state.special]..removeAt(index));
 
   /// Returns true when the hours were saved.
-  Future<bool> save() async {
+  Future<bool> save({bool cancelBookings = false}) async {
     if (state.saving) return false;
     final storeId = ref.read(currentStoreProvider)?.storeId;
     if (storeId == null) return false;
@@ -280,7 +280,7 @@ class EditOpeningHoursViewModel extends ViewModel<EditOpeningHoursState> {
 
     final result = await ref
         .read(storeRepositoryProvider)
-        .setHours(storeId, hours, special);
+        .setHours(storeId, hours, special, cancelBookings: cancelBookings);
     if (!ref.mounted) return false;
 
     switch (result) {

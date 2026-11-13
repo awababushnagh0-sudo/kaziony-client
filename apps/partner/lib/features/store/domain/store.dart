@@ -174,12 +174,16 @@ abstract interface class StoreRepository {
   Future<Result<Store>> updateProfile(String storeId, StoreProfile profile);
 
   /// Owners only: the week's hours and the [special] dates, all of them.
-  /// Leaves the profile as it is.
+  /// Leaves the profile as it is. Hours that close the store before
+  /// bookings waiting are due fail with `HoursCancelBookings`, unless
+  /// [cancelBookings] says to cancel them (their customers are told, and it
+  /// doesn't count against them).
   Future<Result<Store>> setHours(
     String storeId,
     OpeningHours weekly,
-    List<SpecialHours> special,
-  );
+    List<SpecialHours> special, {
+    bool cancelBookings = false,
+  });
 
   /// Owners and staff.
   Future<Result<StorePause>> getPause(String storeId);

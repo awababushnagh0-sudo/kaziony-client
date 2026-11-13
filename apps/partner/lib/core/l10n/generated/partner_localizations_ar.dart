@@ -786,6 +786,32 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
   String get problemCancelled => 'ألغى الزبون هذا الحجز.';
 
   @override
+  String get problemCancelledByTeam => 'ألغى فريقنا هذا الحجز.';
+
+  @override
+  String get problemCancelledByStore => 'ألغى متجرك هذا الحجز.';
+
+  @override
+  String get problemCancelledOther => 'أُلغي هذا الحجز.';
+
+  @override
+  String get errorNotOutForDelivery => 'هذا الحجز لم يعد في التوصيل.';
+
+  @override
+  String get errorAlreadyOutForDelivery => 'هذا الحجز خرج للتوصيل بالفعل.';
+
+  @override
+  String get errorNotRedeemable => 'لم يعد بالإمكان استلام هذا الرمز.';
+
+  @override
+  String get errorStoreDoesNotDeliver =>
+      'متجرك لا يوصّل الطلبات. فعّل التوصيل من معلومات المتجر أولًا.';
+
+  @override
+  String get errorOfferHasReservations =>
+      'حجز زبائن هذا العرض، فيبقى عنوانه ووصفه كما هما حتى يستلموا. يمكنك تغيير وقت انتهائه.';
+
+  @override
   String get problemExpired => 'انتهت مدة هذا الحجز.';
 
   @override
@@ -1281,6 +1307,16 @@ class PartnerLocalizationsAr extends PartnerLocalizations {
 
   @override
   String get closeAndCancelConfirm => 'إغلاق وإلغاء';
+
+  @override
+  String get hoursCancelBookingsTitle => 'إلغاء الحجوزات بعد الإغلاق الجديد؟';
+
+  @override
+  String get hoursCancelBookingsMessage =>
+      'بعض الحجوزات موعدها بعد وقت الإغلاق الجديد. الحفظ يلغيها ونخبر الزبائن، ولا يُحسب ذلك عليهم.';
+
+  @override
+  String get hoursCancelBookingsConfirm => 'احفظ وألغِها';
 
   @override
   String get keepBookings => 'إبقاؤها';

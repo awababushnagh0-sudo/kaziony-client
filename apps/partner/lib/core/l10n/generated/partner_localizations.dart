@@ -1511,6 +1511,54 @@ abstract class PartnerLocalizations {
   /// **'The customer cancelled this reservation.'**
   String get problemCancelled;
 
+  /// No description provided for @problemCancelledByTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Our team cancelled this reservation.'**
+  String get problemCancelledByTeam;
+
+  /// No description provided for @problemCancelledByStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Your store cancelled this reservation.'**
+  String get problemCancelledByStore;
+
+  /// No description provided for @problemCancelledOther.
+  ///
+  /// In en, this message translates to:
+  /// **'This reservation was cancelled.'**
+  String get problemCancelledOther;
+
+  /// No description provided for @errorNotOutForDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'This booking isn\'t out for delivery anymore.'**
+  String get errorNotOutForDelivery;
+
+  /// No description provided for @errorAlreadyOutForDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'This booking is already out for delivery.'**
+  String get errorAlreadyOutForDelivery;
+
+  /// No description provided for @errorNotRedeemable.
+  ///
+  /// In en, this message translates to:
+  /// **'This code can\'t be picked up anymore.'**
+  String get errorNotRedeemable;
+
+  /// No description provided for @errorStoreDoesNotDeliver.
+  ///
+  /// In en, this message translates to:
+  /// **'Your store doesn\'t deliver. Turn delivery on in Store info first.'**
+  String get errorStoreDoesNotDeliver;
+
+  /// No description provided for @errorOfferHasReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers have booked this offer, so its title and description stay as they are until they pick up. You can still change when it ends.'**
+  String get errorOfferHasReservations;
+
   /// No description provided for @problemExpired.
   ///
   /// In en, this message translates to:
@@ -2242,6 +2290,24 @@ abstract class PartnerLocalizations {
   /// In en, this message translates to:
   /// **'Close and cancel'**
   String get closeAndCancelConfirm;
+
+  /// No description provided for @hoursCancelBookingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel the bookings these hours miss?'**
+  String get hoursCancelBookingsTitle;
+
+  /// No description provided for @hoursCancelBookingsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Some bookings are due after your new closing time. Saving cancels them, and their customers are told. It doesn\'t count against them.'**
+  String get hoursCancelBookingsMessage;
+
+  /// No description provided for @hoursCancelBookingsConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Save and cancel them'**
+  String get hoursCancelBookingsConfirm;
 
   /// No description provided for @keepBookings.
   ///

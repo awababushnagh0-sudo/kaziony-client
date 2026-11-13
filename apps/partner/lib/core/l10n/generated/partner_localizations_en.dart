@@ -791,6 +791,35 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
   String get problemCancelled => 'The customer cancelled this reservation.';
 
   @override
+  String get problemCancelledByTeam => 'Our team cancelled this reservation.';
+
+  @override
+  String get problemCancelledByStore =>
+      'Your store cancelled this reservation.';
+
+  @override
+  String get problemCancelledOther => 'This reservation was cancelled.';
+
+  @override
+  String get errorNotOutForDelivery =>
+      'This booking isn\'t out for delivery anymore.';
+
+  @override
+  String get errorAlreadyOutForDelivery =>
+      'This booking is already out for delivery.';
+
+  @override
+  String get errorNotRedeemable => 'This code can\'t be picked up anymore.';
+
+  @override
+  String get errorStoreDoesNotDeliver =>
+      'Your store doesn\'t deliver. Turn delivery on in Store info first.';
+
+  @override
+  String get errorOfferHasReservations =>
+      'Customers have booked this offer, so its title and description stay as they are until they pick up. You can still change when it ends.';
+
+  @override
   String get problemExpired => 'This reservation has expired.';
 
   @override
@@ -1276,6 +1305,17 @@ class PartnerLocalizationsEn extends PartnerLocalizations {
 
   @override
   String get closeAndCancelConfirm => 'Close and cancel';
+
+  @override
+  String get hoursCancelBookingsTitle =>
+      'Cancel the bookings these hours miss?';
+
+  @override
+  String get hoursCancelBookingsMessage =>
+      'Some bookings are due after your new closing time. Saving cancels them, and their customers are told. It doesn\'t count against them.';
+
+  @override
+  String get hoursCancelBookingsConfirm => 'Save and cancel them';
 
   @override
   String get keepBookings => 'Keep them';

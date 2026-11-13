@@ -3,6 +3,7 @@ import 'package:stellar/stellar.dart';
 
 import '../l10n/generated/partner_localizations.dart';
 import '../routes/router.dart';
+import 'failure_wording.dart';
 
 class PartnerApp extends AppView {
   const PartnerApp({super.key});
@@ -13,6 +14,7 @@ class PartnerApp extends AppView {
     locale: ref.watch(localeProvider),
     theme: ref.watch(themeChoiceProvider),
     onGenerateTitle: (context) => PartnerLocalizations.of(context).appTitle,
+    failureWording: partnerFailureWording,
     localizationsDelegates: const [PartnerLocalizations.delegate],
   );
 }

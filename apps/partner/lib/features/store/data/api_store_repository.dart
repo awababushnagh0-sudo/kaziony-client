@@ -44,8 +44,9 @@ class ApiStoreRepository implements StoreRepository {
   Future<Result<Store>> setHours(
     String storeId,
     OpeningHours weekly,
-    List<SpecialHours> special,
-  ) async {
+    List<SpecialHours> special, {
+    bool cancelBookings = false,
+  }) async {
     final result = await _api.guard(
       () => _stores.updateProfile(
         storeId: storeId,
@@ -53,6 +54,7 @@ class ApiStoreRepository implements StoreRepository {
         body: UpdateStoreProfileDto(
           openingHours: weekly.toJson(),
           specialHours: [for (final range in special) range.toJson()],
+          cancelBookings: cancelBookings ? true : null,
         ),
       ),
     );

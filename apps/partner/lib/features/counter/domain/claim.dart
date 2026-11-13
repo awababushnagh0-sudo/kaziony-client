@@ -19,6 +19,18 @@ enum ClaimStatus {
 /// Why a code can't be picked up at this counter.
 enum ClaimProblem { alreadyRedeemed, cancelled, expired, other }
 
+/// Who called a cancelled booking off.
+enum CancelledBy {
+  customer,
+
+  /// Our team: it took the offer down or turned the store off.
+  team,
+
+  /// This store: it closed suddenly, changed its hours or a delivery
+  /// didn't happen.
+  store,
+}
+
 /// The 8 characters customers show as a QR code, or read out when it won't
 /// scan.
 abstract final class ClaimCode {
@@ -71,6 +83,7 @@ class Claim {
     required this.sentForDeliveryAt,
     required this.canRedeem,
     required this.canSendForDelivery,
+    this.cancelledBy,
   });
 
   final String id;
@@ -100,6 +113,10 @@ class Claim {
 
   /// The store delivers and it's still waiting: its driver can take it.
   final bool canSendForDelivery;
+
+  /// Who cancelled it; null when it isn't cancelled, or for a reason added
+  /// after this version of the app.
+  final CancelledBy? cancelledBy;
 
   bool get isOutForDelivery => status == ClaimStatus.outForDelivery;
 

@@ -108,4 +108,13 @@ Claim _toClaim(api.PartnerClaimDto dto) => Claim(
   sentForDeliveryAt: dto.sentForDeliveryAt,
   canRedeem: dto.canRedeem,
   canSendForDelivery: dto.canSendForDelivery,
+  cancelledBy: switch (dto.cancelReason) {
+    api.CancelReason.customer => CancelledBy.customer,
+    api.CancelReason.offerRemoved ||
+    api.CancelReason.storeOff => CancelledBy.team,
+    api.CancelReason.storeClosed ||
+    api.CancelReason.hoursChanged ||
+    api.CancelReason.notDelivered => CancelledBy.store,
+    api.CancelReason.$unknown || null => null,
+  },
 );
