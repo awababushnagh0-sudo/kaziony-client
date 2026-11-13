@@ -41,6 +41,118 @@ class SCellTextMaterial extends StatelessWidget implements SCellText {
   }
 }
 
+/// Space between the table and the page edge, and between a box's edge and
+/// its text.
+const _outer = 16.0;
+const _inner = 8.0;
+
+/// The gap between two columns; in the header it holds a dividing line.
+const _gap = 13.0;
+
+/// The space at the end of the header for the total.
+const _totalWidth = 96.0;
+const _headerHeight = 36.0;
+const _rowHeight = 44.0;
+
+/// What both tables draw for a [width]: the columns that fit, the header's
+/// rounded gray box, a row that lights up on hover, and the line between
+/// rows.
+class _TableParts<T> {
+  _TableParts(this.context, this.columns, this.totalLabel, double width)
+    : visible = [
+        for (final column in columns)
+          if (width >= column.minWidth) column,
+      ];
+
+  final BuildContext context;
+  final List<TableColumn<T>> columns;
+  final String totalLabel;
+  final List<TableColumn<T>> visible;
+
+  Color get _background => context.colors.primarySoft;
+  BorderRadius get _radius => BorderRadius.circular(Radii.md);
+
+  Widget _line(
+    Widget Function(TableColumn<T> column) cell, {
+    bool dividers = false,
+    Widget? end,
+  }) {
+    final c = context.colors;
+    return Row(
+      children: [
+        for (final (i, column) in visible.indexed) ...[
+          if (i > 0)
+            SizedBox(
+              width: _gap,
+              child: dividers
+                  ? Center(
+                      child: Container(width: 1, height: 16, color: c.border),
+                    )
+                  : null,
+            ),
+          Expanded(flex: column.flex, child: cell(column)),
+        ],
+        const SizedBox(width: _gap),
+        // Each row keeps this space empty, so the columns line up.
+        SizedBox(width: _totalWidth, child: end),
+      ],
+    );
+  }
+
+  Widget header() {
+    final c = context.colors;
+    final style = TextStyle(
+      fontSize: context.style.text.tiny,
+      color: c.textSubtle,
+    );
+    return Container(
+      height: _headerHeight,
+      padding: const EdgeInsets.symmetric(horizontal: _inner),
+      decoration: BoxDecoration(color: _background, borderRadius: _radius),
+      child: _line(
+        (column) => Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: Text(
+            column.label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: style.copyWith(fontWeight: SFontWeight.medium.value),
+          ),
+        ),
+        dividers: true,
+        end: Text(
+          totalLabel,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.end,
+          style: style,
+        ),
+      ),
+    );
+  }
+
+  Widget row(T item, ValueChanged<T>? onOpen) {
+    final content = Container(
+      height: _rowHeight,
+      padding: const EdgeInsets.symmetric(horizontal: _inner),
+      child: _line((column) => column.cell(item)),
+    );
+    if (onOpen == null) return content;
+    // Hover and press fill the same rounded box as the header.
+    return InkWell(
+      borderRadius: _radius,
+      hoverColor: _background,
+      highlightColor: _background,
+      splashFactory: NoSplash.splashFactory,
+      onTap: () => onOpen(item),
+      child: content,
+    );
+  }
+
+  Widget divider() =>
+      Divider(indent: _inner, endIndent: _inner, color: context.colors.border);
+}
+
 /// ERPNext-style [STable]: a pinned header in a rounded gray box, rows that
 /// light up on hover, and the total at the end of the header.
 class STableMaterial<T> extends StatelessWidget implements STable<T> {
@@ -61,130 +173,77 @@ class STableMaterial<T> extends StatelessWidget implements STable<T> {
   /// Rows are clickable when set.
   final ValueChanged<T>? onOpen;
 
-  /// Space between the table and the page edge, and between a box's edge
-  /// and its text.
-  static const _outer = 16.0;
-  static const _inner = 8.0;
+  @override
+  Widget build(BuildContext context) => SliverLayoutBuilder(
+    builder: (context, constraints) {
+      final parts = _TableParts(
+        context,
+        columns,
+        totalLabel,
+        constraints.crossAxisExtent,
+      );
+      return SliverMainAxisGroup(
+        slivers: [
+          // Pinned, it hides the rows scrolling under it.
+          PinnedHeaderSliver(
+            child: ColoredBox(
+              color: context.colors.background,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(_outer, 8, _outer, 4),
+                child: parts.header(),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(_outer, 0, _outer, 8),
+            sliver: SliverList.separated(
+              itemCount: rows.length,
+              separatorBuilder: (_, _) => parts.divider(),
+              itemBuilder: (context, index) => parts.row(rows[index], onOpen),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
 
-  /// The gap between two columns; in the header it holds a dividing line.
-  static const _gap = 13.0;
+/// [STable.box]: the same header and rows in a column, for a page that
+/// already scrolls and has its own padding.
+class STableBoxMaterial<T> extends StatelessWidget implements STable<T> {
+  const STableBoxMaterial({
+    required this.rows,
+    required this.columns,
+    required this.totalLabel,
+    this.onOpen,
+    super.key,
+  });
 
-  /// The space at the end of the header for the total.
-  static const _totalWidth = 96.0;
+  final List<T> rows;
+  final List<TableColumn<T>> columns;
+  final String totalLabel;
+  final ValueChanged<T>? onOpen;
 
   @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final radius = BorderRadius.circular(Radii.md);
-    return SliverLayoutBuilder(
-      builder: (context, constraints) {
-        final visible = [
-          for (final column in columns)
-            if (constraints.crossAxisExtent >= column.minWidth) column,
-        ];
-        Widget row(
-          Widget Function(TableColumn<T> column) cell, {
-          bool dividers = false,
-          Widget? end,
-        }) => Row(
-          children: [
-            for (final (i, column) in visible.indexed) ...[
-              if (i > 0)
-                SizedBox(
-                  width: _gap,
-                  child: dividers
-                      ? Center(
-                          child: Container(
-                            width: 1,
-                            height: 16,
-                            color: c.border,
-                          ),
-                        )
-                      : null,
-                ),
-              Expanded(flex: column.flex, child: cell(column)),
-            ],
-            const SizedBox(width: _gap),
-            // Each row keeps this space empty, so the columns line up.
-            SizedBox(width: _totalWidth, child: end),
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final parts = _TableParts(
+        context,
+        columns,
+        totalLabel,
+        constraints.maxWidth,
+      );
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          parts.header(),
+          const SizedBox(height: 4),
+          for (final (i, item) in rows.indexed) ...[
+            if (i > 0) parts.divider(),
+            parts.row(item, onOpen),
           ],
-        );
-
-        final header = row(
-          (column) => Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: Text(
-              column.label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: context.style.text.tiny,
-                fontWeight: SFontWeight.medium.value,
-                color: c.textSubtle,
-              ),
-            ),
-          ),
-          dividers: true,
-          end: Text(
-            totalLabel,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.end,
-            style: TextStyle(
-              fontSize: context.style.text.tiny,
-              color: c.textSubtle,
-            ),
-          ),
-        );
-
-        return SliverMainAxisGroup(
-          slivers: [
-            // Pinned, it hides the rows scrolling under it.
-            PinnedHeaderSliver(
-              child: ColoredBox(
-                color: c.background,
-                child: Container(
-                  height: 36,
-                  margin: const EdgeInsets.fromLTRB(_outer, 8, _outer, 4),
-                  padding: const EdgeInsets.symmetric(horizontal: _inner),
-                  decoration: BoxDecoration(
-                    color: c.primarySoft,
-                    borderRadius: radius,
-                  ),
-                  child: header,
-                ),
-              ),
-            ),
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(_outer, 0, _outer, 8),
-              sliver: SliverList.separated(
-                itemCount: rows.length,
-                separatorBuilder: (_, _) =>
-                    Divider(indent: _inner, endIndent: _inner, color: c.border),
-                itemBuilder: (context, index) {
-                  final item = rows[index];
-                  final content = Container(
-                    height: 44,
-                    padding: const EdgeInsets.symmetric(horizontal: _inner),
-                    child: row((column) => column.cell(item)),
-                  );
-                  final onOpen = this.onOpen;
-                  if (onOpen == null) return content;
-                  // Hover and press fill the same rounded box as the header.
-                  return InkWell(
-                    borderRadius: radius,
-                    hoverColor: c.primarySoft,
-                    highlightColor: c.primarySoft,
-                    splashFactory: NoSplash.splashFactory,
-                    onTap: () => onOpen(item),
-                    child: content,
-                  );
-                },
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
+        ],
+      );
+    },
+  );
 }

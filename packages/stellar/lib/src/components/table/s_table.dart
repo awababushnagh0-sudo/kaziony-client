@@ -20,11 +20,11 @@ class TableColumn<T> {
   final double minWidth;
 }
 
-/// The rows of a list, with a pinned header that ends with [totalLabel].
-/// Made of slivers: put it in an SListPage.
+/// The rows of a list, with a header that ends with [totalLabel].
 abstract interface class STable<T> implements Widget {
-  /// [totalLabel] is shown at the end of the header ("12 stores"), as in
-  /// ERPNext. Rows are clickable when [onOpen] is set.
+  /// A page's list, with a pinned header. Made of slivers: put it in an
+  /// SListPage. [totalLabel] is shown at the end of the header ("12
+  /// stores"), as in ERPNext. Rows are clickable when [onOpen] is set.
   const factory STable({
     required List<T> rows,
     required List<TableColumn<T>> columns,
@@ -32,6 +32,16 @@ abstract interface class STable<T> implements Widget {
     ValueChanged<T>? onOpen,
     Key? key,
   }) = STableMaterial<T>;
+
+  /// The same table as a box, inside a page that scrolls (a record page's
+  /// tab): the header scrolls with the rows.
+  const factory STable.box({
+    required List<T> rows,
+    required List<TableColumn<T>> columns,
+    required String totalLabel,
+    ValueChanged<T>? onOpen,
+    Key? key,
+  }) = STableBoxMaterial<T>;
 }
 
 /// A table cell's text: muted, one line. [strong] for the column that names
