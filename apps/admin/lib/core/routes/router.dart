@@ -39,7 +39,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         NoTransitionPage(key: state.pageKey, child: build(context, state)),
   );
 
-  return GoRouter(
+  final router = GoRouter(
     initialLocation: Routes.splash,
     refreshListenable: refresh,
     redirect: (context, state) => redirectFor(
@@ -124,4 +124,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
     ],
   );
+  reportRoutes(ref, router);
+  return router;
 });

@@ -31,7 +31,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   ]);
   ref.onDispose(refresh.dispose);
 
-  return GoRouter(
+  final router = GoRouter(
     initialLocation: Routes.home,
     refreshListenable: refresh,
     redirect: (context, state) => redirectFor(
@@ -156,6 +156,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
     ],
   );
+  reportRoutes(ref, router);
+  return router;
 });
 
 StatefulShellBranch _tab(String path, Widget page) => StatefulShellBranch(

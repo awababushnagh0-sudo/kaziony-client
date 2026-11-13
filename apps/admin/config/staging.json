@@ -1,4 +1,5 @@
 {
   "APP_ENV": "staging",
-  "API_BASE_URL": "https://staging-api.example.ly"
+  "API_BASE_URL": "https://staging-api.example.ly",
+  "SENTRY_DSN": ""
 }

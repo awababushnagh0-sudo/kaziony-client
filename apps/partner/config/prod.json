@@ -1,4 +1,5 @@
 {
   "APP_ENV": "prod",
-  "API_BASE_URL": "https://api.example.ly"
+  "API_BASE_URL": "https://api.example.ly",
+  "SENTRY_DSN": ""
 }

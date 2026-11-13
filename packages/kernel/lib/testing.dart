@@ -177,6 +177,7 @@ class FakeLinkOpener implements LinkOpener {
 
 class RecordingErrorReporter implements ErrorReporter {
   final errors = <Object>[];
+  final routes = <String>[];
   String? userId;
 
   @override
@@ -185,6 +186,9 @@ class RecordingErrorReporter implements ErrorReporter {
 
   @override
   void setUser(String? userId) => this.userId = userId;
+
+  @override
+  void routeChanged(String route) => routes.add(route);
 }
 
 /// Overrides that make kernel work in tests without plugins. Pass

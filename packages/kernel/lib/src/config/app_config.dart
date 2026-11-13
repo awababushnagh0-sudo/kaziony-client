@@ -30,10 +30,12 @@ class AppConfig {
     required this.kind,
     required this.apiBaseUrl,
     this.env = AppEnv.dev,
+    this.sentryDsn = '',
   });
 
-  /// Reads `API_BASE_URL` and `APP_ENV`. Without a URL, dev builds point at
-  /// the local backend (the Android emulator reaches the host at 10.0.2.2).
+  /// Reads `API_BASE_URL`, `APP_ENV` and `SENTRY_DSN`. Without a URL, dev
+  /// builds point at the local backend (the Android emulator reaches the
+  /// host at 10.0.2.2).
   factory AppConfig.fromEnvironment(AppKind kind) {
     const url = String.fromEnvironment('API_BASE_URL');
     if (url.isEmpty && appEnv == AppEnv.prod) {
@@ -46,6 +48,7 @@ class AppConfig {
       kind: kind,
       env: appEnv,
       apiBaseUrl: url.isNotEmpty ? url : localBackendUrl(),
+      sentryDsn: const String.fromEnvironment('SENTRY_DSN'),
     );
   }
 
@@ -55,6 +58,10 @@ class AppConfig {
   /// The server this build was made for. In dev builds the dev menu can
   /// point the app elsewhere; use `apiBaseUrlProvider` for the active one.
   final String apiBaseUrl;
+
+  /// Where errors are sent (Sentry or GlitchTip); empty sends them nowhere
+  /// but the console.
+  final String sentryDsn;
 }
 
 /// The backend on this machine, as seen from the simulator or emulator.

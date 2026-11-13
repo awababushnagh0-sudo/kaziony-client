@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -7,13 +9,15 @@ import 'config/app_config.dart';
 import 'dev/dev_log.dart';
 import 'dev/dev_settings.dart';
 import 'errors/error_reporter.dart';
+import 'errors/sentry_error_reporter.dart';
 import 'locale/locale.dart';
 import 'navigation/navigation.dart';
 import 'state/state.dart';
 import 'storage/storage.dart';
 
 /// Starts an app: reads the app version, catches every uncaught error, and
-/// wraps the app in [AppScope] with its configuration.
+/// wraps the app in [AppScope] with its configuration. Errors go to Sentry
+/// when the build has a `SENTRY_DSN`, to the console otherwise.
 ///
 /// ```dart
 /// void main() => bootstrap(
@@ -24,12 +28,32 @@ import 'storage/storage.dart';
 Future<void> bootstrap({
   required AppConfig config,
   required Widget Function() app,
-  ErrorReporter reporter = const ConsoleErrorReporter(),
   List<Override> overrides = const [],
 }) async {
+  if (!kIsWeb) return _start(config, app, overrides);
+  // On the web, Flutter doesn't pass errors from futures to
+  // PlatformDispatcher.onError, so a zone catches them for it.
+  await runZonedGuarded(
+    () => _start(config, app, overrides),
+    (error, stack) => PlatformDispatcher.instance.onError?.call(error, stack),
+  );
+}
+
+Future<void> _start(
+  AppConfig config,
+  Widget Function() app,
+  List<Override> overrides,
+) async {
   usePathUrls();
   WidgetsFlutterBinding.ensureInitialized();
 
+  ErrorReporter reporter = config.sentryDsn.isEmpty
+      ? const ConsoleErrorReporter()
+      : await SentryErrorReporter.start(
+          dsn: config.sentryDsn,
+          app: config.kind,
+          env: config.env,
+        );
   final devLog = DevLog();
   var devSettings = const DevSettings();
   if (kDevTools) {
@@ -46,6 +70,8 @@ Future<void> bootstrap({
     devSettings = DevSettings(serverUrl: savedServer);
   }
 
+  // In place of Sentry's own handlers, so every error goes through the
+  // reporter (and the dev menu's log).
   FlutterError.onError = (details) {
     FlutterError.presentError(details);
     reporter.report(details.exception, details.stack, fatal: true);
@@ -96,4 +122,7 @@ class _DevLogReporter implements ErrorReporter {
 
   @override
   void setUser(String? userId) => _inner.setUser(userId);
+
+  @override
+  void routeChanged(String route) => _inner.routeChanged(route);
 }

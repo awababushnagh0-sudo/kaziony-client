@@ -2,6 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:go_router/go_router.dart';
+
+import '../errors/error_reporter.dart';
 
 // go_router does the routing; apps get it only through kernel.
 export 'package:go_router/go_router.dart'
@@ -25,6 +28,24 @@ class RouterRefresh extends ChangeNotifier {
       ref.listen(source, (_, _) => notifyListeners());
     }
   }
+}
+
+/// Tells the [ErrorReporter] each page the user opens (its pattern, like
+/// `/offers/:id`), so an error report shows how they got there. Call once,
+/// where the app makes its router.
+void reportRoutes(Ref ref, GoRouter router) {
+  final reporter = ref.read(errorReporterProvider);
+  final delegate = router.routerDelegate;
+  String? last;
+  void changed() {
+    final route = delegate.currentConfiguration.fullPath;
+    if (route == last) return;
+    last = route;
+    reporter.routeChanged(route);
+  }
+
+  delegate.addListener(changed);
+  ref.onDispose(() => delegate.removeListener(changed));
 }
 
 /// Web only: clean URLs (`/stores`) instead of hash URLs (`/#/stores`).
