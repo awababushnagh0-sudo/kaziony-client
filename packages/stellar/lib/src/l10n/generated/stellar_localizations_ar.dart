@@ -49,6 +49,9 @@ class StellarLocalizationsAr extends StellarLocalizations {
   String get errorUnknown => 'حدث خطأ ما. حاول مرة أخرى.';
 
   @override
+  String get errorConflict => 'لا يمكن إتمام هذا الآن.';
+
+  @override
   String get errorNotFound => 'غير موجود. ربما تم حذفه.';
 
   @override

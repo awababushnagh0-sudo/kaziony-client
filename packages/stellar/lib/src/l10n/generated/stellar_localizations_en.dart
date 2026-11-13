@@ -50,6 +50,9 @@ class StellarLocalizationsEn extends StellarLocalizations {
   String get errorUnknown => 'Something went wrong. Try again.';
 
   @override
+  String get errorConflict => 'This can\'t be done right now.';
+
+  @override
   String get errorNotFound => 'Not found. It may have been removed.';
 
   @override

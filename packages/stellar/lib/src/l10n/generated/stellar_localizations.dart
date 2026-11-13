@@ -179,6 +179,12 @@ abstract class StellarLocalizations {
   /// **'Something went wrong. Try again.'**
   String get errorUnknown;
 
+  /// No description provided for @errorConflict.
+  ///
+  /// In en, this message translates to:
+  /// **'This can\'t be done right now.'**
+  String get errorConflict;
+
   /// No description provided for @errorNotFound.
   ///
   /// In en, this message translates to:

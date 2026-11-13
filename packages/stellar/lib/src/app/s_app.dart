@@ -20,6 +20,7 @@ class SApp extends StatefulWidget {
     this.style = StellarStyle.app,
     this.colors = lightColors,
     this.theme = ThemeChoice.light,
+    this.failureWording,
     super.key,
   });
 
@@ -37,6 +38,10 @@ class SApp extends StatefulWidget {
 
   /// Light, dark, or following the device.
   final ThemeChoice theme;
+
+  /// The app's words for the failures it can meet on any screen, which
+  /// every `failureMessage` uses first.
+  final FailureWording? failureWording;
 
   @override
   State<SApp> createState() => _SAppState();
@@ -65,6 +70,7 @@ class _SAppState extends State<SApp> {
         colors: Theme.of(context).brightness == Brightness.dark
             ? darkColors
             : colors,
+        failureWording: widget.failureWording,
         child: DevMenu(child: child ?? const SizedBox()),
       ),
       debugShowCheckedModeBanner: false,
