@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,11 +10,11 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() {
   group('Sentry', () {
-    late List<SentryEvent> sent;
+    late StreamController<SentryEvent> sent;
     const reporter = SentryErrorReporter();
 
     setUp(() async {
-      sent = [];
+      sent = StreamController.broadcast();
       await Sentry.init((options) {
         options
           ..dsn = 'https://key@sentry.example/1'
@@ -23,12 +25,18 @@ void main() {
           };
       });
     });
-    tearDown(Sentry.close);
+    tearDown(() async {
+      await Sentry.close();
+      await sent.close();
+    });
 
-    Future<SentryEvent> reported(Object error, {bool fatal = false}) async {
+    // Waits for the event itself: on Linux, Sentry reads files about the
+    // machine before it sends, so a busy machine (CI) takes longer than a
+    // few turns of the event loop.
+    Future<SentryEvent> reported(Object error, {bool fatal = false}) {
+      final event = sent.stream.first;
       reporter.report(error, StackTrace.current, fatal: fatal);
-      await pumpEventQueue();
-      return sent.last;
+      return event;
     }
 
     test('an uncaught error is fatal and unhandled', () async {
